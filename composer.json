@@ -8,10 +8,16 @@
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^2.7",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4"
+        "laravel/ui": "^3.4",
+        "livewire/livewire": "^2.11",
+        "maatwebsite/excel": "^3.1",
+        "nesbot/carbon": "^2.65",
+        "phpoffice/phpspreadsheet": "^1.26",
+        "realrashid/sweet-alert": "^5.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

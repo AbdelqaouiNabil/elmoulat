@@ -106,6 +106,13 @@ NB: this file contains the list of components/scss partial along with the style.
 
   05. RESPONSIVE CSS
 ***************************/
+
+.required:after {
+        content: '*';
+        color: red;
+        padding-left: 5px;
+ }
+
 .m-top-0 {
   margin-top: 0px;
 }
