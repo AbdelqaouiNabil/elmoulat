@@ -27,5 +27,9 @@ class Fournisseur extends Model
     //     return $this->hasOne(f_domaine::class,'id');
     // }
 
+    public function charge(){
+        return $this->hasMany('App\Models\Charge');
+    }
+
 
 }

@@ -28,10 +28,16 @@ class Projet extends Model
         'id_bureau',
         'id_caisse',
     ];
+<<<<<<< HEAD
     public function caisse(){
         return $this->hasOne(Caisse::class);
     }
     public function bureau(){
         return $this->hasOne(Bureau::class);
+=======
+
+    public function charge(){
+        return $this->hasMany('App\Models\Charge');
+>>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
     }
 }

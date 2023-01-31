@@ -19,13 +19,13 @@ class CreateChargesTable extends Migration
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs'); 
             $table->unsignedBigInteger('id_projet');
             $table->foreign('id_projet')->references('id')->on('projets'); 
-            $table->unsignedBigInteger('reglement_id');
-            $table->foreign('reglement_id')->references('id')->on('reglements');  
+            $table->unsignedBigInteger('id_reglement');
+            $table->foreign('id_reglement')->references('id')->on('reglements'); 
             $table->string('name');
             $table->string('type');
             $table->string('bon');
-            $table->float('prix');
-            $table->float('Tva');
+            $table->float('prix_ht');
+            $table->float('tva');
             $table->float('QT');
             $table->float('prix_TTC');
             $table->float('MTTTC');

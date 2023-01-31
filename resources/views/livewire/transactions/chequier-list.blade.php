@@ -233,9 +233,52 @@
             </div><!-- End: .col -->
         </div>
     </div>
+<<<<<<< HEAD
 
 
     {{-- add project  modal --}}
+=======
+  {{-- delete model START --}}
+
+    
+
+    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
+        role="dialog" aria-hidden="true">
+
+
+        <div class="modal-dialog modal-sm modal-info" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-info-body d-flex">
+                        <div class="modal-info-icon warning">
+                            <span data-feather="info"></span>
+                        </div>
+
+                        <div class="modal-info-text">
+                            <h6>Voulez-vous supprimer ce chequier</h6>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                        data-dismiss="modal">annuler</button>
+                    <button type="button" wire:click.prevent='deleteData'
+                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    {{-- delete model END --}}
+     {{-- edit chequier model start --}}
+
+     
+>>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
     <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog"
         aria-hidden="true">
 
@@ -294,6 +337,7 @@
                                     </select>
 
                                 </div>
+<<<<<<< HEAD
                                     @else
                                        <label>Compte </label>  
                                    
@@ -304,11 +348,21 @@
                 <div class="modal-footer">
                     <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
                 </div>
+=======
+                                @endif
+                                
+               
+                <div class="modal-footer">
+                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
+                </div>
+               
+>>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
                 </form>
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
 
 
 
@@ -320,16 +374,34 @@
         aria-hidden="true">
 
              <div class="modal-dialog modal-md" role="document">
+=======
+     {{-- edit chequier model end--}}
+
+    
+
+
+    {{-- add project  modal --}}
+    <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog"
+        aria-hidden="true">
+
+
+        <div class="modal-dialog modal-md" role="document">
+>>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
             <div class="modal-content modal-bg-white ">
                 <div class="modal-header">
 
 
 
+<<<<<<< HEAD
                     <h6 class="modal-title">Ajouter Nouveau chequier</h6>
+=======
+                    <h6 class="modal-title">Ajouter Nouveau Chequier</h6>
+>>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span data-feather="x"></span></button>
                 </div>
                 <div class="modal-body">
+<<<<<<< HEAD
 
                         <form wire:submit.prevent='editData'>
                             <div class="form-basic">
@@ -465,6 +537,72 @@
     </div>
 
     <!-- ends: .modal-info-Delete -->
+=======
+                    
+
+                        <form enctype="multipart/form-data">
+                            <div class="form-basic">
+                                <div class="form-group mb-25">
+                                    <label>Date de mise En Disposition</label>
+                                    <input class="form-control form-control-lg" type="date" name="dateMiseEnDisposition"
+                                        wire:model.defer='dateMiseEnDisposition'>
+                                    @error('dateMiseEnDisposition')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Nombre de debut</label>
+                                    <input class="form-control form-control-lg" type="text" name="nombreDeDebut"
+                                        wire:model.defer='nombreDeDebut'>
+                                    @error('nombreDeDebut')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Nombre de fin</label>
+                                    <input class="form-control form-control-lg" type="text" name="nombreDeFin"
+                                        wire:model.defer='nombreDeFin'>
+                                    @error('nombreDeFin')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                @if(count($comptes)>0)
+                                 <div class="form-group mb-25">
+                                    <label>Compte </label>  
+                                   
+                                    <select name="compte_id" wire:model.defer='compte_id'  class="form-control  form-control-lg">
+                                 
+                                    @foreach($comptes as $compte)
+                                        <option value="{{$compte->id}}">{{$compte->numero}}</option>
+                                        
+                                    @endforeach
+                                        
+                                    </select>
+
+                                </div>
+                                @endif
+                                
+               
+                <div class="modal-footer">
+                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
+                </div>
+               
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+   
+
+  
+
+>>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
 
 
 
