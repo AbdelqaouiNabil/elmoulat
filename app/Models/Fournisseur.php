@@ -26,5 +26,9 @@ class Fournisseur extends Model
         
     }
 
+    public function charge(){
+        return $this->hasMany('App\Models\Charge');
+    }
+
 
 }

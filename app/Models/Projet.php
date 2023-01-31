@@ -27,4 +27,8 @@ class Projet extends Model
         'id_bureau',
         'id_caisse',
     ];
+
+    public function charge(){
+        return $this->hasMany('App\Models\Charge');
+    }
 }

@@ -16,16 +16,28 @@ class Charge extends Model
     */
    protected $fillable = [
        
-       'fornisseur_id',
+       'fournisseur_id',
        'projet_id',
        'name',
        'type',
        'bon',
-       'prix',
-       'Tva',
+       'prix_ht',
+       'tva',
        'QT',
        'prix_TTC',
        'MTTTC',
        'situation',
    ];
+
+
+    public function projet(){
+    return $this->belongsTo('App\Models\Projet');
+   }
+
+    public function fournisseur(){
+    return $this->belongsTo('App\Models\Fournisseur');
+   }
+
+
+
 }
