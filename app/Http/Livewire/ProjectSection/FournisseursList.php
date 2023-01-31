@@ -48,11 +48,7 @@ class FournisseursList extends Component
     public function saveData(){
         $this->validate([
             'name'=>'required',
-            'id_fdomaine'=>'required',
-            'ice'=>'required',
-            'phone'=>'required|integer',
-            'email'=>'required',
-            'adress'=>'required',
+            
         ]);
         
        

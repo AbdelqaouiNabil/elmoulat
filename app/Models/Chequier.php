@@ -10,12 +10,15 @@ class Chequier extends Model
     use HasFactory;
     protected $fillable = [
         
-        'datedubet',
-        'datefin',
-        'numero_dubet',
-        'numero_fin',
+        'dateDeMiseEnDisposition',
+        'numeroDeDebut',
+        'numeroDeFin',
+        'nombreDeCheque',
         'id_compte',
        
        
     ];
+    public function compte(){
+        return $this->belongsTo(Compte::class,'id_compte');
+    }
 }

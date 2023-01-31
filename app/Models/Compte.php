@@ -15,7 +15,7 @@ class Compte extends Model
     * @var array<int, string>
     */
    protected $fillable = [
-       
+       'id',
        'bank_id',
        'numero',
        'date_creation',
@@ -24,4 +24,8 @@ class Compte extends Model
        
        
    ];
+
+   
+
+   
 }

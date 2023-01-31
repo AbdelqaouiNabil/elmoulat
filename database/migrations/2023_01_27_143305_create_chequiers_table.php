@@ -15,14 +15,14 @@ class CreateChequiersTable extends Migration
     {
         Schema::create('chequiers', function (Blueprint $table) {
             $table->id();
-            $table->date('datedubet');
-            $table->date('datefin');
-            $table->integer('numero_dubet');
-            $table->integer('numero_fin');
+            $table->date('dateDeMiseEnDisposition');
+            $table->integer('numeroDeDebut');
+            $table->integer('numeroDeFin');
+            $table->integer('nombreDeCheque');
             $table->unsignedBigInteger('id_compte');
             $table->foreign('id_compte')->references('id')->on('comptes'); 
-            
             $table->timestamps();
+           
         });
     }
 
