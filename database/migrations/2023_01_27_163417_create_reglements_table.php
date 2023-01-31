@@ -26,9 +26,6 @@ class CreateReglementsTable extends Migration
             $table->foreign('id_facture')->references('id')->on('factures');
             $table->unsignedBigInteger('id_contrat');
             $table->foreign('id_contrat')->references('id')->on('contrats');
-            $table->unsignedBigInteger('id_charge');
-            $table->foreign('id_charge')->references('id')->on('charges');
-            
             $table->timestamps();
         });
     }

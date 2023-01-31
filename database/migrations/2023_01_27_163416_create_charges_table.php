@@ -17,8 +17,10 @@ class CreateChargesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('fournisseur_id');
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs'); 
-            $table->unsignedBigInteger('projet_id');
-            $table->foreign('projet_id')->references('id')->on('projets'); 
+            $table->unsignedBigInteger('id_projet');
+            $table->foreign('id_projet')->references('id')->on('projets'); 
+            $table->unsignedBigInteger('id_reglement');
+            $table->foreign('id_reglement')->references('id')->on('reglements'); 
             $table->string('name');
             $table->string('type');
             $table->string('bon');
