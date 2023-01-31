@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\ProjectSection;
 
 use Livewire\Component;
 use App\Models\f_domaine;
@@ -29,7 +29,7 @@ class FournisseursList extends Component
         $fournisseurs = Fournisseur::all();
         $fdomaines=f_domaine::all();
         
-        return view('livewire.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines]);
+        return view('livewire.project-section.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines]);
     }
 
 //   validation real -time

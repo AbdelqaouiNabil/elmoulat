@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\ProjectSection;
 use App\Imports\ProjetsImport;
 use Livewire\Component;
 use App\Models\Projet;
+use App\Models\Bureau;
+use App\Models\Caisse;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\WithPagination;
@@ -219,6 +221,9 @@ public function  deleteSelected(){
         
         $this->bulkDisabled = count($this->selectedProjects) < 1;
         $projets = Projet::orderBy('id', 'DESC')->paginate($this->pages);
-        return view('livewire.projects-list',['projets'=>$projets]);
+        $bureaus=Bureau::all();
+        $caisses=Caisse::all();
+        return view('livewire.project-section.projects-list',['projets'=>$projets,'bureaus'=>$bureaus,'caisses'=>$caisses]);
+        
     }
 }

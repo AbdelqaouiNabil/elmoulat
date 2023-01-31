@@ -18,6 +18,7 @@ class Charge extends Model
        
        'fournisseur_id',
        'projet_id',
+       'reglement_id',
        'name',
        'type',
        'bon',

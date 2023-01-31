@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Caisse;
 
 class Projet extends Model
 {
@@ -27,8 +28,10 @@ class Projet extends Model
         'id_bureau',
         'id_caisse',
     ];
-
-    public function charge(){
-        return $this->hasMany('App\Models\Charge');
+    public function caisse(){
+        return $this->hasOne(Caisse::class);
+    }
+    public function bureau(){
+        return $this->hasOne(Bureau::class);
     }
 }

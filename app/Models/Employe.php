@@ -16,10 +16,11 @@ class Employe extends Model
     protected $fillable = [
         'bureau_id',
         'nom',
-        'prénom',
+        'prenom',
         'phone',
-        'date_dubet',
+        'datedubet',
         'contrat',
-        'designation',
+        'designiation',
+        'salaire'
     ];
 }

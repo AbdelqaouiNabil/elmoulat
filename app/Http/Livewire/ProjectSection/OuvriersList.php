@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\ProjectSection;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,7 +26,7 @@ class OuvriersList extends Component
     {
         $this->btndelete=count($this->checked_id)<1;
         $ouvriers=Ouvrier::orderBy('id','DESC')->get();
-        return view('livewire.ouvriers-list',['ouvriers'=>$ouvriers]);
+        return view('livewire.project-section.ouvriers-list',['ouvriers'=>$ouvriers]);
     }
 
     public function saveData(){

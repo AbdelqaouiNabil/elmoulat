@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Fournisseur;
 
 class f_domaine extends Model
 {
@@ -17,6 +18,9 @@ class f_domaine extends Model
         'name',
     
     ];
+    // public function fourniseur(){
+    //     return $this->hasMany(Fournisseur::class);
+    // }
 
 
 }
