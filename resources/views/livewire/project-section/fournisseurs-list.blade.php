@@ -60,30 +60,34 @@
 
         @endif
         <div class="container-fluid">
+            <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal" >
+                                          
+                <i class="la la-trash"></i>delete selected</button>
             <div class="row">
+                
                 <div class="col-lg-12">
                     <div class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
                         <div class="table-responsive">
-                            @if($fournisseurs->count() > 0)
+                          
                             <table class="table mb-0 table-borderless border-0">
                                 <thead>
                                     <tr class="userDatatable-header">
+                                        
                                         <th>
-                                            <div class="d-flex align-items-center">
-
-
-
-                                            </div>
+                                            <input type="checkbox" wire:model="selectAll">
                                         </th>
-
+                                        
                                         <th>
-                                            <span class="userDatatable-title">Nom</span>
+                                            <span class="userDatatable-title">id</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">ICE</span>
+                                            <span class="userDatatable-title">Nom de Fournisseur</span>
                                         </th>
                                         <th>
-                                            <span class="userDatatable-title">Phone</span>
+                                            <span class="userDatatable-title">Ice </span>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">phone</span>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">Email</span>
@@ -91,98 +95,101 @@
                                         <th>
                                             <span class="userDatatable-title">Adress</span>
                                         </th>
-                                         <th>
-                                            <span class="userDatatable-title">f_doamine</span>
-                                        </th>
                                         <th>
-                                            <span class="userDatatable-title float-right">Actions</span>
+                                            <span class="userDatatable-title">Domaine</span>
+                                        </th> 
+                                        <th>
+                                            <span class="userDatatable-title">Actions</span>
                                         </th>
+                                       
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-
-
-
-                                    @foreach($fournisseurs as $fournisseur)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class=" userDatatable__imgWrapper d-flex align-items-center">
-                                                    <div class="checkbox-group-wrapper">
-                                                        <div class="checkbox-group d-flex">
-                                                            <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
-                                                                <input class="checkbox" type="checkbox" id="check-grp-12">
-                                                                <label for="check-grp-12">
-                                                                </label>
-                                                            </div>
+    
+                                    @if ($fournisseurs->count() > 0)
+        
+                                            @foreach ($fournisseurs as $fournisseur)
+                                                <tr>
+                                                    <td>
+                                                
+                                                        <input  type="checkbox" wire:model="selectedfournisseur" value="{{$fournisseur->id}}"  >
+                                                        
+                                                    </td>
+                                                   
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $fournisseur->id }}
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="orderDatatable-title">
-                                                {{$fournisseur->nom}}
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="orderDatatable-title">
-                                                {{$fournisseur->ice}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="orderDatatable-title">
-                                                {{$fournisseur->phone}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="orderDatatable-title">
-                                                {{$fournisseur->email}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="orderDatatable-title">
-                                                {{$fournisseur->adress}}
-                                            </div>
-                                        </td>
-                                     
-                                            <td>
-                                            <div class="orderDatatable-title">
-                                                {{-- {{$fournisseur->fdomaine->name}} --}}
-                                            </div>
-                                        </td>
-                                      
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $fournisseur->name }}
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $fournisseur->ice }}
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $fournisseur->phone }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $fournisseur->email }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $fournisseur->adress }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{-- {{ $fournisseur->f_domaine->name}} --}}
+                                                            
+                                                        </div>
+                                                    </td>
+                                                   
+        
+                                                   
+                                                    <td>
+                                                        <ul class="orderDatatable_actions mb-0 d-flex">
                                         
-
-                                        <td>
-                                            <ul class="orderDatatable_actions mb-0 d-flex">
-
-                                                <li><a class="remove" data-toggle="modal" data-target="#edit-modal" wire:click='editProject({{$fournisseur->id}})'><i class="fa-regular fa-pen-to-square"></i></a></li>
-                                                <li><a class="remove" data-toggle="modal" data-target="#modal-info-delete" wire:click='deleteProject({{$fournisseur->id}})' style="color: red;"><i class="fa-solid fa-trash"></i></a></li>
-
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-
+                                                            <li><a href="#" class="remove" data-toggle="modal"
+                                                                    data-target="#edit-modal"
+                                                                    wire:click='editFournisseur({{ $fournisseur->id }})'><i
+                                                                        class="fa-regular fa-pen-to-square"></i></a></li>
+                                                            <li><a href="#" class="remove" data-toggle="modal"
+                                                                    data-target="#modal-info-delete"
+                                                                    wire:click='deleteFournisseur({{ $fournisseur->id }})'
+                                                                    style="color: red;"><i class="fa-solid fa-trash"></i></a>
+                                                            </li>
+        
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                        @endif
+    
                                     <!-- End: tr -->
-
-
-
-
-
-
-
+    
+    
+    
+    
+    
+    
+    
                                 </tbody>
                             </table><!-- End: table -->
-                            @else
-
-                            <h1>no data </h1>
-                            @endif
+                        
                         </div>
                         <div class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
 
@@ -219,7 +226,7 @@
         </div>
 
 
-        {{--add project  modal --}}
+        {{--add Fournisseur  modal --}}
         <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog" aria-hidden="true">
 
 
@@ -254,7 +261,7 @@
                                 <div class="form-group mb-25">
                                     <label>Phone</label>
                                     <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone'>
-                                    @error('ice')
+                                    @error('phone')
                                     <span class="text-danger">{{$message}}</span>
 
                                     @enderror
@@ -278,13 +285,17 @@
 
                                 <div class="form-group mb-25">
                                     <label>Domaine </label>
-                                    <select name="select-size-1" wire:model.defer='domaine' id="select-size-1" class="form-control  form-control-lg">
+                                    <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1" class="form-control  form-control-lg">
+                                        <option value="" selected>select an option</option>
                                     @foreach($f_domaines as $f_domaine)
                                         <option value="{{$f_domaine->id}}">{{$f_domaine->name}}</option>
                                         
                                     @endforeach
                                         
                                     </select>
+                                    @error('id_fdomaine')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
 
                                 </div>
 
@@ -294,7 +305,7 @@
 
 
                             <div class="modal-footer">
-                                <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer</button>
+                                <button wire:click.prevent="saveData()" class="btn btn-primary btn-sm">Enregistrer</button>
                             </div>
                         </form>
                     </div>
@@ -327,7 +338,7 @@
                         <form wire:submit.prevent='editData'>
                             <div class="form-basic">
                                 <div class="form-group mb-25">
-                                    <label>Nom de projet</label>
+                                    <label class="required">Nom </label>
                                     <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name'>
                                     @error('name')
                                     <span class="text-danger">{{$message}}</span>
@@ -335,13 +346,52 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Date de commencement</label>
-                                    <input class="form-control form-control-lg" type="date" wire:model.defer='date' name="date">
-                                    <div class="form-inline-action d-flex justify-content-between align-items-center">
-                                    </div>
-                                    @error('date')
+                                    <label>ICE</label>
+                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'>
+                                    @error('ice')
                                     <span class="text-danger">{{$message}}</span>
+
                                     @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Phone</label>
+                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone'>
+                                    @error('phone')
+                                    <span class="text-danger">{{$message}}</span>
+
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Adress</label>
+                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress'>
+                                    @error('adress')
+                                    <span class="text-danger">{{$message}}</span>
+
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Email</label>
+                                    <input class="form-control form-control-lg" type="text" name="email" wire:model.defer='email'>
+                                    @error('email')
+                                    <span class="text-danger">{{$message}}</span>
+
+                                    @enderror
+                                </div>
+
+                                <div class="form-group mb-25">
+                                    <label>Domaine </label>
+                                    <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1" class="form-control  form-control-lg">
+                                        <option value="" selected>select an option</option>
+                                    @foreach($f_domaines as $f_domaine)
+                                        <option value="{{$f_domaine->id}}">{{$f_domaine->name}}</option>
+                                        
+                                    @endforeach
+                                        
+                                    </select>
+                                    @error('id_fdomaine')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                                 </div>
                             </div>
 

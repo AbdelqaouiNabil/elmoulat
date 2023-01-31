@@ -233,46 +233,9 @@
             </div><!-- End: .col -->
         </div>
     </div>
-  {{-- delete model START --}}
-
-    
-
-    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
-        role="dialog" aria-hidden="true">
 
 
-        <div class="modal-dialog modal-sm modal-info" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-info-body d-flex">
-                        <div class="modal-info-icon warning">
-                            <span data-feather="info"></span>
-                        </div>
-
-                        <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce chequier</h6>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                        data-dismiss="modal">annuler</button>
-                    <button type="button" wire:click.prevent='deleteData'
-                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-
-    {{-- delete model END --}}
-     {{-- edit chequier model start --}}
-
-     
+    {{-- add project  modal --}}
     <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog"
         aria-hidden="true">
 
@@ -331,103 +294,177 @@
                                     </select>
 
                                 </div>
+                                    @else
+                                       <label>Compte </label>  
+                                   
+
                                 @endif
                                 
-               
+              
                 <div class="modal-footer">
                     <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
                 </div>
-               
                 </form>
             </div>
         </div>
     </div>
 
-     {{-- edit chequier model end--}}
-
-    
 
 
-    {{-- add project  modal --}}
+
+
+
+    {{-- edit project model --}}
+
     <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog"
         aria-hidden="true">
 
-
-        <div class="modal-dialog modal-md" role="document">
+             <div class="modal-dialog modal-md" role="document">
             <div class="modal-content modal-bg-white ">
                 <div class="modal-header">
 
 
 
-                    <h6 class="modal-title">Ajouter Nouveau Chequier</h6>
+                    <h6 class="modal-title">Ajouter Nouveau chequier</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span data-feather="x"></span></button>
                 </div>
                 <div class="modal-body">
-                    
 
-                        <form >
+                        <form wire:submit.prevent='editData'>
                             <div class="form-basic">
                                 <div class="form-group mb-25">
-                                    <label>Date de mise En Disposition</label>
-                                    <input class="form-control form-control-lg" type="date" name="dateMiseEnDisposition"
-                                        wire:model.defer='dateMiseEnDisposition'>
-                                    @error('dateMiseEnDisposition')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>Nombre de debut</label>
-                                    <input class="form-control form-control-lg" type="text" name="nombreDeDebut"
-                                        wire:model.defer='nombreDeDebut'>
-                                    @error('nombreDeDebut')
+                                    <label>Nom de chequier</label>
+                                    <input class="form-control form-control-lg" type="text" name="name"
+                                        wire:model.defer='name'>
+                                    @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="form-group mb-25">
-                                    <label>Nombre de fin</label>
-                                    <input class="form-control form-control-lg" type="text" name="nombreDeFin"
-                                        wire:model.defer='nombreDeFin'>
-                                    @error('nombreDeFin')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                @if(count($comptes)>0)
-                                 <div class="form-group mb-25">
-                                    <label>Compte </label>  
-                                   
-                                    <select name="compte_id" wire:model.defer='compte_id'  class="form-control  form-control-lg">
-                                 
-                                    @foreach($comptes as $compte)
-                                        <option value="{{$compte->id}}">{{$compte->numero}}</option>
-                                        
-                                    @endforeach
-                                        
-                                    </select>
 
+
+                                <div class="form-group mb-25">
+                                    <label>consistance</label>
+                                    <input class="form-control form-control-lg" type="text" name="consistance"
+                                        wire:model.defer='consistance'>
+                                    @error('consistance')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @endif
-                                
-               
-                                <div class="modal-footer">
-                                <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
+                                <div class="form-group mb-25">
+                                    <label>titre_finance</label>
+                                    <input class="form-control form-control-lg" type="text" name="titre_finance"
+                                        wire:model.defer='titre_finance'>
+                                    @error('titre_finance')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                          </div>
+                                <div class="form-group mb-25">
+                                    <label>superfice</label>
+                                    <input class="form-control form-control-lg" type="text" name="superfice"
+                                        wire:model.defer='superfice'>
+                                    @error('superfice')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>adress</label>
+                                    <input class="form-control form-control-lg" type="text" name="adress"
+                                        wire:model.defer='adress'>
+                                    @error('adress')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>ville</label>
+                                    <input class="form-control form-control-lg" type="text" name="ville"
+                                        wire:model.defer='ville'>
+                                    @error('ville')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>autorisation</label>
+                                    <input class="form-control form-control-lg" type="text" name="autorisation"
+                                        wire:model.defer='autorisation'>
+                                    @error('autorisation')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Date de commencement</label>
+                                    <input class="form-control form-control-lg" type="date"
+                                        wire:model.defer='dated' name="dated">
+                                    <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                    </div>
+                                    @error('dated')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                          
+                            <div class="form-group mb-25">
+                                <label>Date de fin</label>
+                                <input class="form-control form-control-lg" type="date" wire:model.defer='datef'
+                                    name="datef">
+                                <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                </div>
+                                @error('datef')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                    </div>
+
+ 
+              
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">Enregistrer chequier</button>
+                </div>
                 </form>
             </div>
         </div>
+       
+
+
     </div>
 
 
+    {{-- delete model  --}}
+
+    
+
+    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
+        role="dialog" aria-hidden="true">
 
 
+        <div class="modal-dialog modal-sm modal-info" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-info-body d-flex">
+                        <div class="modal-info-icon warning">
+                            <span data-feather="info"></span>
+                        </div>
+
+                        <div class="modal-info-text">
+                            <h6>Voulez-vous supprimer ce chequier</h6>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                        data-dismiss="modal">annuler</button>
+                    <button type="button" wire:click.prevent='deleteData'
+                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
+
+                </div>
+            </div>
+        </div>
 
 
-   
+    </div>
 
-  
-
+    <!-- ends: .modal-info-Delete -->
 
 
 

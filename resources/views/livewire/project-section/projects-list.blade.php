@@ -199,6 +199,16 @@
                                                     {{ $projet->datefin }}
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="orderDatatable-title">
+                                                    {{ $projet->bureau->nom }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="orderDatatable-title">
+                                                    {{ $projet->caisse->id }}
+                                                </div>
+                                            </td>
 
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex">
@@ -421,6 +431,36 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="form-group mb-25">
+                                <label>Bureau </label>
+                                <select name="select-size-1" wire:model.defer='id_bureau' id="select-size-1" class="form-control  form-control-lg">
+                                    <option value="" selected>select an option</option>
+                                @foreach($bureaus as $bureau)
+                                    <option value="{{$bureau->id}}">{{$bureau->nom}}</option>
+                                    
+                                @endforeach
+                                    
+                                </select>
+                                @error('id_bureau')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            </div>
+                            <div class="form-group mb-25">
+                                <label>Caisse </label>
+                                <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" class="form-control  form-control-lg">
+                                    <option value="" selected>select an option</option>
+                                @foreach($caisses as $caisse)
+                                    <option value="{{$caisse->id}}">{{$caisse->id}}</option>
+                                    
+                                @endforeach
+                                    
+                                </select>
+                                @error('id_caisse')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            </div>
                     </div>
 
 
@@ -535,6 +575,36 @@
                                 @error('datef')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                            </div>
+                            <div class="form-group mb-25">
+                                <label>Bureau </label>
+                                <select name="select-size-1" wire:model.defer='id_bureau' id="select-size-1" class="form-control  form-control-lg">
+                                    <option value="" selected>select an option</option>
+                                @foreach($bureaus as $bureau)
+                                    <option value="{{$bureau->id}}">{{$bureau->name}}</option>
+                                    
+                                @endforeach
+                                    
+                                </select>
+                                @error('id_bureau')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
+                            </div>
+                            <div class="form-group mb-25">
+                                <label>Caisse </label>
+                                <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" class="form-control  form-control-lg">
+                                    <option value="" selected>select an option</option>
+                                @foreach($caisses as $caisse)
+                                    <option value="{{$caisse->id}}">{{$caisse->id}}</option>
+                                    
+                                @endforeach
+                                    
+                                </select>
+                                @error('id_caisse')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+
                             </div>
                     </div>
 

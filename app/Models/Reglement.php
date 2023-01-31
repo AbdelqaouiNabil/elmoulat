@@ -21,7 +21,7 @@ class Reglement extends Model
         'id_transaction',
         'id_facture',
         'id_contrat',
-        'id_charge',
+       
 
        
         
