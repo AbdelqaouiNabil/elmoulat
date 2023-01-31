@@ -218,7 +218,7 @@
        @endif
        @if($currentTab === 'Employe')
        <livewire:rh-section.employe-list>
-@endif
+       @endif
         @if($currentTab === 'chequier')
        <livewire:transactions.chequier-list>
 
