@@ -319,7 +319,7 @@
 
 
         {{-- edit project model --}}
-
+   </div>
         <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
 
 
@@ -335,7 +335,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form wire:submit.prevent='editData'>
+                        <form >
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label class="required">Nom </label>
@@ -398,7 +398,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Enregistrer projet</button>
+                        <button  wire:click.prevent='editData' class="btn btn-primary btn-sm">Enregistrer projet</button>
                     </div>
                     </form>
                 </div>
@@ -441,6 +441,34 @@
 
         </div>
         <!-- ends: .modal-info-Delete -->
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1" role="dialog" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+
+                            <div class="modal-info-text">
+                                <h6>Do you Want to delete these items?</h6>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-danger btn-outlined btn-sm" data-dismiss="modal">No</button>
+                        <button type="button" wire:click='deleteSelected' class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">Yes</button>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
 
     </div>
 

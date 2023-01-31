@@ -58,7 +58,7 @@
     <div class="mobile-search">
         <form class="search-form">
             <span data-feather="search"></span>
-            <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
+            <input wire:model='search'  class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
         </form>
     </div>
 
@@ -71,7 +71,7 @@
                 <a class="navbar-brand" href="#"><img class="dark" src="img/logo_dark.png" alt="svg"><img class="light" src="img/logo_white.png" alt="img"></a>
                 <form action="/" class="search-form">
                     <span data-feather="search"></span>
-                    <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
+                    <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
                 </form>
                 <div class="top-menu">
 
@@ -728,7 +728,7 @@
                         </a>
                         <form action="/" class="search-form-topMenu">
                             <span class="search-icon" data-feather="search"></span>
-                            <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
+                            <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
                         </form>
                     </li>
                     <li class="nav-message">
