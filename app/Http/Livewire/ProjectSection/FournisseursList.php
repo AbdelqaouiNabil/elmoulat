@@ -47,7 +47,12 @@ class FournisseursList extends Component
     // save projects start
     public function saveData(){
         $this->validate([
-            'name'=>'required',
+            'name'=>'required',           
+            'id_fdomaine'=>'required|integer',
+            'ice'=>'required',
+            'phone'=>'required|integer',
+            'email'=>'required',
+            'adress'=>'required',
             
         ]);
         
@@ -185,6 +190,14 @@ if($value){
     
  }
  //import project end
+
+//  validate function 
+public function validationdata(){
+   
+}
+
+
+
 
 
 

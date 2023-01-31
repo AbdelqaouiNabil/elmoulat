@@ -5,6 +5,10 @@
             color: red;
             padding-left: 5px;
         }
+        table,th,td{
+            text-align: center;
+            
+        }
 
     </style>
     <div class="contents">
@@ -59,10 +63,13 @@
         </div>
 
         @endif
+        @if ($fournisseurs->count() > 0)
         <div class="container-fluid">
-            <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal" >
+            <div class="action-btn mb-3">
+            <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($bulkDisabled) hidden @endif data-target="#modal-all-delete" data-toggle="modal" >
                                           
                 <i class="la la-trash"></i>delete selected</button>
+            </div>
             <div class="row">
                 
                 <div class="col-lg-12">
@@ -73,7 +80,7 @@
                                 <thead>
                                     <tr class="userDatatable-header">
                                         
-                                        <th>
+                                        <th >
                                             <input type="checkbox" wire:model="selectAll">
                                         </th>
                                         
@@ -89,7 +96,7 @@
                                         <th>
                                             <span class="userDatatable-title">phone</span>
                                         </th>
-                                        <th>
+                                        <th >
                                             <span class="userDatatable-title">Email</span>
                                         </th>
                                         <th>
@@ -107,7 +114,7 @@
                                 </thead>
                                 <tbody>
     
-                                    @if ($fournisseurs->count() > 0)
+                                    
         
                                             @foreach ($fournisseurs as $fournisseur)
                                                 <tr>
@@ -140,7 +147,7 @@
                                                             {{ $fournisseur->phone }}
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td >
                                                         <div class="orderDatatable-title">
                                                             {{ $fournisseur->email }}
                                                         </div>
@@ -152,14 +159,14 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{-- {{ $fournisseur->f_domaine->name}} --}}
+                                                            {{ $fournisseur->domaine->name}}
                                                             
                                                         </div>
                                                     </td>
                                                    
         
                                                    
-                                                    <td>
+                                                    <td >
                                                         <ul class="orderDatatable_actions mb-0 d-flex">
                                         
                                                             <li><a href="#" class="remove" data-toggle="modal"
@@ -176,8 +183,7 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @else
-                                        @endif
+                                        
     
                                     <!-- End: tr -->
     
@@ -224,6 +230,10 @@
                 </div><!-- End: .col -->
             </div>
         </div>
+        @else
+        <h1>No Data to Show</h1>
+       
+        @endif
 
 
         {{--add Fournisseur  modal --}}
@@ -240,19 +250,19 @@
                     </div>
                     <div class="modal-body">
 
-                        <form>
+                        <form enctype="multipart/form-data"  wire:submit.prevent="saveData()">
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label class="required">Nom </label>
-                                    <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name'>
+                                    <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name' required >
                                     @error('name')
                                     <span class="text-danger">{{$message}}</span>
 
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>ICE</label>
-                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'>
+                                    <label class="required">ICE</label>
+                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'   maxlength="14" minlength="14" required>
                                     @error('ice')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -260,7 +270,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Phone</label>
-                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone'>
+                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone' required>
                                     @error('phone')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -268,7 +278,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Adress</label>
-                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress'>
+                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress' required>
                                     @error('adress')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -276,7 +286,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Email</label>
-                                    <input class="form-control form-control-lg" type="text" name="email" wire:model.defer='email'>
+                                    <input class="form-control form-control-lg" type="email" name="email" wire:model.defer='email'  required>
                                     @error('email')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -305,7 +315,7 @@
 
 
                             <div class="modal-footer">
-                                <button wire:click.prevent="saveData()" class="btn btn-primary btn-sm">Enregistrer</button>
+                                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
                             </div>
                         </form>
                     </div>
@@ -317,7 +327,7 @@
 
 
 
-
+        </div>
         {{-- edit project model --}}
 
         <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -329,25 +339,25 @@
 
 
 
-                        <h6 class="modal-title">Modifier Projet</h6>
+                        <h6 class="modal-title">Modifier Fournisseur</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
                     <div class="modal-body">
 
-                        <form wire:submit.prevent='editData'>
+                        <form enctype="multipart/form-data"  wire:submit.prevent="editData()">
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label class="required">Nom </label>
-                                    <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name'>
+                                    <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name' required >
                                     @error('name')
                                     <span class="text-danger">{{$message}}</span>
 
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>ICE</label>
-                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'>
+                                    <label class="required">ICE</label>
+                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'    required>
                                     @error('ice')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -355,7 +365,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Phone</label>
-                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone'>
+                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone'  required>
                                     @error('phone')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -363,7 +373,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Adress</label>
-                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress'>
+                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress' required>
                                     @error('adress')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -371,7 +381,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Email</label>
-                                    <input class="form-control form-control-lg" type="text" name="email" wire:model.defer='email'>
+                                    <input class="form-control form-control-lg" type="email" name="email" wire:model.defer='email'  required>
                                     @error('email')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -393,14 +403,17 @@
                                 @enderror
 
                                 </div>
+
+
                             </div>
 
 
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Enregistrer projet</button>
-                    </div>
-                    </form>
                 </div>
             </div>
 
@@ -442,7 +455,38 @@
         </div>
         <!-- ends: .modal-info-Delete -->
 
-    </div>
+
+
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1" role="dialog" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+
+                            <div class="modal-info-text">
+                                <h6>Do you Want to delete these items?</h6>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-danger btn-outlined btn-sm" data-dismiss="modal">No</button>
+                        <button type="button" wire:click='deleteSelected' class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">Yes</button>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    
 
     @push('scripts')
     <script>
@@ -455,3 +499,5 @@
     </script>
 
     @endpush
+
+
