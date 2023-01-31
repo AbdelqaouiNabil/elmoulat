@@ -235,7 +235,9 @@
     </div>
   {{-- delete model START --}}
 
-    
+    {{-- add project  modal --}}
+   
+
 
     <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
         role="dialog" aria-hidden="true">
@@ -348,77 +350,7 @@
     
 
 
-    {{-- add project  modal --}}
-    <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog"
-        aria-hidden="true">
-
-
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content modal-bg-white ">
-                <div class="modal-header">
-
-
-
-                    <h6 class="modal-title">Ajouter Nouveau Chequier</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span data-feather="x"></span></button>
-                </div>
-                <div class="modal-body">
-                    
-
-                        <form >
-                            <div class="form-basic">
-                                <div class="form-group mb-25">
-                                    <label>Date de mise En Disposition</label>
-                                    <input class="form-control form-control-lg" type="date" name="dateMiseEnDisposition"
-                                        wire:model.defer='dateMiseEnDisposition'>
-                                    @error('dateMiseEnDisposition')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>Nombre de debut</label>
-                                    <input class="form-control form-control-lg" type="text" name="nombreDeDebut"
-                                        wire:model.defer='nombreDeDebut'>
-                                    @error('nombreDeDebut')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>Nombre de fin</label>
-                                    <input class="form-control form-control-lg" type="text" name="nombreDeFin"
-                                        wire:model.defer='nombreDeFin'>
-                                    @error('nombreDeFin')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                @if(count($comptes)>0)
-                                 <div class="form-group mb-25">
-                                    <label>Compte </label>  
-                                   
-                                    <select name="compte_id" wire:model.defer='compte_id'  class="form-control  form-control-lg">
-                                 
-                                    @foreach($comptes as $compte)
-                                        <option value="{{$compte->id}}">{{$compte->numero}}</option>
-                                        
-                                    @endforeach
-                                        
-                                    </select>
-
-                                </div>
-                                @endif
-                                
-               
-                                <div class="modal-footer">
-                                <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
-                                </div>
-                          </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
+    
 
 
 
