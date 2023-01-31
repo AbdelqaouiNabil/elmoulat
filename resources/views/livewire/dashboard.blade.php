@@ -207,7 +207,7 @@
        <livewire:client-list>
         
        @endif
-<<<<<<< HEAD
+
        @if($currentTab === 'Domaine')
        <livewire:constant-section.domaine-list>
         
@@ -218,10 +218,10 @@
        @endif
        @if($currentTab === 'Employe')
        <livewire:rh-section.employe-list>
-=======
+@endif
         @if($currentTab === 'chequier')
        <livewire:transactions.chequier-list>
->>>>>>> 094867f4b70fcf0e91f96be9e9f938dbb0ee6a0f
+
         
        @endif
        
