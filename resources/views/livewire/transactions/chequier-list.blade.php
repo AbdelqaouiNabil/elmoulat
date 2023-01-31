@@ -540,7 +540,7 @@
 =======
                     
 
-                        <form enctype="multipart/form-data">
+                        <form >
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label>Date de mise En Disposition</label>
@@ -584,10 +584,10 @@
                                 @endif
                                 
                
-                <div class="modal-footer">
-                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
-                </div>
-               
+                                <div class="modal-footer">
+                                <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer chequier</button>
+                                </div>
+                          </div>
                 </form>
             </div>
         </div>
