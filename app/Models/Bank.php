@@ -21,4 +21,9 @@ class Bank extends Model
         'adress',
         'ville',
     ];
+
+
+    public function compte(){
+        return $this->hasMany(Compte::class,'bank_id');
+    }
 }

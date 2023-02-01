@@ -9,18 +9,10 @@
                 <div class="shop-breadcrumb">
 
                     <div class="breadcrumb-main">
-                         
-                       <div class="col-md-6">
-                        <div class="search-result global-shadow rounded-pill bg-white">
-                         
-                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                                    <span ><i class="fa-solid fa-magnifying-glass"></i></span>
-                                    <input wire:model="search" class="form-control border-0 box-shadow-none" type="search" placeholder="chercher par date ou numero de debut ..." aria-label="Search">
-                                </div>
-                                
-                           
-                        </div>
-                    </div>
+                         <form class="search-form d-flex justify-content-center align-items-center">
+                    
+                    <input wire:model="search" class="form-control mr-sm-5 box-shadow-none" type="text" placeholder="Chercher avec date ou numero ....">
+                      </form>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
 
                             <div class="action-btn">
@@ -55,17 +47,14 @@
         </div>
     @endif
     <div class="container-fluid">
-     @if($selectedChequier)
      <div class="action-btn mb-3">
 
-         <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal"
+         {{-- <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal" --}}
                                    >
             <i class="la la-trash"></i>delete selected</button>
                                    
 
         </div>
-        
-     @endif
         <div class="row">
             <div class="col-lg-12">
            
@@ -112,7 +101,7 @@
                             </thead>
                             <tbody>
 
-                                @if ($chequier->count() > 0)
+                                {{-- @if ($chequier->count() > 0)
 
                                     @foreach ($chequier as $chequier)
                                         <tr>
@@ -159,7 +148,7 @@
                                             </td>
                                                 @endif
                                             @endforeach --}}
-                                            <td>
+                                            {{-- <td>
                                             <div class="orderDatatable-title">
                                                 {{ $chequier->compte->numero }}
                                             </div>
@@ -185,7 +174,7 @@
 
                                    
                                 @else
-                                @endif
+                                @endif --}} 
 
                                 <!-- End: tr -->
 
@@ -252,7 +241,7 @@
                                     @enderror
                                     
                                 </div>
-                                @if(count($comptes)>0)
+                                {{-- @if(count($comptes)>0)
                                  <div class="form-group mb-25">
                                     <label>Compte </label>  
                                    
@@ -266,13 +255,13 @@
                                     </select>
 
                                 </div>
-                                @endif
+                                @endif --}}
                                 
                
                
 
                             </div>
-<div class="modal-footer">
+                      <div class="modal-footer">
                         <button  wire:click.prevent='editData' class="btn btn-primary btn-sm">Enregistrer Modification</button>
                     </div>
 
@@ -405,7 +394,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                @if(count($comptes)>0)
+                                {{-- @if(count($comptes)>0)
                                  <div class="form-group mb-25">
                                     <label>Compte </label>  
                                    
@@ -419,7 +408,7 @@
                                     </select>
 
                                 </div>
-                                @endif
+                                @endif --}}
                                 
                
                 <div class="modal-footer">
