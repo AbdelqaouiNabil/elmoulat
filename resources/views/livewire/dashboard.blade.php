@@ -158,6 +158,17 @@
                         </a>
 
                     </li> 
+                    <li>
+
+                        <a style="cursor:pointer" wire:click="changeTab('conges')" class="$currentTab === 'conges' ? 'active' : ''">
+
+                            <span data-feather="folder" class="nav-icon"></span>
+
+                            <span class="menu-text">Conges</span>
+
+                        </a>
+
+                    </li>
 
                     <li class="menu-title m-top-30">
 
@@ -242,6 +253,9 @@
        @if($currentTab === 'Employe')
        <livewire:rh-section.employe-list>
        @endif
+       @if($currentTab === 'conges')
+       <livewire:rh-section.conge-list>
+       @endif
         @if($currentTab === 'chequier')
        <livewire:transactions.chequier-list>
 
@@ -252,10 +266,12 @@
        <livewire:charges-list>
         
        @endif
+
        @if($currentTab === 'Bank')
        <livewire:settings.bank-list>
         
        @endif
+
        
        </div>
 </div>

@@ -17,8 +17,8 @@ class CreateFournisseursTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_fdomaine');
             $table-> string('name');
-            $table-> integer('ice');
-            $table-> integer('phone');
+            $table-> string('ice');
+            $table-> string('phone');
             $table-> string('email');
             $table-> string('adress');
             $table->foreign('id_fdomaine')->references('id')->on('f_domaines');  

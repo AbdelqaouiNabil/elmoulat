@@ -17,7 +17,7 @@ class CreateFacturesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('fournisseur_id');
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs'); 
-            $table->integer('numero');
+            $table->integer('numero')->unique();
             $table->date('date');
             $table->string('scan_pdf');
             $table->string('type');

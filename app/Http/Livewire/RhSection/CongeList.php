@@ -4,6 +4,7 @@ namespace App\Http\Livewire\RhSection;
 
 use Livewire\Component;
 use App\Models\Employe;
+use App\Models\Conge;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use \Illuminate\Database\QueryException;
@@ -12,6 +13,7 @@ class CongeList extends Component
     use WithFileUploads;
     use WithPagination;
     public $datedubet,$datefin,$jours,$type,$id_conge,$employe_id;
+    public $typeautre;
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
@@ -20,16 +22,19 @@ class CongeList extends Component
     
     public function render()
     {
+        $this->typeautre=$this->type;
+        
         $this->bulkDisabled = count($this->selectRows) < 1;
         $conges=Conge::all();
-        return view('livewire.rh-section.conge-list',['conges'=>$conges]);
+        $employes=Employe::all();
+        return view('livewire.rh-section.conge-list',['conges'=>$conges,'employes'=>$employes]);
     }
     public function updated($fields){
         $this->validateOnly($fields,[
-            'datedebut'=>'required|date',
-            'datedebut'=>'required|date',
+            'datedubet'=>'required|date',
+            'datefin'=>'required|date',
             'jours'=>'required|integer',
-            'id_imploye'=>'required|integer',
+            'employe_id'=>'required|integer',
             'type'=>'required',
         ]);
     }
@@ -46,17 +51,29 @@ class CongeList extends Component
     //save data function
     public function saveData(){
         $this->validate([
-            'datedebut'=>'required|date',
-            'datedebut'=>'required|date',
-            'jours'=>'required|integer',
-            'id_imploye'=>'required|integer',
+            'datedubet'=>'required|date',
+            'datefin'=>'required|date',
+            'employe_id'=>'required|integer',
             'type'=>'required',
            
         ]);
+        
+
+    //    calcule lea jours de conge
+        $date1=strtotime($this->datedubet);
+        $date2=strtotime($this->datefin);
+        if($date1>$date2){
+            session()->flash('form_error','la date dubet superieur a la date de fin');
+            $this->datedubet="";
+            $this->datefin="";            
+            return;
+        }
+        $nombrejours=(int)(($date2-$date1)/86400);
+        
         $conge = new Conge;
-        $conge->datedubet = $this->datedubet;     
-        $conge->datefin = $this->datefin;     
-        $conge->jours = $this->jours;     
+        $conge->date_dubet = $this->datedubet;     
+        $conge->date_fin = $this->datefin;     
+        $conge->jours =$nombrejours;     
         $conge->type = $this->type;     
         $conge->employe_id = $this->employe_id;     
       
@@ -78,23 +95,34 @@ class CongeList extends Component
     public function edit($id){
         $conge = Conge::where('id',$id)->first();
         $this->id_conge = $id;
-        $this->datedubet=$conge->datedubet;
-        $this->datefin=$conge->datefin;
-        $this->jours=$conge->jours;
+        $this->datedubet=$conge->date_dubet;
+        $this->datefin=$conge->date_fin;
         $this->employe_id=$conge->employe_id;
         $this->type=$conge->type;
     }
     
     public function editData(){
-        $conge = Conge::where('id',$this->id_conge)->first();
-        $conge->datedubet = $this->datedubet;     
-        $conge->datefin = $this->datefin;     
-        $conge->jours = $this->jours;     
+       
+        $date1=strtotime($this->datedubet);
+        $date2=strtotime($this->datefin);
+        if($date1>$date2){
+            session()->flash('form_error','la date dubet superieur a la date de fin');
+            $this->datedubet="";
+            $this->datefin="";            
+            return;
+        }
+        $nombrejours=(int)(($date2-$date1)/86400);
+        $conge = Conge::where('id',$this->id_conge)->first();       
+        
+        $conge->date_dubet = $this->datedubet;     
+        $conge->date_fin = $this->datefin;     
+        $conge->jours =$nombrejours;     
         $conge->type = $this->type;     
-        $conge->employe_id = $this->employe_id;
+        $conge->employe_id = $this->employe_id;  
         $conge->save();
         session()->flash('message','conge bien modifer');
         $this->dispatchBrowserEvent('close-model');
+        $this->resetInputs();
     }
    
 
@@ -103,8 +131,8 @@ class CongeList extends Component
     public function delete($id){
         $conge = Conge::where('id',$id)->first();
         $this->id_conge = $id;
-        $this->datedubet=$conge->datedubet;
-        $this->datefin=$conge->datefin;
+        $this->datedubet=$conge->date_dubet;
+        $this->datefin=$conge->date_fin;
         $this->jours=$conge->jours;
         $this->employe_id=$conge->employe_id;
         $this->type=$conge->type;
@@ -131,8 +159,9 @@ class CongeList extends Component
             Conge::query()
             ->whereIn('id',$this->selectRows)
             ->delete();
-            $this->selectRows = [];
+           $this->selectRows = [];
            $this->selectAll = false;
+           session()->flash('message','les congés bien supprimer');
         }catch(QueryException $e){
             session()->flash('error','error');
             
