@@ -7,6 +7,7 @@ use App\Models\f_domaine;
 use App\Models\Fournisseur;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use DB;
 
 class FournisseursList extends Component
 {
@@ -15,31 +16,53 @@ class FournisseursList extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $name , $ice, $phone ,$email,$adress, $id_fournisseur, $id_fdomaine;
+    public $name , $ice, $phone ,$email,$adress, $id_fournisseur, $id_fdomaine,$sorttype;
     public $excelFile;
     public $selectedfournisseur = [];
     public $selectAll = false;
     public $bulkDisabled = true;
     public $pages = 5;
     protected $listeners = ['saveData' => 'saveData'];
+    public $sortby="id";
+
+    public function updatePages($value){
+        $this->resetPages('new');
+        
+    }
 
     public function render()
     {
         $this->bulkDisabled = count($this->selectedfournisseur) < 1;
-        $fournisseurs = Fournisseur::all();
+
+        if($this->sorttype!="" && $this->sorttype!="id" ){          
+            $fournisseurs =Fournisseur::where('id_fdomaine',$this->sorttype)->paginate($this->pages,['*'],'new');
+            
+
+        }elseif($this->sorttype=="id"){
+            $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+            
+        }
+        else{
+            $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+           
+        }
         $fdomaines=f_domaine::all();
-        
-        return view('livewire.project-section.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines])->layout('layouts.app');
+
+        return view('livewire.project-section.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines]);
     }
+
+
+   
+
 
 //   validation real -time
     public function updated($fields){
         $this->validateOnly($fields,[
-            'name'=>'required',
+            'name'=>'required',           
             'id_fdomaine'=>'required|integer',
-            'ice'=>'required',
+            'ice'=>'required|integer',
             'phone'=>'required|integer',
-            'email'=>'required',
+            'email'=>'required|email',
             'adress'=>'required',
         ]);
     }
@@ -47,7 +70,12 @@ class FournisseursList extends Component
     // save projects start
     public function saveData(){
         $this->validate([
-            'name'=>'required',
+            'name'=>'required',           
+            'id_fdomaine'=>'required|integer',
+            'ice'=>'required|integer',
+            'phone'=>'required|integer',
+            'email'=>'required|email',
+            'adress'=>'required',
             
         ]);
         
@@ -102,6 +130,7 @@ public function editFournisseur($id){
 
 public function editData(){
     $fournisseur = Fournisseur::where('id',$this->id_fournisseur)->first();
+    $fournisseur = new Fournisseur;
     $fournisseur->id_fdomaine = $this->id_fdomaine;
     $fournisseur->name = $this->name;
     $fournisseur->ice  = $this->ice ;
@@ -185,6 +214,14 @@ if($value){
     
  }
  //import project end
+
+//  validate function 
+public function validationdata(){
+   
+}
+
+
+
 
 
 
