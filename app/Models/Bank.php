@@ -19,7 +19,7 @@ class Bank extends Model
         'email',
         'phone',
         'adress',
-        'ville',
+        'ville', 
     ];
 
 

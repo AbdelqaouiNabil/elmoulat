@@ -29,7 +29,7 @@ class FournisseursList extends Component
         $fournisseurs = Fournisseur::all();
         $fdomaines=f_domaine::all();
         
-        return view('livewire.project-section.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines]);
+        return view('livewire.project-section.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines])->layout('layouts.app');
     }
 
 //   validation real -time

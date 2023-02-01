@@ -75,23 +75,23 @@
                                        
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">id</span>
+                                        <span class="userDatatable-title">Id</span>
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">date de mise en disposition</span>
+                                        <span class="userDatatable-title">Nom</span>
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">numero de debut</span>
+                                        <span class="userDatatable-title">Email</span>
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">numero de fin</span>
+                                        <span class="userDatatable-title">Phone</span>
                                     </th>
                                    
                                     <th>
-                                        <span class="userDatatable-title">nombre de cheque</span>
+                                        <span class="userDatatable-title">Adress</span>
                                     </th>
                                      <th>
-                                        <span class="userDatatable-title">Rip de compte</span>
+                                        <span class="userDatatable-title">Ville</span>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">Actions</span>
@@ -101,69 +101,56 @@
                             </thead>
                             <tbody>
 
-                                {{-- @if ($chequier->count() > 0)
+                                @if ($banks->count() > 0)
 
-                                    @foreach ($chequier as $chequier)
+                                    @foreach ($banks as $bank)
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                   <input type="checkbox" wire:model="selectedChequier" value="{{ $chequier->id}}" >
+                                                   <input type="checkbox" wire:model="selectedbank" value="{{ $bank->id}}" >
   
                                                   </div> 
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->id }}
+                                                    {{ $bank->id }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->dateDeMiseEnDisposition }}
+                                                    {{ $bank->nom }}
                                                 </div>
                                             </td>
                                            <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->numeroDeDebut }}
+                                                    {{ $bank->email }}
                                                 </div>
-                                            </td>
-                                             
-
+                                            </td>  
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->numeroDeFin }}
+                                                    {{ $bank->phone }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->nombreDeCheque }}
+                                                    {{ $bank->adress }}
                                                 </div>
                                             </td>
-
-                                            {{-- @foreach($comptes as $compte)
-                                                @if($compte->id == $chequier->id_compte )
-                                                    <td>
+                                            <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $compte->numero }}
+                                                    {{ $bank->ville }}
                                                 </div>
                                             </td>
-                                                @endif
-                                            @endforeach --}}
-                                            {{-- <td>
-                                            <div class="orderDatatable-title">
-                                                {{ $chequier->compte->numero }}
-                                            </div>
-                                        </td>
-
                                             <td>
                                                 <ul class="orderDatatable_actions mb-0 d-flex">
                                 
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#edit-modal"
-                                                            wire:click='editChequier({{ $chequier->id }})'><i
+                                                            wire:click='editbank({{ $bank->id }})'><i
                                                                 class="fa-regular fa-pen-to-square"></i></a></li>
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#modal-info-delete"
-                                                            wire:click='deleteChequier({{ $chequier->id }})'
+                                                            wire:click='deletebank({{ $bank->id }})'
                                                             style="color: red;"><i class="fa-solid fa-trash"></i></a>
                                                     </li>
 
@@ -174,7 +161,7 @@
 
                                    
                                 @else
-                                @endif --}} 
+                                @endif 
 
                                 <!-- End: tr -->
 
@@ -192,11 +179,11 @@
                         <nav class="atbd-page ">
                             <ul class="atbd-pagination d-flex">
                                 <li class="atbd-pagination__item">
-                                      {{-- {{ $chequier->links('vendor.livewire.bootstrap') }} --}}
+                                      {{-- {{ $bank->links('vendor.livewire.bootstrap') }} --}}
                                 </li>
                                 <li class="atbd-pagination__item">
                                     <div class="paging-option">
-                                        <select wire:model="Chequierpage" name="page-number" class="page-selection">
+                                        <select wire:model="bankpage" name="page-number" class="page-selection">
                                             <option value="5">5/page</option>
                                             <option value="10">10/page</option>
                                             <option value="20">20/page</option>
@@ -214,7 +201,7 @@
         </div>
     </div>
 
-    {{-- edit chequier modal START --}}
+    {{-- edit bank modal START --}}
      <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
 
 
@@ -241,21 +228,7 @@
                                     @enderror
                                     
                                 </div>
-                                {{-- @if(count($comptes)>0)
-                                 <div class="form-group mb-25">
-                                    <label>Compte </label>  
-                                   
-                                    <select name="compte_id" wire:model.defer='compte_id'  class="form-control  form-control-lg">
-                                 
-                                    @foreach($comptes as $compte)
-                                        <option value="{{$compte->id}}">{{$compte->numero}}</option>
-                                        
-                                    @endforeach
-                                        
-                                    </select>
-
-                                </div>
-                                @endif --}}
+                            
                                 
                
                
@@ -276,7 +249,7 @@
 
 
   
-  {{-- edit chequier model END --}}
+  {{-- edit bank model END --}}
 
   {{-- delete model START --}}
 
@@ -295,7 +268,7 @@
                         </div>
 
                         <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce chequier</h6>
+                            <h6>Voulez-vous supprimer ce bank</h6>
                         </div>
 
                     </div>
@@ -347,7 +320,7 @@
         </div>
 {{-- delete selected model end --}}
 
-     {{-- add chequier model START --}}
+     {{-- add bank model START --}}
 
      
     <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog"
@@ -360,7 +333,7 @@
 
 
 
-                    <h6 class="modal-title">Ajouter Nouveau Chequier</h6>
+                    <h6 class="modal-title">Ajouter Nouveau bank</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span data-feather="x"></span></button>
                 </div>
@@ -412,7 +385,7 @@
                                 
                
                 <div class="modal-footer">
-                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Ajouter chequier</button>
+                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Ajouter bank</button>
                 </div>
                
                 </form>
@@ -420,7 +393,7 @@
         </div>
     </div>
 </div>
-     {{-- add chequier model END--}}
+     {{-- add bank model END--}}
 
 
 

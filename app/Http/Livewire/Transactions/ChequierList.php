@@ -163,7 +163,7 @@ class ChequierList extends Component
         return view('livewire.transactions.chequier-list',
         [
         'comptes'=>$comptes,
-        'chequier'=> $chequier ,
+        'chequier'=> $chequier,
     ]);
     }
 }
