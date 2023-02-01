@@ -9,21 +9,42 @@
             text-align: center;
             
         }
+       
 
     </style>
+
+
+
+
     <div class="contents">
+        
         <div class="container-fluid">
 
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shop-breadcrumb">
 
-                        <div class="breadcrumb-main">
+                        <div class="  breadcrumb-main"  >
                             <h4 class="text-capitalize breadcrumb-title">Fournisseurs</h4>
-                            <div class="breadcrumb-action justify-content-center flex-wrap">
+                            <div  class="breadcrumb-action justify-content-center flex-wrap">
+
+                               <div class="dropdown action-btn">
+                                <div class="dropdown dropdown-click">
+
+                                    <select @if(count($f_domaines)==null) disabled @endif name="select-size-1" wire:model='sorttype' id="select-size-1" class="form-control  form-control-lg">
+                                        <option value="" selected>Order By Domaine</option>
+                                        <option value="id" >id</option>
+                                    @foreach($f_domaines as $f_domaine)
+                                        <option value="{{$f_domaine->id}}">{{$f_domaine->name}}</option>
+                                        
+                                    @endforeach
+                                        
+                                    </select>
+                                </div>
+                                </div>
 
                                 <div class="dropdown action-btn">
-                                    <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button @if(count($f_domaines)==null) disabled @endif class="btn btn-sm btn-default btn-white dropdown-toggle"  type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="la la-download"></i> Exporter
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -38,11 +59,18 @@
                                             <i class="la la-file-csv"></i> CSV</a>
                                     </div>
                                 </div>
+                                <div class="action-btn">
+
+                                    <button @if(count($f_domaines)==null) disabled @endif type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                        data-target="#modal-import">
+                                        <i class="la la-plus"></i>importer</button>
+                            
+                                </div>
 
 
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" data-target="#modal-basic">
+                                    <button @if(count($f_domaines)==null) disabled @endif type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
 
@@ -54,6 +82,16 @@
                 </div>
             </div>
         </div>
+
+        @if(count($f_domaines) == null)
+         <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
+            <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
+         <div>
+             Vous deviez crée un fournisseur avant de crée un domaine
+         </div>
+        </div>
+        @else
+        
         @if (session()->has('message'))
 
         <div class="alert alert-success">
@@ -85,10 +123,12 @@
                                         </th>
                                         
                                         <th>
-                                            <span class="userDatatable-title">id</span>
+                                            <span class="userDatatable-title">ID</span>
+                                            
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">Nom de Fournisseur</span>
+                                          
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">Ice </span>
@@ -201,23 +241,16 @@
 
                             <nav class="atbd-page ">
                                 <ul class="atbd-pagination d-flex">
-                                    <li class="atbd-pagination__item">
-                                        <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-left"></span></a>
-                                        <a href="#" class="atbd-pagination__link"><span class="page-number">1</span></a>
-                                        <a href="#" class="atbd-pagination__link active"><span class="page-number">2</span></a>
-                                        <a href="#" class="atbd-pagination__link"><span class="page-number">3</span></a>
-                                        <a href="#" class="atbd-pagination__link pagination-control"><span class="page-number">...</span></a>
-                                        <a href="#" class="atbd-pagination__link"><span class="page-number">12</span></a>
-                                        <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-right"></span></a>
-                                        <a href="#" class="atbd-pagination__option">
-                                        </a>
+                                    <li class="atbd-pagination__item" >
+                                        {{ $fournisseurs->links('vendor.livewire.bootstrap') }}
                                     </li>
+                                    
                                     <li class="atbd-pagination__item">
                                         <div class="paging-option">
-                                            <select name="page-number" class="page-selection">
-                                                <option value="20">20/page</option>
-                                                <option value="40">40/page</option>
-                                                <option value="60">60/page</option>
+                                            <select name="page-number" class="page-selection" wire:model="pages">
+                                                <option value="20" >20/page</option>
+                                                <option value="40" >40/page</option>
+                                                <option value="60" >60/page</option>
                                             </select>
                                         </div>
                                     </li>
@@ -231,9 +264,61 @@
             </div>
         </div>
         @else
-        <h1>No Data to Show</h1>
+        <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
+            <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
+         <div>
+              table fournisseur  is empty 
+         </div>
        
         @endif
+        @endif
+
+        {{-- import modal start --}}
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-import" tabindex="-1"
+        role="dialog" aria-hidden="true">
+
+
+        <div class="modal-dialog modal-dialog-centered modal-info" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-info-body d-flex">
+                        <div class="modal-info-icon warning">
+                            <span data-feather="info"></span>
+                        </div>
+                        <form  enctype="multipart/form-data">
+                                <div class="form-group mb-25">
+
+                                    <label>Importer des Fournisseur depuis un fichier xlxs</label>
+                                    <input class="form-control form-control-lg" type="file" name="exelFile"
+                                        wire:model.defer='exelFile'>
+                                    @error('exelFile')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                
+                                </div>
+                            
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                        data-dismiss="modal">Annuler</button>
+                    <button type="submit" wire:click.prevent='importData' class="btn btn-success btn-outlined btn-sm" >importer</button>
+
+                </div>
+                </form>
+            </div>
+        </div>
+
+
+        </div>
+
+
+
+
+
+        {{-- import modal end --}}
+
 
 
         {{--add Fournisseur  modal --}}
@@ -254,7 +339,7 @@
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label class="required">Nom </label>
-                                    <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name' required >
+                                    <input class="form-control form-control-lg" type="text" name="name" wire:model.defer='name'  >
                                     @error('name')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -262,7 +347,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label class="required">ICE</label>
-                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'   maxlength="14" minlength="14" required>
+                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice'   maxlength="14" minlength="14" >
                                     @error('ice')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -270,7 +355,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Phone</label>
-                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone' required>
+                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone' >
                                     @error('phone')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -278,7 +363,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Adress</label>
-                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress' required>
+                                    <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress' >
                                     @error('adress')
                                     <span class="text-danger">{{$message}}</span>
 
@@ -286,7 +371,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Email</label>
-                                    <input class="form-control form-control-lg" type="email" name="email" wire:model.defer='email'  required>
+                                    <input class="form-control form-control-lg" type="text" name="email" wire:model.defer='email'  >
                                     @error('email')
                                     <span class="text-danger">{{$message}}</span>
 
