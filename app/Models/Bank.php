@@ -19,6 +19,11 @@ class Bank extends Model
         'email',
         'phone',
         'adress',
-        'ville',
+        'ville', 
     ];
+
+
+    public function compte(){
+        return $this->hasMany(Compte::class,'bank_id');
+    }
 }

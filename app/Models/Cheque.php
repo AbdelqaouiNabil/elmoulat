@@ -17,10 +17,13 @@ class Cheque extends Model
     protected $fillable = [
         
         'numero',
-        'datedebut',
-        'datefin',
-        'setiation',
+        'date',
+        'situation',
         'id_chequier',
        
     ];
+
+    public function chequier(){
+        return $this->belongsTo(Chequier::class,'id_chequier');
+    }
 }

@@ -15,12 +15,9 @@ class CreateChequesTable extends Migration
     {
         Schema::create('cheques', function (Blueprint $table) {
             $table->id();
-            $table->date('numero');
-            $table->integer('datedebut');
-            $table->integer('datefin');
-            $table->string('setiation');
-            $table->float('montant');
-
+            $table->integer('numero');
+            $table->date('date');
+            $table->string('situation');
             $table->unsignedBigInteger('id_chequier');
             $table->foreign('id_chequier')->references('id')->on('chequiers'); 
             $table->timestamps();
