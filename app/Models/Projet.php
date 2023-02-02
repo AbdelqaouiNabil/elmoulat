@@ -29,9 +29,9 @@ class Projet extends Model
         'id_caisse',
     ];
     public function caisse(){
-        return $this->hasOne(Caisse::class);
+        return $this->belongsTo(Caisse::class,'id_caisse');
     }
     public function bureau(){
-        return $this->hasOne(Bureau::class);
+        return $this->belongsTo(Bureau::class,'id_bureau');
     }
 }

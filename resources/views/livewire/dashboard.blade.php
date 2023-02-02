@@ -17,9 +17,9 @@
 
                       <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('projet')" id="projet" class="$currentTab === 'projet' ? 'active' : ''">
+                        <a  wire:click="changeTab('projet')" id="projet" class="$currentTab === 'projet' ? 'active' : ''">
 
-                            <span data-feather="layers" class="nav-icon"></span>
+                            <span wire:ignore ><i data-feather="layers" class="nav-icon"></i></span>
 
                             <span class="menu-text">Projet</span>
 
@@ -29,9 +29,9 @@
 
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('fournisseurs')"  class="$currentTab === 'fournisseurs' ? 'active' : ''">
+                        <a  wire:click="changeTab('fournisseurs')"  class="$currentTab === 'fournisseurs' ? 'active' : ''">
 
-                            <span data-feather="folder" class="nav-icon"></span>
+                            <span wire:ignore ><i  data-feather="folder" class="nav-icon"></i></span>
 
                             <span class="menu-text">Fournisseurs</span>
 
@@ -41,9 +41,9 @@
 
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('ouvriers')" class="$currentTab === 'ouvriers' ? 'active' : ''">
+                        <a  wire:click="changeTab('ouvriers')" class="$currentTab === 'ouvriers' ? 'active' : ''">
 
-                            <span data-feather="folder" class="nav-icon"></span>
+                            <span wire:ignore><i data-feather="tool" class="nav-icon"></i></span>
 
                             <span class="menu-text">Ouvriers</span>
 
@@ -53,9 +53,9 @@
 
                      <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('clients')" class="$currentTab === 'clients' ? 'active' : ''">
+                        <a  wire:click="changeTab('clients')" class="$currentTab === 'clients' ? 'active' : ''">
 
-                            <span data-feather="folder" class="nav-icon"></span>
+                            <span wire:ignore><i data-feather="dollar-sign" class="nav-icon"></i></span>
 
                             <span class="menu-text">Client</span>
 
@@ -64,9 +64,9 @@
                     </li>
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('charges')" class="$currentTab === 'charges' ? 'active' : ''">
+                        <a  wire:click="changeTab('charges')" class="$currentTab === 'charges' ? 'active' : ''">
 
-                            <span data-feather="folder" class="nav-icon"></span>
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
                             <span class="menu-text">charges</span>
 
@@ -82,7 +82,7 @@
 
                       <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('Compte')" class="$currentTab === 'Compte' ? 'active' : ''">
+                        <a wire:click="changeTab('Compte')" class="$currentTab === 'Compte' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -94,7 +94,7 @@
 
                      <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
+                        <a  wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -106,9 +106,9 @@
 
                      <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('chequier')" class="$currentTab === 'chequier' ? 'active' : ''">
+                        <a wire:click="changeTab('chequier')" class="$currentTab === 'chequier' ? 'active' : ''">
 
-                            <span  class="nav-icon"></span>
+                            <span  wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
 
                             <span class="menu-text">chequier</span>
 
@@ -127,7 +127,7 @@
 
                      <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
+                        <a  wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -138,7 +138,7 @@
                     </li>  
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('Bureau')" class="$currentTab === 'Bureau' ? 'active' : ''">
+                        <a  wire:click="changeTab('Bureau')" class="$currentTab === 'Bureau' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -149,7 +149,7 @@
                     </li>  
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('Employe')" class="$currentTab === 'Employe' ? 'active' : ''">
+                        <a  wire:click="changeTab('Employe')" class="$currentTab === 'Employe' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -158,6 +158,17 @@
                         </a>
 
                     </li> 
+                    <li>
+
+                        <a style="cursor:pointer" wire:click="changeTab('conges')" class="$currentTab === 'conges' ? 'active' : ''">
+
+                            <span data-feather="folder" class="nav-icon"></span>
+
+                            <span class="menu-text">Conges</span>
+
+                        </a>
+
+                    </li>
 
                     <li class="menu-title m-top-30">
 
@@ -168,7 +179,7 @@
 
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('Domaine')" class="$currentTab === 'Domaine' ? 'active' : ''">
+                        <a  wire:click="changeTab('Domaine')" class="$currentTab === 'Domaine' ? 'active' : ''">
 
                             <span  class="nav-icon"> <i class="fa-solid fa-book "></i></span>
 
@@ -177,6 +188,29 @@
                         </a>
 
                     </li>
+
+                        <li class="has-child">
+                            <a href="#" class="">
+                                <span wire:ignore><i data-feather="aperture" class="nav-icon"></i></span>
+                                <span class="menu-text">Settings</span>
+                                <span class="toggle-icon"></span>
+                            </a>
+                            <ul>
+                                <li class="nav-item">
+                                    <a wire:click="changeTab('Bank')" class="$currentTab === 'Bank' ? 'active' : ''">Bank</a>
+                                </li>
+                                <li>
+                                    <a href="" class="">Profile Settings<span class="badge badge-success menuItem">New</span></a>
+
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="">Timeline</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="">Activity</a>
+                                </li>
+                            </ul>
+                        </li>
 
                 </ul>
 
@@ -219,6 +253,9 @@
        @if($currentTab === 'Employe')
        <livewire:rh-section.employe-list>
        @endif
+       @if($currentTab === 'conges')
+       <livewire:rh-section.conge-list>
+       @endif
         @if($currentTab === 'chequier')
        <livewire:transactions.chequier-list>
 
@@ -229,6 +266,12 @@
        <livewire:charges-list>
         
        @endif
+
+       @if($currentTab === 'Bank')
+       <livewire:settings.bank-list>
+        
+       @endif
+
        
        </div>
 </div>
