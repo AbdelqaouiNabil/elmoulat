@@ -209,7 +209,7 @@
                             <span data-feather="x"></span></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
+                      
     
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
@@ -243,7 +243,7 @@
                                    
                                 </div>
                                 
-                        </div>
+                       
     
     
                     </div>

@@ -2,14 +2,17 @@
 
 namespace App\Http\Livewire\ProjectSection;
 use App\Imports\ProjetsImport;
+use Illuminate\Database\QueryException;
 use Livewire\Component;
 use App\Models\Projet;
 use App\Models\Bureau;
 use App\Models\Caisse;
-
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+
+use Illuminate\Support\Facades\Storage;
+use File;
 
 class ProjectsList extends Component
 {
@@ -22,7 +25,9 @@ class ProjectsList extends Component
     public $selectAll = false;
     public $bulkDisabled = true;
     public $pages = 5;
-    // protected $listeners = ['saveData'];
+    public $sortname="id";
+    public $sortdrection="DESC";
+    protected $listeners = ['saveData'=>'saveData'];
 
 //   validation real -time
     public function updated($fields){
@@ -66,21 +71,8 @@ class ProjectsList extends Component
         $projet->id_caisse= $this->id_caisse;
         $projet->save();
         session()->flash('message','projet bien ajouter');
-        
-        // for empty input fields after validation
-         
-        $this->name = "";
-        $this->image = "";
-        $this->consistance = "";
-        $this->titre_finance = "" ;
-        $this->autorisation  = "";
-        $this->superfice = "";
-        $this->ville = "";
-        $this->adress = "";
-        $this->dated = "";
-        $this->datef = "";
-        $this->id_caissse = "";
-        $this->id_bureau = "";
+
+        $this->resetInputs();
         
         $this->dispatchBrowserEvent('add');
 
@@ -104,7 +96,7 @@ public function resetInputs(){
         $this->adress = "";
         $this->dated = "";
         $this->datef = "";
-        $this->id_caissse = "";
+        $this->id_caisse = "";
         $this->id_bureau = "";
         $this->$this->project_edit_id = "";
 }
@@ -141,6 +133,7 @@ public function resetInputs(){
         $projet->id_bureau=$this->id_bureau ;
         $projet->id_caisse=$this->id_caisse  ;
         $projet->save();
+        $this->resetInputs();
         session()->flash('message','projet bien modifer');
         $this->dispatchBrowserEvent('close-model');
     }
@@ -165,8 +158,11 @@ public function resetInputs(){
     }
     
     public function deleteData(){
+        $path=Storage::disk('local')->url($this->image);
+        File::delete(public_path($path));
         $projet = Projet::where('id',$this->project_edit_id)->first();
         $projet->delete();
+        $this->resetInputs();
         session()->flash('message','projet bien supprimer');
         $this->dispatchBrowserEvent('add');
         $this->dispatchBrowserEvent('close-model');
@@ -177,6 +173,20 @@ public function resetInputs(){
 
 
 public function  deleteSelected(){
+    
+    // delete all images from storage 
+    $projets = Projet::query()->whereIn('id', $this->selectedProjects);
+    foreach($projets as $projet){
+        try{
+            $projet = Projet::where('id',$projet->id)->first();
+            $projet->delete();
+            $path=Storage::disk('local')->url($projet->image);
+            File::delete(public_path($path));
+        }catch(QueryException $ex){
+          
+        }
+        
+    }
     Projet::query()
         ->whereIn('id',$this->selectedProjects)
         ->delete();
@@ -220,10 +230,28 @@ public function  deleteSelected(){
     {
         
         $this->bulkDisabled = count($this->selectedProjects) < 1;
-        $projets = Projet::orderBy('id', 'DESC')->paginate($this->pages);
+        $projets = Projet::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages,['*'],'new');
         $bureaus=Bureau::all();
         $caisses=Caisse::all();
         return view('livewire.project-section.projects-list',['projets'=>$projets,'bureaus'=>$bureaus,'caisses'=>$caisses]);
         
     }
+    // sort function 
+    public function sort($value){
+        if($this->sortname==$value && $this->sortdrection=="DESC"){
+            $this->sortdrection="ASC";
+        }
+        else{
+            if($this->sortname==$value && $this->sortdrection=="ASC"){
+                $this->sortdrection="DESC";
+            }
+        }
+        $this->sortname=$value;
+
+    }
+
+    // update pagenation
+    protected function updatingPages($value){
+        $this->resetPage('new');
+    } 
 }

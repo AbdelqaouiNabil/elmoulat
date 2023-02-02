@@ -7,7 +7,7 @@ use App\Models\f_domaine;
 use App\Models\Fournisseur;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use DB;
+
 
 class FournisseursList extends Component
 {
@@ -23,10 +23,11 @@ class FournisseursList extends Component
     public $bulkDisabled = true;
     public $pages = 5;
     protected $listeners = ['saveData' => 'saveData'];
-    public $sortby="id";
+    public $sortname="id";
+    public $sortdrection="DESC";
 
-    public function updatePages($value){
-        $this->resetPages('new');
+    public function updatingPages($value){
+        $this->resetPage('new');
         
     }
 
@@ -39,16 +40,30 @@ class FournisseursList extends Component
             
 
         }elseif($this->sorttype=="id"){
-            $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+            $fournisseurs = Fournisseur::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages,['*'],'new');
             
         }
         else{
-            $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+            $fournisseurs = Fournisseur::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages,['*'],'new');
            
         }
         $fdomaines=f_domaine::all();
 
         return view('livewire.project-section.fournisseurs-list',['fournisseurs'=>$fournisseurs,'f_domaines'=>$fdomaines]);
+    }
+
+    // sort function  for order data by table head 
+    public function sort($value){
+        if($this->sortname==$value && $this->sortdrection=="DESC"){
+            $this->sortdrection="ASC";
+        }
+        else{
+            if($this->sortname==$value && $this->sortdrection=="ASC"){
+                $this->sortdrection="DESC";
+            }
+        }
+        $this->sortname=$value;
+
     }
 
 
@@ -125,19 +140,18 @@ public function editFournisseur($id){
     $this->phone = $fournisseur->phone;
     $this->email = $fournisseur->email;
     $this->adress = $fournisseur->adress;
+    
  
 }
 
 public function editData(){
     $fournisseur = Fournisseur::where('id',$this->id_fournisseur)->first();
-    $fournisseur = new Fournisseur;
     $fournisseur->id_fdomaine = $this->id_fdomaine;
     $fournisseur->name = $this->name;
     $fournisseur->ice  = $this->ice ;
     $fournisseur->phone  = $this->phone ;
     $fournisseur->email = $this->email;
     $fournisseur->adress = $this->adress;
-    
     $fournisseur->save();
     session()->flash('message','Fournisseur bien modifer');
     $this->dispatchBrowserEvent('close-model');
