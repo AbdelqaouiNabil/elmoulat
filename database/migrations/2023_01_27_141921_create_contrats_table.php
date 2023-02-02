@@ -16,12 +16,12 @@ class CreateContratsTable extends Migration
         Schema::create('contrats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('datedubet');
+            $table->date('datedebut');
             $table->date('datefin');
             $table->float('montant');
             $table->float('avance');
             $table->unsignedBigInteger('id_ouvrier');
-            $table->foreign('id_ouvrier')->references('id')->on('ouvriers'); 
+            $table->foreign('id_ouvrier')->references('id')->on('ouvriers');
             $table->timestamps();
         });
     }

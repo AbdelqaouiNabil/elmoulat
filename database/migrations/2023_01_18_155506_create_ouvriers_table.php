@@ -22,8 +22,8 @@ class CreateOuvriersTable extends Migration
             $table->date('datedubet');
             $table->string('observation');
             $table->integer('notation');
-            
-            
+
+
             $table->timestamps();
         });
     }
