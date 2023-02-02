@@ -183,13 +183,13 @@ public function  deleteSelected(){
             $path=Storage::disk('local')->url($projet->image);
             File::delete(public_path($path));
         }catch(QueryException $ex){
-          
+            session()->flash('error',"Projet Table Used In athoer Tables Can't delete  Projet of Id=$projet->image bien imposter");
         }
         
     }
-    Projet::query()
-        ->whereIn('id',$this->selectedProjects)
-        ->delete();
+    // Projet::query()
+    //     ->whereIn('id',$this->selectedProjects)
+    //     ->delete();
 
     $this->selectedProjects = [];
     $this->selectAll = false;
