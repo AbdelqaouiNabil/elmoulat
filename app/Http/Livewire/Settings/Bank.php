@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Settings;
 use Livewire\Component;
 use App\Models\Bank;
 
-class Bank extends Component
+class Banks extends Component
 {
     public function render()
     {
