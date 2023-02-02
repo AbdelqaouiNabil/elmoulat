@@ -15,16 +15,16 @@ class CreateReglementsTable extends Migration
     {
         Schema::create('reglements', function (Blueprint $table) {
             $table->id();
-           
+
             $table->date('date');
             $table->string('methode');
             $table->float('montant');
-            $table->integer('numero_cheque');
-            $table->unsignedBigInteger('id_transaction');
-            $table->foreign('id_transaction')->references('id')->on('transactions');
-            $table->unsignedBigInteger('id_facture');
+            $table->integer('numero_cheque')->nullable();
+            // $table->unsignedBigInteger('id_transaction');
+            // $table->foreign('id_transaction')->references('id')->on('transactions');
+            $table->unsignedBigInteger('id_facture')->nullable();
             $table->foreign('id_facture')->references('id')->on('factures');
-            $table->unsignedBigInteger('id_contrat');
+            $table->unsignedBigInteger('id_contrat')->nullable();
             $table->foreign('id_contrat')->references('id')->on('contrats');
             $table->timestamps();
         });
