@@ -3,45 +3,25 @@
 <div class="contents">
     <div class="container-fluid">
    
-         @if(count($comptes) == null)
-         <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
-  <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
-  <div>
-      Vous deviez crée un compte banquaire avant de crée un chequier
-  </div>
-</div>
-              
-
-
-          @endif
+    
         <div class="row">
             <div class="col-lg-12">
-                <div class="shop-breadcrumb">   
-
+                <div class="shop-breadcrumb">
+                     
                     <div class="breadcrumb-main">
-                         
-                       <div class="col-md-6">
-                        <div class="search-result global-shadow rounded-pill bg-white">
-                         
-                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                                    <span ><i class="fa-solid fa-magnifying-glass"></i></span>
-                                    <input wire:model="search" class="form-control border-0 box-shadow-none" type="search" placeholder="chercher par date ou numero de debut ..." aria-label="Search">
-                                </div>
-                                
-                           
-                        </div>
-                    </div>
+                          <h1>Banque</h1>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
-                        
-                             <div class="action-btn">
 
-                                <button type="button" @if(count($comptes) == null) disabled @endif class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                            <div class="action-btn">
+
+                                <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                     data-target="#modal-basic">
                                     <i class="la la-plus"></i>Ajouter</button>
 
 
                             </div>
-                        
+                           
+        
                         </div>
                     </div>
 
@@ -64,17 +44,14 @@
         </div>
     @endif
     <div class="container-fluid">
-     @if($selectedChequier)
      <div class="action-btn mb-3">
 
-         <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal"
+         {{-- <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal" --}}
                                    >
             <i class="la la-trash"></i>delete selected</button>
                                    
 
         </div>
-        
-     @endif
         <div class="row">
             <div class="col-lg-12">
            
@@ -95,23 +72,23 @@
                                        
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">id</span>
+                                        <span class="userDatatable-title">Id</span>
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">date de mise en disposition</span>
+                                        <span class="userDatatable-title">Nom</span>
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">numero de debut</span>
+                                        <span class="userDatatable-title">Email</span>
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title">numero de fin</span>
+                                        <span class="userDatatable-title">Phone</span>
                                     </th>
                                    
                                     <th>
-                                        <span class="userDatatable-title">nombre de cheque</span>
+                                        <span class="userDatatable-title">Adress</span>
                                     </th>
                                      <th>
-                                        <span class="userDatatable-title">Rip de compte</span>
+                                        <span class="userDatatable-title">Ville</span>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">Actions</span>
@@ -121,69 +98,56 @@
                             </thead>
                             <tbody>
 
-                                @if ($chequier->count() > 0)
+                                @if ($banks->count() > 0)
 
-                                    @foreach ($chequier as $chequier)
+                                    @foreach ($banks as $bank)
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                   <input type="checkbox" wire:model="selectedChequier" value="{{ $chequier->id}}" >
+                                                   <input type="checkbox" wire:model="selectedbank" value="{{ $bank->id}}" >
   
                                                   </div> 
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->id }}
+                                                    {{ $bank->id }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->dateDeMiseEnDisposition }}
+                                                    {{ $bank->nom }}
                                                 </div>
                                             </td>
                                            <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->numeroDeDebut }}
+                                                    {{ $bank->email }}
                                                 </div>
-                                            </td>
-                                             
-
+                                            </td>  
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->numeroDeFin }}
+                                                    {{ $bank->phone }}
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $chequier->nombreDeCheque }}
+                                                    {{ $bank->adress }}
                                                 </div>
                                             </td>
-
-                                            {{-- @foreach($comptes as $compte)
-                                                @if($compte->id == $chequier->id_compte )
-                                                    <td>
+                                            <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $compte->numero }}
+                                                    {{ $bank->ville }}
                                                 </div>
                                             </td>
-                                                @endif
-                                            @endforeach --}}
-                                            <td>
-                                            <div class="orderDatatable-title">
-                                                {{ $chequier->compte->numero }}
-                                            </div>
-                                        </td>
-
-                                            <td>
+                                            <td >
                                                 <ul class="orderDatatable_actions mb-0 d-flex">
                                 
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#edit-modal"
-                                                            wire:click='editChequier({{ $chequier->id }})'><i
+                                                            wire:click='editbank({{ $bank->id }})'><i
                                                                 class="fa-regular fa-pen-to-square"></i></a></li>
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#modal-info-delete"
-                                                            wire:click='deleteChequier({{ $chequier->id }})'
+                                                            wire:click='deletebank({{ $bank->id }})'
                                                             style="color: red;"><i class="fa-solid fa-trash"></i></a>
                                                     </li>
 
@@ -194,7 +158,7 @@
 
                                    
                                 @else
-                                @endif
+                                @endif 
 
                                 <!-- End: tr -->
 
@@ -212,11 +176,11 @@
                         <nav class="atbd-page ">
                             <ul class="atbd-pagination d-flex">
                                 <li class="atbd-pagination__item">
-                                      {{-- {{ $chequier->links('vendor.livewire.bootstrap') }} --}}
+                                      {{-- {{ $bank->links('vendor.livewire.bootstrap') }} --}}
                                 </li>
                                 <li class="atbd-pagination__item">
                                     <div class="paging-option">
-                                        <select wire:model="Chequierpage" name="page-number" class="page-selection">
+                                        <select wire:model="bankpage" name="page-number" class="page-selection">
                                             <option value="5">5/page</option>
                                             <option value="10">10/page</option>
                                             <option value="20">20/page</option>
@@ -234,7 +198,7 @@
         </div>
     </div>
 
-    {{-- edit chequier modal START --}}
+    {{-- edit bank modal START --}}
      <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
 
 
@@ -261,27 +225,13 @@
                                     @enderror
                                     
                                 </div>
-                                @if(count($comptes)>0)
-                                 <div class="form-group mb-25">
-                                    <label>Compte </label>  
-                                   
-                                    <select name="compte_id" wire:model.defer='compte_id'  class="form-control  form-control-lg">
-                                 
-                                    @foreach($comptes as $compte)
-                                        <option value="{{$compte->id}}">{{$compte->numero}}</option>
-                                        
-                                    @endforeach
-                                        
-                                    </select>
-
-                                </div>
-                                @endif
+                            
                                 
                
                
 
                             </div>
-<div class="modal-footer">
+                      <div class="modal-footer">
                         <button  wire:click.prevent='editData' class="btn btn-primary btn-sm">Enregistrer Modification</button>
                     </div>
 
@@ -296,7 +246,7 @@
 
 
   
-  {{-- edit chequier model END --}}
+  {{-- edit bank model END --}}
 
   {{-- delete model START --}}
 
@@ -315,7 +265,7 @@
                         </div>
 
                         <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce chequier</h6>
+                            <h6>Voulez-vous supprimer ce bank</h6>
                         </div>
 
                     </div>
@@ -367,7 +317,7 @@
         </div>
 {{-- delete selected model end --}}
 
-     {{-- add chequier model START --}}
+     {{-- add bank model START --}}
 
      
     <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog"
@@ -380,7 +330,7 @@
 
 
 
-                    <h6 class="modal-title">Ajouter Nouveau Chequier</h6>
+                    <h6 class="modal-title">Ajouter Nouveau banque</h6>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span data-feather="x"></span></button>
                 </div>
@@ -390,49 +340,52 @@
                         <form enctype="multipart/form-data">
                             <div class="form-basic">
                                 <div class="form-group mb-25">
-                                    <label>Date de mise En Disposition</label>
-                                    <input class="form-control form-control-lg" type="date" name="dateMiseEnDisposition"
-                                        wire:model.defer='dateMiseEnDisposition'>
-                                    @error('dateMiseEnDisposition')
+                                
+                                    <label>Nom de banque</label>
+                                    <input class="form-control form-control-lg" type="text" name="nomDeBanque"
+                                        wire:model.defer='nomDeBanque'>
+                                    @error('nomDeBanque')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                     
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Nombre de debut</label>
-                                    <input class="form-control form-control-lg" type="text" name="nombreDeDebut"
-                                        wire:model.defer='nombreDeDebut'>
-                                    @error('nombreDeDebut')
+                                    <label>Email</label>
+                                    <input class="form-control form-control-lg" type="email" name="email"
+                                        wire:model.defer='email'>
+                                    @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Nombre de fin</label>
-                                    <input class="form-control form-control-lg" type="text" name="nombreDeFin"
-                                        wire:model.defer='nombreDeFin'>
-                                    @error('nombreDeFin')
+                                    <label>Phone</label>
+                                    <input class="form-control form-control-lg" type="text" name="phone"
+                                        wire:model.defer='phone'>
+                                    @error('phone')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                @if(count($comptes)>0)
                                  <div class="form-group mb-25">
-                                    <label>Compte </label>  
-                                   
-                                    <select name="compte_id" wire:model.defer='compte_id'   id="select-size-1" class="form-control  form-control-lg">
-                                      <option value="" selected>select an option</option>
-                                    @foreach($comptes as $compte)
-                                        <option value="{{$compte->id}}">{{$compte->numero}}</option>
-                                        
-                                    @endforeach
-                                        
-                                    </select>
-
+                                    <label>Adress</label>
+                                    <input class="form-control form-control-lg" type="text" name="adress"
+                                        wire:model.defer='adress'>
+                                    @error('adress')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @endif
+                                 <div class="form-group mb-25">
+                                    <label>Ville</label>
+                                    <input class="form-control form-control-lg" type="text" name="ville"
+                                        wire:model.defer='ville'>
+                                    @error('ville')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                
                                 
                
                 <div class="modal-footer">
-                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Ajouter chequier</button>
+                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Ajouter banque</button>
                 </div>
                
                 </form>
@@ -440,7 +393,7 @@
         </div>
     </div>
 </div>
-     {{-- add chequier model END--}}
+     {{-- add bank model END--}}
 
 
 

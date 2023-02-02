@@ -61,7 +61,7 @@
     <div class="container-fluid">
      <div class="action-btn mb-3">
 
-         <button type="button" class="@if($bulkDisabled) disabled @endif btn btn-sm btn-danger" wire:click="deleteSelected"
+         <button type="button" class="btn btn-sm btn-danger" @if($bulkDisabled) hidden @endif data-toggle="modal" data-target="#modal-info-delete" wire:click="deleteSelected"
                                    >
             <i class="la la-trash"></i>delete selected</button>
                                    
@@ -330,148 +330,175 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span data-feather="x"></span></button>
                 </div>
-                <div class="modal-body">
-                    
-
+                <div class="modal-body">                 
                         <form enctype="multipart/form-data">
                             <div class="form-basic">
-                                <div class="form-group mb-25">
-                                    <label>Nom de projet</label>
-                                    <input class="form-control form-control-lg" type="text" name="name"
-                                        wire:model.defer='name'>
-                                    @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    
-                                </div>
 
-                                <div class="form-group mb-25">
+                            <div class="row ">
+                                <div class="col-lg-6">
 
-                                    <label>image</label>
-                                    <input class="form-control form-control-lg" type="file" name="image"
-                                        wire:model.defer='image'>
-                                    @error('image')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    {{-- @if ($image)
-
-                                                Photo Preview:
-
-                                                     <img src="{{ $image->temporaryUrl() }}" width="100">
-
-                                             @endif --}}
-                                </div>
-
-                                <div class="form-group mb-25">
-                                    <label>consistance</label>
-                                    <input class="form-control form-control-lg" type="text" name="consistance"
-                                        wire:model.defer='consistance'>
-                                    @error('consistance')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>titre_finance</label>
-                                    <input class="form-control form-control-lg" type="text" name="titre_finance"
-                                        wire:model.defer='titre_finance'>
-                                    @error('titre_finance')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>superfice</label>
-                                    <input class="form-control form-control-lg" type="text" name="superfice"
-                                        wire:model.defer='superfice'>
-                                    @error('superfice')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>adress</label>
-                                    <input class="form-control form-control-lg" type="text" name="adress"
-                                        wire:model.defer='adress'>
-                                    @error('adress')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>ville</label>
-                                    <input class="form-control form-control-lg" type="text" name="ville"
-                                        wire:model.defer='ville'>
-                                    @error('ville')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>autorisation</label>
-                                    <input class="form-control form-control-lg" type="text" name="autorisation"
-                                        wire:model.defer='autorisation'>
-                                    @error('autorisation')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>Date de commencement</label>
-                                    <input class="form-control form-control-lg" type="date"
-                                        wire:model.defer='dated' name="dated">
-                                    <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                    <div class="row ">
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>Nom de projet</label>
+                                        <input class="form-control form-control-lg" type="text" name="name"
+                                            wire:model.defer='name'>
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('dated')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    </div>
+                                    
+    
+                                    <div class="row ">
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>consistance</label>
+                                        <input class="form-control form-control-lg" type="text" name="consistance"
+                                            wire:model.defer='consistance'>
+                                        @error('consistance')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>titre_finance</label>
+                                            <input class="form-control form-control-lg" type="text" name="titre_finance"
+                                                wire:model.defer='titre_finance'>
+                                            @error('titre_finance')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Date de Dubet</label>
+                                            <input class="form-control form-control-lg" type="date"
+                                                wire:model.defer='dated' name="dated">
+                                            <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                            </div>
+                                            @error('dated')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Caisse </label>
+                                            <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" class="form-control  form-control-lg">
+                                                <option value="" selected>select an option</option>
+                                            @foreach($caisses as $caisse)
+                                                <option value="{{$caisse->id}}">{{$caisse->id}}</option>
+                                                
+                                            @endforeach
+                                                
+                                            </select>
+                                            @error('id_caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>ville</label>
+                                            <input class="form-control form-control-lg" type="text" name="ville"
+                                                wire:model.defer='ville'>
+                                            @error('ville')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                   
+
+                                    
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>superfice</label>
+                                            <input class="form-control form-control-lg" type="text" name="superfice"
+                                                wire:model.defer='superfice'>
+                                            @error('superfice')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>autorisation</label>
+                                            <input class="form-control form-control-lg" type="text" name="autorisation"
+                                                wire:model.defer='autorisation'>
+                                            @error('autorisation')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Image</label>
+                                            <input class="form-control form-control-lg" type="file" name="iamge"
+                                                wire:model.defer='image'>
+                                            @error('image')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Date de fin</label>
+                                            <input class="form-control form-control-lg" type="date" wire:model.defer='datef'
+                                                name="datef">
+                                            <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                            </div>
+                                            @error('datef')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Bureau </label>
+                                            <select name="select-size-1" wire:model.defer='id_bureau' id="select-size-1" class="form-control  form-control-lg">
+                                                <option value="" selected>select an option</option>
+                                            @foreach($bureaus as $bureau)
+                                                <option value="{{$bureau->id}}">{{$bureau->nom}}</option>
+                                                
+                                            @endforeach
+                                                
+                                            </select>
+                                            @error('id_bureau')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+            
+                                        </div>
+                                    </div>
+                                   <div class="row" >
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>adress</label>
+                                        <input class="form-control form-control-lg" type="text" name="adress"
+                                            wire:model.defer='adress'>
+                                        @error('adress')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    
+                                   </div>
+
                                 </div>
                             </div>
-                            <div class="form-group mb-25">
-                                <label>Date de fin</label>
-                                <input class="form-control form-control-lg" type="date" wire:model.defer='datef'
-                                    name="datef">
-                                <div class="form-inline-action d-flex justify-content-between align-items-center">
-                                </div>
-                                @error('datef')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-25">
-                                <label>Bureau </label>
-                                <select name="select-size-1" wire:model.defer='id_bureau' id="select-size-1" class="form-control  form-control-lg">
-                                    <option value="" selected>select an option</option>
-                                @foreach($bureaus as $bureau)
-                                    <option value="{{$bureau->id}}">{{$bureau->nom}}</option>
-                                    
-                                @endforeach
-                                    
-                                </select>
-                                @error('id_bureau')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
-                            </div>
-                            <div class="form-group mb-25">
-                                <label>Caisse </label>
-                                <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" class="form-control  form-control-lg">
-                                    <option value="" selected>select an option</option>
-                                @foreach($caisses as $caisse)
-                                    <option value="{{$caisse->id}}">{{$caisse->id}}</option>
-                                    
-                                @endforeach
-                                    
-                                </select>
-                                @error('id_caisse')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-
-                            </div>
-                    </div>
-
-
+                        </div>
               
-                <div class="modal-footer">
-                    <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer projet</button>
-                </div>
+                        <div class="modal-footer">
+                            <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer projet</button>
+                        </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
 
 
 
@@ -495,118 +522,156 @@
                 </div>
                 <div class="modal-body">
 
-                        <form wire:submit.prevent='editData'>
-                            <div class="form-basic">
-                                <div class="form-group mb-25">
-                                    <label>Nom de projet</label>
-                                    <input class="form-control form-control-lg" type="text" name="name"
-                                        wire:model.defer='name'>
-                                    @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                        <form wire:submit.prevent='editData()'>
+                         <div class="form-basic">
 
+                            <div class="row ">
+                                <div class="col-lg-6">
 
-                                <div class="form-group mb-25">
-                                    <label>consistance</label>
-                                    <input class="form-control form-control-lg" type="text" name="consistance"
-                                        wire:model.defer='consistance'>
-                                    @error('consistance')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>titre_finance</label>
-                                    <input class="form-control form-control-lg" type="text" name="titre_finance"
-                                        wire:model.defer='titre_finance'>
-                                    @error('titre_finance')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>superfice</label>
-                                    <input class="form-control form-control-lg" type="text" name="superfice"
-                                        wire:model.defer='superfice'>
-                                    @error('superfice')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>adress</label>
-                                    <input class="form-control form-control-lg" type="text" name="adress"
-                                        wire:model.defer='adress'>
-                                    @error('adress')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>ville</label>
-                                    <input class="form-control form-control-lg" type="text" name="ville"
-                                        wire:model.defer='ville'>
-                                    @error('ville')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>autorisation</label>
-                                    <input class="form-control form-control-lg" type="text" name="autorisation"
-                                        wire:model.defer='autorisation'>
-                                    @error('autorisation')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>Date de commencement</label>
-                                    <input class="form-control form-control-lg" type="date"
-                                        wire:model.defer='dated' name="dated">
-                                    <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                    <div class="row ">
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>Nom de projet</label>
+                                        <input class="form-control form-control-lg" type="text" name="name"
+                                            wire:model.defer='name'>
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('dated')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                          
-                            <div class="form-group mb-25">
-                                <label>Date de fin</label>
-                                <input class="form-control form-control-lg" type="date" wire:model.defer='datef'
-                                    name="datef">
-                                <div class="form-inline-action d-flex justify-content-between align-items-center">
-                                </div>
-                                @error('datef')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-25">
-                                <label>Bureau </label>
-                                <select name="select-size-1" wire:model.defer='id_bureau' id="select-size-1" class="form-control  form-control-lg">
-                                    <option value="" selected>select an option</option>
-                                @foreach($bureaus as $bureau)
-                                    <option value="{{$bureau->id}}">{{$bureau->name}}</option>
+                                    </div>
                                     
-                                @endforeach
-                                    
-                                </select>
-                                @error('id_bureau')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+    
+                                    <div class="row ">
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>consistance</label>
+                                        <input class="form-control form-control-lg" type="text" name="consistance"
+                                            wire:model.defer='consistance'>
+                                        @error('consistance')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>titre_finance</label>
+                                            <input class="form-control form-control-lg" type="text" name="titre_finance"
+                                                wire:model.defer='titre_finance'>
+                                            @error('titre_finance')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Date de Dubet</label>
+                                            <input class="form-control form-control-lg" type="date"
+                                                wire:model.defer='dated' name="dated">
+                                            <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                            </div>
+                                            @error('dated')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Caisse </label>
+                                            <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" class="form-control  form-control-lg">
+                                                <option value="" selected>select an option</option>
+                                            @foreach($caisses as $caisse)
+                                                <option value="{{$caisse->id}}">{{$caisse->id}}</option>
+                                                
+                                            @endforeach
+                                                
+                                            </select>
+                                            @error('id_caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>ville</label>
+                                            <input class="form-control form-control-lg" type="text" name="ville"
+                                                wire:model.defer='ville'>
+                                            @error('ville')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                   
 
-                            </div>
-                            <div class="form-group mb-25">
-                                <label>Caisse </label>
-                                <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" class="form-control  form-control-lg">
-                                    <option value="" selected>select an option</option>
-                                @foreach($caisses as $caisse)
-                                    <option value="{{$caisse->id}}">{{$caisse->id}}</option>
                                     
-                                @endforeach
-                                    
-                                </select>
-                                @error('id_caisse')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
 
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>superfice</label>
+                                            <input class="form-control form-control-lg" type="text" name="superfice"
+                                                wire:model.defer='superfice'>
+                                            @error('superfice')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>autorisation</label>
+                                            <input class="form-control form-control-lg" type="text" name="autorisation"
+                                                wire:model.defer='autorisation'>
+                                            @error('autorisation')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Date de fin</label>
+                                            <input class="form-control form-control-lg" type="date" wire:model.defer='datef'
+                                                name="datef">
+                                            <div class="form-inline-action d-flex justify-content-between align-items-center">
+                                            </div>
+                                            @error('datef')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-25 col-lg-12">
+                                            <label>Bureau </label>
+                                            <select name="select-size-1" wire:model.defer='id_bureau' id="select-size-1" class="form-control  form-control-lg">
+                                                <option value="" selected>select an option</option>
+                                            @foreach($bureaus as $bureau)
+                                                <option value="{{$bureau->id}}">{{$bureau->nom}}</option>
+                                                
+                                            @endforeach
+                                                
+                                            </select>
+                                            @error('id_bureau')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+            
+                                        </div>
+                                    </div>
+                                   <div class="row" >
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>adress</label>
+                                        <input class="form-control form-control-lg" type="text" name="adress"
+                                            wire:model.defer='adress'>
+                                        @error('adress')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    
+                                   </div>
+
+                                </div>
                             </div>
-                    </div>
+                            </div>
 
  
               
@@ -620,6 +685,7 @@
 
 
     </div>
+</div>
 
 
     {{-- delete model  --}}
@@ -659,6 +725,38 @@
     </div>
 
     <!-- ends: .modal-info-Delete -->
+
+    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
+        role="dialog" aria-hidden="true">
+
+
+        <div class="modal-dialog modal-sm modal-info" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-info-body d-flex">
+                        <div class="modal-info-icon warning">
+                            <span data-feather="info"></span>
+                        </div>
+
+                        <div class="modal-info-text">
+                            <h6>Voulez-vous supprimer ce projet</h6>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                        data-dismiss="modal">annuler</button>
+                    <button type="button" wire:click.prevent='deleteData'
+                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 
 
 

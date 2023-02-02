@@ -67,12 +67,9 @@
         <nav class="navbar navbar-light">
             <div class="navbar-left">
                 <a href="" class="sidebar-toggle">
-                    <img class="svg" src="img/svg/bars.svg" alt="img"></a>
-                <a class="navbar-brand" href="#"><img class="dark" src="img/logo_dark.png" alt="svg"><img class="light" src="img/logo_white.png" alt="img"></a>
-                <form action="/" class="search-form">
-                    <span data-feather="search"></span>
-                    <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                </form>
+                    <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
+                <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
+                
                 <div class="top-menu">
 
                     <div class="strikingDash-top-menu position-relative">

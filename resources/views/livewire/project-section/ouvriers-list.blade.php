@@ -289,7 +289,7 @@
           
     {{-- import modal end --}}
     
-        {{-- add project  modal --}}
+        {{-- add ouvrier  modal --}}
         <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog"
             aria-hidden="true">
     
@@ -305,7 +305,7 @@
                             <span data-feather="x"></span></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
+                        
     
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
@@ -374,7 +374,7 @@
                                    
                                 </div>
                                 
-                        </div>
+                        
     
     
                     </div>
