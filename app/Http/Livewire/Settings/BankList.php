@@ -8,13 +8,19 @@ use App\Models\Bank;
 class BankList extends Component
 {
     public $nomDeBanque , $email , $phone ,$adress, $ville;
-    public $rules =[
-        'nomDeBanque' => 'required',
-        'email' => 'required|email',
-        'phone' => 'required|numeric',
-    ];
+   
+   
+    //   validation real -time
+    public function updated($fields){
+        $this->validateOnly($fields,[
+            'nomDeBanque' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|numeric',
+        ]);
+    }
 
 
+    // reset inputs value
     public function resetInputs(){
         $this->nomDeBanque = "";
         $this->email = "";
@@ -23,10 +29,49 @@ class BankList extends Component
         $this->ville = "";
     }
 
-    public function saveData(){
-       $this->validate();
+    //  add bank function start
 
-       dd($ths->nomDeBanque);
+    public function saveData(){
+       $this->validate([
+        'nomDeBanque' => 'required',
+        'email' => 'required|email',
+        'phone' => 'required|numeric',
+       ]);
+       $banque = new Bank ;
+       $banque->nom = $this->nomDeBanque;
+       $banque->email = $this->email;
+       $banque->phone = $this->phone;
+       $banque->adress = $this->adress;
+       $banque->ville = $this->ville;
+       $banqueAdded = $banque->save();
+       if($banque){
+        session()->flash('message','banque bien ajouter');
+        
+        // for empty input fields after validation
+         
+        $this->resetInputs();
+        
+    
+
+        // for hidden the model
+        $this->dispatchBrowserEvent('close-model');
+
+       }else{
+        session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
+        $this->dispatchBrowserEvent('close-model');
+       }
+      
+    }
+
+    //  add bank function end
+
+    public function editBank($id){
+        $bank = Bank::where('id',$id)->first();
+        $this->nomDeBanque = $bank->nom;
+        $this->email = $bank->email;
+        $this->phone = $bank->phone;
+        $this->adress = $bank->adress;
+        $this->ville = $bank->ville;
     }
     public function render()
     {

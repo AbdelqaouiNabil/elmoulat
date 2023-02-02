@@ -83,8 +83,8 @@
                                 <thead>
                                     <tr class="userDatatable-header">
                                         
-                                        <th>
-                                            <input type="checkbox" wire:model="selectAll">
+                                        <th style="text-center">
+                                            <input  type="checkbox" wire:model="selectAll">
                                         </th>
                                         
                                         <th>
