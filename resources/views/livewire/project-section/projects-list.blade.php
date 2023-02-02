@@ -78,12 +78,10 @@
                                 <tr class="userDatatable-header">
                                     <th >
                                       
-                                             <div class="form-check">
                                                <input  type="checkbox" wire:model="selectAll" >
                                             
   
-                                                </div>
-         
+            
                                        
                                     </th>
                                     <th>
@@ -599,11 +597,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                    </div>
-                                   
-
-                                    
-
+                                    </div>  
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="row">
@@ -729,7 +723,6 @@
     <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
         role="dialog" aria-hidden="true">
 
-
         <div class="modal-dialog modal-sm modal-info" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -757,9 +750,6 @@
 
 
     </div>
-
-
-
 
 </div>
 </div>
