@@ -67,7 +67,11 @@
         <div class="container-fluid">
             <div class="action-btn mb-3">
 
+<<<<<<< HEAD
                 <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($btndelete) hidden @endif data-target="#modal-all-delete" data-toggle="modal" >
+=======
+                <button type="button" class=" btn btn-sm btn-danger btn-add" @if($btndelete) disabled @endif data-target="#modal-all-delete" data-toggle="modal" >
+>>>>>>> 47a29a73392bd7a85d7129d44c1b98d025cdf6bf
                                           
                    <i class="la la-trash"></i>delete selected</button>
                                           
