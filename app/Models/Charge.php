@@ -15,10 +15,10 @@ class Charge extends Model
     * @var array<int, string>
     */
    protected $fillable = [
-       
+
        'fournisseur_id',
-       'projet_id',
-       'reglement_id',
+       'id_projet',
+       'id_reglement',
        'name',
        'type',
        'bon',
@@ -32,11 +32,14 @@ class Charge extends Model
 
 
     public function projet(){
-    return $this->belongsTo('App\Models\Projet');
+    return $this->belongsTo('App\Models\Projet', 'id_projet');
    }
+    public function reglement(){
+        return $this->belongsTo('App\Models\Reglement', 'id_reglement');
+    }
 
     public function fournisseur(){
-    return $this->belongsTo('App\Models\Fournisseur');
+    return $this->belongsTo('App\Models\Fournisseur', 'fournisseur_id');
    }
 
 
