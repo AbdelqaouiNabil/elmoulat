@@ -64,24 +64,30 @@
                 </div>
             @endif
 
-            <div class="row mb-3">
-                <div class="col mt-6">
-                    <div class="breadcrumb-main__wrapper bg-white rounded-pill">
-                        <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                            <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
-                                placeholder="chercher par nom de projet ou fournisseur..." aria-label="Search">
-                        </div>
-                    </div>
-                </div>
-                <div class="col mt-6">
-                </div>
-            </div>
+
 
 
 
             @if ($charges->count() > 0)
                 <div class="container-fluid">
+
+
+                    <div class="row mb-3">
+                        <div class="col mt-6">
+                            <div class="breadcrumb-main__wrapper bg-white rounded-pill">
+                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
+                                        placeholder="chercher par nom de projet ou fournisseur..." aria-label="Search">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mt-6">
+                        </div>
+                    </div>
+
+
+                    
 
 
                     <div class="action-btn mb-3">
