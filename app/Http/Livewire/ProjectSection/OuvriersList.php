@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProjectSection;
 
+use Illuminate\Database\QueryException;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -220,12 +221,30 @@ class OuvriersList extends Component
     // check all boxs
 
     public function deletecheckedouvrier(){
-
-        Ouvrier::query()->whereIn('id',$this->checked_id)->delete();
-        session()->flash('message','ouvriers bien supprimer');
-        // pour vider les textboxs
-        $this->checked_id=[];
-        $this->btndelete=true;
+        $id = [];
+        $deleted = [];
+        $ouvriers = Ouvrier::query()->whereIn('id', $this->checked_id)->get();
+        foreach ($ouvriers as $ouvrier) {
+            try {
+                $ouvrier = Ouvrier::where('id', $ouvrier->id)->first();
+                $ouvrier->delete();
+                $path = Storage::disk('local')->url($ouvrier->cin);
+                File::delete(public_path($path));
+                $deleted[] = $ouvrier->id;
+            } catch (QueryException $ex) {
+                $id[] = $ouvrier->id;
+            }
+        }
+        if (count($deleted) > 0) {
+            session()->flash('message', "Deleted seccesfully Ouvriers of Id=[" . implode(",", $deleted) . "]");
+        }
+        if(count($id)>0){
+            session()->flash('error', "Can't delete Ouvriers of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
+        }
+        $this->checked_id = $id;
+        $this->selectAll = false;
+        $id = [];
+        $deleted = [];
         
     }
     public function updatedselectAll($value){
