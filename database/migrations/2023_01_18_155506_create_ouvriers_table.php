@@ -18,12 +18,17 @@ class CreateOuvriersTable extends Migration
             $table->string('nom');
             $table->date('datenais');
             $table->string('cin')->nullable();
-            $table->string('n_cin');
+            $table->string('n_cin')->unique();
             $table->date('datedubet');
             $table->string('observation');
             $table->integer('notation');
-            
-            
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('adress')->nullable();
+
+            $table->enum('contrat',['Yes','No'])->default('No');
+            // $table->integer('notation');
+
             $table->timestamps();
         });
     }

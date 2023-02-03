@@ -190,7 +190,6 @@ class ChargesList extends Component
     public function deleteCharge($id){
         $charge = Charge::where('id',$id)->first();
         $this->id_Charge = $id;
-
     }
     public function deleteData(){
         $charge = Charge::findOrFail($this->id_Charge)->delete();
@@ -255,7 +254,6 @@ class ChargesList extends Component
         'prix_TTC'=>'required',
         'MTTTC'=>'required',
    ]);
-
 }
 
 
