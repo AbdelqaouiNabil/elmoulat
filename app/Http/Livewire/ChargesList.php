@@ -114,6 +114,7 @@ class ChargesList extends Component
         $this->selectAll = false;
     }
 
+      
 
 
     public function checkChargeSituation(){

@@ -26,4 +26,8 @@ class Bank extends Model
     public function compte(){
         return $this->hasMany(Compte::class,'bank_id');
     }
+
+
+  
 }
+

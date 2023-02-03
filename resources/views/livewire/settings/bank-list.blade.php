@@ -46,7 +46,7 @@
     <div class="container-fluid">
      <div class="action-btn mb-3">
 
-         {{-- <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal" --}}
+         <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal"
                                    >
             <i class="la la-trash"></i>delete selected</button>
                                    
@@ -64,7 +64,7 @@
                                     <th >
                                       
                                              <div class="form-check">
-                                               <input  type="checkbox" wire:model="selectAll" >
+                                               <input  type="checkbox" wire:model="selectAllBanks" >
                                             
   
                                                 </div>
@@ -104,7 +104,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                   <input type="checkbox" wire:model="selectedbank" value="{{ $bank->id}}" >
+                                                   <input type="checkbox" wire:model="selectedBankID" value="{{ $bank->id}}" >
   
                                                   </div> 
                                             </td>
@@ -143,11 +143,11 @@
                                 
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#edit-modal"
-                                                            wire:click='editbank({{ $bank->id }})'><i
+                                                            wire:click='editBank({{ $bank->id }})'><i
                                                                 class="fa-regular fa-pen-to-square"></i></a></li>
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#modal-info-delete"
-                                                            wire:click='deletebank({{ $bank->id }})'
+                                                            wire:click='deleteBanque({{$bank->id}}) '
                                                             style="color: red;"><i class="fa-solid fa-trash"></i></a>
                                                     </li>
 
