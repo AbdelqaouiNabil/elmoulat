@@ -15,6 +15,7 @@ class Projet extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'image',
         'consistance',
@@ -33,5 +34,8 @@ class Projet extends Model
     }
     public function bureau(){
         return $this->belongsTo(Bureau::class,'id_bureau');
+    }
+    public function charge(){
+        return $this->hasMany(Charge::class, 'id_projet');
     }
 }

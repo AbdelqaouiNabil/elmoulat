@@ -217,7 +217,11 @@
                     </div>
                 </div>
             @else
-                <h3>No Contrat</h3>
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <div>
+                    <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Contrats table is empty 
+                </div>
+              </div>
             @endif
 
 
