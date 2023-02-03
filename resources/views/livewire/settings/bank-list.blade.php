@@ -208,7 +208,7 @@
 
 
 
-                        <h6 class="modal-title">Modifier Projet</h6>
+                        <h6 class="modal-title">Modifier Banque</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -216,16 +216,48 @@
 
                         <form >
                            
-                               <div class="form-group mb-25">
-                                    <label>Date de mise En Disposition</label>
-                                    <input class="form-control form-control-lg" type="date" name="dateMiseEnDisposition"
-                                        wire:model.defer='dateMiseEnDisposition'>
-                                    @error('dateMiseEnDisposition')
+                              <div class="form-group mb-25">
+                                
+                                    <label>Nom de banque</label>
+                                    <input class="form-control form-control-lg" type="text" name="nomDeBanque"
+                                        wire:model.defer='nomDeBanque'>
+                                    @error('nomDeBanque')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                     
                                 </div>
-                            
+                                <div class="form-group mb-25">
+                                    <label>Email</label>
+                                    <input class="form-control form-control-lg" type="email" name="email"
+                                        wire:model.defer='email'>
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Phone</label>
+                                    <input class="form-control form-control-lg" type="text" name="phone"
+                                        wire:model.defer='phone'>
+                                    @error('phone')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                 <div class="form-group mb-25">
+                                    <label>Adress</label>
+                                    <input class="form-control form-control-lg" type="text" name="adress"
+                                        wire:model.defer='adress'>
+                                    @error('adress')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                 <div class="form-group mb-25">
+                                    <label>Ville</label>
+                                    <input class="form-control form-control-lg" type="text" name="ville"
+                                        wire:model.defer='ville'>
+                                    @error('ville')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                                 
                
                
@@ -341,7 +373,7 @@
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                 
-                                    <label>Nom de banque</label>
+                                    <label class="required">Nom de banque</label>
                                     <input class="form-control form-control-lg" type="text" name="nomDeBanque"
                                         wire:model.defer='nomDeBanque'>
                                     @error('nomDeBanque')
