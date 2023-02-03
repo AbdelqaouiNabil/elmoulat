@@ -22,7 +22,12 @@ class Ouvrier extends Model
         'datedubet',
         'observation',
         'notation',
-        'contrat'
+        'phone',
+        'email',
+        'adress',
+        'contrat',
+        
+
 
     ];
 }

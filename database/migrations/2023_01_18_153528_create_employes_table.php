@@ -20,7 +20,8 @@ class CreateEmployesTable extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->integer('phone');
-            $table->date('datedubet');
+            $table->date('datenais');
+            $table->date('datedebut');
             $table->string('contrat');
             $table->string('designiation');
             $table->float('salaire');

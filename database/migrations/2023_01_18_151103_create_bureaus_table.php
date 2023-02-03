@@ -17,7 +17,7 @@ class CreateBureausTable extends Migration
             $table->id();
             $table->string('nom');
             $table->string('ville');
-            $table->integer('phone');
+            $table->string('phone');
             $table->timestamps();
         });
     }

@@ -258,9 +258,8 @@
 
        @endif
        @if($currentTab === 'fournisseurs')
-       <livewire:project-section.fournisseurs-list>
 
-
+       <livewire:project-section.fournisseurs-list>       
 
        @endif
        @if($currentTab === 'ouvriers')

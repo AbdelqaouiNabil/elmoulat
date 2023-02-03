@@ -1,5 +1,5 @@
 <div>
-    
+
 
 
 
@@ -112,26 +112,38 @@
                                         
                                         <th>
                                             <span class="userDatatable-title">ID</span>
+                                            <a href="" wire:click.prevent="sort('id')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                             
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">Nom de Fournisseur</span>
+                                            <a href="" wire:click.prevent="sort('name')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                           
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">Ice </span>
+                                            <a href="" wire:click.prevent="sort('ice')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">phone</span>
+                                            <a href="" wire:click.prevent="sort('phone')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                         </th>
                                         <th >
                                             <span class="userDatatable-title">Email</span>
+                                            <a href="" wire:click.prevent="sort('email')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                         </th>
                                         <th>
                                             <span class="userDatatable-title">Adress</span>
+                                            <a href="" wire:click.prevent="sort('adress')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                         </th>
-                                        <th>
+                                        <th >
+                                           
                                             <span class="userDatatable-title">Domaine</span>
+                                            <a href="" wire:click.prevent="sort('id_fdomaine')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+                                           
                                         </th> 
                                         <th>
                                             <span class="userDatatable-title">Actions</span>
@@ -156,6 +168,7 @@
                                                         <div class="orderDatatable-title">
                                                             {{ $fournisseur->id }}
                                                         </div>
+                                                        
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
@@ -252,11 +265,10 @@
             </div>
         </div>
         @else
-        <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
-            <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
-         <div>
-              table fournisseur  is empty 
-         </div>
+        <div class="h-100 d-flex align-items-center justify-content-center" >
+          
+                table fournisseur  is empty            
+        </div>
        
         @endif
         @endif
@@ -342,7 +354,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Phone</label>
+                                    <label class="required">Phone</label>
                                     <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone' >
                                     @error('phone')
                                     <span class="text-danger">{{$message}}</span>
@@ -350,7 +362,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Adress</label>
+                                    <label class="required">Adress</label>
                                     <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress' >
                                     @error('adress')
                                     <span class="text-danger">{{$message}}</span>
@@ -358,7 +370,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Email</label>
+                                    <label class="required">Email</label>
                                     <input class="form-control form-control-lg" type="text" name="email" wire:model.defer='email'  >
                                     @error('email')
                                     <span class="text-danger">{{$message}}</span>
@@ -367,7 +379,7 @@
                                 </div>
 
                                 <div class="form-group mb-25">
-                                    <label>Domaine </label>
+                                    <label class="required">Domaine </label>
                                     <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1" class="form-control  form-control-lg">
                                         <option value="" selected>select an option</option>
                                     @foreach($f_domaines as $f_domaine)
@@ -437,7 +449,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Phone</label>
+                                    <label class="required">Phone</label>
                                     <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone'  required>
                                     @error('phone')
                                     <span class="text-danger">{{$message}}</span>
@@ -445,7 +457,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Adress</label>
+                                    <label class="required">Adress</label>
                                     <input class="form-control form-control-lg" type="text" name="adress" wire:model.defer='adress' required>
                                     @error('adress')
                                     <span class="text-danger">{{$message}}</span>
@@ -453,7 +465,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Email</label>
+                                    <label class="required">Email</label>
                                     <input class="form-control form-control-lg" type="email" name="email" wire:model.defer='email'  required>
                                     @error('email')
                                     <span class="text-danger">{{$message}}</span>
@@ -462,7 +474,7 @@
                                 </div>
 
                                 <div class="form-group mb-25">
-                                    <label>Domaine </label>
+                                    <label class="required">Domaine </label>
                                     <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1" class="form-control  form-control-lg">
                                         <option value="" selected>select an option</option>
                                     @foreach($f_domaines as $f_domaine)
