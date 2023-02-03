@@ -86,12 +86,12 @@ class DomaineList extends Component
     public function deleteData(){
        try{
         $domaine = f_domaine::where('id',$this->id_domaine)->first();
-        $domaine->delete();
-        session()->flash('message','domaine bien supprimer');
+        $e=$domaine->delete();
+        session()->flash('message','domaine bien supprimer'.$e);
         $this->dispatchBrowserEvent('add');
         $this->dispatchBrowserEvent('close-model');
        }catch(QueryException $e){
-        session()->flash('error','le domaine used in fournisseur table');
+        session()->flash('error','le domaine used in fournisseur table'.$e);
 
        }
         

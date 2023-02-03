@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Settings;
 use Livewire\Component;
 use App\Models\Bank;
 use App\Models\Compte;
+use \Illuminate\Database\QueryException;
+
 
 class BankList extends Component
 {
@@ -105,78 +107,113 @@ class BankList extends Component
         $this->ville = $bank->ville;
     }
     public function deleteData(){
-        $banque = Bank::where('id',$this->banqueID)->first();
-        $comptes = Compte::all();
+        
+        try{
+            $banques = Bank::where('id',$this->banqueID)->first();
+            $banques->delete();
+                        //   if($banqueDeleted){
+                        //     session()->flash('message','banque deleted');
+                        //     $this->selectedBankID = [];
+                    
+                        //       // for hidden the model
+                        //       $this->dispatchBrowserEvent('close-model');
+             
+                        //   }else{
+                        //     session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
+                        //     $this->dispatchBrowserEvent('close-model');
+                        //   }
 
-        if(count($comptes) > 0){
-            foreach ($comptes as  $compte) {
-                if($compte->bank_id == $banque->id){
-                    session()->flash('error','this bank is already on used');
+        
+        }catch(QueryException $e){
+            session()->flash('error','vous avez selectionner une banque déja utilisé');
+        }
+
+        // if(count($comptes) > 0){
+        //     foreach ($comptes as  $compte) {
+        //         if($compte->bank_id == $banque->id){
+        //             session()->flash('error','this bank is already on used');
             
-                    // for hidden the model
-                    $this->dispatchBrowserEvent('close-model');
+        //             // for hidden the model
+        //             $this->dispatchBrowserEvent('close-model');
     
                    
             
-                }else{
-                  $banqueDeleted =  $banque->delete();
-                  if($banqueDeleted){
-                    session()->flash('message','banque deleted');
+        //         }else{
+        //           $banqueDeleted =  $banque->delete();
+        //           if($banqueDeleted){
+        //             session()->flash('message','banque deleted');
             
-                      // for hidden the model
-                      $this->dispatchBrowserEvent('close-model');
+        //               // for hidden the model
+        //               $this->dispatchBrowserEvent('close-model');
      
-                  }else{
-                    session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
-                    $this->dispatchBrowserEvent('close-model');
-                  }
-                }
-            }
+        //           }else{
+        //             session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
+        //             $this->dispatchBrowserEvent('close-model');
+        //           }
+        //         }
+        //     }
     
          
-        }
+        // }
        
     }
 
 
      // DELETE SELECTED BANK START
      public function deleteSelected(){
-        $banques = Bank::whereIn('id',$this->selectedBankID);
-        $comptes = Compte::all();
+        $banques = Bank::whereIn('id',$this->selectedBankID)->get();
+        try{
+            $banqueDeleted =  $banques->delete();
+                          if($banqueDeleted){
+                            session()->flash('message','banque deleted');
+                            $this->selectedBankID = [];
+                    
+                              // for hidden the model
+                              $this->dispatchBrowserEvent('close-model');
+             
+                          }else{
+                            session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
+                            $this->dispatchBrowserEvent('close-model');
+                          }
 
-        if($banques && count($comptes) > 0){
+        
+        }catch(QueryException $e){
+            session()->flash('error','vous avez selectionner une banque déja utilisé');
+        }
+
+        // if($banques && count($comptes) > 0){
             
-                foreach ($comptes as  $compte) {
-                    if( in_array($compte->bank_id,$this->selectedBankID)){
-                        session()->flash('error','vous avez selectionner une banque déja utilisé');
+        //         foreach ($comptes as  $compte) {
+        //             if( in_array($compte->bank_id,$this->selectedBankID)){
+        //                 session()->flash('error','vous avez selectionner une banque déja utilisé');
                 
-                        // for hidden the model
-                        $this->dispatchBrowserEvent('close-model');
+        //                 // for hidden the model
+        //                 $this->dispatchBrowserEvent('close-model');
 
-                        $this->selectedBankID = [];
+        //                 $this->selectedBankID = [];
         
                        
                 
-                    }else{
-                      $banqueDeleted =  $banques->delete();
-                      if($banqueDeleted){
-                        session()->flash('message','banque deleted');
-                        $this->selectedBankID = [];
+        //             }else{
+        //               $banqueDeleted =  $banques->delete();
+        //               if($banqueDeleted){
+        //                 session()->flash('message','banque deleted');
+        //                 $this->selectedBankID = [];
                 
-                          // for hidden the model
-                          $this->dispatchBrowserEvent('close-model');
+        //                   // for hidden the model
+        //                   $this->dispatchBrowserEvent('close-model');
          
-                      }else{
-                        session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
-                        $this->dispatchBrowserEvent('close-model');
-                      }
-                    }
-                }
+        //               }else{
+        //                 session()->flash('error',"Une erreur s'est produite. Veuillez réessayer ");
+        //                 $this->dispatchBrowserEvent('close-model');
+        //               }
+        //             }
+        //         }
            
             
     
          
-        }
+        // }
 
 
 
