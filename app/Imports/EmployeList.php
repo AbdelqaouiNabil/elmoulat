@@ -13,26 +13,49 @@ class EmployeList extends Component
 {
     use WithFileUploads;
     use WithPagination;
-    public $nom,$bureau_id,$prenom,$phone,$datedubet,$contrat,$designiation,$salaire ,$id_employe;
+    public $nom,$bureau_id,$prenom,$phone,$datedebut,$datenais,$contrat,$designiation,$salaire ,$id_employe;
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
     public $pages = 5;
+    public $sortname = "id";
+    public $sortdrection = "DESC";
    
     
     public function render()
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
-        $employes=Employe::all();
+        $employes=Employe::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus=Bureau::all();
         return view('livewire.rh-section.employe-list',['employes'=>$employes,'bureaus'=>$bureaus]);
+    }
+
+    public function sort($value)
+    {
+        if ($this->sortname == $value && $this->sortdrection == "DESC") {
+            $this->sortdrection = "ASC";
+        } else {
+            if ($this->sortname == $value && $this->sortdrection == "ASC") {
+                $this->sortdrection = "DESC";
+            }
+        }
+        $this->sortname = $value;
+
+    }
+
+    // for paginate
+    public function updatingPages($value)
+    {
+        $this->resetPage('new');
+
     }
     public function updated($fields){
         $this->validateOnly($fields,[
             'nom'=>'required',
             'prenom'=>'required',
             'phone'=>'required|integer',
-            'datedubet'=>'required|date',
+            'datenais'=>'required|date',
+            'datedebut'=>'required|date',
             'contrat'=>'required',
             'salaire'=>'required',
             'bureau_id'=>'required|integer',
@@ -44,7 +67,8 @@ class EmployeList extends Component
         $this->nom="";
         $this->prenom="";
         $this->phone="";
-        $this->datedubet="";
+        $this->datenais="";
+        $this->datedebut="";
         $this->contrat="";
         $this->designiation="";
         $this->bureau_id="";
@@ -60,10 +84,12 @@ class EmployeList extends Component
             'nom'=>'required',
             'prenom'=>'required',
             'phone'=>'required|integer',
-            'datedubet'=>'required|date',
+            'datenais'=>'required|date',
+            'datedebut'=>'required|date',
             'contrat'=>'required',
             'salaire'=>'required',
             'bureau_id'=>'required|integer',
+
            
         ]);
         $employe = new Employe;
@@ -71,7 +97,8 @@ class EmployeList extends Component
         $employe->nom = $this->nom;     
         $employe->prenom = $this->prenom;     
         $employe->phone = $this->phone;     
-        $employe->datedubet = $this->datedubet;     
+        $employe->datenais = $this->datenais;     
+        $employe->datedebut = $this->datedebut;     
         $employe->contrat = $this->contrat;     
         $employe->salaire = $this->salaire;     
         $employe->designiation = $this->designiation;     
@@ -97,7 +124,8 @@ class EmployeList extends Component
         $this->nom=$employe->nom;
         $this->prenom=$employe->prenom;
         $this->phone=$employe->phone;
-        $this->datedubet=$employe->datedubet;
+        $this->datenais=$employe->datenais;
+        $this->datedebut=$employe->datedebut;
         $this->contrat=$employe->contrat;
         $this->designiation=$employe->designiation;
         $this->bureau_id=$employe->bureau_id;
@@ -112,7 +140,8 @@ class EmployeList extends Component
         $employe->nom = $this->nom;     
         $employe->prenom = $this->prenom;     
         $employe->phone = $this->phone;     
-        $employe->datedubet = $this->datedubet;     
+        $employe->datenais = $this->datenais;     
+        $employe->datedebut = $this->datedebut;     
         $employe->contrat = $this->contrat;     
         $employe->salaire = $this->salaire;     
         $employe->designiation = $this->designiation;
@@ -130,7 +159,8 @@ class EmployeList extends Component
         $this->nom=$employe->nom;
         $this->prenom=$employe->prenom;
         $this->phone=$employe->phone;
-        $this->datedubet=$employe->datedubet;
+        $this->datenais=$employe->datenais;
+        $this->datedebut=$employe->datedebut;
         $this->contrat=$employe->contrat;
         $this->designiation=$employe->designiation;
         $this->bureau_id=$employe->bureau_id;

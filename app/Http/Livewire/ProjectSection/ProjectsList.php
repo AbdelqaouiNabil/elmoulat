@@ -78,7 +78,6 @@ class ProjectsList extends Component
         $this->resetInputs();
 
         $this->dispatchBrowserEvent('add');
-
         // for hidden the model after adding the project
         $this->dispatchBrowserEvent('close-model');
 
@@ -166,6 +165,8 @@ class ProjectsList extends Component
 
     public function deleteData()
     {
+
+         
         try {
             $path = Storage::disk('local')->url($this->image);
             File::delete(public_path($path));

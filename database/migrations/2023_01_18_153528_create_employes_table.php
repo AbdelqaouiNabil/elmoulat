@@ -19,7 +19,7 @@ class CreateEmployesTable extends Migration
             $table->foreign('bureau_id')->references('id')->on('Bureaus')->delete("on"); 
             $table->string('nom');
             $table->string('prenom');
-            $table->integer('phone');
+            $table->string('phone');
             $table->date('datenais');
             $table->date('datedebut');
             $table->string('contrat');
