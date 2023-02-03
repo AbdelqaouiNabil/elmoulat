@@ -9,13 +9,17 @@ class Contrat extends Model
 {
     use HasFactory;
     protected $fillable = [
-        
+
         'name',
-        'datedubet',
+        'datedebut',
         'datefin',
         'montant',
         'avance',
         'id_ouvrier'
-       
+
     ];
+
+    public function ouvrier(){
+        return $this->belongsTo('App\Models\Ouvrier', 'id_ouvrier');
+    }
 }

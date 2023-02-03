@@ -24,6 +24,9 @@ class ChargesList extends Component
     public $selectedCharges = [];
     public $selectAll = false;
 
+    public $search = "";
+    protected $queryString  = ['search'];
+
     // reglement
     public $montant, $date, $methode, $numero_cheque, $id_facture;
     public $numFacture ;
@@ -38,12 +41,66 @@ class ChargesList extends Component
 
     public function render(){
         $this->bulkDisabled = count($this->selectedCharges) < 1;
-        $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
         $fournisseurs = Fournisseur::all();
         $projets = Projet::all();
         $cheques = Cheque::where('situation', 'disponible')->get();
+
+
+        // SEARCH BY PROJECT OR FOURNISSEUR
+        // fournisseur_id',
+        // 'id_projet',
+        // 'id_reglement',
+        // $projID = "";
+        // $fournissID = "";
+        // if(count($projID) != 0){
+        //     dd("eyyes");
+        // }
+        // else{
+        //     dd("opopop");
+        // }
+        // dd($projID->id);
+        // $fournissID = Fournisseur::where("name", $this->search   )->fisrt();
+        // $projetCharges = Projet::where('name','like', '%'.$this->search.'%')->with("charge")->paginate($this->pages,['*'],'new');
+        $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+        // $charges = $this->searchBy();
+
         return view('livewire.charges-list',['charges'=>$charges, 'fournisseurs'=>$fournisseurs, 'projets'=>$projets, 'cheques' => $cheques]);
     }
+
+
+    // SEARCH FOURNISSEUR OR PROJECT
+    // public function searchBy(){
+    //     $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+    //     $projets = Projet::all();
+    //     foreach($projets as $proj){
+    //         $projName = $proj->name;
+    //         $projID = $proj->id;
+    //         if($projName == $this->search){
+    //             $charges = Charge::where('id_projet', $projID )->paginate($this->pages,['*'],'new');
+    //         }
+    //         break;
+    //     }
+    //     $fournisseurs = Fournisseur::all();
+    //     foreach($fournisseurs as $fourniss){
+    //         $fournissName = $fourniss->name;
+    //         $fournissID = $fourniss->id;
+    //         if($fournissName == $this->search){
+    //             $charges = Charge::where('fournisseur_id', $fournissID )->paginate($this->pages,['*'],'new');
+    //         }
+    //         break;
+    //     }
+    //     return $charges;
+    // }
+
+
+
+
+
+
+
+
+
+
 
 
     // REGLEMENTS
@@ -114,6 +171,7 @@ class ChargesList extends Component
         $this->selectAll = false;
     }
 
+      
 
 
     public function checkChargeSituation(){
@@ -189,7 +247,6 @@ class ChargesList extends Component
     public function deleteCharge($id){
         $charge = Charge::where('id',$id)->first();
         $this->id_Charge = $id;
-
     }
     public function deleteData(){
         $charge = Charge::findOrFail($this->id_Charge)->delete();
@@ -254,7 +311,6 @@ class ChargesList extends Component
         'prix_TTC'=>'required',
         'MTTTC'=>'required',
    ]);
-
 }
 
 

@@ -7,6 +7,7 @@ use App\Models\Chequier;
 use App\Models\Cheque;
 use App\Models\Compte;
 use Livewire\WithPagination;
+use \Illuminate\Database\QueryException;
 
 class ChequierList extends Component
 {
@@ -86,12 +87,13 @@ class ChequierList extends Component
     }
 
     public function deleteData(){
+      try{
         $chequier = Chequier::where('id', $this->chequierID)->first();
-        $deleted = $chequier->delete();
-      if($deleted){
-            session()->flash('success','Chequier bien supprimer');
-            $this->dispatchBrowserEvent('close-model');
-        }
+        $chequier->delete();
+      
+      }catch(QueryException $e){
+        session()->flash('error','nnnnnnnnnnnnnnnnnnnnnnnnnnn');
+      }
     }
 
 
@@ -156,10 +158,9 @@ class ChequierList extends Component
     public function render()
     { 
         $this->bulkDisabled = count($this->selectedChequier) < 1;
-        $comptes = Compte::all();
-        $chequier = Chequier:: where('numeroDeDebut', 'like', '%'.$this->search.'%')
+        $comptes=Compte::all();
+        $chequier = Chequier::where('numeroDeDebut', 'like', '%'.$this->search.'%')
         ->orWhere('dateDeMiseEnDisposition', 'like', '%'.$this->search.'%')->paginate($this->Chequierpage);
-      
         return view('livewire.transactions.chequier-list',
         [
         'comptes'=>$comptes,
