@@ -16,7 +16,7 @@ class CreateEmployesTable extends Migration
         Schema::create('employes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bureau_id');
-            $table->foreign('bureau_id')->references('id')->on('Bureaus'); 
+            $table->foreign('bureau_id')->references('id')->on('Bureaus')->delete("on"); 
             $table->string('nom');
             $table->string('prenom');
             $table->integer('phone');

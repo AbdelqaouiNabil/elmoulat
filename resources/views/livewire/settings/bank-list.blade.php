@@ -46,7 +46,7 @@
     <div class="container-fluid">
      <div class="action-btn mb-3">
 
-         {{-- <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal" --}}
+         <button type="button" class=" btn btn-sm btn-danger btn-add" @if($bulkDisabled) disabled @endif data-target="#modal-all-delete" data-toggle="modal"
                                    >
             <i class="la la-trash"></i>delete selected</button>
                                    
@@ -64,7 +64,7 @@
                                     <th >
                                       
                                              <div class="form-check">
-                                               <input  type="checkbox" wire:model="selectAll" >
+                                               <input  type="checkbox" wire:model="selectAllBanks" >
                                             
   
                                                 </div>
@@ -104,7 +104,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check">
-                                                   <input type="checkbox" wire:model="selectedbank" value="{{ $bank->id}}" >
+                                                   <input type="checkbox" wire:model="selectedBankID" value="{{ $bank->id}}" >
   
                                                   </div> 
                                             </td>
@@ -143,11 +143,11 @@
                                 
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#edit-modal"
-                                                            wire:click='editbank({{ $bank->id }})'><i
+                                                            wire:click='editBank({{ $bank->id }})'><i
                                                                 class="fa-regular fa-pen-to-square"></i></a></li>
                                                     <li><a href="#" class="remove" data-toggle="modal"
                                                             data-target="#modal-info-delete"
-                                                            wire:click='deletebank({{ $bank->id }})'
+                                                            wire:click='deleteBanque({{$bank->id}}) '
                                                             style="color: red;"><i class="fa-solid fa-trash"></i></a>
                                                     </li>
 
@@ -208,7 +208,7 @@
 
 
 
-                        <h6 class="modal-title">Modifier Projet</h6>
+                        <h6 class="modal-title">Modifier Banque</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -216,16 +216,48 @@
 
                         <form >
                            
-                               <div class="form-group mb-25">
-                                    <label>Date de mise En Disposition</label>
-                                    <input class="form-control form-control-lg" type="date" name="dateMiseEnDisposition"
-                                        wire:model.defer='dateMiseEnDisposition'>
-                                    @error('dateMiseEnDisposition')
+                              <div class="form-group mb-25">
+                                
+                                    <label>Nom de banque</label>
+                                    <input class="form-control form-control-lg" type="text" name="nomDeBanque"
+                                        wire:model.defer='nomDeBanque'>
+                                    @error('nomDeBanque')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                     
                                 </div>
-                            
+                                <div class="form-group mb-25">
+                                    <label>Email</label>
+                                    <input class="form-control form-control-lg" type="email" name="email"
+                                        wire:model.defer='email'>
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Phone</label>
+                                    <input class="form-control form-control-lg" type="text" name="phone"
+                                        wire:model.defer='phone'>
+                                    @error('phone')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                 <div class="form-group mb-25">
+                                    <label>Adress</label>
+                                    <input class="form-control form-control-lg" type="text" name="adress"
+                                        wire:model.defer='adress'>
+                                    @error('adress')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                 <div class="form-group mb-25">
+                                    <label>Ville</label>
+                                    <input class="form-control form-control-lg" type="text" name="ville"
+                                        wire:model.defer='ville'>
+                                    @error('ville')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                                 
                
                
@@ -341,7 +373,7 @@
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                 
-                                    <label>Nom de banque</label>
+                                    <label class="required">Nom de banque</label>
                                     <input class="form-control form-control-lg" type="text" name="nomDeBanque"
                                         wire:model.defer='nomDeBanque'>
                                     @error('nomDeBanque')

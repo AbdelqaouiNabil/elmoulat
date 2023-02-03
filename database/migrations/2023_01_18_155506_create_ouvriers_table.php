@@ -28,6 +28,7 @@ class CreateOuvriersTable extends Migration
            
             $table->enum('contrat',['Yes','No'])->default('No');
 
+
             $table->timestamps();
         });
     }

@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StrikingDash</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
     <!-- inject:css-->
 
     <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/bootstrap/bootstrap.css')}}">
@@ -44,7 +44,11 @@
     <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/trumbowyg.min.css')}}">
 
     <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/wickedpicker.min.css')}}">
-    
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+
+
     <script src="sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="{{asset("style.css")}}">
 
@@ -69,7 +73,7 @@
                 <a href="" class="sidebar-toggle">
                     <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
                 <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
-                
+
                 <div class="top-menu">
 
                     <div class="strikingDash-top-menu position-relative">
@@ -1084,10 +1088,10 @@
     <main class="main-content">
 
        <livewire:dashboard>
-       
-      
-       
-       
+
+
+
+
         <footer class="footer-wrapper">
             <div class="container-fluid">
                 <div class="row">
@@ -1130,6 +1134,9 @@
     <div class="overlay-dark-sidebar"></div>
    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- inject:js-->
+
+
+
     <script src="{{asset('assets/vendor_assets/js/jquery/jquery-3.5.1.min.js')}}"></script>
     <script src="{{asset('assets/vendor_assets/js/jquery/jquery-ui.js')}}"></script>
     <script src="{{asset('assets/vendor_assets/js/bootstrap/popper.js')}}"></script>

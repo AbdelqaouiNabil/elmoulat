@@ -1,16 +1,5 @@
 <div>
-    <style>
-        .required:after {
-            content: '*';
-            color: red;
-            padding-left: 5px;
-        }
-        table,th,td{
-            text-align: center;
-            
-        }
 
-    </style>
 
 
 
@@ -118,7 +107,7 @@
                                     <tr class="userDatatable-header">
                                         
                                         <th >
-                                            <input type="checkbox" wire:model="selectAll">
+                                            <input  type="checkbox" wire:model="selectAll">
                                         </th>
                                         
                                         <th>
