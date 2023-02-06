@@ -20,7 +20,7 @@ class ProjectsList extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $name, $dated, $datef, $autorisation, $superfice, $image, $consistance, $adress, $ville, $titre_finance, $project_edit_id, $id_bureau, $id_caisse;
+    public $name, $dated, $datef, $autorisation, $superfice, $image, $consistance, $adress, $ville, $titre_finance, $project_edit_id, $id_bureau, $id_caisse,$search;
     public $exelFile;
     public $selectedProjects = [];
     public $selectAll = false;
@@ -102,7 +102,7 @@ class ProjectsList extends Component
         $this->datef = "";
         $this->id_caisse = "";
         $this->id_bureau = "";
-        $this->$this->project_edit_id = "";
+        $this->project_edit_id = "";
     }
 
     public function editProject($id)
@@ -243,7 +243,9 @@ class ProjectsList extends Component
     {
 
         $this->bulkDisabled = count($this->selectedProjects) < 1;
-        $projets = Projet::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
+        $projets = Projet::where('name', 'like', '%'.$this->search.'%')
+        ->orWhere('ville', 'like', '%'.$this->search.'%')
+        ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus = Bureau::all();
         $caisses = Caisse::all();
         return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);

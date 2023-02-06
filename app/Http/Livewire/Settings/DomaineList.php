@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Livewire\ConstantSection;
+namespace App\Http\Livewire\Settings;
 
 use Carbon\Traits\ToStringFormat;
 use Livewire\Component;
 use App\Models\f_domaine;
+use App\Models\Fournisseur;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use \Illuminate\Database\QueryException;
@@ -29,7 +30,7 @@ class DomaineList extends Component
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
         $domaines=f_domaine::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.constant-section.domaine-list',['domaines'=>$domaines]);
+        return view('livewire.settings.domaine-list',['domaines'=>$domaines]);
     }
 
 
@@ -93,6 +94,7 @@ class DomaineList extends Component
         $domaine = f_domaine::where('id',$this->id_domaine)->first();
         $domaine->name = $this->name;
         $domaine->save();
+        $this->resetInputs();
         session()->flash('message','domaine bien modifer');
         $this->dispatchBrowserEvent('close-model');
     }
@@ -107,44 +109,40 @@ class DomaineList extends Component
     }
     
     public function deleteData(){
-       try{
+    
+    $check=Fournisseur::where('id_fdomaine',$this->id_domaine)->first();
+    if($check){
+        session()->flash('error','le domaine used in fournisseur table as ForingKey');
+    }else{
         $domaine = f_domaine::where('id',$this->id_domaine)->first();
         $domaine->delete();
+        $this->resetInputs();
         session()->flash('message','domaine bien supprimer');
         $this->dispatchBrowserEvent('add');
-        $this->dispatchBrowserEvent('close-model');
-       }catch(QueryException $e){
-        session()->flash('error','le domaine used in fournisseur table ');
-  
-       }
+    }
         
     }
 
     // delete selected rows on the table 
     public function  deleteSelectedRows(){
     
-    $id = [];
-    $deleted = [];
-    $domaines = f_domaine::query()->whereIn('id', $this->selectRows)->get();
-    foreach($domaines as $domaine){
-        try{
-            $domaine = f_domaine::where('id',$domaine->id)->first();
+    foreach($this->selectRows as $r){
+        $check=Fournisseur::where('id_fdomaine',$r)->first();
+        if($check){
+            session()->flash('error','le domaine used in fournisseur table as ForingKey');
+            return;
+        }else{
+            $domaine = f_domaine::where('id',$r)->first();
             $domaine->delete();
-            $deleted[]=$domaine->id;
-        }catch(QueryException $ex){
-                $id[]=$domaine->id;
+            $this->resetInputs();
+            session()->flash('message','You Selected a Domaine aready used as foreign Key ');
+            $this->dispatchBrowserEvent('add');
         }
+
     }
-    if (count($deleted) > 0) {
-        session()->flash('message', "Deleted seccesfully Domaine of Id=[" . implode(",", $deleted) . "]");
-    }
-    if(count($id)>0){
-        session()->flash('error', "Can't delete Domaine of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
-    }
-    $this->selectRows = $id ;
-    $this->selectAll = false;
-    $id = [];
-    $deleted = [];
+    
+
+
    
    }
    
