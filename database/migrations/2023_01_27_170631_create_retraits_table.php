@@ -16,14 +16,14 @@ class CreateRetraitsTable extends Migration
         Schema::create('retraits', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-        
+
             $table->float('montant');
             $table->unsignedBigInteger('id_caisse');
-            $table->foreign('id_caisse')->references('id')->on('caisses'); 
-            $table->unsignedBigInteger('id_reglement');
-            $table->foreign('id_reglement')->references('id')->on('reglements'); 
-            $table->unsignedBigInteger('id_depense');
-            $table->foreign('id_depense')->references('id')->on('depenses'); 
+            $table->foreign('id_caisse')->references('id')->on('caisses');
+            $table->unsignedBigInteger('id_reglement')->nullable();
+            $table->foreign('id_reglement')->references('id')->on('reglements');
+            $table->unsignedBigInteger('id_depense')->nullable();
+            $table->foreign('id_depense')->references('id')->on('depenses');
             $table->timestamps();
         });
     }

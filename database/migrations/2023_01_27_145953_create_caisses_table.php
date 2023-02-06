@@ -18,7 +18,7 @@ class CreateCaissesTable extends Migration
             $table->float('sold_nonjustify');
             $table->float('sold');
             $table->float('total');
-         
+            
             $table->timestamps();
         });
     }

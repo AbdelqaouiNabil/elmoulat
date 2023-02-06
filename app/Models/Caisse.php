@@ -11,8 +11,8 @@ class Caisse extends Model
     protected $fillable = [
         'sold_nonjustify',
         'sold',
-        'total',
- 
+        'total'
+
     ];
-   
+
 }

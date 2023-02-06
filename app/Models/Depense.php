@@ -14,15 +14,19 @@ class Depense extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+
         'id_projet',
         'id_ouvrier',
         'date',
-        'methode',
-        'apartient',
+        'description',
+        'Aqui',
         'type',
         'montant',
-      
+
     ];
+
+    public function projet(){
+        return $this->belongsTo(Projet::class, 'id_projet');
+    }
 
 }

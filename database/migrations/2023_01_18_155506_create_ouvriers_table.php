@@ -25,7 +25,6 @@ class CreateOuvriersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('adress')->nullable();
-            $table->enum('contrat',['Yes','No'])->default('No');
             $table->timestamps();
         });
     }
