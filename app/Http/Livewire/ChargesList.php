@@ -23,7 +23,7 @@ class ChargesList extends Component
     public $bulkDisabled = true;
     public $selectedCharges = [];
     public $selectAll = false;
-
+    public $filter;
     public $search = "";
     protected $queryString  = ['search'];
 
@@ -46,24 +46,19 @@ class ChargesList extends Component
         $cheques = Cheque::where('situation', 'disponible')->get();
 
 
-        // SEARCH BY PROJECT OR FOURNISSEUR
-        // fournisseur_id',
-        // 'id_projet',
-        // 'id_reglement',
-        // $projID = "";
-        // $fournissID = "";
-        // if(count($projID) != 0){
-        //     dd("eyyes");
-        // }
-        // else{
-        //     dd("opopop");
-        // }
-        // dd($projID->id);
-        // $fournissID = Fournisseur::where("name", $this->search   )->fisrt();
-        // $projetCharges = Projet::where('name','like', '%'.$this->search.'%')->with("charge")->paginate($this->pages,['*'],'new');
-        $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
-        // $charges = $this->searchBy();
-
+        // FILLTER BY SITUATION PAYED OR NOT PAYED
+        switch ($this->filter) {
+            case 'payed':
+                $charges = Charge::where('situation', 'payed')->paginate($this->pages, ['*'], 'new');
+                break;
+            case 'notPayed':
+                $charges = Charge::where('situation', 'notPayed')->paginate($this->pages, ['*'], 'new');
+                break;
+            default:
+                $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
+                break;
+        }
+        // $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
         return view('livewire.charges-list',['charges'=>$charges, 'fournisseurs'=>$fournisseurs, 'projets'=>$projets, 'cheques' => $cheques]);
     }
 
@@ -157,21 +152,19 @@ class ChargesList extends Component
         Cheque::where('numero', $this->numero_cheque)->update(['situation' => 'livré']);
         session()->flash('message', 'Reglement added successfully');
         $this->resetInputs();
-        $this->updateChargeAfterReg();
+        $this->updateChargeAfterReg( $reglement);
         $this->dispatchBrowserEvent('close-model');
+
     }
-
-
-
-    public function updateChargeAfterReg(){
+    public function updateChargeAfterReg($reglement){
         foreach($this->selectedCharges as $ch){
             Charge::where('id',$ch)->update(['situation'=> 'payed']);
+            Charge::where('id',$ch)->update(['id_reglement'=> $reglement->id]);
+
         }
         $this->selectedCharges = [];
         $this->selectAll = false;
     }
-
-
 
     public function checkChargeSituation(){
         if(count($this->selectedCharges) != 0){

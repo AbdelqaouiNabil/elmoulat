@@ -29,4 +29,9 @@ class Depense extends Model
         return $this->belongsTo(Projet::class, 'id_projet');
     }
 
+    public function ouvrier(){
+        return $this->belongsTo(Ouvrier::class, 'id_ouvrier');
+    }
+
+
 }

@@ -8,10 +8,20 @@
                         <div class="shop-breadcrumb">
 
                             <div class="breadcrumb-main">
-                                <h4 class="text-capitalize breadcrumb-title"></h4>
+                                <h4 class="text-capitalize breadcrumb-title">Charge</h4>
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
 
+                                    <div class="dropdown action-btn">
+                                        <div class="dropdown dropdown-click">
 
+                                            <select @if (count($charges) == null) disabled @endif name="select-size-1" wire:model="filter"
+                                                class="form-control  form-control-lg">
+                                                <option value="" selected>Order By</option>
+                                                <option value="payed">Payed</option>
+                                                <option value="notPayed">notPayed</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div class="dropdown action-btn">
                                         <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
@@ -87,7 +97,7 @@
                     </div>
 
 
-                    
+
 
 
                     <div class="action-btn mb-3">

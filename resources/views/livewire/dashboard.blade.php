@@ -104,6 +104,17 @@
                         </a>
 
                     </li>
+                    <li>
+
+                        <a wire:click="changeTab('reglements')" class="$currentTab === 'reglements' ? 'active' : ''">
+
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                            <span class="menu-text">Reglements</span>
+
+                        </a>
+
+                    </li>
 
                     <li class="menu-title m-top-30">
 
@@ -305,6 +316,11 @@
 
        @if($currentTab === 'depenses')
        <livewire:depenses-list>
+
+       @endif
+
+       @if($currentTab === 'reglements')
+       <livewire:reglements-list>
 
        @endif
 

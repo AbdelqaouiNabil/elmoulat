@@ -7,10 +7,20 @@
                     <div class="shop-breadcrumb">
 
                         <div class="breadcrumb-main">
-                            <h4 class="text-capitalize breadcrumb-title"></h4>
+                            <h4 class="text-capitalize breadcrumb-title">Depense</h4>
                             <div class="breadcrumb-action justify-content-center flex-wrap">
 
+                                <div class="dropdown action-btn">
+                                    <div class="dropdown dropdown-click">
 
+                                        <select @if (count($depenses) == null) disabled @endif name="select-size-1" wire:model="filter"
+                                            class="form-control  form-control-lg">
+                                            <option value="" selected>Order By</option>
+                                            <option value="Justifier">Justifier</option>
+                                            <option value="Non Justifier">Non Justifier</option>
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div class="dropdown action-btn">
                                     <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
@@ -47,7 +57,7 @@
                                                 <i class="la la-plus"></i> Créer un Règlement
                                             </button>
                                         </div>
-                                    @endif --}}
+                                @endif --}}
                             </div>
                         </div>
 
@@ -57,9 +67,7 @@
         </div>
         @if (session()->has('message'))
             <div class="alert alert-success">
-
                 {{ session('message') }}
-
             </div>
         @endif
 
@@ -84,13 +92,12 @@
 
 
 
-
-                <div class="action-btn mb-3">
+                {{-- <div class="action-btn mb-3">
                     <button type="button"
                         class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
                         wire:click="deleteSelected">
                         <i class="la la-trash"></i>delete selected</button>
-                </div>
+                </div> --}}
 
 
 
@@ -187,19 +194,28 @@
                                                 </td>
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex">
-
+                                                        <li>
+                                                            <a href="#" class="view" data-toggle="modal"
+                                                                data-target="#show-modal"
+                                                                wire:click='showDepense({{ $dep->id }})'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-eye" style="color:blue;">
+                                                                    <path
+                                                                        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                                    </path>
+                                                                    <circle cx="12" cy="12"
+                                                                        r="3"></circle>
+                                                                </svg>
+                                                            </a>
+                                                        </li>
                                                         <li><a href="#" class="remove" data-toggle="modal"
                                                                 data-target="#edit-modal"
                                                                 wire:click='editDepense({{ $dep->id }})'><i
                                                                     class="fa-regular fa-pen-to-square"></i></a>
                                                         </li>
-                                                        <li><a href="#" class="remove" data-toggle="modal"
-                                                                data-target="#modal-info-delete"
-                                                                wire:click='deleteDepense({{ $dep->id }})'
-                                                                style="color: red;"><i
-                                                                    class="fa-solid fa-trash"></i></a>
-                                                        </li>
-
                                                     </ul>
                                                 </td>
                                             </tr>
@@ -383,8 +399,6 @@
 
                         <form wire:submit.prevent='editData'>
                             <div class="form-basic">
-
-
                                 <div class="form-group mb-25">
                                     <label>Montant de depense</label>
                                     <input class="form-control form-control-lg" type="text" name="montant"
@@ -401,16 +415,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="form-group mb-25 ">
-                                    <label>Projet</label>
-                                    <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
-                                        class="form-control  form-control-lg">
-                                        @foreach ($projets as $p)
-                                            <option value="{{ $p->id }}">{{ $p->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
                                 <div class="form-group mb-25">
                                     <label class="fs-3">L'usage</label>
                                     <input type="checkbox" name="Aouvrier" wire:model.defer='Aouvrier'>
@@ -422,7 +426,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
                                 <div class="form-group mb-25">
                                     <label>Description</label>
                                     <textarea class="form-control form-control-lg" name="description" rows="5" cols="50"
@@ -443,44 +446,6 @@
 
 
             </div>
-
-        </div>
-
-
-
-        {{-- delete model  --}}
-
-
-
-        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
-            role="dialog" aria-hidden="true">
-
-
-            <div class="modal-dialog modal-sm modal-info" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="modal-info-body d-flex">
-                            <div class="modal-info-icon warning">
-                                <span data-feather="info"></span>
-                            </div>
-
-                            <div class="modal-info-text">
-                                <h6>Voulez-vous supprimer cette depense</h6>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                            data-dismiss="modal">annuler</button>
-                        <button type="button" wire:click.prevent='deleteData'
-                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
-
-                    </div>
-                </div>
-            </div>
-
 
         </div>
 
@@ -588,6 +553,96 @@
                 </div>
             </div>
         </div> --}}
+
+
+
+
+
+
+
+
+
+
+
+        {{-- Show Depense model --}}
+
+        <div wire:ignore.self class="modal-basic modal fade show" id="show-modal" tabindex="-1" role="dialog"
+            aria-hidden="true">
+
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
+
+
+
+                        <h6 class="modal-title">Depense Infos</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span data-feather="x"></span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-basic">
+
+
+                            <div class="row">
+                                <div class="col mt-6">
+                                    <label>Montant de depense</label>
+                                </div>
+                                <div class="col mt-6">
+                                    <label>{{ $montant }}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-6">
+                                    <label>Date de depense</label>
+                                </div>
+                                <div class="col mt-6">
+                                    <label>{{ $date }}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-6">
+                                    <label>Projet</label>
+                                </div>
+                                {{-- <div class="col mt-6">
+                                    <label>{{$depenseInfos->projet->name}}</label>
+                                </div> --}}
+                            </div>
+                            <div class="row">
+                                <div class="col mt-6">
+                                    <label>L'usage</label>
+                                </div>
+                                <div class="col mt-6">
+                                    <label>{{ $Aqui }}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-6">
+                                    <label>Type</label>
+                                </div>
+                                <div class="col mt-6">
+                                    @if ($type == 'Justifier')
+                                        <span class="badge rounded-pill bg-success "
+                                            style="color:white; font-weight:700;">{{ $type }}</span>
+                                    @else
+                                        <span class="badge rounded-pill bg-danger "
+                                            style="color:white; font-weight:700;">{{ $type }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-6">
+                                    <label>Description</label>
+                                </div>
+                                <div class="col mt-6">
+                                    <label>{{ $description }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 
