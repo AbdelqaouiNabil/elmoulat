@@ -260,9 +260,6 @@ class FournisseursList extends Component
             'excelFile' => 'required|mimes:xlsx,xls',
         ]);
 
-
-
-
         // $path = file_get_contents($tt);
 
         $path = $this->exelFile->store('', 'app');
@@ -277,6 +274,7 @@ class FournisseursList extends Component
     public function validationdata()
     {
 
+        
     }
 
 
