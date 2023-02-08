@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProjectSection;
 
+use App\Exports\ProjectExport;
 use App\Imports\ProjetsImport;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
@@ -172,48 +173,29 @@ class ProjectsList extends Component
 
     public function deleteData()
     {
-        try {
+       
             $path = Storage::disk('local')->url($this->image);
             File::delete(public_path($path));
-            $projet = Projet::where('id', $this->project_edit_id)->first();
-            $projet->delete();
+            Projet::where('id', $this->project_edit_id)->delete();
+            
             $this->resetInputs();
             session()->flash('message', 'projet bien supprimer');
             $this->dispatchBrowserEvent('add');
             $this->dispatchBrowserEvent('close-model');
-        } catch (QueryException $e) {
-            session()->flash('error', 'Id of project is used  as foringKey in other tables ');
-        }
+       
 
     }
     public function deleteSelected()
     {
 
 
-        $id = [];
-        $deleted = [];
-        $projects = Projet::query()->whereIn('id', $this->selectedProjects)->get();
-        foreach ($projects as $project) {
-            try {
-                $project = Projet::where('id', $project->id)->first();
-                $project->delete();
-                $path = Storage::disk('local')->url($project->image);
-                File::delete(public_path($path));
-                $deleted[] = $project->id;
-            } catch (QueryException $ex) {
-                $id[] = $project->id;
-            }
-        }
-        if (count($deleted) > 0) {
-            session()->flash('message', "Deleted seccesfully Projects of Id=[" . implode(",", $deleted) . "]");
-        }
-        if (count($id) > 0) {
-            session()->flash('error', "Can't delete Domaines of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
-        }
-        $this->selectedProjects = $id;
+       
+        Projet::query()->whereIn('id', $this->selectedProjects)->delete();
+        $this->selectedProjects = [];
         $this->selectAll = false;
-        $id = [];
-        $deleted = [];
+        session()->flash('message', 'projet bien supprimer');
+
+      
 
     }
     public function updatedSelectAll($value)
@@ -386,5 +368,10 @@ class ProjectsList extends Component
 
         return $this->excel_data;
 
+    }
+
+    // export data 
+    public function export(){
+        return Excel::download(new ProjectExport, 'projects.xlsx');
     }
 }

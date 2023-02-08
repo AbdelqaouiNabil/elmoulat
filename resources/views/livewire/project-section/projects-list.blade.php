@@ -36,7 +36,7 @@
                                     <a href="" class="dropdown-item">
                                         <i class="la la-file-pdf"></i> PDF</a>
                                     <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                    <a href="" class="dropdown-item">
+                                    <a href="" class="dropdown-item" wire:click.prevent='export()'>
                                         <i class="la la-file-csv"></i> CSV</a>
                                 </div>
                             </div>
@@ -258,7 +258,7 @@
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $projet->caisse->id }}
+                                                    {{ $projet->caisse->name }}
                                                 </div>
                                             </td>
 

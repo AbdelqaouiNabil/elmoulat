@@ -9,6 +9,7 @@ class Caisse extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'name',
         'sold_nonjustify',
         'sold',
         'total',
