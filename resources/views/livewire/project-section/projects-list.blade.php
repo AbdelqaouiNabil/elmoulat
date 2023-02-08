@@ -8,6 +8,18 @@
 
                     <div class="breadcrumb-main">
                         <h4 class="text-capitalize breadcrumb-title"> Projets</h4>
+                        <div class="col-md-6">
+                            <div class="search-result global-shadow rounded-pill bg-white">
+
+                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                        type="search" placeholder="chercher par nom  ou ville ..."
+                                        aria-label="Search">
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
 
                             <div class="dropdown action-btn">
@@ -24,7 +36,7 @@
                                     <a href="" class="dropdown-item">
                                         <i class="la la-file-pdf"></i> PDF</a>
                                     <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                    <a href="" class="dropdown-item">
+                                    <a href="" class="dropdown-item" wire:click.prevent='export()'>
                                         <i class="la la-file-csv"></i> CSV</a>
                                 </div>
                             </div>
@@ -246,7 +258,7 @@
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $projet->caisse->id }}
+                                                    {{ $projet->caisse->name }}
                                                 </div>
                                             </td>
 

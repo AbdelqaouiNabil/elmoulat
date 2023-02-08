@@ -8,9 +8,18 @@
 
                         <div class="breadcrumb-main">
                             <h4 class="text-capitalize breadcrumb-title">Ouvriers</h4>
+                            <div class="col-md-6">
+                                <div class="search-result global-shadow rounded-pill bg-white">
 
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                        <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                            type="search" placeholder="chercher par nom et prenom ou cin ..."
+                                            aria-label="Search">
+                                    </div>
 
-
+                                </div>
+                            </div>
                             <div class="breadcrumb-action justify-content-center flex-wrap">
 
 
@@ -68,188 +77,6 @@
             <div class="alert alert-danger">
 
                 {{ session('error') }}
-
-
-        <div class="container-fluid">
-            <div class="action-btn mb-3">
-
-                <button type="button" class=" btn btn-sm btn-danger btn-add" @if($btndelete) disabled @endif data-target="#modal-all-delete" data-toggle="modal" >
-                                          
-                   <i class="la la-trash"></i>delete selected</button>
-                                          
-       
-               </div>
-            <div class="row">
-                <div class="col-lg-12">
-                     
-                    <div
-                        class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
-                        <div class="table-responsive">
-                           
-                            <table class="table mb-0 table-borderless border-0">
-                                <thead>
-                                    <tr class="userDatatable-header">
-                                        
-                                        <th style="text-center">
-                                            <input  type="checkbox" wire:model="selectAll">
-                                        </th>
-                                        
-                                        <th>
-                                            <span class="userDatatable-title">id</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">Nome de ouvrier</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">date de naissance </span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">cin</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">numero cin</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">date dubet</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">observation</span>
-                                        </th>
-                                        <th>
-                                            <span class="userDatatable-title">notation</span>
-                                        </th>
-                                       
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-    
-                                    @if ($ouvriers->count() > 0)
-    
-                                        @foreach ($ouvriers as $ouvrier)
-                                            <tr>
-                                                <td>
-                                            
-                                                    <input  type="checkbox" wire:model="checked_id" value="{{$ouvrier->id}}"  >
-                                                    
-                                                </td>
-                                               
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->id }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->nom }}
-                                                    </div>
-                                                </td>
-                                                
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->datenais }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                       <a href=" {{ Storage::disk('local')->url($ouvrier->cin) }}" target="_blank" type="application/pdf" style="color: red; font-size:20px;"><i class="fa-solid fa-file-pdf"></i></a>
-                                                    </div>
-                                                </td>
-                                                
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->n_cin }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->datedubet }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->observation }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="orderDatatable-title">
-                                                        {{ $ouvrier->notation }}
-                                                    </div>
-                                                </td>
-                                               
-    
-                                               
-                                                <td>
-                                                    <ul class="orderDatatable_actions mb-0 d-flex">
-                                    
-                                                        <li><a href="#" class="remove" data-toggle="modal"
-                                                                data-target="#edit-modal"
-                                                                wire:click='editOuvrier({{ $ouvrier->id }})'><i
-                                                                    class="fa-regular fa-pen-to-square"></i></a></li>
-                                                        <li><a href="#" class="remove" data-toggle="modal"
-                                                                data-target="#modal-info-delete"
-                                                                wire:click='deleteOuvrier({{ $ouvrier->id }})'
-                                                                style="color: red;"><i class="fa-solid fa-trash"></i></a>
-                                                        </li>
-    
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                    @endif
-    
-                                    <!-- End: tr -->
-    
-    
-    
-    
-    
-    
-    
-                                </tbody>
-                            </table><!-- End: table -->
-                        </div>
-                        <div class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
-    
-                            <nav class="atbd-page ">
-                                <ul class="atbd-pagination d-flex">
-                                    <li class="atbd-pagination__item">
-                                        <a href="#" class="atbd-pagination__link pagination-control"><span
-                                                class="la la-angle-left"></span></a>
-                                        <a href="#" class="atbd-pagination__link"><span
-                                                class="page-number">1</span></a>
-                                        <a href="#" class="atbd-pagination__link active"><span
-                                                class="page-number">2</span></a>
-                                        <a href="#" class="atbd-pagination__link"><span
-                                                class="page-number">3</span></a>
-                                        <a href="#" class="atbd-pagination__link pagination-control"><span
-                                                class="page-number">...</span></a>
-                                        <a href="#" class="atbd-pagination__link"><span
-                                                class="page-number">12</span></a>
-                                        <a href="#" class="atbd-pagination__link pagination-control"><span
-                                                class="la la-angle-right"></span></a>
-                                        <a href="#" class="atbd-pagination__option">
-                                        </a>
-                                    </li>
-                                    <li class="atbd-pagination__item">
-                                        <div class="paging-option">
-                                            <select name="page-number" class="page-selection">
-                                                <option value="20">20/page</option>
-                                                <option value="40">40/page</option>
-                                                <option value="60">60/page</option>
-                                            </select>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </nav>
-    
-    
-                        </div>
-                    </div><!-- End: .userDatatable -->
-                </div><!-- End: .col -->
-
-            </div>
         @endif
         @if ($ouvriers->count() > 0)
             <div class="container-fluid">
@@ -284,15 +111,11 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
-                                                <span class="userDatatable-title">Nome de ouvrier</span>
+                                                <span class="userDatatable-title">Nome et Prenom</span>
                                                 <a href="" wire:click.prevent="sort('nom')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
-                                            <th>
-                                                <span class="userDatatable-title">Contrat </span>
-                                                <a href="" wire:click.prevent="sort('contrat')"><i
-                                                        class="fa-sharp fa-solid fa-sort"></i></a>
-                                            </th>
+                                           
                                             <th>
                                                 <span class="userDatatable-title">cin</span>
                                                 <a href="" wire:click.prevent="sort('cin')"><i
@@ -314,8 +137,8 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
-                                                <span class="userDatatable-title">date dubet</span>
-                                                <a href="" wire:click.prevent="sort('datedubet')"><i
+                                                <span class="userDatatable-title">date debut</span>
+                                                <a href="" wire:click.prevent="sort('datedebut')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
@@ -369,12 +192,7 @@
                                                         </div>
                                                     </td>
 
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $ouvrier->contrat }}
-                                                        </div>
-
-                                                    </td>
+                                    
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             <a href=" {{ Storage::disk('local')->url($ouvrier->cin) }}"
@@ -402,7 +220,7 @@
 
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $ouvrier->datedubet }}
+                                                            {{ $ouvrier->datedebut }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -489,7 +307,7 @@
             </div>
         @else
             <div class="h-100 d-flex align-items-center justify-content-center">
-                table fournisseur is empty
+                table ouvriers is empty
             </div>
         @endif
         {{-- import modal start --}}
@@ -563,7 +381,7 @@
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Nom de ouvrier</label>
+                                                <label>Nom et Prenom</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="nom" wire:model.defer='nom'>
                                                 @error('nom')
@@ -647,10 +465,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>date de dubet</label>
+                                                <label>date de debut</label>
                                                 <input class="form-control form-control-lg" type="date"
-                                                    name="datedubet" wire:model.defer='datedubet'>
-                                                @error('datedubet')
+                                                    name="datedebut" wire:model.defer='datedebut'>
+                                                @error('datedebut')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -703,7 +521,7 @@
 
 
 
-                        <h6 class="modal-title">Modifier Fournisseur</h6>
+                        <h6 class="modal-title">Modifier Ouvrier</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -790,10 +608,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>date de dubet</label>
+                                                <label>date de debut</label>
                                                 <input class="form-control form-control-lg" type="date"
-                                                    name="datedubet" wire:model.defer='datedubet'>
-                                                @error('datedubet')
+                                                    name="datedebut" wire:model.defer='datedebut'>
+                                                @error('datedebut')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -804,7 +622,7 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            
                             <div class="row">
                                 <div class="form-group mb-25 col-lg-12">
                                     <label>Adress</label>
@@ -821,8 +639,9 @@
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
                     </div>
-                    </form>
+                 </form>
                 </div>
+              </div>
             </div>
         </div>
     </div>

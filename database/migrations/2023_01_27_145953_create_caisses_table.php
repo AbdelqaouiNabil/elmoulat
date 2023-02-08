@@ -15,6 +15,7 @@ class CreateCaissesTable extends Migration
     {
         Schema::create('caisses', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->float('sold_nonjustify');
             $table->float('sold');
             $table->float('total');

@@ -18,7 +18,7 @@ class Conge extends Model
         
         'employe_id',
         'type',
-        'date_dubet',
+        'date_debut',
         'date_fin',
         'jours',
     ];

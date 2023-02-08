@@ -14,7 +14,20 @@
 
                         <div class="  breadcrumb-main">
                             <h4 class="text-capitalize breadcrumb-title">Fournisseurs</h4>
-                            <div class="breadcrumb-action justify-content-center flex-wrap">
+                            <div class="col-md-6">
+                                <div class="search-result global-shadow rounded-pill bg-white">
+
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                        <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                            type="search" placeholder="chercher par nom et prenom ou cin ..."
+                                            aria-label="Search">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div  class="breadcrumb-action justify-content-center flex-wrap">
+
 
                                 <div class="dropdown action-btn">
                                     <div class="dropdown dropdown-click">
@@ -527,8 +540,8 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label class="required">ICE</label>
-                                    <input class="form-control form-control-lg" type="text" name="ice"
-                                        wire:model.defer='ice' required>
+                                    <input class="form-control form-control-lg" type="text" name="ice" wire:model.defer='ice' maxlength="14" minlength="14"   required>
+
                                     @error('ice')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
