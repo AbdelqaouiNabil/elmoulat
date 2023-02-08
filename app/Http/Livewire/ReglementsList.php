@@ -7,6 +7,7 @@ use App\Models\Facture;
 use App\Models\Contrat;
 use App\Models\Charge;
 use App\Models\Reglement;
+use Exception;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 
@@ -125,13 +126,12 @@ class ReglementsList extends Component
 
     public function deleteReglement($id)
     {
-        $this->updateChargeReg();
         $this->id_reg = $id;
     }
 
     public function deleteData()
     {
-        $this->updateChargeReg();
+        $this->updateChargeReg($this->id_reg);
         Reglement::findOrFail($this->id_reg)->delete();
         session()->flash('message', 'reglement deleted successfully');
         $this->dispatchBrowserEvent('close-model');
@@ -139,6 +139,14 @@ class ReglementsList extends Component
 
     public function deleteSelected()
     {
+        for($j = 0; $j<count($this->selectedRegs); $j++){
+            $charge = Charge::where('id_reglement', $this->selectedRegs[$j])->get();
+            for($i = 0; $i<count($charge); $i++){
+                $charge[$i]->situation = "notPayed";
+                $charge[$i]->id_reglement = null;
+                $charge[$i]->save();
+            }
+        }
         reglement::query()
             ->whereIn('id', $this->selectedRegs)
             ->delete();
@@ -148,11 +156,17 @@ class ReglementsList extends Component
     }
 
     // update the charges table after deleting the reglement
-    public function updateChargeReg(){
-        $charge = Charge::where('id_reglement', $this->id_reg)->first();
-        $charge->id_reglement = null;
-        $charge->save();
+    public function updateChargeReg($idR){
+        $charge = Charge::where('id_reglement', $idR)->get();
+        for($i = 0; $i<count($charge); $i++){
+            $charge[$i]->situation = "notPayed";
+            $charge[$i]->id_reglement = null;
+            $charge[$i]->save();
+        }
     }
+
+
+
 
 
 
