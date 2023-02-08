@@ -27,24 +27,24 @@ class FournisseursList extends Component
 
     public function updatePages($value){
         $this->resetPages('new');
-        
+
     }
 
     public function render()
     {
         $this->bulkDisabled = count($this->selectedfournisseur) < 1;
 
-        if($this->sorttype!="" && $this->sorttype!="id" ){          
+        if($this->sorttype!="" && $this->sorttype!="id" ){
             $fournisseurs =Fournisseur::where('id_fdomaine',$this->sorttype)->paginate($this->pages,['*'],'new');
-            
+
 
         }elseif($this->sorttype=="id"){
             $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
-            
+
         }
         else{
             $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
-           
+
         }
         $fdomaines=f_domaine::all();
 
@@ -52,13 +52,13 @@ class FournisseursList extends Component
     }
 
 
-   
+
 
 
 //   validation real -time
     public function updated($fields){
         $this->validateOnly($fields,[
-            'name'=>'required',           
+            'name'=>'required',
             'id_fdomaine'=>'required|integer',
             'ice'=>'required|integer',
             'phone'=>'required|integer',
@@ -70,36 +70,36 @@ class FournisseursList extends Component
     // save projects start
     public function saveData(){
         $this->validate([
-            'name'=>'required',           
+            'name'=>'required',
             'id_fdomaine'=>'required|integer',
             'ice'=>'required|integer',
             'phone'=>'required|integer',
             'email'=>'required|email',
             'adress'=>'required',
-            
+
         ]);
-        
-       
+
+
         $fournisseur = new Fournisseur;
-        $fournisseur->name = $this->name;     
+        $fournisseur->name = $this->name;
         $fournisseur->id_fdomaine = $this->id_fdomaine;
         $fournisseur->ice = $this->ice;
         $fournisseur->phone  = $this->phone ;
         $fournisseur->email  = $this->email ;
         $fournisseur->adress = $this->adress;
-    
+
         $fournisseur->save();
         session()->flash('message','Fournisseur bien ajouter');
-        
+
         // for empty input fields after validation
-         
+
         $this->resetInputs();
-        
+
         $this->dispatchBrowserEvent('add');
 
         // for hidden the model
         $this->dispatchBrowserEvent('close-model');
-       
+
 
     }
 // save project end
@@ -112,7 +112,7 @@ private function resetInputs(){
         $this->phone = "" ;
         $this->email  = "";
         $this->adress = "";
-       
+
 }
 
 // edit Fournisseur
@@ -125,7 +125,7 @@ public function editFournisseur($id){
     $this->phone = $fournisseur->phone;
     $this->email = $fournisseur->email;
     $this->adress = $fournisseur->adress;
- 
+
 }
 
 public function editData(){
@@ -137,7 +137,7 @@ public function editData(){
     $fournisseur->phone  = $this->phone ;
     $fournisseur->email = $this->email;
     $fournisseur->adress = $this->adress;
-    
+
     $fournisseur->save();
     session()->flash('message','Fournisseur bien modifer');
     $this->dispatchBrowserEvent('close-model');
@@ -162,7 +162,7 @@ public function deleteData(){
     session()->flash('message','Foiurnisseur bien supprimer');
     $this->dispatchBrowserEvent('add');
     $this->dispatchBrowserEvent('close-model');
-    
+
 }
 //  delete project end
 
@@ -198,26 +198,26 @@ if($value){
 
  public function importData(){
     $this->validate([
-       
+
         'excelFile'=>'required|mimes:xlsx,xls',
     ]);
 
 
 
-   
+
     // $path = file_get_contents($tt);
-    
+
         $path= $this->exelFile->store('','app');
         Excel::import(new ProjetsImport($this->exelFile,$path),$path);
         session()->flash('message','projet bien imposter');
-    
-    
+
+
  }
  //import project end
 
-//  validate function 
+//  validate function
 public function validationdata(){
-   
+
 }
 
 
@@ -229,9 +229,9 @@ public function validationdata(){
 
 
 
-    
 
 
 
-    
+
+
 }

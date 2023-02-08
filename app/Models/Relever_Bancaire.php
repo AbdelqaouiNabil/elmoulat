@@ -16,10 +16,7 @@ class Relever_Bancaire extends Model
     protected $fillable = [
         'compte_id',
         'date',
-        'operation_ref',
-        'debit',
-        'credit'
-      
-        
+        // 'operation_ref',
+
     ];
 }

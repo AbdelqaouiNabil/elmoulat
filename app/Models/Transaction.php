@@ -11,15 +11,12 @@ class Transaction extends Model
     protected $fillable = [
         'id_cheque',
         'id_releverbancaire',
-        'date',
-        'type',
-        'setiation',
+        'date_Operation',
+        'date_Valeur',
+        'typePayment',
+        'libelle',
         'credit',
-        'debit',
-       
+        'debit'
 
-        
-      
-        
     ];
 }

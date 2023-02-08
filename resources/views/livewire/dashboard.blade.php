@@ -115,6 +115,17 @@
                         </a>
 
                     </li>
+                    <li>
+
+                        <a>
+
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                            <span class="menu-text">Depots</span>
+
+                        </a>
+
+                    </li>
 
                     <li class="menu-title m-top-30">
 
@@ -324,9 +335,13 @@
 
        @endif
 
-
        @if($currentTab === 'Bank')
        <livewire:settings.bank-list>
+
+       @endif
+
+       @if($currentTab === 'Relever')
+       <livewire:relever-bankaire>
 
        @endif
 

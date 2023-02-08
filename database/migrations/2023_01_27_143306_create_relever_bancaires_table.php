@@ -17,9 +17,9 @@ class CreateReleverBancairesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('compte_id');
             $table->date('date');
-            $table->string('operation_ref');
-            $table->float('debit');
-            $table->float('credit');
+            // $table->string('operation_ref');
+            // $table->float('debit');
+            // $table->float('credit');
             $table->foreign('compte_id')->references('id')->on('comptes');
             $table->timestamps();
         });
