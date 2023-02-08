@@ -8,9 +8,18 @@
 
                         <div class="breadcrumb-main">
                             <h4 class="text-capitalize breadcrumb-title">Conges</h4>
+                            <div class="col-md-6">
+                                <div class="search-result global-shadow rounded-pill bg-white">
 
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                        <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                            type="search" placeholder="chercher par nom et prenom ou cin ..."
+                                            aria-label="Search">
+                                    </div>
 
-
+                                </div>
+                            </div>
                             <div class="breadcrumb-action justify-content-center flex-wrap">
 
                                 <div class="action-btn">
@@ -83,21 +92,33 @@
 
                                                 <th>
                                                     <span class="userDatatable-title">id</span>
+                                                    <a href="" wire:click.prevent="sort('id')"><i
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Nom De Employe</span>
+                                                     <a href="" wire:click.prevent="sort('employe_id')"><i
+                                                    class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">Date de Dubet</span>
+                                                    <span class="userDatatable-title">Date de Debut</span>
+                                                     <a href="" wire:click.prevent="sort('date_debut')"><i
+                                                    class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">Date de Dubet</span>
+                                                    <span class="userDatatable-title">Date de fin</span>
+                                                     <a href="" wire:click.prevent="sort('date_fin')"><i
+                                                    class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Nombre des Jours</span>
+                                                     <a href="" wire:click.prevent="sort('jours')"><i
+                                                    class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Type de Congé</span>
+                                                     <a href="" wire:click.prevent="sort('type')"><i
+                                                    class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
 
                                                 <th>
@@ -128,11 +149,12 @@
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             {{ $conge->employe->nom }}
+                                                            {{ $conge->employe->prenom }}
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $conge->date_dubet }}
+                                                            {{ $conge->date_debut }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -260,8 +282,8 @@
                                 <div class="form-group mb-25">
                                     <label>Date Dubet</label>
                                     <input class="form-control form-control-lg" type="date" name="datedubet"
-                                        wire:model.defer='datedubet' required>
-                                    @error('datedubet')
+                                        wire:model.defer='datedebut' required>
+                                    @error('datedebut')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
@@ -365,8 +387,8 @@
                                 <div class="form-group mb-25">
                                     <label>Date Dubet</label>
                                     <input class="form-control form-control-lg" type="date" name="datedubet"
-                                        wire:model.defer='datedubet' required>
-                                    @error('datedubet')
+                                        wire:model.defer='datedebut' required>
+                                    @error('datedebut')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\ProjectSection;
 
+use App\Models\Facture;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
 use App\Models\f_domaine;
+use App\Models\Charge;
 use App\Models\Fournisseur;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -17,7 +19,7 @@ class FournisseursList extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $name, $ice, $phone, $email, $adress, $id_fournisseur, $id_fdomaine, $sorttype;
+    public $name, $ice, $phone, $email, $adress, $id_fournisseur, $id_fdomaine, $sorttype,$search;
     public $excelFile;
     public $selectedfournisseur = [];
     public $selectAll = false;
@@ -42,10 +44,14 @@ class FournisseursList extends Component
 
 
         } elseif ($this->sorttype == "id") {
-            $fournisseurs = Fournisseur::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
+            $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
+            ->orWhere('ice', 'like', '%'.$this->search.'%')
+            ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
 
         } else {
-            $fournisseurs = Fournisseur::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
+            $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
+            ->orWhere('ice', 'like', '%'.$this->search.'%')
+            ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
 
         }
         $fdomaines = f_domaine::all();
@@ -77,7 +83,7 @@ class FournisseursList extends Component
         $this->validateOnly($fields, [
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer',
+            'ice' => 'required|integer|min:14',
             'phone' => 'required|integer',
             'email' => 'required|email',
             'adress' => 'required',
@@ -90,7 +96,7 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer',
+            'ice' => 'required|integer|min:14',
             'phone' => 'required|integer',
             'email' => 'required|email',
             'adress' => 'required',
@@ -151,6 +157,15 @@ class FournisseursList extends Component
 
     public function editData()
     {
+        $this->validate([
+            'name' => 'required',
+            'id_fdomaine' => 'required|integer',
+            'ice' => 'required|integer|min:14',
+            'phone' => 'required|integer',
+            'email' => 'required|email',
+            'adress' => 'required',
+
+        ]);
         $fournisseur = Fournisseur::where('id', $this->id_fournisseur)->first();
         $fournisseur->id_fdomaine = $this->id_fdomaine;
         $fournisseur->name = $this->name;
@@ -179,14 +194,19 @@ class FournisseursList extends Component
 
     public function deleteData()
     {
-        try {
+        
+        $check= Charge::where('fournisseur_id',$this->id_fournisseur)->first();
+        $check2= Facture::where('fournisseur_id',$this->id_fournisseur)->first();
+        if($check || $check2){
+            session()->flash('error','You selected an fournisseur aready used in charge table as ForingKey');
+            return;
+            
+        }else {
             $fournisseur = Fournisseur::where('id', $this->id_fournisseur)->first();
             $fournisseur->delete();
-            session()->flash('message', 'Foiurnisseur bien supprimer');
+            session()->flash('message', 'les fournisseur bien supprimer');
+            $this->resetInputs();
             $this->dispatchBrowserEvent('add');
-            $this->dispatchBrowserEvent('close-model');
-        } catch (QueryException $e) {
-            session()->flash('error', 'Id of Fournisseur is used  as foringKey in other tables ');
         }
 
     }
@@ -198,28 +218,21 @@ class FournisseursList extends Component
 
     public function deleteSelected()
     {
-        $id = [];
-        $deleted = [];
-        $fournisseurs = Fournisseur::query()->whereIn('id', $this->selectedfournisseur)->get();
-        foreach ($fournisseurs as $fournisseur) {
-            try {
-                $fournisseur = Fournisseur::where('id', $fournisseur->id)->first();
+        foreach ($this->selectedfournisseur as $r) {
+        $check2= Facture::where('fournisseur_id',$this->id_fournisseur)->first();
+        $check = Charge::where('fournisseur_id', $r)->first();
+            if ($check || $check2) {
+                session()->flash('error', 'You selected an fournisseur aready used in charge table as ForingKey');
+                return;
+
+            } else {
+                $fournisseur = Fournisseur::where('id', $r)->first();
                 $fournisseur->delete();
-                $deleted[] = $fournisseur->id;
-            } catch (QueryException $ex) {
-                $id[] = $fournisseur->id;
+                session()->flash('message', 'les fournisseur bien supprimer');
+                $this->resetInputs();
+                $this->dispatchBrowserEvent('add');
             }
         }
-        if (count($deleted) > 0) {
-            session()->flash('message', "Deleted seccesfully Fournisseurs of Id=[" . implode(",", $deleted) . "]");
-        }
-        if (count($id) > 0) {
-            session()->flash('error', "Can't delete Fournisseurs of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
-        }
-        $this->selectedfournisseur = $id;
-        $this->selectAll = false;
-        $id = [];
-        $deleted = [];
 
     }
 
@@ -247,9 +260,6 @@ class FournisseursList extends Component
             'excelFile' => 'required|mimes:xlsx,xls',
         ]);
 
-
-
-
         // $path = file_get_contents($tt);
 
         $path = $this->exelFile->store('', 'app');
@@ -264,6 +274,7 @@ class FournisseursList extends Component
     public function validationdata()
     {
 
+        
     }
 
 

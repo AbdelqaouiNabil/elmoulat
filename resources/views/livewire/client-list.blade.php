@@ -58,11 +58,18 @@
     
             </div>
         @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger">
+    
+                {{ session('error') }}
+    
+            </div>
+        @endif
         <div class="container-fluid">
            
          <div class="action-btn mb-3">
     
-            <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($bulkDisabled) disabled @endif data-toggle="modal" data-target="#modal-all-delete" >
+            <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($bulkDisabled) hidden @endif data-toggle="modal" data-target="#modal-all-delete" >
              <i class="la la-trash"></i>delete selected</button>
     
             </div>

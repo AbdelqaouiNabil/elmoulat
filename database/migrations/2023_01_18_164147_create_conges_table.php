@@ -17,7 +17,7 @@ class CreateCongesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('employe_id');
             $table->foreign('employe_id')->references('id')->on('employes'); 
-            $table->date('date_dubet');
+            $table->date('date_debut');
             $table->date('date_fin');
             $table->integer('jours');
             $table->string('type');
