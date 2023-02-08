@@ -166,6 +166,7 @@ class ChargesList extends Component
         $this->selectAll = false;
     }
 
+
     public function checkChargeSituation(){
         if(count($this->selectedCharges) != 0){
             foreach($this->selectedCharges as $ch){

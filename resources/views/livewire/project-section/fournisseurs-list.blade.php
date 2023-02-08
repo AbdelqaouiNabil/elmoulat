@@ -152,6 +152,76 @@
 
 
 
+
+        @endif
+        @if ($fournisseurs->count() > 0)
+        <div class="container-fluid">
+            <div class="action-btn mb-3">
+            <button type="button" class=" btn btn-sm btn-danger btn-add  " @if($bulkDisabled) hidden @endif data-target="#modal-all-delete" data-toggle="modal" >
+                                          
+                <i class="la la-trash"></i>delete selected</button>
+            </div>
+            <div class="row">
+                
+                <div class="col-lg-12">
+                    <div class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
+                        <div class="table-responsive">
+                          
+                            <table class="table mb-0 table-borderless border-0">
+                                <thead>
+                                    <tr class="userDatatable-header">
+                                        
+                                        <th >
+                                            <input  type="checkbox" wire:model="selectAll">
+                                        </th>
+                                        
+                                        <th>
+                                            <span class="userDatatable-title">ID</span>
+                                            <a href="" wire:click.prevent="sort('id')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+                                            
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">Nom de Fournisseur</span>
+                                            <a href="" wire:click.prevent="sort('name')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+                                          
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">Ice </span>
+                                            <a href="" wire:click.prevent="sort('ice')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">phone</span>
+                                            <a href="" wire:click.prevent="sort('phone')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
+                                        </th>
+                                        <th >
+                                            <span class="userDatatable-title">Email</span>
+                                            <a href="" wire:click.prevent="sort('email')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
+                                        </th>
+                                        <th>
+                                            <span class="userDatatable-title">Adress</span>
+                                            <a href="" wire:click.prevent="sort('adress')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
+                                        </th>
+                                        <th >
+                                           
+                                            <span class="userDatatable-title">Domaine</span>
+                                            <a href="" wire:click.prevent="sort('id_fdomaine')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+                                           
+                                        </th> 
+                                        <th>
+                                            <span class="userDatatable-title">Actions</span>
+                                        </th>
+                                       
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+    
+                                    
+        
+
                                             @foreach ($fournisseurs as $fournisseur)
                                                 <tr>
                                                     <td>
@@ -165,6 +235,7 @@
                                                         <div class="orderDatatable-title">
                                                             {{ $fournisseur->id }}
                                                         </div>
+                                                        
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
@@ -224,6 +295,7 @@
                                             @endforeach
 
 
+
                                             <!-- End: tr -->
 
 
@@ -273,7 +345,8 @@
                     </div>
 
             @endif
-        @endif
+
+       
 
         {{-- import modal start --}}
         <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-import" tabindex="-1"
@@ -358,34 +431,41 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Phone</label>
-                                    <input class="form-control form-control-lg" type="text" name="phone"
-                                        wire:model.defer='phone'>
+
+                                    <label class="required">Phone</label>
+                                    <input class="form-control form-control-lg" type="text" name="phone" wire:model.defer='phone' >
+
                                     @error('phone')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
+
                                     <label>Adress</label>
                                     <input class="form-control form-control-lg" type="text" name="adress"
                                         wire:model.defer='adress'>
+
                                     @error('adress')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
+
                                     <label>Email</label>
                                     <input class="form-control form-control-lg" type="text" name="email"
                                         wire:model.defer='email'>
+
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="form-group mb-25">
+
                                     <label>Domaine </label>
                                     <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1"
                                         class="form-control  form-control-lg">
+
                                         <option value="" selected>select an option</option>
                                         @foreach ($f_domaines as $f_domaine)
                                             <option value="{{ $f_domaine->id }}">{{ $f_domaine->name }}</option>
@@ -454,34 +534,42 @@
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
+
                                     <label>Phone</label>
                                     <input class="form-control form-control-lg" type="text" name="phone"
                                         wire:model.defer='phone' required>
+
                                     @error('phone')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
+
                                     <label>Adress</label>
                                     <input class="form-control form-control-lg" type="text" name="adress"
                                         wire:model.defer='adress' required>
+
                                     @error('adress')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group mb-25">
+
                                     <label>Email</label>
                                     <input class="form-control form-control-lg" type="email" name="email"
                                         wire:model.defer='email' required>
+
                                     @error('email')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="form-group mb-25">
+
                                     <label>Domaine </label>
                                     <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1"
                                         class="form-control  form-control-lg">
+
                                         <option value="" selected>select an option</option>
                                         @foreach ($f_domaines as $f_domaine)
                                             <option value="{{ $f_domaine->id }}">{{ $f_domaine->name }}</option>

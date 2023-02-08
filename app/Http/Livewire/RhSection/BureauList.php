@@ -17,14 +17,35 @@ class BureauList extends Component
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
+    public $sortname="id";
+    public $sortdrection="DESC";
     public $pages = 5;
     protected $listeners = ['saveData' => 'saveData'];
     
     public function render()
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
-        $bureaus=Bureau::all();
+        $bureaus=Bureau::orderBy($this->sortname,$this->sortdrection)->paginate($this->pages,['*'],'new');
         return view('livewire.rh-section.bureau-list',['bureaus'=>$bureaus]);
+    }
+    // sort function 
+    public function sort($value){
+        if($this->sortname==$value && $this->sortdrection=="DESC"){
+            $this->sortdrection="ASC";
+        }
+        else{
+            if($this->sortname==$value && $this->sortdrection=="ASC"){
+                $this->sortdrection="DESC";
+            }
+        }
+        $this->sortname=$value;
+
+    }
+
+    // for paginate
+    public function updatingPages($value){
+        $this->resetPage('new');
+        
     }
     public function updated($fields){
         $this->validateOnly($fields,[
@@ -85,6 +106,7 @@ class BureauList extends Component
         $bureau->save();
         session()->flash('message','bureau bien modifer');
         $this->dispatchBrowserEvent('close-model');
+        $this->resetInputs();
     }
    
 
@@ -107,25 +129,38 @@ class BureauList extends Component
         $this->dispatchBrowserEvent('add');
         $this->dispatchBrowserEvent('close-model');
        }catch(QueryException $e){
-        session()->flash('error','error');
-
+        session()->flash('error','Id Bureau used as foreingKey');
        }
+       $this->resetInputs();
         
     }
 
     // delete selected rows on the table 
     public function  deleteSelectedRows(){
-        try{
-            Bureau::query()
-            ->whereIn('id',$this->selectRows)
-            ->delete();
-            $this->selectRows = [];
-           $this->selectAll = false;
-        }catch(QueryException $e){
-            session()->flash('error','error');
-            
-
+    
+        $id = [];
+        $deleted = [];
+        $bureaus = Bureau::query()->whereIn('id', $this->selectRows)->get();
+        foreach ($bureaus as $bureau) {
+            try {
+                $bureau = Bureau::where('id', $bureau->id)->first();
+                $bureau->delete();
+                $deleted[] = $bureau->id;
+            } catch (QueryException $ex) {
+                $id[] = $bureau->id;
+            }
         }
+        if (count($deleted) > 0) {
+            session()->flash('message', "Deleted seccesfully Bureau of Id=[" . implode(",", $deleted) . "]");
+        }
+        if (count($id) > 0) {
+            session()->flash('error', "Can't delete Bureau of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
+        }
+        $this->selectRows = $id;
+        $this->selectAll = false;
+        $id = [];
+        $deleted = [];
+        $this->resetInputs();
    
    }
    
