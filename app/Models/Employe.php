@@ -18,7 +18,8 @@ class Employe extends Model
         'nom',
         'prenom',
         'phone',
-        'datedubet',
+        'datenais',
+        'datedebut',
         'contrat',
         'designiation',
         'salaire'

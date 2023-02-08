@@ -57,12 +57,12 @@ class LoginController extends Controller
     ]);
  
     if (auth()->attempt(array('email'=>$input['email'], 'password'=>$input['password']))) {
-        $user = Auth::getProvider()->retrieveByCredentials($input);
+        // $user = Auth::getProvider()->retrieveByCredentials($input);
         if(auth()->user()->role == 1){
-            Auth::login($user, $request->get('remember'));
+            // Auth::login($user, $request->get('remember'));
             return redirect()->route('admin.dashboard');
         }elseif(auth()->user()->role == 2){
-            Auth::login($user, $request->get('remember'));
+            // Auth::login($user, $request->get('remember'));
             return redirect()->route('user.dashboard');
         }
         

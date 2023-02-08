@@ -7,11 +7,23 @@
                 <div class="shop-breadcrumb">
 
                     <div class="breadcrumb-main">
-                        <h4 class="text-capitalize breadcrumb-title"></h4>
+                        <h4 class="text-capitalize breadcrumb-title"> Projets</h4>
+                        <div class="col-md-6">
+                            <div class="search-result global-shadow rounded-pill bg-white">
+
+                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                        type="search" placeholder="chercher par nom  ou ville ..."
+                                        aria-label="Search">
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="breadcrumb-action justify-content-center flex-wrap">
 
                             <div class="dropdown action-btn">
-                                <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
+                                <button @if(count($bureaus)==null || count($caisses)==null ) disabled @endif class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
                                     id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                     <i class="la la-download"></i> Exporter
@@ -24,13 +36,13 @@
                                     <a href="" class="dropdown-item">
                                         <i class="la la-file-pdf"></i> PDF</a>
                                     <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                    <a href="" class="dropdown-item">
+                                    <a href="" class="dropdown-item" wire:click.prevent='export()'>
                                         <i class="la la-file-csv"></i> CSV</a>
                                 </div>
                             </div>
                               <div class="action-btn">
 
-                                <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                <button @if(count($bureaus)==null || count($caisses)==null ) disabled @endif type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                     data-target="#modal-import">
                                     <i class="la la-plus"></i>importer</button>
                         
@@ -38,7 +50,7 @@
 
                             <div class="action-btn">
 
-                                <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                <button @if(count($bureaus)==null || count($caisses)==null ) disabled @endif type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                     data-target="#modal-basic">
                                     <i class="la la-plus"></i>Ajouter</button>
 
@@ -51,6 +63,23 @@
             </div>
         </div>
     </div>
+    @if(count($bureaus) == null)
+         <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
+            <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
+         <div>
+             Vous deviez crée un Breau avant de crée un Projet
+         </div>
+        </div>
+    @else
+    @if(count($caisses) == null)
+        <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
+            <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
+        <div>
+            Vous deviez crée un Caisse avant de crée un Projet
+        </div>
+        </div>
+    @else
+        
     @if (session()->has('message'))
         <div class="alert alert-success">
 
@@ -58,6 +87,7 @@
 
         </div>
     @endif
+    @if($projets->count()>0)
     <div class="container-fluid">
      <div class="action-btn mb-3">
 
@@ -86,45 +116,69 @@
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">id</span>
+                                        <a href="" wire:click.prevent="sort('id')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">Nome de projet</span>
+                                        <a href="" wire:click.prevent="sort('name')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">image</span>
+                                        <a href="" wire:click.prevent="sort('image')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">ville</span>
+                                        <a href="" wire:click.prevent="sort('ville')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">adress</span>
+                                        <a href="" wire:click.prevent="sort('adress')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">consistance</span>
+                                        <a href="" wire:click.prevent="sort('consistance')"><i class="fa-sharp fa-solid fa-sort"></i></a>
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">titre_finance</span>
+                                        <a href="" wire:click.prevent="sort('titre_finance')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">autorisation</span>
+                                        <a href="" wire:click.prevent="sort('autorisation')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
+                                        
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">superfice</span>
+                                        <a href="" wire:click.prevent="sort('superfice')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">date de debut</span>
+                                        <a href="" wire:click.prevent="sort('datedebut')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                     </th>
                                     <th>
                                         <span class="userDatatable-title">date de fin</span>
+                                        
+                                        <a href="" wire:click.prevent="sort('datefin')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title float-right">Bureau</span>
+                                        <span class="userDatatable-title ">Bureau</span>
+                                        <a href="" wire:click.prevent="sort('id_bureau')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                     </th>
                                     <th>
-                                        <span class="userDatatable-title float-right">Caisse</span>
+                                        <span class="userDatatable-title ">Caisse</span>
+                                        <a href="" wire:click.prevent="sort('id_caisse')"><i class="fa-sharp fa-solid fa-sort"></i></a>
+
                                     </th>
                                     <th>
                                         <span class="userDatatable-title float-right">Actions</span>
+                                        
+
                                     </th>
                                 </tr>
                             </thead>
@@ -204,7 +258,7 @@
                                             </td>
                                             <td>
                                                 <div class="orderDatatable-title">
-                                                    {{ $projet->caisse->id }}
+                                                    {{ $projet->caisse->name }}
                                                 </div>
                                             </td>
 
@@ -267,6 +321,15 @@
             </div><!-- End: .col -->
         </div>
     </div>
+    @else
+        <div class="h-100 d-flex align-items-center justify-content-center" >
+          
+                table Projet  is empty            
+        </div>
+
+    @endif
+    @endif
+    @endif
 {{-- import modal start --}}
 <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-import" tabindex="-1"
         role="dialog" aria-hidden="true">

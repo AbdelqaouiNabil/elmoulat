@@ -92,6 +92,17 @@
                         </a>
 
                     </li>
+                    <li>
+
+                        <a  wire:click="changeTab('facture')" class="$currentTab === 'facture' ? 'active' : ''">
+
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                            <span class="menu-text">Facture</span>
+
+                        </a>
+
+                    </li>
 
                     <li>
 
@@ -135,7 +146,7 @@
 
                       <li>
 
-                        <a wire:click="changeTab('Compte')" class="$currentTab === 'Compte' ? 'active' : ''">
+                        <a wire:click="changeTab('Comptes')" class="$currentTab === 'Comptes' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -223,25 +234,7 @@
 
                     </li>
 
-                    <li class="menu-title m-top-30">
-
-                        <span>Constant-Section</span>
-
-                    </li>
-
-
-                    <li>
-
-                        <a  wire:click="changeTab('Domaine')" class="$currentTab === 'Domaine' ? 'active' : ''">
-
-                            <span  class="nav-icon"> <i class="fa-solid fa-book "></i></span>
-
-                            <span class="menu-text">Domaine</span>
-
-                        </a>
-
-                    </li>
-
+                   
                         <li class="has-child">
                             <a href="#" class="">
                                 <span wire:ignore><i data-feather="aperture" class="nav-icon"></i></span>
@@ -252,6 +245,10 @@
                                 <li class="nav-item">
                                     <a wire:click="changeTab('Bank')" class="$currentTab === 'Bank' ? 'active' : ''">Bank</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a wire:click="changeTab('domaine')" class="$currentTab === 'domaine' ? 'active' : ''">Domaine</a>
+                                </li>
+                                
                                 <li>
                                     <a href="" class="">Profile Settings<span class="badge badge-success menuItem">New</span></a>
 
@@ -280,9 +277,8 @@
 
        @endif
        @if($currentTab === 'fournisseurs')
-       <livewire:project-section.fournisseurs-list>
 
-
+       <livewire:project-section.fournisseurs-list>       
 
        @endif
        @if($currentTab === 'ouvriers')
@@ -295,8 +291,8 @@
 
        @endif
 
-       @if($currentTab === 'Domaine')
-       <livewire:constant-section.domaine-list>
+       @if($currentTab === 'domaine')
+       <livewire:settings.domaine-list>
 
        @endif
        @if($currentTab === 'Bureau')
@@ -340,8 +336,17 @@
 
        @endif
 
+<<<<<<< HEAD
        @if($currentTab === 'Relever')
        <livewire:relever-bankaire>
+=======
+       @if($currentTab === 'facture')
+       <livewire:facture-list>
+        @endif
+
+        @if($currentTab === 'Comptes')
+       <livewire:transactions.comptes-list>
+>>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
        @endif
 

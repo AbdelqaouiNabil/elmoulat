@@ -14,7 +14,7 @@ class Bank extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+        'id',
         'nom',
         'email',
         'phone',
@@ -26,4 +26,8 @@ class Bank extends Model
     public function compte(){
         return $this->hasMany(Compte::class,'bank_id');
     }
+
+
+  
 }
+
