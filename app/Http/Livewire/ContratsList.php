@@ -39,7 +39,6 @@ class ContratsList extends Component
     }
 
     public function editContrat($id){
-
         $contrat = Contrat::where('id',$id)->first();
         $this->id_contrat = $contrat->id;
         $this->name= $contrat->name;
@@ -50,28 +49,24 @@ class ContratsList extends Component
         $this->id_ouvrier = $contrat->id_ouvrier;
         $ouvrier = Ouvrier::where('id', $contrat->id_ouvrier)->first();
         $this->ouvrierCIN = $ouvrier->n_cin;
-        $this->updateOuvrierBeforeContrat();
     }
-
     public function updateContrat(){
-        $ouvrier =  Ouvrier::where('n_cin', $this->ouvrierCIN)->first();
-        $ouvrierID = $ouvrier->id;
+        $ouvrier = Ouvrier::where('n_cin', $this->ouvrierCIN)->first();
+        $this->id_ouvrier = $ouvrier->id;
         $contrat = Contrat::where('id',$this->id_contrat)->first();
         $contrat->name = $this->name;
         $contrat->datedebut  = $this->datedebut ;
         $contrat->datefin = $this->datefin;
         $contrat->montant = $this->montant;
         $contrat->avance = $this->avance;
-        $contrat->id_ouvrier = $ouvrierID;
+        $contrat->id_ouvrier = $this->id_ouvrier;
         $contrat->save();
         session()->flash('message','Contrat bien modifer');
-        $this->updateOuvrierAfterContrat();
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');
     }
 
     public function deleteContrat($id){
-        // $contrat = Contrat::where('id',$id)->first();
         $this->id_contrat = $id;
     }
 
@@ -93,7 +88,7 @@ class ContratsList extends Component
 
     public function saveContrat(){
         $ouvrier = Ouvrier::where('n_cin', $this->ouvrierCIN)->first();
-        $idOuvrier = $ouvrier->id;
+        $this->id_ouvrier = $ouvrier->id;
         $this->validation();
         $contrat = Contrat::create([
             'name' => $this->name,
@@ -101,26 +96,15 @@ class ContratsList extends Component
             'datefin' => $this->datefin,
             'montant' => $this->montant,
             'avance' => $this->avance,
-            'id_ouvrier' => $idOuvrier,
+            'id_ouvrier' => $this->id_ouvrier,
         ]);
         session()->flash('message', 'contrat created successfully');
-        $this->updateOuvrierAfterContrat();
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');
     }
 
 
-    // update ouvrier's contrat
-    public function updateOuvrierAfterContrat(){
-    $ouvrier =  Ouvrier::where('n_cin', $this->ouvrierCIN)->first();
-    $ouvrier->contrat = 'Yes';
-    $ouvrier->save();
-    }
-    public function updateOuvrierBeforeContrat(){
-        $ouvrier =  Ouvrier::where('id', $this->id_ouvrier)->first();
-        $ouvrier->contrat = 'No';
-        $ouvrier->save();
-    }
+
 
 
 

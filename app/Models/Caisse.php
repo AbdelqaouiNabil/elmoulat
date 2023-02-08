@@ -12,8 +12,8 @@ class Caisse extends Model
         'name',
         'sold_nonjustify',
         'sold',
-        'total',
- 
+        'total'
+
     ];
-   
+
 }

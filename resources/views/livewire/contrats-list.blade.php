@@ -8,7 +8,7 @@
                         <div class="shop-breadcrumb">
 
                             <div class="breadcrumb-main">
-                                <h4 class="text-capitalize breadcrumb-title"></h4>
+                                <h4 class="text-capitalize breadcrumb-title">Contrat</h4>
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
 
 
@@ -219,7 +219,7 @@
             @else
             <div class="alert alert-warning d-flex align-items-center" role="alert">
                 <div>
-                    <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Contrats table is empty 
+                    <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Contrats table is empty
                 </div>
               </div>
             @endif

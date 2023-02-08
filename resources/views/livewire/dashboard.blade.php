@@ -106,11 +106,22 @@
 
                     <li>
 
-                        <a>
+                        <a wire:click="changeTab('depenses')" class="$currentTab === 'depenses' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
                             <span class="menu-text">Depenses</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+
+                        <a wire:click="changeTab('reglements')" class="$currentTab === 'reglements' ? 'active' : ''">
+
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                            <span class="menu-text">Reglements</span>
 
                         </a>
 
@@ -124,7 +135,7 @@
 
                       <li>
 
-                        <a wire:click="changeTab('Compte')" class="$currentTab === 'Compte' ? 'active' : ''">
+                        <a wire:click="changeTab('Comptes')" class="$currentTab === 'Comptes' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -299,13 +310,28 @@
 
        @endif
 
+       @if($currentTab === 'depenses')
+       <livewire:depenses-list>
+
+       @endif
+
+       @if($currentTab === 'reglements')
+       <livewire:reglements-list>
+
+       @endif
+
 
        @if($currentTab === 'Bank')
        <livewire:settings.bank-list>
 
        @endif
+
        @if($currentTab === 'facture')
        <livewire:facture-list>
+        @endif
+
+        @if($currentTab === 'Comptes')
+       <livewire:transactions.comptes-list>
 
        @endif
 

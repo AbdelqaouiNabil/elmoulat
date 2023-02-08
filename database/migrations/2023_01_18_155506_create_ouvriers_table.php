@@ -24,11 +24,7 @@ class CreateOuvriersTable extends Migration
             $table->string('notation');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('adress')->nullable();
-           
-          
-
-
+            $table->string('adress')->nullable();     
             $table->timestamps();
         });
     }
