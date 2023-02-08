@@ -10,14 +10,13 @@ class Retrait extends Model
     use HasFactory;
     protected $fillable = [
         'id_caisse',
-        'operation_ref',
         'id_reglement',
         'montant',
         'date',
         'id_depense',
 
-        
-      
-        
+
+
+
     ];
 }

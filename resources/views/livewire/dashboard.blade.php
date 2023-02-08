@@ -95,11 +95,22 @@
 
                     <li>
 
-                        <a>
+                        <a wire:click="changeTab('depenses')" class="$currentTab === 'depenses' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
                             <span class="menu-text">Depenses</span>
+
+                        </a>
+
+                    </li>
+                    <li>
+
+                        <a wire:click="changeTab('reglements')" class="$currentTab === 'reglements' ? 'active' : ''">
+
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                            <span class="menu-text">Reglements</span>
 
                         </a>
 
@@ -299,6 +310,16 @@
        @endif
        @if($currentTab === 'Contrats')
        <livewire:contrats-list>
+
+       @endif
+
+       @if($currentTab === 'depenses')
+       <livewire:depenses-list>
+
+       @endif
+
+       @if($currentTab === 'reglements')
+       <livewire:reglements-list>
 
        @endif
 

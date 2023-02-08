@@ -8,10 +8,20 @@
                         <div class="shop-breadcrumb">
 
                             <div class="breadcrumb-main">
-                                <h4 class="text-capitalize breadcrumb-title"></h4>
+                                <h4 class="text-capitalize breadcrumb-title">Charge</h4>
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
 
+                                    <div class="dropdown action-btn">
+                                        <div class="dropdown dropdown-click">
 
+                                            <select @if (count($charges) == null) disabled @endif name="select-size-1" wire:model="filter"
+                                                class="form-control  form-control-lg">
+                                                <option value="" selected>Order By</option>
+                                                <option value="payed">Payed</option>
+                                                <option value="notPayed">notPayed</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div class="dropdown action-btn">
                                         <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
@@ -64,24 +74,30 @@
                 </div>
             @endif
 
-            <div class="row mb-3">
-                <div class="col mt-6">
-                    <div class="breadcrumb-main__wrapper bg-white rounded-pill">
-                        <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                            <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
-                                placeholder="chercher par nom de projet ou fournisseur..." aria-label="Search">
-                        </div>
-                    </div>
-                </div>
-                <div class="col mt-6">
-                </div>
-            </div>
+
 
 
 
             @if ($charges->count() > 0)
                 <div class="container-fluid">
+
+
+                    <div class="row mb-3">
+                        <div class="col mt-6">
+                            <div class="breadcrumb-main__wrapper bg-white rounded-pill">
+                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
+                                        placeholder="chercher par nom de projet ou fournisseur..." aria-label="Search">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mt-6">
+                        </div>
+                    </div>
+
+
+
 
 
                     <div class="action-btn mb-3">
