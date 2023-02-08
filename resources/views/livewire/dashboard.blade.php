@@ -113,7 +113,7 @@
 
                       <li>
 
-                        <a wire:click="changeTab('Compte')" class="$currentTab === 'Compte' ? 'active' : ''">
+                        <a wire:click="changeTab('Comptes')" class="$currentTab === 'Comptes' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -305,6 +305,10 @@
 
        @if($currentTab === 'Bank')
        <livewire:settings.bank-list>
+
+       @endif
+        @if($currentTab === 'Comptes')
+       <livewire:transactions.comptes-list>
 
        @endif
 
