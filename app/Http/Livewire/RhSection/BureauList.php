@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\RhSection;
 
+use App\Models\Employe;
+use App\Models\Projet;
 use Livewire\Component;
 use App\Models\Bureau;
 use Livewire\WithPagination;
@@ -115,53 +117,43 @@ class BureauList extends Component
     public function delete($id){
         $bureau = Bureau::where('id',$id)->first();
         $this->id_bureau = $id;
-        $this->name = $bureau->nom;
-        $this->ville = $bureau->ville;
-        $this->phone = $bureau->phone;
-        
+     
     }
     
     public function deleteData(){
-       try{
-        $bureau = Bureau::where('id',$this->id_bureau)->first();
-        $bureau->delete();
-        session()->flash('message','bureau bien supprimer');
-        $this->dispatchBrowserEvent('add');
-        $this->dispatchBrowserEvent('close-model');
-       }catch(QueryException $e){
-        session()->flash('error','Id Bureau used as foreingKey');
-       }
-       $this->resetInputs();
+            $check= Employe::where('bureau_id',$this->id_bureau)->first();
+            $check2 = Projet::where('id_bureau', $this->id_bureau)->first();
+        if($check || $check2){
+            session()->flash('error','this Bureau is aready used  as ForingKey');
+            return;
+            
+        }else {
+            $bureau = Bureau::where('id', $this->id_bureau)->first();
+            $bureau->delete();
+            session()->flash('message', 'les bureau bien supprimer');
+            $this->resetInputs();
+            $this->dispatchBrowserEvent('add');
+        }
         
     }
 
     // delete selected rows on the table 
     public function  deleteSelectedRows(){
-    
-        $id = [];
-        $deleted = [];
-        $bureaus = Bureau::query()->whereIn('id', $this->selectRows)->get();
-        foreach ($bureaus as $bureau) {
-            try {
-                $bureau = Bureau::where('id', $bureau->id)->first();
+
+        foreach ($this->selectRows as $r) {
+            $check = Employe::where('bureau_id', $r)->first();
+            $check2 = Projet::where('id_bureau', $r)->first();
+            if ($check || $check2) {
+                session()->flash('error', 'You selected an Bureau aready used  as ForingKey');
+                return;
+            } else {
+                $bureau = Bureau::where('id', $r)->first();
                 $bureau->delete();
-                $deleted[] = $bureau->id;
-            } catch (QueryException $ex) {
-                $id[] = $bureau->id;
+                session()->flash('message', 'les Congés bien supprimer');
+                $this->resetInputs();
+                $this->dispatchBrowserEvent('add');
             }
         }
-        if (count($deleted) > 0) {
-            session()->flash('message', "Deleted seccesfully Bureau of Id=[" . implode(",", $deleted) . "]");
-        }
-        if (count($id) > 0) {
-            session()->flash('error', "Can't delete Bureau of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
-        }
-        $this->selectRows = $id;
-        $this->selectAll = false;
-        $id = [];
-        $deleted = [];
-        $this->resetInputs();
-   
    }
    
    
