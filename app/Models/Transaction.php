@@ -13,7 +13,7 @@ class Transaction extends Model
         'id_releverbancaire',
         'date_Operation',
         'date_Valeur',
-        'typePayment',
+        'typeCheck',
         'libelle',
         'credit',
         'debit'

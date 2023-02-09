@@ -15,11 +15,11 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_cheque');
+            $table->unsignedBigInteger('id_cheque')->nullable();
             $table->unsignedBigInteger('id_releverbancaire');
             $table->date('date_Operation');
             $table->date('date_Valeur');
-            $table->string('typePayment');
+            $table->string('typeCheck')->nullable();
             $table->string('libelle');
             // $table->float('situation');
             $table->float('credit')->nullable();

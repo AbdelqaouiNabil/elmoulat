@@ -10,6 +10,7 @@ use App\Models\Charge;
 use App\Models\Fournisseur;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Excel;
 
 
 class FournisseursList extends Component
@@ -33,37 +34,15 @@ class FournisseursList extends Component
     {
         $this->resetPage('new');
 
-<<<<<<< HEAD
-    public function updatePages($value){
-        $this->resetPages('new');
-
-=======
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
     }
 
     public function render()
     {
         $this->bulkDisabled = count($this->selectedfournisseur) < 1;
 
-<<<<<<< HEAD
-        if($this->sorttype!="" && $this->sorttype!="id" ){
-            $fournisseurs =Fournisseur::where('id_fdomaine',$this->sorttype)->paginate($this->pages,['*'],'new');
-
-
-        }elseif($this->sorttype=="id"){
-            $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
-
-        }
-        else{
-            $fournisseurs = Fournisseur::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
-
-        }
-        $fdomaines=f_domaine::all();
-=======
         if ($this->sorttype != "" && $this->sorttype != "id") {
             $fournisseurs = Fournisseur::where('id_fdomaine', $this->sorttype)->paginate($this->pages, ['*'], 'new');
 
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
         } elseif ($this->sorttype == "id") {
             $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
@@ -81,7 +60,7 @@ class FournisseursList extends Component
         return view('livewire.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
     }
 
-    // sort function  for order data by table head 
+    // sort function  for order data by table head
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -96,20 +75,6 @@ class FournisseursList extends Component
     }
 
 
-<<<<<<< HEAD
-
-
-
-//   validation real -time
-    public function updated($fields){
-        $this->validateOnly($fields,[
-            'name'=>'required',
-            'id_fdomaine'=>'required|integer',
-            'ice'=>'required|integer',
-            'phone'=>'required|integer',
-            'email'=>'required|email',
-            'adress'=>'required',
-=======
 
 
 
@@ -123,7 +88,6 @@ class FournisseursList extends Component
             'phone' => 'required|integer',
             'email' => 'required|email',
             'adress' => 'required',
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
         ]);
     }
 
@@ -131,21 +95,12 @@ class FournisseursList extends Component
     public function saveData()
     {
         $this->validate([
-<<<<<<< HEAD
-            'name'=>'required',
-            'id_fdomaine'=>'required|integer',
-            'ice'=>'required|integer',
-            'phone'=>'required|integer',
-            'email'=>'required|email',
-            'adress'=>'required',
-=======
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
             'ice' => 'required|integer|min:14',
             'phone' => 'required|integer',
             'email' => 'required|email',
             'adress' => 'required',
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
         ]);
 
@@ -159,11 +114,7 @@ class FournisseursList extends Component
         $fournisseur->adress = $this->adress;
 
         $fournisseur->save();
-<<<<<<< HEAD
-        session()->flash('message','Fournisseur bien ajouter');
-=======
         session()->flash('message', 'Fournisseur bien ajouter');
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
         // for empty input fields after validation
 
@@ -187,61 +138,6 @@ class FournisseursList extends Component
         $this->phone = "";
         $this->email = "";
         $this->adress = "";
-<<<<<<< HEAD
-
-}
-
-// edit Fournisseur
-public function editFournisseur($id){
-    $fournisseur = Fournisseur::where('id',$id)->first();
-    $this->id_fournisseur = $fournisseur->id;
-    $this->id_fdomaine = $fournisseur->id_fdomaine;
-    $this->name= $fournisseur->name;
-    $this->ice = $fournisseur->ice;
-    $this->phone = $fournisseur->phone;
-    $this->email = $fournisseur->email;
-    $this->adress = $fournisseur->adress;
-
-}
-
-public function editData(){
-    $fournisseur = Fournisseur::where('id',$this->id_fournisseur)->first();
-    $fournisseur = new Fournisseur;
-    $fournisseur->id_fdomaine = $this->id_fdomaine;
-    $fournisseur->name = $this->name;
-    $fournisseur->ice  = $this->ice ;
-    $fournisseur->phone  = $this->phone ;
-    $fournisseur->email = $this->email;
-    $fournisseur->adress = $this->adress;
-
-    $fournisseur->save();
-    session()->flash('message','Fournisseur bien modifer');
-    $this->dispatchBrowserEvent('close-model');
-}
-
-//  delete fournisseur start
-
-public function deleteFournisseur($id){
-    $fournisseur = Fournisseur::where('id',$id)->first();
-    $this->id_fournisseur = $id;
-    $this->id_fdomaine = $fournisseur->id_fdomaine;
-    $this->name= $fournisseur->name;
-    $this->ice = $fournisseur->ice;
-    $this->phone = $fournisseur->phone;
-    $this->email = $fournisseur->email;
-    $this->adress = $fournisseur->adress;
-}
-
-public function deleteData(){
-    $fournisseur = Fournisseur::where('id',$this->id_fournisseur)->first();
-    $fournisseur->delete();
-    session()->flash('message','Foiurnisseur bien supprimer');
-    $this->dispatchBrowserEvent('add');
-    $this->dispatchBrowserEvent('close-model');
-
-}
-//  delete project end
-=======
 
     }
 
@@ -256,7 +152,6 @@ public function deleteData(){
         $this->phone = $fournisseur->phone;
         $this->email = $fournisseur->email;
         $this->adress = $fournisseur->adress;
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
 
     }
@@ -300,13 +195,13 @@ public function deleteData(){
 
     public function deleteData()
     {
-        
+
         $check= Charge::where('fournisseur_id',$this->id_fournisseur)->first();
         $check2= Facture::where('fournisseur_id',$this->id_fournisseur)->first();
         if($check || $check2){
             session()->flash('error','You selected an fournisseur aready used in charge table as ForingKey');
             return;
-            
+
         }else {
             $fournisseur = Fournisseur::where('id', $this->id_fournisseur)->first();
             $fournisseur->delete();
@@ -359,13 +254,6 @@ public function deleteData(){
 
     // import project start
 
-<<<<<<< HEAD
- public function importData(){
-    $this->validate([
-
-        'excelFile'=>'required|mimes:xlsx,xls',
-    ]);
-=======
     public function importData()
     {
         $this->validate([
@@ -376,38 +264,19 @@ public function deleteData(){
         // $path = file_get_contents($tt);
 
         $path = $this->exelFile->store('', 'app');
-        Excel::import(new ProjetsImport($this->exelFile, $path), $path);
+        // Excel::import(new ProjetsImport($this->exelFile, $path), $path);
         session()->flash('message', 'projet bien imposter');
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
 
     }
     //import project end
 
-<<<<<<< HEAD
-
-    // $path = file_get_contents($tt);
-
-        $path= $this->exelFile->store('','app');
-        Excel::import(new ProjetsImport($this->exelFile,$path),$path);
-        session()->flash('message','projet bien imposter');
-
-
- }
- //import project end
-
-//  validate function
-public function validationdata(){
-
-}
-=======
-    //  validate function 
+    //  validate function
     public function validationdata()
     {
 
-        
+
     }
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d
 
 
 
@@ -423,8 +292,4 @@ public function validationdata(){
 
 
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d19dc8171b529dbea5a6dcad9f0d2de9ae2cae3d

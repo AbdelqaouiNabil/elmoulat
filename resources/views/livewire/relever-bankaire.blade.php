@@ -19,7 +19,6 @@
                             </div>
                         </div>
 
-
                     </div>
                 </div>
             </div>
@@ -143,9 +142,9 @@
                             <div class="form-group mb-25">
 
                                 <label>Importer le Relever Bancaire depuis un fichier xlxs</label>
-                                <input class="form-control form-control-lg" type="file" name="excelFile"
-                                    wire:model.defer='excelFile'>
-                                @error('excelFile')
+                                <input class="form-control form-control-lg" type="file" name="file"
+                                    wire:model.defer='file'>
+                                @error('file')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
