@@ -128,6 +128,7 @@ class ProjectsList extends Component
         $this->superfice = $projet->superfice;
         $this->id_bureau = $projet->id_bureau;
         $this->id_caisse = $projet->id_caisse;
+        
 
     }
 
