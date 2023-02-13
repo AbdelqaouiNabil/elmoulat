@@ -16,7 +16,7 @@ class CreateReleverBancairesTable extends Migration
         Schema::create('relever_bancaires', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('compte_id')->nullable();
-            $table->date('date');
+            $table->date('dateR');
             // $table->string('operation_ref');
             // $table->float('debit');
             // $table->float('credit');

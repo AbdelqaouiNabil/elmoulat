@@ -110,7 +110,7 @@
 
                                             <th>
                                                 <span class="userDatatable-title">Nom de Banque</span>
-                                            </th>                            
+                                            </th>
                                             <th>
                                                 <span class="userDatatable-title">Actions</span>
                                             </th>
@@ -152,7 +152,7 @@
                                                             {{ $compte->sold }}
                                                         </div>
                                                     </td>
-                                                   
+
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             {{ $compte->bank->nom }}
@@ -381,7 +381,7 @@
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label>Numéro de compte</label>
-                                    <input class="form-control form-control-lg" type="date"
+                                    <input class="form-control form-control-lg" type="text"
                                          wire:model.defer='numeroDeCompte'>
                                     @error('numeroDeCompte')
                                         <span class="text-danger">{{ $message }}</span>
@@ -390,7 +390,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date de création</label>
-                                    <input class="form-control form-control-lg" type="date" 
+                                    <input class="form-control form-control-lg" type="date"
                                         wire:model.defer='dateDeCreation'>
                                     @error('dateDeCreation')
                                         <span class="text-danger">{{ $message }}</span>
@@ -398,7 +398,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Sold</label>
-                                    <input class="form-control form-control-lg" type="text" 
+                                    <input class="form-control form-control-lg" type="text"
                                         wire:model.defer='soldDeCompte'>
                                     @error('soldDeCompte')
                                         <span class="text-danger">{{ $message }}</span>
@@ -420,7 +420,7 @@
                                     @enderror
 
                                     </div>
-                              
+
 
 
                                 <div class="modal-footer">

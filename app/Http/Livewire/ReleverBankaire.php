@@ -42,66 +42,145 @@ class ReleverBankaire extends Component
     public $id_cheque, $numCheque;
 
     public $file;
+    public $filter;
 
     public function render()
     {
-        return view('livewire.relever-bankaire');
+        // $transactions = null;
+        // $releverB = null;
+
+            $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
+            $transactions = Transaction::where('id_releverbancaire', $this->id_Relever)->get();
+
+        if(!is_null($this->filter)) {
+            $releverB = $this->filterByMonth($this->filter);
+            if (!is_null($releverB)) {
+                // dd($releverB);
+                // test compte later on
+                $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
+            } else {
+                $transactions = null;
+                $releverBymonth = null;
+            }
+        }
+        return view('livewire.relever-bankaire', ['transactions' => $transactions, 'releverB' => $releverB]);
     }
+
+
+
+
+
+
+
+
+
+
+    // filter by month
+    public function filterByMonth($filter)
+    {
+        $month = explode('-', $filter);
+        $releverBymonth = ReleverBancaire::Where('dateR', 'like', '%' . $month[1] . '%')->first();
+        return $releverBymonth;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function importData()
     {
         $data = Excel::toArray(new releverBancaireImport, $this->file);
+        // dd($data);
 
         // START (GETTING DATE AND ID_COMPTE AND CREATE A NEW RECORD ON THE DATABASE RELEVER BANCAIRE TABLE)
         $this->dateRelever = $this->getDateReleverBank($data[0][0]);
         $this->numCompte = $this->getNumeroCompte($data[0][2]);
         $compte = Compte::where('numero', $this->numCompte)->first();
-        if(!is_null($compte)){
+        if (!is_null($compte)) {
             $releverB = ReleverBancaire::create([
-                'date' => $this->dateRelever,
+                'dateR' => $this->dateRelever,
                 'compte_id' => $compte->id
             ]);
             $this->id_Relever = $releverB->id;
-
-        }else{
+        } else {
             $releverB = ReleverBancaire::create([
-                'date' => $this->dateRelever,
+                'dateR' => $this->dateRelever,
                 'compte_id' => null
             ]);
             $this->id_Relever = $releverB->id;
         }
         // END
-
-
         $this->getTransData($data[0]);
     }
 
 
     // get the date of the relever bancaire
-    public function getDateReleverBank($array){
+    public function getDateReleverBank($array)
+    {
         $str = $array[0];
         $getdate = explode(' ', $str);
-        $date = $getdate[sizeof($getdate)-1];
+        $date = $getdate[sizeof($getdate) - 1];
         return $date;
     }
 
 
     // get num of the Compte
-    public function getNumeroCompte($array){
+    public function getNumeroCompte($array)
+    {
         $str = $array[0];
         $getnumC = explode(' ', $str);
-        $numC = $getnumC[sizeof($getnumC)-1];
+        $numC = $getnumC[sizeof($getnumC) - 1];
         return $numC;
     }
 
     // get transaction area (row,col) [dateO, libelle, credit, debit, dateV]
-    public function getTransArea($array){
-        $arrTrans= [];
-        for($i = 7; $i< sizeof($array); $i++){
-            if(is_null($array[$i][0])){
+    public function getTransArea($array)
+    {
+        $arrTrans = [];
+        for ($i = 7; $i < sizeof($array); $i++) {
+            if (is_null($array[$i][0])) {
                 break;
-            }else{
-                array_push($arrTrans,$array[$i]);
+            } else {
+                array_push($arrTrans, $array[$i]);
             }
         }
         return $arrTrans;
@@ -110,61 +189,74 @@ class ReleverBankaire extends Component
 
     // $id_Trans, $typePayment;
     // get transactions data
-    public function getTransData($array){
+    public function getTransData($array)
+    {
         $arrTrans = $this->getTransArea($array);
-        for ($i = 0; $i< sizeof($arrTrans); $i++){
-                $this->libelle = $arrTrans[$i][1];
-                $this->getDeepOnLibelle($this->libelle);
-                $this->debit = $arrTrans[$i][2];
-                $this->credit = $arrTrans[$i][3];
+        for ($i = 0; $i < sizeof($arrTrans); $i++) {
+            $this->libelle = $this->verifyLibelle($arrTrans[$i][1]);
+            $this->getDeepOnLibelle($this->libelle);
+            $this->debit = $this->verifyFloat($arrTrans[$i][2]);
+            $this->credit = $this->verifyFloat($arrTrans[$i][3]);
 
-                $this->date_Operation = $this->verifyDate($arrTrans[$i][0]);
-                $this->date_Valeur = $this->verifyDate($arrTrans[$i][4]);
+            $this->date_Operation = $this->verifyDate($arrTrans[$i][0]);
+            $this->date_Valeur = $this->verifyDate($arrTrans[$i][4]);
 
-                // CREATE A TRANSACTION RECORD
-                $transaction = Transaction::create([
-                    'id_cheque'=> $this->id_cheque,
-                    'id_releverbancaire'=> $this->id_Relever,
-                    'date_Operation'=> $this->date_Operation,
-                    'date_Valeur'=> $this->date_Valeur,
-                    'typeCheck'=> $this->typeCheck,
-                    'libelle'=> $this->libelle,
-                    'credit'=> $this->credit,
-                    'debit'=> $this->debit
-                ]);
-                // dd($transaction);
+            // CREATE A TRANSACTION RECORD
+            $transaction = Transaction::create([
+                'id_cheque' => $this->id_cheque,
+                'id_releverbancaire' => $this->id_Relever,
+                'date_Operation' => $this->date_Operation,
+                'date_Valeur' => $this->date_Valeur,
+                'typeCheck' => $this->typeCheck,
+                'libelle' => $this->libelle,
+                'credit' => $this->credit,
+                'debit' => $this->debit
+            ]);
         }
     }
 
-
-
-
-
-    public function verifyDate($date){
+    public function verifyDate($date)
+    {
         $adjustingDate = explode("/", $date);
         $newDate = "";
-        for($i = 0; $i< sizeof($adjustingDate); $i++){
-            $newDate = $newDate . $adjustingDate[sizeof($adjustingDate)-($i+1)] . '-';
+        for ($i = 0; $i < sizeof($adjustingDate); $i++) {
+            $newDate = $newDate . $adjustingDate[sizeof($adjustingDate) - ($i + 1)] . '-';
         }
         return $newDate;
     }
 
+    // get rid of this => ' .
+    public function verifyLibelle($lib)
+    {
+        $modifiedLibelle = str_replace("'", "_", $lib);
+        return $modifiedLibelle;
+    }
 
+    // get rid of this => , .
+    public function verifyFloat($myFloat)
+    {
+        $tostring = (string) $myFloat;
+        $modifiedFloat = str_replace(",", ".", $tostring);
+        return floatval($modifiedFloat);
+    }
 
-    public function getDeepOnLibelle($libelle){
+    public function getDeepOnLibelle($libelle)
+    {
         $libelleArr = explode(" ", $libelle);
-        if($libelleArr[1] =='CHEQUE'){
+        if ($libelleArr[1] == 'CHEQUE') {
             // type pr situation cheque and the num of that cheque
-            $this->typeCheck = $libelleArr[1];
+            $this->typeCheck = $libelleArr[0];
             $this->numCheque = $libelleArr[2];
 
             //Check for the id of the cheque on the Cheques table (and modify the situation as needed)
             $cheque = Cheque::where('numero', $this->numCheque)->first();
-            if(!is_null($cheque)){
+            if (!is_null($cheque)) {
                 $this->id_cheque = $cheque->id;
                 $cheque->situation = $this->typeCheck;
             }
+        } else {
+            $this->typeCheck = null;
+            $this->numCheque = null;
         }
     }
-
 }
