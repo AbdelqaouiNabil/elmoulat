@@ -10,6 +10,7 @@ use App\Models\Charge;
 use App\Models\Fournisseur;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Excel;
 
 
 class FournisseursList extends Component
@@ -59,7 +60,7 @@ class FournisseursList extends Component
         return view('livewire.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
     }
 
-    // sort function  for order data by table head 
+    // sort function  for order data by table head
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -194,13 +195,13 @@ class FournisseursList extends Component
 
     public function deleteData()
     {
-        
+
         $check= Charge::where('fournisseur_id',$this->id_fournisseur)->first();
         $check2= Facture::where('fournisseur_id',$this->id_fournisseur)->first();
         if($check || $check2){
             session()->flash('error','You selected an fournisseur aready used in charge table as ForingKey');
             return;
-            
+
         }else {
             $fournisseur = Fournisseur::where('id', $this->id_fournisseur)->first();
             $fournisseur->delete();
@@ -263,18 +264,18 @@ class FournisseursList extends Component
         // $path = file_get_contents($tt);
 
         $path = $this->exelFile->store('', 'app');
-        Excel::import(new ProjetsImport($this->exelFile, $path), $path);
+        // Excel::import(new ProjetsImport($this->exelFile, $path), $path);
         session()->flash('message', 'projet bien imposter');
 
 
     }
     //import project end
 
-    //  validate function 
+    //  validate function
     public function validationdata()
     {
 
-        
+
     }
 
 
