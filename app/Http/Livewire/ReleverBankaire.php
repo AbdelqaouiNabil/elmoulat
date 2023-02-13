@@ -68,41 +68,13 @@ class ReleverBankaire extends Component
 
 
 
-
-
-
-
-
-
-
     // filter by month
     public function filterByMonth($filter)
     {
         $month = explode('-', $filter);
-        $releverBymonth = ReleverBancaire::Where('dateR', 'like', '%' . $month[1] . '%')->first();
+        $releverBymonth = ReleverBancaire::Where('dateR', 'like', '%-' . $month[1] . '-%')->first();
         return $releverBymonth;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -253,6 +225,7 @@ class ReleverBankaire extends Component
             if (!is_null($cheque)) {
                 $this->id_cheque = $cheque->id;
                 $cheque->situation = $this->typeCheck;
+                dd($this->typeCheck);
             }
         } else {
             $this->typeCheck = null;
