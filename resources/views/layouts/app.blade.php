@@ -1443,8 +1443,7 @@
     <script src="{{asset('assets/theme_assets/js/main.js')}}"></script>
     @stack('scripts')
     @livewireScripts
-    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false"></script>
-    <script src="{{asset('js/app.js')}}"></script>
+   
     <!-- endinject-->
 </body>
 
