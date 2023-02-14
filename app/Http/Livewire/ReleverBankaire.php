@@ -46,34 +46,33 @@ class ReleverBankaire extends Component
 
     public function render()
     {
-        // $transactions = null;
-        // $releverB = null;
 
-            $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
-            $transactions = Transaction::where('id_releverbancaire', $this->id_Relever)->get();
+        $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
+        $transactions = Transaction::where('id_releverbancaire', $this->id_Relever)->get();
 
-        if(!is_null($this->filter)) {
-            $releverB = $this->filterByMonth($this->filter);
+        if (!is_null($this->filter)) {
+            $releverB = $this->filterByDate($this->filter);
             if (!is_null($releverB)) {
-                // dd($releverB);
+
                 // test compte later on
                 $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
             } else {
                 $transactions = null;
-                $releverBymonth = null;
             }
         }
+        // dd($transactions);
         return view('livewire.relever-bankaire', ['transactions' => $transactions, 'releverB' => $releverB]);
     }
 
 
 
     // filter by month
-    public function filterByMonth($filter)
+    public function filterByDate($filter)
     {
-        $month = explode('-', $filter);
-        $releverBymonth = ReleverBancaire::Where('dateR', 'like', '%-' . $month[1] . '-%')->first();
-        return $releverBymonth;
+        $date = explode('-', $filter);
+        // dd($filter);
+        $releverByDate = ReleverBancaire::Where('dateR', 'like', '%' . $date[0] . '-' . $date[1] . '-%')->first();
+        return $releverByDate;
     }
 
 
@@ -184,6 +183,7 @@ class ReleverBankaire extends Component
                 'credit' => $this->credit,
                 'debit' => $this->debit
             ]);
+            $this->updateSoldBancaire($transaction);
         }
     }
 
@@ -225,11 +225,35 @@ class ReleverBankaire extends Component
             if (!is_null($cheque)) {
                 $this->id_cheque = $cheque->id;
                 $cheque->situation = $this->typeCheck;
-                dd($this->typeCheck);
+                $cheque->save();
             }
         } else {
             $this->typeCheck = null;
             $this->numCheque = null;
         }
+    }
+
+
+    //update the Bank Account
+    public function updateSoldBancaire($transaction)
+    {
+        $compte = Compte::where('numero', $this->numCompte)->first();
+
+        //credit
+        $oldSoldNumeric = floatval($compte->sold);
+        $NewSoldNumeric = $oldSoldNumeric + $transaction->credit;
+        $compte->sold = (string) $NewSoldNumeric;
+        $compte->save();
+
+        // debit
+        $oldSoldNumeric = floatval($compte->sold);
+        $NewSoldNumeric = $oldSoldNumeric - $transaction->debit;
+        $compte->sold = (string) $NewSoldNumeric;
+        $compte->save();
+
+
+        // $compte->sold = $compte->sold + $transaction->credit;
+        // $compte->sold = $compte->sold - $transaction->debit;
+        // $compte->save();
     }
 }

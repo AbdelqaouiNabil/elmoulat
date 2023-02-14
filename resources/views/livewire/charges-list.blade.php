@@ -9,6 +9,21 @@
 
                             <div class="breadcrumb-main">
                                 <h4 class="text-capitalize breadcrumb-title">Charge</h4>
+                                    <div class="col-md-6">
+                                        <div class="search-result global-shadow rounded-pill bg-white">
+
+                                            <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                                <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                                    type="search" placeholder="chercher par nom ou type..."
+                                                    aria-label="Search">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
 
                                     <div class="dropdown action-btn">
@@ -81,31 +96,15 @@
             @if ($charges->count() > 0)
                 <div class="container-fluid">
 
-
-                    <div class="row mb-3">
-                        <div class="col mt-6">
-                            <div class="breadcrumb-main__wrapper bg-white rounded-pill">
-                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                                    <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
-                                        placeholder="chercher par nom de projet ou fournisseur..." aria-label="Search">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col mt-6">
-                        </div>
-                    </div>
-
-
-
-
-
+                    @if (!($bulkDisabled))
                     <div class="action-btn mb-3">
                         <button type="button"
-                            class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
+                            class="btn btn-sm btn-danger"
                             wire:click="deleteSelected">
                             <i class="la la-trash"></i>delete selected</button>
                     </div>
+                    @endif
+
 
 
 
@@ -397,6 +396,7 @@
                                                 <select name="fournisseur_id" id="select-size-1"
                                                     wire:model.defer='fournisseur_id'
                                                     class="form-control  form-control-lg">
+                                                    <option value="" selected>select an option</option>
                                                     @foreach ($fournisseurs as $f)
                                                         <option value="{{ $f->id }}">{{ $f->name }}
                                                         </option>
@@ -447,6 +447,7 @@
                                                 <select name="id_projet" id="select-size-1"
                                                     wire:model.defer='id_projet'
                                                     class="form-control  form-control-lg">
+                                                    <option value="" selected>select an option</option>
                                                     @foreach ($projets as $p)
                                                         <option value="{{ $p->id }}">{{ $p->name }}
                                                         </option>

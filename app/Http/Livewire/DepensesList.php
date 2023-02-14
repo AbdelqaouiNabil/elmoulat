@@ -47,7 +47,6 @@ class DepensesList extends Component
         $projets = Projet::all();
         $depenses = Depense::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
 
-
         // FOR THE FILTERING JUSTIFY OR NON JUSTIFY
         switch ($this->filter) {
             case null:
@@ -63,10 +62,15 @@ class DepensesList extends Component
                 $depenses = Depense::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
                 break;
         }
+
+        if ($this->search != "") {
+            $depenses = Depense::where('Aqui', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+        }
+
         return view('livewire.depenses-list', ['depenses' => $depenses, 'projets' => $projets]);
     }
 
- 
+
 
 
     // SEARCH FOURNISSEUR OR PROJECT
@@ -209,6 +213,7 @@ class DepensesList extends Component
         $this->description = $this->depenseInfos->description;
         $this->Aqui = $this->depenseInfos->Aqui;
         $this->type = $this->depenseInfos->type;
+        $this->id_projet =  $this->depenseInfos->id_projet;
     }
 
     public function editDepense($id)
@@ -224,7 +229,6 @@ class DepensesList extends Component
 
     public function updateDepense()
     {
-        // dd("this is the update function");
         $this->validation();
         if ($this->Aouvrier) {
             $ouvrier = Ouvrier::where('n_cin', $this->Aqui)->first();
@@ -340,7 +344,6 @@ class DepensesList extends Component
     // update Retrait and Caisse after updating the Depense
     public function UpdateCaisseAfterUpdate()
     {
-        // dd("uu");
         $dep = Depense::where('id', $this->id_depense)->first();
         $retrait = Retrait::where('id', $this->id_depense)->first();
         $retrait->montant = $this->montant;

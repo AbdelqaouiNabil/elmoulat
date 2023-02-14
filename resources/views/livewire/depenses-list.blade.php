@@ -8,8 +8,22 @@
 
                         <div class="breadcrumb-main">
                             <h4 class="text-capitalize breadcrumb-title">Depense</h4>
-                            <div class="breadcrumb-action justify-content-center flex-wrap">
 
+                            <div class="col-md-6">
+                                <div class="search-result global-shadow rounded-pill bg-white">
+
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                        <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                            type="search" placeholder="chercher par l'utiliter ..."
+                                            aria-label="Search">
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="breadcrumb-action justify-content-center flex-wrap">
                                 <div class="dropdown action-btn">
                                     <div class="dropdown dropdown-click">
 
@@ -73,24 +87,6 @@
 
         @if ($depenses->count() > 0)
             <div class="container-fluid">
-
-
-                <div class="row mb-3">
-                    <div class="col mt-6">
-                        <div class="breadcrumb-main__wrapper bg-white rounded-pill">
-                            <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                                <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                                <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
-                                    placeholder="chercher par ..." aria-label="Search">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mt-6">
-                    </div>
-                </div>
-
-
-
 
                 {{-- <div class="action-btn mb-3">
                     <button type="button"
@@ -603,9 +599,11 @@
                                 <div class="col mt-6">
                                     <label>Projet</label>
                                 </div>
-                                {{-- <div class="col mt-6">
+                                <div class="col mt-6">
+                                    @if (!is_null($depenseInfos))
                                     <label>{{$depenseInfos->projet->name}}</label>
-                                </div> --}}
+                                    @endif
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col mt-6">

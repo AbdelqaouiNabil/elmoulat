@@ -59,12 +59,16 @@
 
             @if ($reglements->count() > 0)
                 <div class="container-fluid">
+                    @if (!($bulkDisabled))
                     <div class="action-btn mb-3">
                         <button type="button"
                             class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
                             wire:click="deleteSelected">
                             <i class="la la-trash"></i>delete selected</button>
                     </div>
+                    @endif
+
+
 
                     <div class="row">
                         <div class="col-lg-12">
@@ -147,8 +151,7 @@
                                                                         <path
                                                                             d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
                                                                         </path>
-                                                                        <circle cx="12" cy="12"
-                                                                            r="3"></circle>
+                                                                        <circle cx="12" cy="12" r="3"></circle>
                                                                     </svg>
                                                                 </a>
                                                             </li>

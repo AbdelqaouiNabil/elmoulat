@@ -130,7 +130,7 @@
                     </li>
                     <li>
 
-                        <a>
+                        <a wire:click="changeTab('depots')" class="$currentTab === 'depots' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -321,6 +321,10 @@
 
         @if ($currentTab === 'reglements')
             <livewire:reglements-list>
+        @endif
+
+        @if ($currentTab === 'depots')
+            <livewire:depots-list>
         @endif
 
         @if ($currentTab === 'Bank')

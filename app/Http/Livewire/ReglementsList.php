@@ -45,6 +45,7 @@ class ReglementsList extends Component
         $this->methode = $reg->methode;
         $this->montant = $reg->montant;
         $this->date = $reg->date;
+        $this->numero_cheque = $reg->numero_cheque;
         if (!is_null($reg->id_facture)) {
             $facture = Facture::where('id', $reg->id_facture)->first();
             $this->num_facture = $facture->numero;

@@ -61,15 +61,24 @@
 
                 </div>
             @endif
+            {{-- @if (session()->has('error'))
+                <div class="alert alert-danger">
+
+                    {{ session('message') }}
+
+                </div>
+            @endif --}}
 
             @if ($contrats->count() > 0)
                 <div class="container-fluid">
+                    @if (!($bulkDisabled))
                     <div class="action-btn mb-3">
                         <button type="button"
                             class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
                             wire:click="deleteSelected">
                             <i class="la la-trash"></i>delete selected</button>
                     </div>
+                    @endif
 
                     <div class="row">
                         <div class="col-lg-12">
@@ -217,11 +226,12 @@
                     </div>
                 </div>
             @else
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <div>
-                    <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Contrats table is empty
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    <div>
+                        <span class="mr-2" aria-label="Warning:"><i
+                                class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Contrats table is empty
+                    </div>
                 </div>
-              </div>
             @endif
 
 
@@ -237,13 +247,20 @@
                             <h6 class="modal-title">Ajouter Nouveau Contrat</h6>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span data-feather="x"></span></button>
+
                         </div>
                         <div class="modal-body">
 
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
 
+                                    @if (session()->has('error'))
+                                        <div class="alert alert-danger" class="form-group mb-25">
 
+                                            {{ session('error') }}
+
+                                        </div>
+                                    @endif
                                     <div class="row">
                                         <div class="col mt-6">
 
@@ -452,5 +469,5 @@
 
 
 </div>
-    {{-- </div>
+{{-- </div>
     </div> --}}
