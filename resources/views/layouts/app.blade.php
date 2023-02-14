@@ -70,7 +70,7 @@
     <header class="header-top">
         <nav class="navbar navbar-light">
             <div class="navbar-left">
-                <a href="" class="sidebar-toggle">
+                <a href="{{route('admin.dashboard')}}" class="sidebar-toggle">
                     <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
                 <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
 
@@ -1278,7 +1278,7 @@
                         </li>
                         <li>
     
-                            <a  wire:click="changeTab('Bureau')" class="$currentTab === 'Bureau' ? 'active' : ''">
+                            <a  href="{{route('admin.bureau')}}">
     
                                 <span data-feather="folder" class="nav-icon"></span>
     
@@ -1443,6 +1443,8 @@
     <script src="{{asset('assets/theme_assets/js/main.js')}}"></script>
     @stack('scripts')
     @livewireScripts
+    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false"></script>
+    <script src="{{('js/app.js')}}"></script>
    
     <!-- endinject-->
 </body>

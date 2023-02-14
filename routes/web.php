@@ -7,7 +7,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Livewire\ProjectSection\FournisseursList;
 use App\Http\Livewire\ProjectSection\ProjectsList;
+use App\Http\Livewire\RhSection\BureauList;
 use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\ownerDashboard;
+use App\Models\User;
 
 
 /*
@@ -41,19 +44,37 @@ Route::middleware(['middleware'=>'PreventBack'])->group(function () {
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
+Route::get('/addRole', function(){
+    $admin = User::where('email','admin@gmail.com')->first();
+    $admin->attachRole('admin');
+    $owner = User::where('email','owner@gmail.com')->first();
+    $owner->attachRole('owner');
+});
+
+
 
 // Admin Routes
 
 
-Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']], function(){
-    Route::get('/fournisseurlist',FournisseursList::class)->name('admin.fournisseurList');
-    Route::get('/Projetslist',ProjectsList::class)->name('admin.projects');
-    Route::get('/dashboard',Dashboard::class)->name('admin.dashboard');
-    // Route::get('dashboard/projects',[AdminController::class,'projects'])->name('admin.projects');
-    // Route::get('dashboard/fournisseurs',[AdminController::class,'fournisseurs'])->name('admin.fournisseurs');
-    // Route::get('dashboard/ouvriers',[AdminController::class,'ouvriers'])->name('admin.ouvriers');
-    
-});
+    Route::group(['prefix'=>'admin', 'middleware' => ['role:admin','auth','PreventBack']], function(){
+        Route::get('/dashboard',ownerDashboard::class)->name('owner.dashboard');
+            
+     });
+
+
+    Route::group(['prefix'=>'owner', 'middleware' => ['role:owner','auth','PreventBack']], function(){
+        Route::get('/liste-fournisseurs',FournisseursList::class)->name('admin.fournisseurList');
+        Route::get('/liste-projets',ProjectsList::class)->name('admin.projects');
+        Route::get('/liste-ouvriers',ProjectsList::class)->name('admin.ouvriers');
+        Route::get('/dashboard',Dashboard::class)->name('admin.dashboard'); 
+
+
+
+
+        Route::get('/liste-bureau',BureauList::class)->name('admin.bureau'); 
+
+
+    });
 
 
 

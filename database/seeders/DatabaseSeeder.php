@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             BankSeeder::class,
             CompteSeeder::class,
         ]);
+        $this->call(LaratrustSeeder::class);
+
        
     }
 }
