@@ -15,7 +15,7 @@ class FactureList extends Component
 {
     use WithFileUploads;
     use WithPagination;
-    public $numero, $date, $scan_pdf, $id_facture,$fournisseur_id,$type, $search;
+    public $numero, $date, $scan_pdf, $id_facture,$fournisseur_id,$type, $search, $montant ,$prix;
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
@@ -54,7 +54,9 @@ class FactureList extends Component
     public function updated($fields)
     {
         $this->validateOnly($fields, [
-            'numero' => 'required|integer',
+            'numero' => 'required|regex:/[0-9]*',
+            'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'prix' => 'required|regex:/^\d*(\.\d{2})?$/',
             'scan_pdf' => 'required|mimes:pdf',
             'type' => 'required',
             'date' => 'required|date',
@@ -71,6 +73,8 @@ class FactureList extends Component
         $this->scan_pdf = "";
         $this->id_facture = "";
         $this->fournisseur_id = "";
+        $this->montant = "";
+        $this->prix = "";
 
     }
 
@@ -85,6 +89,10 @@ class FactureList extends Component
             'type' => 'required',
             'date' => 'required|date',
             'fournisseur_id' => 'required|integer',
+            'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'prix' => 'required|regex:/^\d*(\.\d{2})?$/',
+
+
 
 
         ]);
@@ -93,6 +101,7 @@ class FactureList extends Component
         $facture->numero = $this->numero;
         $facture->date = $this->date;
         $facture->type = $this->type;
+        $facture->montant = $this->montant;
         $facture->fournisseur_id = $this->fournisseur_id;
         $facture->scan_pdf = $scanfile;
         $facture->save();
@@ -110,13 +119,15 @@ class FactureList extends Component
 
     }
     // edit data of a row 
-    public function edit($id)
+    public function edit($id ,$prix)
     {
         $facture = Facture::where('id', $id)->first();
         $this->id_facture = $id;
         $this->numero = $facture->numero;
         $this->date = $facture->date;
         $this->type = $facture->type;
+        $this->montant = $facture->montant;
+        $this->prix = $prix;
         $this->scan_pdf = $facture->scan_pdf;
         $this->fournisseur_id = $facture->fournisseur_id;
     }
@@ -131,6 +142,10 @@ class FactureList extends Component
             'type' => 'required',
             'date' => 'required|date',
             'fournisseur_id' => 'required|integer',
+            'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'prix' => 'required|regex:/^\d*(\.\d{2})?$/',
+
+
 
 
         ]);

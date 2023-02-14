@@ -115,7 +115,7 @@
                                                 <a href="" wire:click.prevent="sort('nom')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
-                                           
+
                                             <th>
                                                 <span class="userDatatable-title">cin</span>
                                                 <a href="" wire:click.prevent="sort('cin')"><i
@@ -192,7 +192,7 @@
                                                         </div>
                                                     </td>
 
-                                    
+
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             <a href=" {{ Storage::disk('local')->url($ouvrier->cin) }}"
@@ -622,26 +622,26 @@
                                     </div>
 
                                 </div>
-                            
-                            <div class="row">
-                                <div class="form-group mb-25 col-lg-12">
-                                    <label>Adress</label>
-                                    <input class="form-control form-control-lg" type="text" name="adress"
-                                        wire:model.defer='adress'>
-                                    @error('adress')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+
+                                <div class="row">
+                                    <div class="form-group mb-25 col-lg-12">
+                                        <label>Adress</label>
+                                        <input class="form-control form-control-lg" type="text" name="adress"
+                                            wire:model.defer='adress'>
+                                        @error('adress')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
-                    </div>
 
 
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
+                            </div>
+                        </form>
                     </div>
-                 </form>
                 </div>
-              </div>
             </div>
         </div>
     </div>
@@ -725,7 +725,15 @@
 
     <!-- ends: .modal-info-Delete -->
 
-
+    @push('scripts')
+        <script>
+            window.addEventListener('close-model', event => {
+                $('#modal-basic').modal('hide');
+                $('#edit-modal').modal('hide');
+                $('#modal-info-delete').modal('hide');
+            })
+        </script>
+    @endpush
 
 
 </div>

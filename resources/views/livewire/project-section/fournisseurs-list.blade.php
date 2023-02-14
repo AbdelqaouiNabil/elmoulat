@@ -12,7 +12,7 @@
                 <div class="col-lg-12">
                     <div class="shop-breadcrumb">
 
-                        <div class="  breadcrumb-main">
+                        <div class="breadcrumb-main">
                             <h4 class="text-capitalize breadcrumb-title">Fournisseurs</h4>
                             <div class="col-md-6">
                                 <div class="search-result global-shadow rounded-pill bg-white">
@@ -96,7 +96,7 @@
                 <span class="mr-2" aria-label="Warning:"><i
                         class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
                 <div>
-                    Vous deviez crée un fournisseur avant de crée un domaine
+                    Vous deviez crée un domaine avant de crée un fournisseur
                 </div>
             </div>
         @else
@@ -107,6 +107,15 @@
 
                 </div>
             @endif
+
+            @if (session()->has('error'))
+            <div class="alert alert-danger">
+
+                {{ session('message') }}
+
+            </div>
+        @endif
+
 
             @if ($fournisseurs->count() > 0)
                 <div class="container-fluid">
@@ -258,16 +267,6 @@
                                                 </tr>
                                             @endforeach
 
-
-
-                                            <!-- End: tr -->
-
-
-
-
-
-
-
                                         </tbody>
                                     </table><!-- End: table -->
 
@@ -301,17 +300,12 @@
                     </div>
                 </div>
             @else
-                <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
-                    <span class="mr-2" aria-label="Warning:"><i
-                            class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
-                    <div>
-                        table fournisseur is empty
-                    </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                table ouvriers is empty
+            </div>
 
             @endif
         @endif
-
-
 
         {{-- import modal start --}}
         <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-import" tabindex="-1"
@@ -636,5 +630,16 @@
 
 
         </div>
+
+        @push('scripts')
+            <script>
+                window.addEventListener('close-model', event => {
+                    $('#modal-basic').modal('hide');
+                    $('#edit-modal').modal('hide');
+                    $('#modal-info-delete').modal('hide');
+                })
+            </script>
+        @endpush
+
     </div>
 </div>

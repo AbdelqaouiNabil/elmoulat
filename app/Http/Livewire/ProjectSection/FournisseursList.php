@@ -85,7 +85,7 @@ class FournisseursList extends Component
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
             'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
         ]);
@@ -97,8 +97,8 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
 
@@ -120,10 +120,9 @@ class FournisseursList extends Component
 
         $this->resetInputs();
 
-        $this->dispatchBrowserEvent('add');
-
         // for hidden the model
         $this->dispatchBrowserEvent('close-model');
+        $this->dispatchBrowserEvent('add');
 
 
     }
@@ -161,8 +160,8 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
 
@@ -271,12 +270,7 @@ class FournisseursList extends Component
     }
     //import project end
 
-    //  validate function
-    public function validationdata()
-    {
 
-
-    }
 
 
 

@@ -1,5 +1,19 @@
 <?php
 
+use App\Http\Livewire\ChargesList;
+use App\Http\Livewire\ClientList;
+use App\Http\Livewire\ContratsList;
+use App\Http\Livewire\DepensesList;
+use App\Http\Livewire\FactureList;
+use App\Http\Livewire\ProjectSection\OuvriersList;
+use App\Http\Livewire\ReglementsList;
+use App\Http\Livewire\RhSection\BureauList;
+use App\Http\Livewire\RhSection\CongeList;
+use App\Http\Livewire\RhSection\EmployeList;
+use App\Http\Livewire\Settings\BankList;
+use App\Http\Livewire\Settings\DomaineList;
+use App\Http\Livewire\Transactions\ChequierList;
+use App\Http\Livewire\Transactions\ComptesList;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
@@ -56,22 +70,36 @@ Route::get('/addRole', function(){
 // Admin Routes
 
 
+
+
     Route::group(['prefix'=>'admin', 'middleware' => ['role:admin','auth','PreventBack']], function(){
         Route::get('/dashboard',ownerDashboard::class)->name('owner.dashboard');
+        
             
      });
 
 
     Route::group(['prefix'=>'owner', 'middleware' => ['role:owner','auth','PreventBack']], function(){
-        Route::get('/liste-fournisseurs',FournisseursList::class)->name('admin.fournisseurList');
-        Route::get('/liste-projets',ProjectsList::class)->name('admin.projects');
-        Route::get('/liste-ouvriers',ProjectsList::class)->name('admin.ouvriers');
-        Route::get('/dashboard',Dashboard::class)->name('admin.dashboard'); 
+          Route::get('/dashboard',Dashboard::class)->name('admin.dashboard');
+    Route::get('/Projetslist',ProjectsList::class)->name('admin.projects');
+    Route::get('/fournisseurlist',FournisseursList::class)->name('admin.fournisseurs');
+    Route::get('/ouvrierlist',OuvriersList::class)->name('admin.ouvriers');
+    Route::get('/facturelist',FactureList::class)->name('admin.factures');
+    Route::get('/clientlist',ClientList::class)->name('admin.clients');
+    Route::get('/chargeliste',ChargesList::class)->name('admin.charges');
+    Route::get('/contratlist',ContratsList::class)->name('admin.contrats');
+    Route::get('/depenselist',DepensesList::class)->name('admin.depenses');
+    Route::get('/reglementlist',ReglementsList::class)->name('admin.reglements');
+    Route::get('/comptelist',ComptesList::class)->name('admin.comptes');
+    // Route::get('/comptelist',Relever::class)->name('admin.compte');
+    Route::get('/chequierlist',ChequierList::class)->name('admin.chequiers');
+    Route::get('/bureaulist',BureauList::class)->name('admin.bureaus');
+    Route::get('/domainelist',DomaineList::class)->name('admin.domaines');
+    Route::get('/congelist',CongeList::class)->name('admin.conges');
+    Route::get('/employelist',EmployeList::class)->name('admin.employes');
+    Route::get('/banklist',BankList::class)->name('admin.banks');
 
 
-
-
-        Route::get('/liste-bureau',BureauList::class)->name('admin.bureau'); 
 
 
     });
