@@ -14,7 +14,7 @@
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
 
-                                            <select @if (count($charges) == null) disabled @endif name="select-size-1" wire:model="filter"
+                                            <select name="select-size-1" wire:model="filter"
                                                 class="form-control  form-control-lg">
                                                 <option value="" selected>Order By</option>
                                                 <option value="payed">Payed</option>

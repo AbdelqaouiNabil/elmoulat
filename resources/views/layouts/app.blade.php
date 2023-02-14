@@ -71,10 +71,11 @@
     <header class="header-top">
         <nav class="navbar navbar-light">
             <div class="navbar-left">
-                <a href="" class="sidebar-toggle">
-                    <img class="svg" src="{{ asset('img/svg/bars.svg') }}" alt="img"></a>
-                <a class="navbar-brand" href="#"><img class="dark" src="{{ asset('img/logo_dark.png') }}"
-                        alt="svg"><img class="light" src="{{ asset('img/logo_white.png') }}" alt="img"></a>
+
+                <a href="{{route('admin.dashboard')}}" class="sidebar-toggle">
+                    <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
+                <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
+
 
                 <div class="top-menu">
 
@@ -1304,7 +1305,9 @@
                         </li>
                         <li>
 
+
                             <a href="{{ route('admin.bureaus') }}">
+
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1476,6 +1479,7 @@
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
         data-turbolinks-eval="false"></script>
     {{-- <script src="{{asset('js/app.js')}}"></script> --}}
+
     <!-- endinject-->
 </body>
 

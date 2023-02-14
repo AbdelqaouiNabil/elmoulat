@@ -21,7 +21,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Livewire\ProjectSection\FournisseursList;
 use App\Http\Livewire\ProjectSection\ProjectsList;
+use App\Http\Livewire\RhSection\BureauList;
 use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\ownerDashboard;
+use App\Models\User;
 
 
 /*
@@ -55,11 +58,29 @@ Route::middleware(['middleware'=>'PreventBack'])->group(function () {
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
+Route::get('/addRole', function(){
+    $admin = User::where('email','admin@gmail.com')->first();
+    $admin->attachRole('admin');
+    $owner = User::where('email','owner@gmail.com')->first();
+    $owner->attachRole('owner');
+});
+
+
 
 // Admin Routes
 
-Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']], function(){
-    Route::get('/dashboard',Dashboard::class)->name('admin.dashboard');
+
+
+
+    Route::group(['prefix'=>'admin', 'middleware' => ['role:admin','auth','PreventBack']], function(){
+        Route::get('/dashboard',ownerDashboard::class)->name('owner.dashboard');
+        
+            
+     });
+
+
+    Route::group(['prefix'=>'owner', 'middleware' => ['role:owner','auth','PreventBack']], function(){
+          Route::get('/dashboard',Dashboard::class)->name('admin.dashboard');
     Route::get('/Projetslist',ProjectsList::class)->name('admin.projects');
     Route::get('/fournisseurlist',FournisseursList::class)->name('admin.fournisseurs');
     Route::get('/ouvrierlist',OuvriersList::class)->name('admin.ouvriers');
@@ -77,9 +98,12 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']]
     Route::get('/congelist',CongeList::class)->name('admin.conges');
     Route::get('/employelist',EmployeList::class)->name('admin.employes');
     Route::get('/banklist',BankList::class)->name('admin.banks');
- 
-    
-});
+
+
+
+
+    });
+
 
 
 
