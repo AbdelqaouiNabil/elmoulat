@@ -7,13 +7,15 @@ use App\Models\Chequier;
 use App\Models\Relever_Bancaire;
 use Livewire\Component;
 use App\Models\Compte;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class ComptesList extends Component
 {
    
     use WithFileUploads;
     use WithPagination;
-    public $numero, $id_compte, $sold, $datecreation, $bankID;
+    public $numero, $id_compte, $sold, $datecreation, $bankId;
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
@@ -52,7 +54,7 @@ class ComptesList extends Component
     {
         $this->validateOnly($fields, [
             'numero' => 'required|regex:/[0-9]*/',
-            'sold' => 'required|float',
+            'sold' => 'required|regex:/^\d*(\.\d{2})?$/',
             'datecreation' => 'required|date',
             'bankId' => 'required|integer',
         ]);
@@ -63,7 +65,7 @@ class ComptesList extends Component
         $this->numero = "";
         $this->sold = "";
         $this->datecreation = "";
-        $this->bankID = "";
+        $this->bankId = "";
     }
 
 
@@ -72,14 +74,14 @@ class ComptesList extends Component
     {
         $this->validate([
             'numero' => 'required|regex:/[0-9]*/',
-            'sold' => 'required|float',
+            'sold' => 'required|regex:/^\d*(\.\d{2})?$/',
             'datecreation' => 'required|date',
             'bankId' => 'required|integer',
         ]);
         $compte = new Compte;
         $compte->numero = $this->numero;
         $compte->date_creation = $this->datecreation;
-        $compte->bank_id = $this->bankID;
+        $compte->bank_id = $this->bankId;
         $compte->sold = $this->sold;
         $c=$compte->save();
         if($c){
@@ -101,7 +103,7 @@ class ComptesList extends Component
     public function edit($id)
     {
         $compte = compte::where('id', $id)->first();
-        $this->bankID = $id;
+        $this->bankId = $id;
         $this->numero = $compte->numero;
         $this->datecreation = $compte->date_creation;
         $this->sold = $compte->sold;
@@ -112,15 +114,15 @@ class ComptesList extends Component
 
         $this->validate([
             'numero' => 'required|regex:/[0-9]*/',
-            'sold' => 'required|float',
+            'sold' => 'required|regex:/^\d*(\.\d{2})?$/',
             'datecreation' => 'required|date',
             'bankId' => 'required|integer',
         ]);
-        $compte = Compte::where('id', $this->bankID)->first();
+        $compte = Compte::where('id', $this->bankId)->first();
         $compte->numero = $this->numero;
         $compte->date_creation = $this->datecreation;
         $compte->sold = $this->sold;
-        $compte->bank_id = $this->bankID;
+        $compte->bank_id = $this->bankId;
         $c=$compte->save();
         if($c){
         session()->flash('message', 'compte updated');
@@ -138,19 +140,19 @@ class ComptesList extends Component
     public function delete($id)
     {
         $compte = Compte::where('id', $id)->first();
-        $this->bankID = $id;
+        $this->bankId = $id;
 
     }
 
     public function deleteData()
     {
         $chequier = Chequier::where('id_compte', $this->id_compte)->first();
-        $releverbancaire = Chequier::where('compte_id', $this->id_compte)->first();
+        $releverbancaire = Relever_Bancaire::where('compte_id', $this->compte_id)->first();
         if ($chequier || $releverbancaire) {
             session()->flash('error', 'this compte is aready used  as ForingKey');
             return;
         } else {
-             $compte = Compte::where('id', $this->bankID)->delete();
+             $compte = Compte::where('id', $this->id_compte)->delete();
            if($compte){
             session()->flash('message', 'les compte bien supprimer');
             $this->resetInputs();
@@ -159,7 +161,6 @@ class ComptesList extends Component
            }
            else{
             session()->flash('error', 'this compte is aready used  as ForingKey');
-
            }
            
         }
@@ -170,23 +171,11 @@ class ComptesList extends Component
     public function deleteSelectedRows()
     {
 
-        foreach ($this->selectRows as $r) {
-            $check = Employe::where('compte_id', $r)->first();
-            $check2 = Projet::where('id_compte', $r)->first();
-            if ($check || $check2) {
-                session()->flash('error', 'You selected an compte aready used  as ForingKey');
-                return;
-            } else {
-                $compte = compte::where('id', $r)->first();
-                $compte->delete();
-                session()->flash('message', 'les Congés bien supprimer');
-                $this->resetInputs();
-                $this->dispatchBrowserEvent('add');
-            }
-        }
+       
+    
 
-        $chequier = Chequier::whereIn('compte_id', $this->selectRows)->get();
-        $releverbancaire = Relever_Bancaire::whereIn('id_compte', $this->selectRows)->get();
+        $chequier = Chequier::whereIn('id_compte', $this->selectRows)->get();
+        $releverbancaire = Relever_Bancaire::whereIn('compte_id', $this->selectRows)->get();
 
         if(count($chequier)>0 || count($releverbancaire)>0){
             session()->flash('error', "this compte use as a foreign key  ");

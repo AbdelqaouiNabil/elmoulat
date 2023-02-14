@@ -17,9 +17,9 @@ class CreateComptesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('bank_id');
             $table->foreign('bank_id')->references('id')->on('banks');
-            $table->integer('numero');
+            $table->string('numero');
             $table->date('date_creation');
-            $table->float('sold');
+            $table->string('sold');
             $table->timestamps();
             
         });
