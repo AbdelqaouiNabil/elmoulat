@@ -1,4 +1,5 @@
 <div>
+
     <aside class="sidebar-wrapper">
 
         <div class="sidebar sidebar-collapse" id="sidebar">
@@ -346,6 +347,9 @@
 
 
     </div>
+
+   
+       <h1> i'am a dashboard</h1>
 </div>
 <script>
     window.addEventListener('close-model', event => {
