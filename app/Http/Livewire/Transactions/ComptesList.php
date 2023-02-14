@@ -170,10 +170,6 @@ class ComptesList extends Component
     // delete selected rows on the table 
     public function deleteSelectedRows()
     {
-
-       
-    
-
         $chequier = Chequier::whereIn('id_compte', $this->selectRows)->get();
         $releverbancaire = Relever_Bancaire::whereIn('compte_id', $this->selectRows)->get();
 

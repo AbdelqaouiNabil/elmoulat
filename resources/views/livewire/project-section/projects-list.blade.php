@@ -97,7 +97,7 @@
 
                             <button type="button" class="btn btn-sm btn-danger"
                                 @if ($bulkDisabled) hidden @endif data-toggle="modal"
-                                data-target="#modal-info-delete" wire:click="deleteSelected">
+                                data-target="#modal-all-delete">
                                 <i class="la la-trash"></i>delete selected</button>
 
 
@@ -816,11 +816,13 @@
 
         </div>
 
+
+        
+
         <!-- ends: .modal-info-Delete -->
 
         <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
             role="dialog" aria-hidden="true">
-
             <div class="modal-dialog modal-sm modal-info" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -839,14 +841,12 @@
 
                         <button type="button" class="btn btn-danger btn-outlined btn-sm"
                             data-dismiss="modal">annuler</button>
-                        <button type="button" wire:click.prevent='deleteData'
+                        <button type="button" wire:click.prevent='deleteSelected'
                             class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
 
                     </div>
                 </div>
             </div>
-
-
         </div>
         @push('scripts')
             <script>

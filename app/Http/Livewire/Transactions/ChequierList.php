@@ -57,17 +57,9 @@ class ChequierList extends Component
         $chequier->nombreDeCheque = ($this->nombreDeFin - $this->nombreDeDebut) + 1;
         $validate = $chequier->save();
         for ($i = 0; $i < ($this->nombreDeFin - $this->nombreDeDebut) + 1; $i++) {
-            // this's for calculate number of zero in the start  
-            $n=str_split(strval($this->nombreDeDebut));
-            $nbr_zro=0;
-            foreach($n as $v){
-                if($v=='0'){
-                    $nbr_zro++;
-                }else{break;}
-            }
-
+          
             $cheques[] = new Cheque([
-                'numero' =>str_repeat("0",$nbr_zro).''.strval($this->nombreDeDebut + $i),
+                'numero' => strval(str_pad(($this->nombreDeDebut + $i),7,'0',STR_PAD_LEFT)),
                 'date' => $this->dateMiseEnDisposition,
                 'situation' => 'disponible',
                 'id_chequier' => $chequier->id,

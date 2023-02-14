@@ -143,6 +143,12 @@
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
+                                                    <span class="userDatatable-title">Montant</span>
+                                                    <a href="" wire:click.prevent="sort('montant')" ><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
+                                                </th>
+                                                
+                                                <th>
                                                     <span class="userDatatable-title">Date de Facture </span>
                                                     <a href="" wire:click.prevent="sort('date')"><i
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
@@ -194,6 +200,11 @@
                                                         <td>
                                                             <div class="orderDatatable-title">
                                                                 {{ $facture->type }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $facture->montant }}
                                                             </div>
                                                         </td>
                                                         <td>
