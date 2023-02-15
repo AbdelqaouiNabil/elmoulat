@@ -217,7 +217,7 @@
 
 
 
-                        <h6 class="modal-title">Ajouter Nouveau domaine</h6>
+                        <h6 class="modal-title">Ajouter Nouveau Role</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -227,7 +227,7 @@
                         <form enctype="multipart/form-data">
                             <div class="form-basic">
                                 <div class="form-group mb-25">
-                                    <label>Nom utilisateur</label>
+                                    <label>Role Name</label>
                                     <input class="form-control form-control-lg" type="text" name="name"
                                         wire:model.defer='name'>
                                     @error('name')
@@ -235,40 +235,20 @@
                                     @enderror
 
                                 </div>
-                                <div class="form-group mb-25">
-                                    <label>Email utilisateur</label>
-                                    <input class="form-control form-control-lg" type="text" name="email"
-                                        wire:model.defer='email'>
-                                    @error('email')
+                                      <div class="form-group mb-25">
+                                      @foreach($permissions as $permission)
+                                        <label>{{$permission->display_name}}</label>
+                                    <input class="form-control form-control-lg" type="checkbox" name="name"
+                                        wire:model.defer='name'>
+                                      @endforeach
+                                    
+                                    @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
                                 </div>
-                                <div class="form-group mb-25">
-                                    <label>Mot de passe</label>
-                                    <input class="form-control form-control-lg" type="text" name="password"
-                                        wire:model.defer='password'>
-                                    @error('password')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                </div>
-                               <div class="form-group mb-25">
-                                                <label>Role </label>
-                                                <select name="select-size-1" wire:model.defer='role'
-                                                    id="select-size-1" class="form-control  form-control-lg">
-                                                    <option value="" selected>select an option</option>
-                                                    @foreach ($roles as $role)
-                                                        <option value="{{ $role->id }}">{{ $role->name }}
-                                                        </option>
-                                                    @endforeach
-
-                                                </select>
-                                                @error('role')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-
-                                            </div>
+                               
+                             
 
                             </div>
 

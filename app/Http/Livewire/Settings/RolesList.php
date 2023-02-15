@@ -9,7 +9,8 @@ class RolesList extends Component
 {
     public function render()
     {
+        $permissions=Permission::all();
         $roles = Role::all();
-        return view('livewire.settings.roles-list',['roles'=>$roles]);
+        return view('livewire.settings.roles-list',['roles'=>$roles,'permissions'=>$permissions]);
     }
 }
