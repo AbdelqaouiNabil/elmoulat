@@ -256,8 +256,8 @@
                                 <div class="form-basic">
                                     <div class="form-group mb-25">
                                         <label>Date</label>
-                                        <input class="form-control form-control-lg" type="date" name="date"
-                                            wire:model.defer='date'>
+                                        <input class="form-control form-control-lg" type="date" name="dateR"
+                                            wire:model.defer='dateR'>
                                     </div>
                                     <div class="form-group mb-25">
                                         <label>Montant</label>
@@ -408,8 +408,6 @@
                         </form>
                     </div>
                 </div>
-
-
 
             </div>
 

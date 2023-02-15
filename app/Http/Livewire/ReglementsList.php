@@ -53,9 +53,7 @@ class ReglementsList extends Component
             $facture = Facture::where('id', $reg->id_facture)->first();
             $this->num_facture = $facture->numero;
         }
-        // if(){
 
-        // }
         if (!is_null($reg->id_contrat)) {
             $contrat = Contrat::where('id', $reg->id_contrat)->first();
             $this->nom_contrat = $contrat->name;
@@ -118,11 +116,17 @@ class ReglementsList extends Component
         }
     }
 
+
+
+
+
+
+
+
     public function updateReglement()
     {
         $this->validation();
         $pass = true;
-
 
         if ($this->optionF) {
             $facture = Facture::where('numero', $this->num_facture)->first();
@@ -147,6 +151,20 @@ class ReglementsList extends Component
         }
         if ($this->optionC) {
             $this->methode = 'cheque';
+            $cheque = Cheque::where('numero', $this->numero_cheque)->first();
+            if (is_null($cheque)) {
+                session()->flash('error', 'error on numero cheque');
+                $this->numero_cheque = null;
+            }else{
+                
+            }
+            if (!($this->verifyCheque($this->numero_cheque))) {
+                session()->flash('error', 'error on numero cheque');
+                $this->numero_cheque = null;
+                $pass = false;
+            } else {
+                $pass = true;
+            }
         } else {
             $this->methode = 'cash';
             $this->numero_cheque = null;
@@ -159,12 +177,30 @@ class ReglementsList extends Component
             $reglement->numero_cheque = $this->numero_cheque;
             $reglement->id_facture = $this->id_facture;
             $reglement->id_contrat = $this->id_contrat;
+
+            //modifier old cheque situation (livrer to dispo)
+            if(!is_null($reglement->numero_cheque)){
+                $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
+                $cheque->situation = "disponible";
+                $cheque->save();
+            }
             $reglement->save();
+            //modifier cheque situation
+            if ($reglement->numero_cheque) {
+                $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
+                $cheque->situation = "livrer";
+                $cheque->save();
+            }
             session()->flash('message', 'reglement bien modifer');
             $this->resetInputs();
             $this->dispatchBrowserEvent('close-model');
         }
     }
+
+
+
+
+
 
     public function deleteReglement($id)
     {
@@ -174,6 +210,15 @@ class ReglementsList extends Component
     public function deleteData()
     {
         $this->updateChargeReg($this->id_reg);
+
+        //update cheque situation
+        $reglement = reglement::where('id', $this->id_reg)->first();
+        if(!is_null($reglement->numero_cheque)){
+            $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
+            $cheque->situation = "disponible";
+            $cheque->save();
+        }
+
         Reglement::findOrFail($this->id_reg)->delete();
         session()->flash('message', 'reglement deleted successfully');
         $this->dispatchBrowserEvent('close-model');
@@ -182,6 +227,16 @@ class ReglementsList extends Component
     public function deleteSelected()
     {
         for ($j = 0; $j < count($this->selectedRegs); $j++) {
+
+            // update cheque situations
+            $reglement = reglement::where('id', $this->selectedRegs[$j])->first();
+            if(!is_null($reglement->numero_cheque)){
+                $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
+                $cheque->situation = "disponible";
+                $cheque->save();
+            }
+
+            // update charge situation
             $charge = Charge::where('id_reglement', $this->selectedRegs[$j])->get();
             for ($i = 0; $i < count($charge); $i++) {
                 $charge[$i]->situation = "notPayed";
@@ -246,31 +301,33 @@ class ReglementsList extends Component
         }
         if ($this->optionC) {
             $this->methode = 'cheque';
-
-
-            
-            //check whethr the numero cheque exist on table cheques also check its situation
-            $cheque = Cheque::where('numero', $this->numero_cheque)->first();
-            if (is_null($cheque)) {
+            if (!($this->verifyCheque($this->numero_cheque))) {
                 session()->flash('error', 'error on numero cheque');
                 $this->numero_cheque = null;
                 $pass = false;
             } else {
-
+                $pass = true;
             }
         } else {
             $this->methode = 'cash';
             $this->numero_cheque = null;
         }
         if ($pass) {
-            reglement::create([
-                'dateR' => $this->date,
+            $reg = reglement::create([
+                'dateR' => $this->dateR,
                 'montant' => $this->montant,
                 'methode' => $this->methode,
                 'numero_cheque' => $this->numero_cheque,
                 'id_facture' => $this->id_facture,
                 'id_contrat' => $this->id_contrat,
             ]);
+
+            //modifier cheque situation
+            if ($reg->numero_cheque) {
+                $cheque = Cheque::where('numero', $reg->numero_cheque)->first();
+                $cheque->situation = "livrer";
+                $cheque->save();
+            }
             session()->flash('message', 'reglement created successfully');
             $this->resetInputs();
             $this->dispatchBrowserEvent('close-model');
@@ -281,7 +338,7 @@ class ReglementsList extends Component
     public function validation()
     {
         $this->validate([
-            'date' => 'required',
+            'dateR' => 'required',
             'montant' => 'required',
             'cin_Ouv' => 'required',
         ]);
@@ -306,6 +363,25 @@ class ReglementsList extends Component
             $this->selectedRegs = Reglement::pluck('id');
         } else {
             $this->selectedRegs = [];
+        }
+    }
+
+
+
+
+
+    //check whethe the numero cheque exist on table cheques also check its situation
+    public function verifyCheque($numCheque)
+    {
+        $cheque = Cheque::where('numero', $numCheque)->first();
+        if (is_null($cheque)) {
+            return false;
+        } else {
+            if ($cheque->situation == 'disponible') {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }
