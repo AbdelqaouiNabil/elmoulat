@@ -150,7 +150,7 @@ class FactureList extends Component
         $this->type = $facture->type;
         $this->montant = $facture->montant;
         $this->fournisseur_id = $facture->fournisseur_id;
-        if($this->type !='real'){
+        if($this->type == 'fake' || $this->type == 'ajustement'){
          $retrait = Retrait::where('id_facture', $id)->first();
          $this->prix = $retrait->montant;
          $this->caisse = $retrait->id_caisse;

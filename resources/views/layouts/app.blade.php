@@ -1281,6 +1281,17 @@
                             </a>
 
                         </li>
+                        <li>
+
+                            <a href="{{ route('admin.cheques') }}">
+
+                                <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
+
+                                <span class="menu-text">cheques</span>
+
+                            </a>
+
+                        </li>
 
 
 

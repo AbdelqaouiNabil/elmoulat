@@ -24,7 +24,8 @@
 
                                 <div class="action-btn">
 
-                                    <button @if(count($employes)==null) disabled @endif type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                    <button @if (count($employes) == null) disabled @endif type="button"
+                                        class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                         data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
@@ -93,32 +94,32 @@
                                                 <th>
                                                     <span class="userDatatable-title">id</span>
                                                     <a href="" wire:click.prevent="sort('id')"><i
-                                                        class="fa-sharp fa-solid fa-sort"></i></a>
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Nom De Employe</span>
-                                                     <a href="" wire:click.prevent="sort('employe_id')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                    <a href="" wire:click.prevent="sort('employe_id')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Date de Debut</span>
-                                                     <a href="" wire:click.prevent="sort('date_debut')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                    <a href="" wire:click.prevent="sort('date_debut')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Date de fin</span>
-                                                     <a href="" wire:click.prevent="sort('date_fin')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                    <a href="" wire:click.prevent="sort('date_fin')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Nombre des Jours</span>
-                                                     <a href="" wire:click.prevent="sort('jours')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                    <a href="" wire:click.prevent="sort('jours')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Type de Congé</span>
-                                                     <a href="" wire:click.prevent="sort('type')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                    <a href="" wire:click.prevent="sort('type')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
 
                                                 <th>
@@ -212,7 +213,7 @@
                                             <li class="atbd-pagination__item">
                                                 <div class="paging-option">
                                                     <select name="page-number" class="page-selection"
-                                                        wire:model.defer="pages">
+                                                        wire:model="pages">
                                                         <option value="20">20/page</option>
                                                         <option value="40">40/page</option>
                                                         <option value="60">60/page</option>
@@ -254,12 +255,12 @@
                         <form enctype="multipart/form-data" wire:submit.prevent="saveData()">
                             <div class="form-basic">
                                 @if (session()->has('form_error'))
-                                <div class="alert alert-danger">
-                
-                                    {{ session('form_error') }}
-                
-                                </div>
-                            @endif
+                                    <div class="alert alert-danger">
+
+                                        {{ session('form_error') }}
+
+                                    </div>
+                                @endif
 
                                 <div class="form-group mb-25">
                                     <label>Le Nom de Employé</label>
@@ -519,9 +520,17 @@
 
         <!-- ends: .modal-info-Delete -->
 
-
+        @push('scripts')
+            <script>
+                window.addEventListener('close-model', event => {
+                    $('#modal-basic').modal('hide');
+                    $('#edit-modal').modal('hide');
+                    $('#modal-info-delete').modal('hide');
+                })
+            </script>
+        @endpush
 
 
     </div>
-</div>
+
 </div>

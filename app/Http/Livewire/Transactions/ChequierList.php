@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Transactions;
 
 use Carbon\Traits\ToStringFormat;
+use League\CommonMark\Extension\SmartPunct\EllipsesParser;
 use Livewire\Component;
 use App\Models\Chequier;
 use App\Models\Cheque;
@@ -16,18 +17,18 @@ class ChequierList extends Component
     use WithPagination;
 
 
-    public $chequierID, $dateMiseEnDisposition, $nombreDeDebut, $nombreDeFin;
+    public $chequierID, $dateMiseEnDisposition, $nombreDeDebut, $nombreDeFin,$compte_id ;
     public $search = "";
     protected $queryString = ['search'];
     public $Chequierpage = 5;
     public $selectedChequier = [];
     public $bulkDisabled = true;
     public $selectAll = false;
-    public $compte_id = 1;
     public $rules = [
         'dateMiseEnDisposition' => 'required|date',
         'nombreDeDebut' => 'required',
         'nombreDeFin' => 'required|gt:nombreDeDebut',
+        'compte_id' => 'required|integer',
     ];
 
 
@@ -45,9 +46,9 @@ class ChequierList extends Component
     //SAVE CHEQUIER START
     public function saveData()
     {
-          
 
-        $this->validate();
+
+        $this->validate($this->rules);
 
         $chequier = new Chequier;
         $chequier->dateDeMiseEnDisposition = $this->dateMiseEnDisposition;
@@ -57,9 +58,9 @@ class ChequierList extends Component
         $chequier->nombreDeCheque = ($this->nombreDeFin - $this->nombreDeDebut) + 1;
         $validate = $chequier->save();
         for ($i = 0; $i < ($this->nombreDeFin - $this->nombreDeDebut) + 1; $i++) {
-          
+
             $cheques[] = new Cheque([
-                'numero' => strval(str_pad(($this->nombreDeDebut + $i),7,'0',STR_PAD_LEFT)),
+                'numero' => strval(str_pad(($this->nombreDeDebut + $i), 7, '0', STR_PAD_LEFT)),
                 'date' => $this->dateMiseEnDisposition,
                 'situation' => 'disponible',
                 'id_chequier' => $chequier->id,
@@ -93,20 +94,33 @@ class ChequierList extends Component
 
     public function deleteData()
     {
-        $cheque = Cheque::where('id_chequier', $this->chequierID)->get();
-        if (count($cheque) > 0) {
+
+        // $cheque = Cheque::where('id_chequier', $this->chequierID)->get();
+        $cheque = Cheque::where('id_chequier', $this->chequierID)->where('situation', 'disponible')->get();
+        $cheque2 = Cheque::where('id_chequier', $this->chequierID)->get();
+        if (count($cheque2) > count($cheque)) {
             session()->flash('error', 'this chequier use as a foreign key ');
         } else {
-            $v = Chequier::where('id', $this->chequierID)->delete();
-            if ($v) {
-                session()->flash('success', ' chequier bien supprimer');
+            $valide = Cheque::where('id_chequier', $this->chequierID)->delete();
+            if ($valide) {
+                $v = Chequier::where('id', $this->chequierID)->delete();
+                if ($v) {
+                    session()->flash('success', ' chequier bien supprimer');
 
-            } else {
+                } else {
+                    session()->flash('error', 'this chequier use as a foreign key ');
+
+                }
+            }else{
                 session()->flash('error', 'this chequier use as a foreign key ');
 
             }
+
         }
-        
+        $this->dispatchBrowserEvent('close-model');
+        $this->resetInputs();
+
+
     }
 
 
@@ -146,23 +160,22 @@ class ChequierList extends Component
     {
         $cheque = Cheque::whereIn('id_chequier', $this->selectedChequier)->get();
 
-        if(count($cheque)>0){
+        if (count($cheque) > 0) {
             session()->flash('error', "this chequier use as a foreign key  ");
 
-        }else{
+        } else {
             $chequier = Chequier::whereIn('id', $this->selectedChequier)->delete();
-            if($chequier){
-            session()->flash('success', 'Chequier Supprimer avec succée');
-            $this->selectedChequier = [];
-            $this->selectAll = false;
-            $this->bulkDisabled = true;
+            if ($chequier) {
+                session()->flash('success', 'Chequier Supprimer avec succée');
+                $this->selectedChequier = [];
+                $this->selectAll = false;
+                $this->bulkDisabled = true;
 
-            }else{
-            session()->flash('error', "this chequier use as a foreign key  ");
-                     
+            } else {
+                session()->flash('error', "this chequier use as a foreign key  ");
+
             }
         }
-    
 
     }
     public function updatedSelectAll($value)

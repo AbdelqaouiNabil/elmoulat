@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\ChargesList;
+use App\Http\Livewire\ChequeList;
 use App\Http\Livewire\ClientList;
 use App\Http\Livewire\ContratsList;
 use App\Http\Livewire\DepensesList;
@@ -77,6 +78,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']]
     Route::get('/congelist',CongeList::class)->name('admin.conges');
     Route::get('/employelist',EmployeList::class)->name('admin.employes');
     Route::get('/banklist',BankList::class)->name('admin.banks');
+    Route::get('/cheques',ChequeList::class)->name('admin.cheques');
  
     
 });
