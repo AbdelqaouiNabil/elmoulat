@@ -173,29 +173,29 @@ class ProjectsList extends Component
 
     public function deleteData()
     {
-       
+
             $path = Storage::disk('local')->url($this->image);
             File::delete(public_path($path));
             Projet::where('id', $this->project_edit_id)->delete();
-            
+
             $this->resetInputs();
             session()->flash('message', 'projet bien supprimer');
             $this->dispatchBrowserEvent('add');
             $this->dispatchBrowserEvent('close-model');
-       
+
 
     }
     public function deleteSelected()
     {
 
 
-       
+
         Projet::query()->whereIn('id', $this->selectedProjects)->delete();
         $this->selectedProjects = [];
         $this->selectAll = false;
         session()->flash('message', 'projet bien supprimer');
 
-      
+
 
     }
     public function updatedSelectAll($value)
@@ -221,7 +221,7 @@ class ProjectsList extends Component
         $path = $this->exelFile->store('excel', 'app');
         // Excel::import(new ProjetsImport($this->exelFile, $path), $path);
         $this->excel($path);
-        
+
         session()->flash('message', 'projet bien imposter');
 
 
@@ -241,7 +241,7 @@ class ProjectsList extends Component
         return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
 
     }
-    // sort function 
+    // sort function
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -262,7 +262,7 @@ class ProjectsList extends Component
     }
 
     public function excel($path){
-        
+
         $spreadsheet = IOFactory::load(storage_path('app/' . $path));
 
         $i = 0;
@@ -346,7 +346,7 @@ class ProjectsList extends Component
         $row_range = range(1, $row_limit);
         // $column_range = range('J', $column_limit);
         $startcount = 1;
-        $data = array();
+        // $data = array();
         foreach ($row_range as $row) {
 
             $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
@@ -363,14 +363,14 @@ class ProjectsList extends Component
             $startcount++;
             $i++;
         }
-       
+
 
 
         return $this->excel_data;
 
     }
 
-    // export data 
+    // export data
     public function export(){
         return Excel::download(new ProjectExport, 'projects.xlsx');
     }

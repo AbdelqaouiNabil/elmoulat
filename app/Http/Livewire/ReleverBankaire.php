@@ -87,16 +87,6 @@ class ReleverBankaire extends Component
 
 
 
-
-
-
-
-
-
-
-
-
-
     public function importData()
     {
         $data = Excel::toArray(new releverBancaireImport, $this->file);

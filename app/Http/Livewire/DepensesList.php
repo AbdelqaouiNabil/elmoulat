@@ -73,29 +73,6 @@ class DepensesList extends Component
 
 
 
-    // SEARCH FOURNISSEUR OR PROJECT
-    // public function searchBy(){
-    //     $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages,['*'],'new');
-    //     $projets = Projet::all();
-    //     foreach($projets as $proj){
-    //         $projName = $proj->name;
-    //         $projID = $proj->id;
-    //         if($projName == $this->search){
-    //             $charges = Charge::where('id_projet', $projID )->paginate($this->pages,['*'],'new');
-    //         }
-    //         break;
-    //     }
-    //     $fournisseurs = Fournisseur::all();
-    //     foreach($fournisseurs as $fourniss){
-    //         $fournissName = $fourniss->name;
-    //         $fournissID = $fourniss->id;
-    //         if($fournissName == $this->search){
-    //             $charges = Charge::where('fournisseur_id', $fournissID )->paginate($this->pages,['*'],'new');
-    //         }
-    //         break;
-    //     }
-    //     return $charges;
-    // }
 
 
 

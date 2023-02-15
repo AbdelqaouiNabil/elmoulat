@@ -9,10 +9,23 @@
 
                             <div class="breadcrumb-main">
                                 <h4 class="text-capitalize breadcrumb-title">Contrat</h4>
+
+                                <div class="col-md-6">
+                                    <div class="search-result global-shadow rounded-pill bg-white">
+
+                                        <div
+                                            class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                            <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                                type="search"
+                                                placeholder="chercher par nom contrat, cin ouvrier, date ..."
+                                                aria-label="Search">
+                                        </div>
+
+                                    </div>
+                                </div>
+
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
-
-
-
                                     <div class="dropdown action-btn">
                                         <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
                                             id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
@@ -40,13 +53,6 @@
                                             <i class="la la-plus"></i>Ajouter</button>
 
                                     </div>
-                                    {{-- @if ($contrats->count() > 0)
-                                    <div class="action-btn">
-                                        <button type="button" class="btn btn-sm btn-primary btn-add" wire:click="checkChargeSituation"  data-toggle="modal" data-target="#cree-reglement" >
-                                            <i class="la la-plus"></i> Créer un Règlement
-                                        </button>
-                                    </div>
-                                    @endif --}}
                                 </div>
                             </div>
 
@@ -61,23 +67,15 @@
 
                 </div>
             @endif
-            {{-- @if (session()->has('error'))
-                <div class="alert alert-danger">
-
-                    {{ session('message') }}
-
-                </div>
-            @endif --}}
-
             @if ($contrats->count() > 0)
                 <div class="container-fluid">
-                    @if (!($bulkDisabled))
-                    <div class="action-btn mb-3">
-                        <button type="button"
-                            class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
-                            wire:click="deleteSelected">
-                            <i class="la la-trash"></i>delete selected</button>
-                    </div>
+                    @if (!$bulkDisabled)
+                        <div class="action-btn mb-3">
+                            <button type="button"
+                                class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
+                                wire:click="deleteSelected">
+                                <i class="la la-trash"></i>delete selected</button>
+                        </div>
                     @endif
 
                     <div class="row">
@@ -167,7 +165,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $c->ouvrier->n_cin }}
+                                                            {{ $c->cin_Ouv }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -226,12 +224,9 @@
                     </div>
                 </div>
             @else
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <div>
-                        <span class="mr-2" aria-label="Warning:"><i
-                                class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Contrats table is empty
-                    </div>
-                </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                table Contrat is empty
+            </div>
             @endif
 
 
@@ -279,11 +274,17 @@
                                                 <label>Date Debut</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     name="datedebut" wire:model.defer='datedebut'>
+                                                @error('datedebut')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group mb-25">
                                                 <label>Date Fin</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     name="datefin" wire:model.defer='datefin'>
+                                                @error('datefin')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group mb-25">
                                                 <label>Montant</label>
@@ -295,7 +296,7 @@
                                             </div>
                                             <div class="form-group mb-25">
                                                 <label>Avance</label>
-                                                <input class="form-control form-control-lg" type="avance"
+                                                <input class="form-control form-control-lg" type="text"
                                                     name="avance" wire:model.defer='avance'>
                                                 @error('avance')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -304,8 +305,8 @@
 
                                             <div class="form-group mb-25 ">
                                                 <label>Ouvrier CIN</label>
-                                                <input class="form-control form-control-lg" type="ouvrierCIN"
-                                                    name="ouvrierCIN" wire:model.defer='ouvrierCIN'>
+                                                <input class="form-control form-control-lg" type="text"
+                                                    name="cin_Ouv" wire:model.defer='cin_Ouv'>
                                             </div>
 
                                         </div>
@@ -365,11 +366,17 @@
                                             <label>Date Debut</label>
                                             <input class="form-control form-control-lg" type="date"
                                                 name="datedebut" wire:model.defer='datedebut'>
+                                            @error('datedebut')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="form-group mb-25">
                                             <label>Date Fin</label>
                                             <input class="form-control form-control-lg" type="date" name="datefin"
                                                 wire:model.defer='datefin'>
+                                            @error('datefin')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
                                         <div class="form-group mb-25">
@@ -390,9 +397,9 @@
                                         </div>
                                         <div class="form-group mb-25">
                                             <label>Ouvrier</label>
-                                            <input class="form-control form-control-lg" type="text"
-                                                name="ouvrierCIN" wire:model.defer='ouvrierCIN'>
-                                            @error('ouvrierCIN')
+                                            <input class="form-control form-control-lg" type="text" name="cin_Ouv"
+                                                wire:model.defer='cin_Ouv'>
+                                            @error('cin_Ouv')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>

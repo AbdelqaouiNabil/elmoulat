@@ -9,7 +9,31 @@
 
                             <div class="breadcrumb-main">
                                 <h4 class="text-capitalize breadcrumb-title">Reglement</h4>
+
+                                <div class="col-md-6">
+                                    <div class="search-result global-shadow rounded-pill bg-white">
+
+                                        <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                            <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                                type="search" placeholder="chercher par Cin Ouvrier ou Date..."
+                                                aria-label="Search">
+                                        </div>
+
+                                    </div>
+                                </div>
+
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
+                                    <div class="dropdown action-btn">
+                                        <div class="dropdown dropdown-click">
+                                            <select name="select-size-1" wire:model="filter"
+                                                class="form-control  form-control-lg">
+                                                <option value="" selected>Order By</option>
+                                                <option value="cash">Cash</option>
+                                                <option value="cheque">Cheque</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
                                     <div class="dropdown action-btn">
                                         <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
@@ -63,6 +87,8 @@
 
                 </div>
             @endif --}}
+
+            {{-- @if (!is_null($reglements)) --}}
 
             @if ($reglements->count() > 0)
                 <div class="container-fluid">
@@ -140,10 +166,20 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $reg->methode }}
-                                                        </div>
+                                                        @if ($reg->methode === 'cash')
+                                                            <div class="orderDatatable-title">
+                                                                <span class="badge rounded-pill bg-info "
+                                                                    style="color:white; font-weight:700; padding-right:15px; padding-left:15px;">{{ $reg->methode }}</span>
+                                                            </div>
+                                                        @else
+                                                            <div class="orderDatatable-title">
+                                                                <span class="badge rounded-pill bg-warning "
+                                                                    style="color:white; font-weight:700;">{{ $reg->methode }}</span>
+                                                            </div>
+                                                        @endif
                                                     </td>
+
+
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             {{ $reg->contrat->cin_Ouv }}
@@ -222,12 +258,9 @@
                     </div>
                 </div>
             @else
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <div>
-                        <span class="mr-2" aria-label="Warning:"><i
-                                class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Reglement table is empty
-                    </div>
-                </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                table Reglements is empty
+            </div>
             @endif
 
 
@@ -363,8 +396,8 @@
                                         wire:model.defer='cin_Ouv'>
                                 </div>
                                 @error('cin_Ouv')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                 <div class="row">
                                     <div class="col mt-6">
                                         <div class="form-group mb-25">

@@ -7,6 +7,9 @@ use App\Models\Facture;
 use App\Models\Contrat;
 use App\Models\Ouvrier;
 use App\Models\Charge;
+use App\Models\Projet;
+use App\Models\Caisse;
+use App\Models\Retrait;
 use App\Models\Cheque;
 use App\Models\Reglement;
 use Exception;
@@ -26,6 +29,11 @@ class ReglementsList extends Component
     public $selectAll = false;
     public $cin_Ouv, $nom_contrat;
 
+    public $old_numero_cheque;
+    public $filter, $search;
+
+
+
     public function updatedPages()
     {
         $this->resetPage('new');
@@ -38,8 +46,45 @@ class ReglementsList extends Component
         $this->bulkDisabled = count($this->selectedRegs) < 1;
         $reglements = Reglement::latest()->paginate($this->pages, ['*'], 'new');
         $factures = Facture::all();
+
+        // FILLTER BY SITUATION PAYED OR NOT PAYED
+        switch ($this->filter) {
+            case 'cash':
+                $reglements = Reglement::where('methode', 'cash')->paginate($this->pages, ['*'], 'new');
+                break;
+            case 'cheque':
+                $reglements = Reglement::where('methode', 'cheque')->paginate($this->pages, ['*'], 'new');
+                break;
+            default:
+                $reglements = Reglement::latest()->paginate($this->pages, ['*'], 'new');
+                break;
+        }
+        if ($this->search != "") {
+            $contrat = Contrat::where('cin_Ouv', 'like', '%'. $this->search . '%')->first();
+            if(!is_null($contrat)){
+                $reglements = Reglement::where('id_contrat',$contrat->id)
+                ->orWhere('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+            }else{
+                $reglements = Reglement::where('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+            }
+
+        }
+
         return view('livewire.reglements-list', ["reglements" => $reglements, "factures" => $factures]);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function showReglement($id)
@@ -114,11 +159,12 @@ class ReglementsList extends Component
                 $this->cin_Ouv = $contrat->cin_Ouv;
             }
         }
+
+        //modifier old cheque situation (livrer to dispo)
+        if (!is_null($reglement->numero_cheque)) {
+            $this->old_numero_cheque = $reglement->numero_cheque;
+        }
     }
-
-
-
-
 
 
 
@@ -155,12 +201,6 @@ class ReglementsList extends Component
             if (is_null($cheque)) {
                 session()->flash('error', 'error on numero cheque');
                 $this->numero_cheque = null;
-            }else{
-                
-            }
-            if (!($this->verifyCheque($this->numero_cheque))) {
-                session()->flash('error', 'error on numero cheque');
-                $this->numero_cheque = null;
                 $pass = false;
             } else {
                 $pass = true;
@@ -177,16 +217,12 @@ class ReglementsList extends Component
             $reglement->numero_cheque = $this->numero_cheque;
             $reglement->id_facture = $this->id_facture;
             $reglement->id_contrat = $this->id_contrat;
-
-            //modifier old cheque situation (livrer to dispo)
-            if(!is_null($reglement->numero_cheque)){
-                $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                $cheque->situation = "disponible";
-                $cheque->save();
-            }
             $reglement->save();
-            //modifier cheque situation
-            if ($reglement->numero_cheque) {
+            //modifier cheques situation
+            $OLDcheque = Cheque::where('numero', $this->old_numero_cheque)->first();
+            $OLDcheque->situation = "disponible";
+            $OLDcheque->save();
+            if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
                 $cheque->situation = "livrer";
                 $cheque->save();
@@ -213,7 +249,7 @@ class ReglementsList extends Component
 
         //update cheque situation
         $reglement = reglement::where('id', $this->id_reg)->first();
-        if(!is_null($reglement->numero_cheque)){
+        if (!is_null($reglement->numero_cheque)) {
             $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
             $cheque->situation = "disponible";
             $cheque->save();
@@ -230,7 +266,7 @@ class ReglementsList extends Component
 
             // update cheque situations
             $reglement = reglement::where('id', $this->selectedRegs[$j])->first();
-            if(!is_null($reglement->numero_cheque)){
+            if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
                 $cheque->situation = "disponible";
                 $cheque->save();
@@ -267,6 +303,27 @@ class ReglementsList extends Component
 
 
 
+    // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
+    public function updateCaisseAfterSave(){
+        $projet = Projet::where('id', $this->id_projet)->first();
+        $caisse = Caisse::where('id', $projet->id_caisse)->first();
+        Retrait::create([
+            'montant' => $this->montant,
+            'date' => $this->date,
+            'id_depense' => $this->id_depense,
+            'id_caisse' => $caisse->id,
+            'id_reglement' => null
+        ]);
+        if ($this->type == 'Justifier') {
+            $caisse->sold = ($caisse->sold) - ($this->montant);
+            $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
+            $caisse->save();
+        } else {
+            $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
+            $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
+            $caisse->save();
+        }
+    }
 
 
 

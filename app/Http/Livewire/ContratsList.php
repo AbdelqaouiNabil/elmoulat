@@ -15,12 +15,13 @@ class ContratsList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_contrat, $name, $datedebut, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN;
+    public $id_contrat, $name, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN;
     public $selectedContrats = [];
     public $pages = 10;
     public $bulkDisabled = true;
     public $selectAll = false;
 
+    public $search;
 
 
     public function updatedPages()
@@ -36,6 +37,13 @@ class ContratsList extends Component
         $this->bulkDisabled = count($this->selectedContrats) < 1;
         $contrats = Contrat::latest()->paginate($this->pages, ['*'], 'new');
         $ouvriers = Ouvrier::all();
+
+        if($this->search != ""){
+            $contrats = Contrat::where('cin_Ouv', 'like', '%'.$this->search.'%')
+            ->orWhere('datedebut', 'like', '%'.$this->search.'%')
+            ->orWhere('name', 'like', '%'.$this->search.'%')->paginate($this->pages, ['*'], 'new');
+        }
+
         return view('livewire.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers]);
     }
 
@@ -94,38 +102,29 @@ class ContratsList extends Component
 
     public function saveContrat()
     {
-        $ouvrier = Ouvrier::where('n_cin', $this->ouvrierCIN)->first();
+        $this->validation();
+        $ouvrier = Ouvrier::where('n_cin', $this->cin_Ouv)->first();
         if (!is_null($ouvrier)) {
             $this->id_ouvrier = $ouvrier->id;
-            $this->validation();
             $contrat = Contrat::create([
                 'name' => $this->name,
                 'datedebut' => $this->datedebut,
                 'datefin' => $this->datefin,
                 'montant' => $this->montant,
                 'avance' => $this->avance,
-                'id_ouvrier' => $this->id_ouvrier,
+                'cin_Ouv' => $this->cin_Ouv,
+                'id_ouvrier' => $this->id_ouvrier
             ]);
             session()->flash('message', 'contrat created successfully');
             $this->resetInputs();
             $this->dispatchBrowserEvent('close-model');
-        } else {
+        }
+        else {
+            dd('okay');
             session()->flash('error', 'Ouvrier does not exist');
             // $this->dispatchBrowserEvent('close-model');
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -150,7 +149,7 @@ class ContratsList extends Component
             'datefin' => 'required',
             'montant' => 'required',
             'avance' => 'required',
-            'ouvrierCIN' => 'required'
+            'cin_Ouv' => 'required'
         ]);
     }
 

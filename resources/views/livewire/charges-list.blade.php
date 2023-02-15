@@ -22,13 +22,9 @@
                                         </div>
                                     </div>
 
-
-
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
-
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
-
                                             <select name="select-size-1" wire:model="filter"
                                                 class="form-control  form-control-lg">
                                                 <option value="" selected>Order By</option>
@@ -104,9 +100,6 @@
                             <i class="la la-trash"></i>delete selected</button>
                     </div>
                     @endif
-
-
-
 
                     <div class="row">
                         <div class="col-lg-12">
@@ -306,12 +299,9 @@
                     </div>
                 </div>
             @else
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <div>
-                        <span class="mr-2" aria-label="Warning:"><i
-                                class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Charges table is empty
-                    </div>
-                </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                table Charges is empty
+            </div>
             @endif
 
 
