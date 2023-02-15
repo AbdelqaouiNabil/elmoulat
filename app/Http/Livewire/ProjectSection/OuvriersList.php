@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProjectSection;
 
+use App\Models\Depense;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -155,12 +156,23 @@ class OuvriersList extends Component
     }
 
     public function deleteData(){
-        $path=Storage::disk('local')->url($this->cin);
-        File::delete(public_path($path));
-        $ouvrier = Ouvrier::where('id',$this->id_ouvrier)->first();
-        $ouvrier->delete();
-        session()->flash('message','ouvrier bien supprimer ');
-        $this->dispatchBrowserEvent('add');
+
+        $contart= Contrat::where('id_ouvrier',$this->id_ouvrier)->get();
+        $depense= Depense::where('id_ouvrier',$this->id_ouvrier)->get();
+
+        if(count($contart)>0 || count($depense)>0){
+            session()->flash('error','This Ouvrier is Used as ForienKey in anthor Table');
+
+        }
+        else{
+            $path=Storage::disk('local')->url($this->cin);
+            File::delete(public_path($path));
+            $ouvrier = Ouvrier::where('id',$this->id_ouvrier)->first();
+            $ouvrier->delete();
+            session()->flash('message','ouvrier bien supprimer ');
+            $this->dispatchBrowserEvent('add');
+        }
+        
         $this->dispatchBrowserEvent('close-model');
     }
 
@@ -213,33 +225,29 @@ class OuvriersList extends Component
     }
 
 
-    // check all boxs
+    // delete check all boxs
 
     public function deletecheckedouvrier(){
-        $id = [];
-        $deleted = [];
-        $ouvriers = Ouvrier::query()->whereIn('id', $this->checked_id)->get();
-        foreach ($ouvriers as $ouvrier) {
-            try {
-                $ouvrier = Ouvrier::where('id', $ouvrier->id)->first();
-                $ouvrier->delete();
+
+
+        $contart= Contrat::whereIn('id_ouvrier',$this->checked_id)->get();
+        $depense= Depense::whereIn('id_ouvrier',$this->checked_id)->get();
+
+        if(count($contart)>0 || count($depense)>0){
+            session()->flash('error','This Ouvrier is Used as ForienKey in anthor Table');
+        }else{
+            $ouvriers=Ouvrier::whereIn('id',$this->checked_id)->get();
+            foreach($ouvriers as $ouvrier){
                 $path = Storage::disk('local')->url($ouvrier->cin);
                 File::delete(public_path($path));
-                $deleted[] = $ouvrier->id;
-            } catch (QueryException $ex) {
-                $id[] = $ouvrier->id;
+                $ouvrier->delete();
             }
+            $this->checked_id = [];
+            $this->selectAll = false;
+            session()->flash('message', 'projet bien supprimer');
+            $this->resetInputs();
         }
-        if (count($deleted) > 0) {
-            session()->flash('message', "Deleted seccesfully Ouvriers of Id=[" . implode(",", $deleted) . "]");
-        }
-        if(count($id)>0){
-            session()->flash('error', "Can't delete Ouvriers of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
-        }
-        $this->checked_id = $id;
-        $this->selectAll = false;
-        $id = [];
-        $deleted = [];
+        $this->dispatchBrowserEvent('close-model');
         
     }
     public function updatedselectAll($value){

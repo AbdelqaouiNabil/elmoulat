@@ -22,6 +22,7 @@ use \PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use File;
 use DB;
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class ProjectsList extends Component
 {
@@ -44,12 +45,14 @@ class ProjectsList extends Component
     {
         $this->validateOnly($fields, [
             'name' => 'required',
+            'autorisation' => 'required',
             'image' => 'image|max:3024',
             'ville' => 'required',
             'datef' => 'required|date',
             'dated' => 'required|date',
             'id_bureau' => 'required|integer',
             'id_caisse' => 'required|integer',
+            'superfice' => 'required|regex:/^\d*(\.\d{2})?$/',
         ]);
     }
 
@@ -64,6 +67,8 @@ class ProjectsList extends Component
             'dated' => 'required|date',
             'id_bureau' => 'required|integer',
             'id_caisse' => 'required|integer',
+            'superfice' => 'required|regex:/^\d*(\.\d{2})?$/',
+
 
         ]);
 
@@ -116,6 +121,7 @@ class ProjectsList extends Component
 
     public function editProject($id)
     {
+        
         $projet = Projet::where('id', $id)->first();
         $this->project_edit_id = $projet->id;
         $this->id = $projet->id;
@@ -136,6 +142,18 @@ class ProjectsList extends Component
 
     public function editData()
     {
+        $this->validate([
+            'name' => 'required',
+            'autorisation' => 'required',
+            'ville' => 'required',
+            'datef' => 'required|date',
+            'dated' => 'required|date',
+            'id_bureau' => 'required|integer',
+            'id_caisse' => 'required|integer',
+            'superfice' => 'required|regex:/^\d*(\.\d{2})?$/',
+
+
+        ]);
         $projet = Projet::where('id', $this->project_edit_id)->first();
         $projet->name = $this->name;
         $projet->consistance = $this->consistance;
@@ -375,6 +393,7 @@ class ProjectsList extends Component
         $startcount = 1;
         // $data = array();
         foreach ($row_range as $row) {
+
             $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
             $this->excel_data[$i]['consistance'] = $sheet->getCell('C' . $row)->getValue();
             $this->excel_data[$i]['titre_finance'] = $sheet->getCell('D' . $row)->getValue();
@@ -391,11 +410,10 @@ class ProjectsList extends Component
         }
        
         return $this->excel_data;
-
     }
 
     // export data 
     public function export(){
-        return Excel::download(new ProjectExport, 'projects.xlsx');
+        return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
     }
 }
