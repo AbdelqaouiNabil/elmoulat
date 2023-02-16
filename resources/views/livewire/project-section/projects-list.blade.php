@@ -46,7 +46,7 @@
                                     <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif type="button"
                                         class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                         data-target="#modal-import">
-                                        <i class="la la-plus"></i>importer</button>
+                                        <i class="la la-plus"></i>Importer</button>
 
                                 </div>
 
@@ -854,6 +854,7 @@
                     $('#modal-basic').modal('hide');
                     $('#edit-modal').modal('hide');
                     $('#modal-info-delete').modal('hide');
+                    $('#modal-import').modal('hide');
                 })
             </script>
         @endpush

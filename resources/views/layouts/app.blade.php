@@ -1292,6 +1292,17 @@
                             </a>
 
                         </li>
+                        <li>
+
+                            <a href="{{ route('admin.caisses') }}">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Caisse</span>
+
+                            </a>
+
+                        </li>
 
 
 

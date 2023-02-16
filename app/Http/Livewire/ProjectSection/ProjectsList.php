@@ -5,6 +5,8 @@ namespace App\Http\Livewire\ProjectSection;
 use App\Exports\ProjectExport;
 use App\Imports\ProjetsImport;
 use App\Models\Charge;
+use Exception;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
 use App\Models\Projet;
@@ -23,13 +25,14 @@ use \PhpOffice\PhpSpreadsheet\Shared\Date;
 use File;
 use DB;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row;
+use Throwable;
 
 class ProjectsList extends Component
 {
     use WithFileUploads;
     use WithPagination;
 
-    public $name, $dated, $datef, $autorisation, $superfice, $image, $consistance, $adress, $ville, $titre_finance, $project_edit_id, $id_bureau, $id_caisse,$search;
+    public $name, $dated, $datef, $autorisation, $superfice, $image, $consistance, $adress, $ville, $titre_finance, $project_edit_id, $id_bureau, $id_caisse, $search;
     public $exelFile;
     public $excel_data = [];
     public $selectedProjects = [];
@@ -121,7 +124,7 @@ class ProjectsList extends Component
 
     public function editProject($id)
     {
-        
+
         $projet = Projet::where('id', $id)->first();
         $this->project_edit_id = $projet->id;
         $this->id = $projet->id;
@@ -136,7 +139,7 @@ class ProjectsList extends Component
         $this->superfice = $projet->superfice;
         $this->id_bureau = $projet->id_bureau;
         $this->id_caisse = $projet->id_caisse;
-        
+
 
     }
 
@@ -194,13 +197,13 @@ class ProjectsList extends Component
 
     public function deleteData()
     {
-       
-           
-        $charge= Charge::where('id_projet',$this->project_edit_id)->get();
-        if(count($charge)>0){
-            session()->flash('error','you selectd a project use as forieng key in other table');
 
-        }else{
+
+        $charge = Charge::where('id_projet', $this->project_edit_id)->get();
+        if (count($charge) > 0) {
+            session()->flash('error', 'you selectd a project use as forieng key in other table');
+
+        } else {
             $path = Storage::disk('local')->url($this->image);
             File::delete(public_path($path));
             Projet::where('id', $this->project_edit_id)->delete();
@@ -211,17 +214,17 @@ class ProjectsList extends Component
 
         }
 
-       
+
 
     }
     public function deleteSelected()
     {
-        $charge= Charge::whereIn('id_projet',$this->selectedProjects)->get();
-        if(count($charge)>0){
-            session()->flash('error','you selectd a project use as forieng key in other table');
-        }else{
-            $project=Projet::whereIn('id',$this->selectedProjects)->get();
-            foreach($project as $p){
+        $charge = Charge::whereIn('id_projet', $this->selectedProjects)->get();
+        if (count($charge) > 0) {
+            session()->flash('error', 'you selectd a project use as forieng key in other table');
+        } else {
+            $project = Projet::whereIn('id', $this->selectedProjects)->get();
+            foreach ($project as $p) {
                 $path = Storage::disk('local')->url($p->image);
                 File::delete(public_path($path));
                 $p->delete();
@@ -233,9 +236,9 @@ class ProjectsList extends Component
 
         }
         $this->dispatchBrowserEvent('close-model');
-        
 
-      
+
+
 
     }
     public function updatedSelectAll($value)
@@ -252,23 +255,115 @@ class ProjectsList extends Component
 
     public function importData()
     {
-       try{
+
         $this->validate([
 
             'exelFile' => 'required|mimes:xlsx,xls',
         ]);
-        // $path = file_get_contents($tt);
+        try {
+            $path = $this->exelFile->store('excel', 'app');
+            $spreadsheet = IOFactory::load(storage_path('app/' . $path));
 
-        $path = $this->exelFile->store('excel', 'app');
-        // Excel::import(new ProjetsImport($this->exelFile, $path), $path);
-        $this->excel($path);
-        session()->flash('message', 'projet bien imposter');
+            $i = 0;
+            $j = 0;
+
+            //  fetch images from exel file
+            foreach ($spreadsheet->getActiveSheet()->getDrawingCollection() as $drawing) {
+
+
+                if ($drawing instanceof MemoryDrawing) {
+                    ob_start();
+                    call_user_func(
+                        $drawing->getRenderingFunction(),
+                        $drawing->getImageResource()
+                    );
+                    $imageContents = ob_get_contents();
+                    ob_end_clean();
+                    switch ($drawing->getMimeType()) {
+                        case MemoryDrawing::MIMETYPE_PNG:
+                            $extension = 'png';
+                            break;
+                        case MemoryDrawing::MIMETYPE_GIF:
+                            $extension = 'gif';
+                            break;
+                        case MemoryDrawing::MIMETYPE_JPEG:
+                            $extension = 'jpg';
+                            break;
+                    }
+                } else {
+                    $zipReader = fopen($drawing->getPath(), 'r');
+                    $imageContents = '';
+                    while (!feof($zipReader)) {
+                        $imageContents .= fread($zipReader, 1024);
+                    }
+                    fclose($zipReader);
+                    $extension = $drawing->getExtension();
+                }
+
+
+                $myFileName = time() . ++$i . '.' . $extension;
+
+
+
+                Storage::disk('local')->put('public/images/projets/' . $myFileName, $imageContents);
+
+                $this->excel_data[$j]['image'] = 'public/images/projets/' . $myFileName;
+                $j++;
+            }
+            //  add data to array from excel 
+            $i = 0;
+            $sheet = $spreadsheet->getActiveSheet();
+            $row_limit = $sheet->getHighestDataRow();
+            $row_range = range(2, $row_limit);
+            foreach ($row_range as $row) {
+
+                $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
+                $this->excel_data[$i]['consistance'] = $sheet->getCell('C' . $row)->getValue();
+                $this->excel_data[$i]['titre_finance'] = $sheet->getCell('D' . $row)->getValue();
+                $this->excel_data[$i]['superfice'] = $sheet->getCell('E' . $row)->getValue();
+                $this->excel_data[$i]['adress'] = $sheet->getCell('F' . $row)->getValue();
+                $this->excel_data[$i]['ville'] = $sheet->getCell('G' . $row)->getValue();
+                $this->excel_data[$i]['autorisation'] = $sheet->getCell('H' . $row)->getValue();
+                $this->excel_data[$i]['datedebut'] = Date::excelToDateTimeObject($sheet->getCell('I' . $row)->getValue())->format('Y-m-d');
+                $this->excel_data[$i]['datefin'] = Date::excelToDateTimeObject($sheet->getCell('J' . $row)->getValue())->format('Y-m-d');
+                $this->excel_data[$i]['id_bureau'] = $sheet->getCell('K' . $row)->getValue();
+                $this->excel_data[$i]['id_caisse'] = $sheet->getCell('L' . $row)->getValue();
+
+                $i++;
+            }
+
+            //  save data to database from excel using our array
+            $data = $this->excel_data;
+            foreach ($data as $d) {
+
+                $projet = array(
+                    'name' => $d["name"],
+                    'image' => $d["image"],
+                    'consistance' => $d["consistance"],
+                    'titre_finance' => $d["titre_finance"],
+                    'autorisation' => $d["autorisation"],
+                    'superfice' => $d["superfice"],
+                    'ville' => $d["ville"],
+                    'adress' => $d["adress"],
+                    'datedebut' => $d["datedebut"],
+                    'datefin' => $d["datefin"],
+                    'id_bureau' => $d["id_bureau"],
+                    'id_caisse' => $d["id_caisse"]
+                );
+                DB::table('projets')->insert($projet);
+
+
+            }
+        } catch (Throwable $ex) {
+            session()->flash('error', '',$ex);
+            $this->dispatchBrowserEvent('close-model');
+
+        }
+        session()->flash('message', 'les projets bien importer');
         $this->dispatchBrowserEvent('close-model');
-       }catch(QueryException $e){
-        session()->flash('error',''.$e);
-       }
-       $this->dispatchBrowserEvent('close-model');
-        
+
+
+
 
 
     }
@@ -279,9 +374,9 @@ class ProjectsList extends Component
     {
 
         $this->bulkDisabled = count($this->selectedProjects) < 1;
-        $projets = Projet::where('name', 'like', '%'.$this->search.'%')
-        ->orWhere('ville', 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
+        $projets = Projet::where('name', 'like', '%' . $this->search . '%')
+            ->orWhere('ville', 'like', '%' . $this->search . '%')
+            ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus = Bureau::all();
         $caisses = Caisse::all();
         return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
@@ -307,113 +402,10 @@ class ProjectsList extends Component
         $this->resetPage('new');
     }
 
-    public function excel($path){
-        
-        $spreadsheet = IOFactory::load(storage_path('app/' . $path));
-
-        $i = 0;
-        $j = 0;
-        $currentImage = "";
-        //  fetch images from exel file
-        foreach ($spreadsheet->getActiveSheet()->getDrawingCollection() as $drawing) {
-
-
-            if ($drawing instanceof MemoryDrawing) {
-                ob_start();
-                call_user_func(
-                    $drawing->getRenderingFunction(),
-                    $drawing->getImageResource()
-                );
-                $imageContents = ob_get_contents();
-                ob_end_clean();
-                switch ($drawing->getMimeType()) {
-                    case MemoryDrawing::MIMETYPE_PNG:
-                        $extension = 'png';
-                        break;
-                    case MemoryDrawing::MIMETYPE_GIF:
-                        $extension = 'gif';
-                        break;
-                    case MemoryDrawing::MIMETYPE_JPEG:
-                        $extension = 'jpg';
-                        break;
-                }
-            } else {
-                $zipReader = fopen($drawing->getPath(), 'r');
-                $imageContents = '';
-                while (!feof($zipReader)) {
-                    $imageContents .= fread($zipReader, 1024);
-                }
-                fclose($zipReader);
-                $extension = $drawing->getExtension();
-            }
-
-
-            $myFileName = time() . ++$i . '.' . $extension;
-
-
-
-            Storage::disk('local')->put('public/images/projets/' . $myFileName, $imageContents);
-
-            $this->excel_data[$j]['image'] = 'public/images/projets/' . $myFileName;
-            $j++;
-        }
-
-        $data = $this->readData($path);
-
-
-
-        foreach ($data as $d) {
-            $projet = array(
-                'name' => $d["name"],
-                'image' => $d["image"],
-                'consistance' => $d["consistance"],
-                'titre_finance' => $d["titre_finance"],
-                'autorisation' => $d["autorisation"],
-                'superfice' => $d["superfice"],
-                'ville' => $d["ville"],
-                'adress' => $d["adress"],
-                'datedebut' => $d["datedebut"],
-                'datefin' => $d["datefin"],
-                'id_bureau' => $d["id_bureau"],
-                'id_caisse' => $d["id_caisse"]
-            );
-            DB::table('projets')->insert($projet);
-        }
-    }
-
-
-    public function readData($path)
-    {
-        $i = 0;
-        $spreadsheet = IOFactory::load(storage_path('app/' . $path));
-        $sheet = $spreadsheet->getActiveSheet();
-        $row_limit = $sheet->getHighestDataRow();
-        // $column_limit = $sheet->getHighestDataColumn();
-        $row_range = range(1, $row_limit);
-        $startcount = 1;
-        // $data = array();
-        foreach ($row_range as $row) {
-
-            $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
-            $this->excel_data[$i]['consistance'] = $sheet->getCell('C' . $row)->getValue();
-            $this->excel_data[$i]['titre_finance'] = $sheet->getCell('D' . $row)->getValue();
-            $this->excel_data[$i]['superfice'] = $sheet->getCell('E' . $row)->getValue();
-            $this->excel_data[$i]['adress'] = $sheet->getCell('F' . $row)->getValue();
-            $this->excel_data[$i]['ville'] = $sheet->getCell('G' . $row)->getValue();
-            $this->excel_data[$i]['autorisation'] = $sheet->getCell('H' . $row)->getValue();
-            $this->excel_data[$i]['datedebut'] = Date::excelToDateTimeObject($sheet->getCell('I' . $row)->getValue())->format('Y-m-d');
-            $this->excel_data[$i]['datefin'] =Date::excelToDateTimeObject($sheet->getCell('J' . $row)->getValue())->format('Y-m-d');
-            $this->excel_data[$i]['id_bureau'] = $sheet->getCell('K' . $row)->getValue();
-            $this->excel_data[$i]['id_caisse'] = $sheet->getCell('L' . $row)->getValue();
-            $startcount++;
-            $i++;
-        }
-       
-        return $this->excel_data;
-    }
 
     // export data 
-    public function export(){
+    public function export()
+    {
         return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
     }
 }

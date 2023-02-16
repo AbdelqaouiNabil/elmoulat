@@ -9,6 +9,7 @@ use App\Http\Livewire\FactureList;
 use App\Http\Livewire\ProjectSection\OuvriersList;
 use App\Http\Livewire\ReglementsList;
 use App\Http\Livewire\RhSection\BureauList;
+use App\Http\Livewire\CaisseList;
 use App\Http\Livewire\RhSection\CongeList;
 use App\Http\Livewire\RhSection\EmployeList;
 use App\Http\Livewire\Settings\BankList;
@@ -79,6 +80,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']]
     Route::get('/employelist',EmployeList::class)->name('admin.employes');
     Route::get('/banklist',BankList::class)->name('admin.banks');
     Route::get('/cheques',ChequeList::class)->name('admin.cheques');
+    Route::get('/caisse',CaisseList::class)->name('admin.caisses');
  
     
 });
