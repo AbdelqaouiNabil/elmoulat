@@ -81,6 +81,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']]
     Route::get('/banklist',BankList::class)->name('admin.banks');
     Route::get('/cheques',ChequeList::class)->name('admin.cheques');
     Route::get('/caisse',CaisseList::class)->name('admin.caisses');
+    Route::get('/Pdf',[ProjectsList::class,'pdfExport'])->name('admin.pdf');
  
     
 });

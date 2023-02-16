@@ -2,12 +2,9 @@
 
 namespace App\Http\Livewire\ProjectSection;
 
+use App;
 use App\Exports\ProjectExport;
-use App\Imports\ProjetsImport;
 use App\Models\Charge;
-use Exception;
-use Illuminate\Auth\Events\Validated;
-use Illuminate\Database\QueryException;
 use Livewire\Component;
 use App\Models\Projet;
 use App\Models\Bureau;
@@ -15,8 +12,6 @@ use App\Models\Caisse;
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
@@ -24,7 +19,8 @@ use \PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use File;
 use DB;
-use PhpOffice\PhpSpreadsheet\Worksheet\Row;
+use PDF;
+use Symfony\Component\HttpFoundation\Request;
 use Throwable;
 
 class ProjectsList extends Component
@@ -355,7 +351,7 @@ class ProjectsList extends Component
 
             }
         } catch (Throwable $ex) {
-            session()->flash('error', '',$ex);
+            session()->flash('error', '', $ex);
             $this->dispatchBrowserEvent('close-model');
 
         }
@@ -407,5 +403,97 @@ class ProjectsList extends Component
     public function export()
     {
         return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
+    }
+
+    public function pdfExport(Request $request)
+    {
+        $projects = Projet::all();
+
+        
+        $pdf = "
+        <!DOCTYPE html><html><head> <style>
+       table {
+        border-collapse: collapse;
+        font-family: Tahoma, Geneva, sans-serif;
+    }
+    table td {
+        padding: 15px;
+    }
+    th{
+        background-color: #5f63f2;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        border: 1px solid #54585d;
+        padding:10px;
+    }
+    table thead td {
+        background-color: #54585d;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 13px;
+        border: 1px solid #54585d;
+    }
+    table tbody td {
+        color: #636363;
+        border: 1px solid #dddfe1;
+    }
+    table tbody tr {
+        background-color: #f9fafb;
+    }
+    table tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+       </style></head><body>
+       <h2>Projects table:</h2>
+        <table>
+        <tr>
+            <th>id</th>
+            <th>Nom</th>
+            <th>Date Début</th>
+            <th>Date Fin</th>
+            <th>Superfice</th>
+            <th>Autorisation</th>
+            <th>Titre finance</th>
+            <th>Ville</th>
+            <th>Consistance</th>
+            <th>Caisse</th>
+            <th>Bureau</th>
+            <th>Adress</th>
+        </tr> ";
+
+        foreach ($projects as $project) {
+            $pdf = $pdf . '<tr>
+            <td>' . $project->id . '</td>
+            <td>' . $project->name . '</td>
+            <td>' . $project->datedebut . '</td>
+            <td>' . $project->datefin . '</td>
+            <td>' . $project->superfice . '</td>
+            <td>' . $project-> autorisation. '</td>
+            <td>' . $project-> titre_finance. '</td>
+            <td>' . $project->ville . '</td>
+            <td>' . $project->consistance . '</td>
+            <td>' . $project->caisse->name . '</td>
+            <td>' . $project->bureau->nom . '</td>
+            <td>' . $project->adress . '</td>
+
+            </tr> ';
+        }
+
+        $pdf .= '</table></body></html>';
+        
+        // $data = PDF::loadHtml($pdf);
+        $file=PDF::loadHtml($pdf);
+        // // (Optional) Setup the paper size and orientation
+        $file->setPaper('A4', 'landscape');
+        // // Render the HTML as PDF
+        $file->render();
+        return $file->stream('project.pdf');
+
+
+
+
+       
+
     }
 }

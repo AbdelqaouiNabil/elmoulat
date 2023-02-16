@@ -34,7 +34,7 @@
                                         <div class="dropdown-divider"></div>
                                         <a href="" class="dropdown-item">
                                             <i class="la la-print"></i> Printer</a>
-                                        <a href="" class="dropdown-item">
+                                        <a href="{{route('admin.pdf',['id'=>$selectedProjects])}}" target="_blank" type="application/pdf" class="dropdown-item">
                                             <i class="la la-file-pdf"></i> PDF</a>
                                         <i class="la la-file-excel"></i> Excel (XLSX)</a>
                                         <a href="" class="dropdown-item" wire:click.prevent='export()'>
