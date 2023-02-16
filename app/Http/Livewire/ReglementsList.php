@@ -251,8 +251,10 @@ class ReglementsList extends Component
         $reglement = reglement::where('id', $this->id_reg)->first();
         if (!is_null($reglement->numero_cheque)) {
             $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-            $cheque->situation = "disponible";
-            $cheque->save();
+            if(!is_null($cheque)){
+                $cheque->situation = "disponible";
+                $cheque->save();
+            }
         }
 
         Reglement::findOrFail($this->id_reg)->delete();
@@ -268,16 +270,22 @@ class ReglementsList extends Component
             $reglement = reglement::where('id', $this->selectedRegs[$j])->first();
             if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                $cheque->situation = "disponible";
-                $cheque->save();
+                if(!is_null($cheque)){
+                    $cheque->situation = "disponible";
+                    $cheque->save();
+                }
+
             }
 
             // update charge situation
             $charge = Charge::where('id_reglement', $this->selectedRegs[$j])->get();
             for ($i = 0; $i < count($charge); $i++) {
-                $charge[$i]->situation = "notPayed";
-                $charge[$i]->id_reglement = null;
-                $charge[$i]->save();
+                if(!is_null($charge[$i])){
+                    $charge[$i]->situation = "notPayed";
+                    $charge[$i]->id_reglement = null;
+                    $charge[$i]->save();
+                }
+
             }
         }
         reglement::query()
@@ -293,9 +301,12 @@ class ReglementsList extends Component
     {
         $charge = Charge::where('id_reglement', $idR)->get();
         for ($i = 0; $i < count($charge); $i++) {
-            $charge[$i]->situation = "notPayed";
-            $charge[$i]->id_reglement = null;
-            $charge[$i]->save();
+            if(!is_null($charge[$i])){
+                $charge[$i]->situation = "notPayed";
+                $charge[$i]->id_reglement = null;
+                $charge[$i]->save();
+            }
+
         }
     }
 
@@ -380,7 +391,7 @@ class ReglementsList extends Component
             ]);
 
             //modifier cheque situation
-            if ($reg->numero_cheque) {
+            if (!is_null($reg->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reg->numero_cheque)->first();
                 $cheque->situation = "livrer";
                 $cheque->save();
@@ -412,6 +423,8 @@ class ReglementsList extends Component
         $this->numero_cheque = "";
         $this->num_facture = "";
         $this->cin_Ouv = "";
+        $this->dateR = "";
+
     }
 
     public function updatedSelectAll($value)
@@ -427,7 +440,7 @@ class ReglementsList extends Component
 
 
 
-    //check whethe the numero cheque exist on table cheques also check its situation
+    //check whether the numero cheque exist on table cheques also check its situation
     public function verifyCheque($numCheque)
     {
         $cheque = Cheque::where('numero', $numCheque)->first();

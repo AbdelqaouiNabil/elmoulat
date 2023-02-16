@@ -37,9 +37,9 @@ class DepotsList extends Component
 
     public function saveDepot()
     {
+        $this->validation();
         if (!is_null($this->numero_cheque)) {
             if ($this->getCheque($this->numero_cheque)) {
-                $this->validation();
                 Depot::create([
                     'numero_cheque' => $this->numero_cheque,
                     'id_caisse' => $this->id_caisse,
@@ -56,11 +56,13 @@ class DepotsList extends Component
         }
     }
 
+
     public function resetInputs()
     {
-
         $this->numero_cheque = "";
         $this->montant = "";
+        $this->dateC = "";
+        $this->id_caisse = "";
     }
     public function validation()
     {
@@ -68,6 +70,7 @@ class DepotsList extends Component
             'numero_cheque' => 'required',
             'montant' => 'required',
             'dateC' => 'required',
+            'id_caisse' => 'required'
         ]);
     }
 
@@ -136,7 +139,9 @@ class DepotsList extends Component
         if (is_null($cheque)) {
             return false;
         } else {
-            return true;
+            if($cheque-> situation != 'disponible'){
+                return true;
+            }
         }
     }
 

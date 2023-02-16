@@ -348,8 +348,8 @@
 
     </div>
 
-   
-       <h1> i'am a dashboard</h1>
+
+       <h1> I am a dashboard</h1>
 </div>
 <script>
     window.addEventListener('close-model', event => {

@@ -13,7 +13,8 @@
                                 <div class="col-md-6">
                                     <div class="search-result global-shadow rounded-pill bg-white">
 
-                                        <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                        <div
+                                            class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
                                             <span><i class="fa-solid fa-magnifying-glass"></i></span>
                                             <input wire:model="search" class="form-control border-0 box-shadow-none"
                                                 type="search" placeholder="chercher par Cin Ouvrier ou Date..."
@@ -56,7 +57,7 @@
 
                                     <div class="action-btn">
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            data-toggle="modal" data-target="#modal-basic">
+                                            wire:click="resetInputs" data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
                                     </div>
                                     {{-- @if ($contrats->count() > 0)
@@ -182,7 +183,9 @@
 
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $reg->contrat->cin_Ouv }}
+                                                            @if (!is_null($reg->contrat))
+                                                                {{ $reg->contrat->cin_Ouv }}
+                                                            @endif
                                                         </div>
                                                     </td>
                                                     <td>
@@ -196,7 +199,8 @@
                                                                         viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
                                                                         stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="feather feather-eye" style="color:blue;">
+                                                                        class="feather feather-eye"
+                                                                        style="color:blue;">
                                                                         <path
                                                                             d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
                                                                         </path>
@@ -258,9 +262,9 @@
                     </div>
                 </div>
             @else
-            <div class="h-100 d-flex align-items-center justify-content-center">
-                table Reglements is empty
-            </div>
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                    table Reglements is empty
+                </div>
             @endif
 
 
@@ -291,11 +295,17 @@
                                         <label>Date</label>
                                         <input class="form-control form-control-lg" type="date" name="dateR"
                                             wire:model.defer='dateR'>
+                                        @error('dateR')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-25">
                                         <label>Montant</label>
                                         <input class="form-control form-control-lg" type="text" name="montant"
                                             wire:model.defer='montant'>
+                                        @error('montant')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-25 ">
@@ -303,6 +313,9 @@
                                         <input class="form-control form-control-lg" type="text"
                                             placeholder="Cin Ouvrier (ex:GN00000)" name="cin_Ouv"
                                             wire:model.defer='cin_Ouv'>
+                                        @error('cin_Ouv')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="row">

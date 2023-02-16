@@ -58,7 +58,7 @@
 
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" wire:click="resetInputs"
                                         data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
@@ -180,12 +180,14 @@
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $dep->date }}
+                                                        {{ $dep->dateDep }}
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
+                                                        @if (!is_null($dep->projet))
                                                         {{ $dep->projet->name }}
+                                                        @endif
                                                     </div>
                                                 </td>
                                                 <td>
@@ -326,9 +328,9 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
-                                        wire:model.defer='date'>
-                                    @error('date')
+                                    <input class="form-control form-control-lg" type="date" name="dateDep"
+                                        wire:model.defer='dateDep'>
+                                    @error('dateDep')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -336,6 +338,7 @@
                                     <label>Projet</label>
                                     <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
                                         class="form-control  form-control-lg">
+                                        <option selected>Choisir un projet</option>
                                         @foreach ($projets as $p)
                                             <option value="{{ $p->id }}">{{ $p->name }}
                                             </option>
@@ -402,9 +405,9 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
-                                        wire:model.defer='date'>
-                                    @error('date')
+                                    <input class="form-control form-control-lg" type="date" name="dateDep"
+                                        wire:model.defer='dateDep'>
+                                    @error('dateDep')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -589,7 +592,7 @@
                                     <label>Date de depense</label>
                                 </div>
                                 <div class="col mt-6">
-                                    <label>{{ $date }}</label>
+                                    <label>{{ $dateDep }}</label>
                                 </div>
                             </div>
                             <div class="row">

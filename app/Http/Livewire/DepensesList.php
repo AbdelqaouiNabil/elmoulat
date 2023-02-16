@@ -19,7 +19,7 @@ class DepensesList extends Component
 
 
     public $depenseInfos;
-    public $id_depense, $id_projet, $id_ouvrier, $date, $description, $Aqui, $type, $montant, $Aouvrier, $nonJustifier, $justifier;
+    public $id_depense, $id_projet, $id_ouvrier, $dateDep, $description, $Aqui, $type, $montant, $Aouvrier, $nonJustifier, $justifier;
     public $pages = 10;
     public $bulkDisabled = true;
     public $selectedDepenses = [];
@@ -186,7 +186,7 @@ class DepensesList extends Component
         $this->depenseInfos = Depense::where('id', $id)->first();
         $this->id_depense = $this->depenseInfos->id;
         $this->montant = $this->depenseInfos->montant;
-        $this->date = $this->depenseInfos->date;
+        $this->dateDep = $this->depenseInfos->dateDep;
         $this->description = $this->depenseInfos->description;
         $this->Aqui = $this->depenseInfos->Aqui;
         $this->type = $this->depenseInfos->type;
@@ -198,7 +198,7 @@ class DepensesList extends Component
         $depense = Depense::where('id', $id)->first();
         $this->id_depense = $depense->id;
         $this->montant = $depense->montant;
-        $this->date = $depense->date;
+        $this->dateDep = $depense->dateDep;
         $this->description = $depense->description;
         $this->Aqui = $depense->Aqui;
         $this->montantBeforeUpdate = $depense->montant;
@@ -209,11 +209,13 @@ class DepensesList extends Component
         $this->validation();
         if ($this->Aouvrier) {
             $ouvrier = Ouvrier::where('n_cin', $this->Aqui)->first();
-            $this->id_ouvrier = $ouvrier->id;
+            if(!is_null($ouvrier)){
+                $this->id_ouvrier = $ouvrier->id;
+            }
         }
         $depense = Depense::where('id', $this->id_depense)->first();
         $depense->montant = $this->montant;
-        $depense->date  = $this->date;
+        $depense->dateDep  = $this->dateDep;
         $depense->Aqui = $this->Aqui;
         $depense->description = $this->description;
         $depense->id_ouvrier = $this->id_ouvrier;
@@ -247,23 +249,29 @@ class DepensesList extends Component
         $this->validation();
         if ($this->Aouvrier) {
             $ouvrier = Ouvrier::where('n_cin', $this->Aqui)->first();
-            $this->id_ouvrier = $ouvrier->id;
+            if(!is_null($ouvrier)){
+                $this->id_ouvrier = $ouvrier->id;
+            }else{
+                session()->flash('error', 'Cin Ouvrier est incorrect');
+            }
         }
         if ($this->nonJustifier) {
             $this->type = 'Non Justifier';
         } else {
             $this->type = 'Justifier';
         }
+        // dd($this->dateDep);
         $depense = Depense::create([
             'montant' => $this->montant,
             'Aqui' => $this->Aqui,
             'type' => $this->type,
-            'date' => $this->date,
+            'dateDep' => $this->dateDep,
             'id_projet' => $this->id_projet,
             'description' => $this->description,
             'id_ouvrier' => $this->id_ouvrier,
         ]);
         $this->id_depense = $depense->id;
+
         $this->UpdateCaisseAfterSave();
         session()->flash('message', 'Depense created successfully');
         $this->resetInputs();
@@ -274,6 +282,12 @@ class DepensesList extends Component
     {
         $this->montant = "";
         $this->Aqui = "";
+        $this->justifier = false;
+        $this->nonJustifier = false;
+        $this->dateDep = "";
+        $this->Aqui = "";
+        $this->description = "";
+        $this->Aouvrier = false;
     }
 
     public function validation()
@@ -281,7 +295,7 @@ class DepensesList extends Component
         $this->validate([
             'montant' => 'required',
             'Aqui' => 'required',
-            'date' => 'required',
+            'dateDep' => 'required',
         ]);
     }
 
@@ -302,7 +316,7 @@ class DepensesList extends Component
         $caisse = Caisse::where('id', $projet->id_caisse)->first();
         Retrait::create([
             'montant' => $this->montant,
-            'date' => $this->date,
+            'dateRet' => $this->dateDep,
             'id_depense' => $this->id_depense,
             'id_caisse' => $caisse->id,
             'id_reglement' => null
@@ -324,7 +338,7 @@ class DepensesList extends Component
         $dep = Depense::where('id', $this->id_depense)->first();
         $retrait = Retrait::where('id', $this->id_depense)->first();
         $retrait->montant = $this->montant;
-        $retrait->date = $this->date;
+        $retrait->dateRet = $this->dateDep;
         $retrait->save();
         $caisse = Caisse::where('id', $retrait->id_caisse)->first();
         $montantAfterUpdate = ($this->montantBeforeUpdate) - ($this->montant);

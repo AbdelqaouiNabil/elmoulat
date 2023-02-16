@@ -50,7 +50,7 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            data-toggle="modal" data-target="#modal-basic">
+                                            wire:click="resetInputs" data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
 
                                     </div>
@@ -212,9 +212,9 @@
                     </div>
                 </div>
             @else
-            <div class="h-100 d-flex align-items-center justify-content-center">
-                table Depots is empty
-            </div>
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                    table Depots is empty
+                </div>
             @endif
 
 
@@ -279,6 +279,9 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('id_caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                         </div>

@@ -29,7 +29,7 @@ class ChargesList extends Component
     // protected $queryString  = ['search'];
 
     // reglement
-    public $montant, $date, $methode, $numero_cheque, $id_facture;
+    public $montant, $dateR, $methode, $numero_cheque, $id_facture;
     public $numFacture;
     public $errordAjoutReg = false;
     // Method check or Cash
@@ -60,9 +60,9 @@ class ChargesList extends Component
                 $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
                 break;
         }
-        if($this->search != ""){
-            $charges = Charge::where('name', 'like', '%'.$this->search.'%')
-            ->orWhere('type', 'like', '%'.$this->search.'%')->paginate($this->pages, ['*'], 'new');
+        if ($this->search != "") {
+            $charges = Charge::where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('type', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
         }
         return view('livewire.charges-list', ['charges' => $charges, 'fournisseurs' => $fournisseurs, 'projets' => $projets, 'cheques' => $cheques]);
     }
@@ -129,36 +129,84 @@ class ChargesList extends Component
     // REGLEMENT CRUD
     public function addReg()
     {
-        // getting the facture's id from facture table
-        if (!(is_null($this->numFacture))) {
-            $facture = Facture::where('numero', $this->numFacture)->get();
-            $this->id_facture = $facture[0]->id;
-        }
-        if ($this->optionC) {
-            $this->methode = 'cheque';
-        } else {
-            $this->methode = 'cash';
-        }
         $this->validate([
-            'date' => 'required',
+            'dateR' => 'required',
             'montant' => 'required',
         ]);
-        $reglement = Reglement::create([
-            'date' => $this->date,
-            'montant' => $this->montant,
-            'methode' => $this->methode,
-            'numero_cheque' => $this->numero_cheque,
-            'id_facture' => $this->id_facture,
-            'id_contrat' => null,
-        ]);
+        $pass = true;
 
-        // update check situation
-        Cheque::where('numero', $this->numero_cheque)->update(['situation' => 'livré']);
-        session()->flash('message', 'Reglement added successfully');
-        $this->resetInputs();
-        $this->updateChargeAfterReg($reglement);
-        $this->dispatchBrowserEvent('close-model');
+        // getting the facture's id from facture table
+        if (!(is_null($this->numFacture))) {
+            $facture = Facture::where('numero', $this->numFacture)->first();
+            if (is_null($facture)) {
+                session()->flash('error', 'error on numero facture');
+                $this->id_facture = "";
+                $pass = false;
+            } else {
+                $this->id_facture = $facture->id;
+            }
+        }
+        if (!is_null($this->numero_cheque)) {
+            $this->methode = 'cheque';
+            if (!($this->verifyCheque($this->numero_cheque))) {
+                session()->flash('error', 'error on numero cheque');
+                $this->numero_cheque = null;
+                $pass = false;
+            } else {
+                $pass = true;
+            }
+        } else {
+            $this->methode = 'cash';
+            $this->numero_cheque = null;
+        }
+        if ($pass) {
+            $reglement = Reglement::create([
+                'dateR' => $this->dateR,
+                'montant' => $this->montant,
+                'methode' => $this->methode,
+                'numero_cheque' => $this->numero_cheque,
+                'id_facture' => $this->id_facture,
+                'id_contrat' => null,
+            ]);
+
+            //modifier cheque situation
+            if (!is_null($reglement->numero_cheque)) {
+                $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
+                if(!is_null($cheque)){
+                    $cheque->situation = "livrer";
+                    $cheque->save();
+                }
+
+            }
+            session()->flash('message', 'Reglement added successfully');
+            $this->resetInputs();
+            $this->updateChargeAfterReg($reglement);
+            $this->dispatchBrowserEvent('close-model');
+        }
     }
+
+
+
+    //check whether the numero cheque exist on table cheques also check its situation
+    public function verifyCheque($numCheque)
+    {
+        $cheque = Cheque::where('numero', $numCheque)->first();
+        if (is_null($cheque)) {
+            return false;
+        } else {
+            if ($cheque->situation == 'disponible') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+
+
+
+
+
     public function updateChargeAfterReg($reglement)
     {
         foreach ($this->selectedCharges as $ch) {
@@ -302,6 +350,8 @@ class ChargesList extends Component
         $this->prix_TTC = "";
         $this->MTTTC = "";
     }
+
+    
 
     public function validation()
     {

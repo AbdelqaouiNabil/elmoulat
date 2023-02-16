@@ -115,7 +115,7 @@
                                                 <a href="" wire:click.prevent="sort('nom')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
-                                           
+
                                             <th>
                                                 <span class="userDatatable-title">cin</span>
                                                 <a href="" wire:click.prevent="sort('cin')"><i
@@ -192,7 +192,7 @@
                                                         </div>
                                                     </td>
 
-                                    
+
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             <a href=" {{ Storage::disk('local')->url($ouvrier->cin) }}"
@@ -622,7 +622,7 @@
                                     </div>
 
                                 </div>
-                            
+
                             <div class="row">
                                 <div class="form-group mb-25 col-lg-12">
                                     <label>Adress</label>
