@@ -84,7 +84,8 @@ class CaisseList extends Component
         $caisse->name = $this->name;
         $caisse->sold = $this->sold;
         $caisse->sold_nonjustify = $this->sold_nonjustify;
-        $caisse->total = ($this->sold_nonjustify) + ($this->sold);
+        $caisse->total;
+
         $valide = $caisse->save();
         if ($valide) {
             session()->flash('message', 'caisse bien ajouter');
@@ -124,7 +125,7 @@ class CaisseList extends Component
         $caisse->name = $this->name;
         $caisse->sold = $this->sold;
         $caisse->sold_nonjustify = $this->sold_nonjustify;
-        $caisse->total = ($this->sold_nonjustify) + ($this->sold);
+        $caisse->total;
 
         $valide = $caisse->update();
         if ($valide) {

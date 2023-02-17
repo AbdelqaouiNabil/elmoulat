@@ -125,17 +125,17 @@
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $caisse->sold }}
+                                                        {{ $caisse->sold }} DH
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $caisse->sold_nonjustify }}
+                                                        {{ $caisse->sold_nonjustify }} DH
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $caisse->total }}
+                                                        {{ $caisse->total }} DH
                                                     </div>
                                                 </td>
 

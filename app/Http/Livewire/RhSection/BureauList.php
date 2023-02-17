@@ -159,7 +159,6 @@ class BureauList extends Component
             session()->flash('message', 'les bureau bien supprimer');
             $this->selectRows=[];
             $this->selectAll=false;
-
         }
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');

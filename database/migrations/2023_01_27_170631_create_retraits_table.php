@@ -17,7 +17,7 @@ class CreateRetraitsTable extends Migration
             $table->id();
             $table->date('date');
 
-            $table->float('montant');
+            $table->string('montant');
             $table->unsignedBigInteger('id_caisse');
             $table->foreign('id_caisse')->references('id')->on('caisses');
             $table->unsignedBigInteger('id_reglement')->nullable();
