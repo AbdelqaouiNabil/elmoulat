@@ -22,6 +22,7 @@ use \PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use File;
 use DB;
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class ProjectsList extends Component
 {
@@ -44,12 +45,14 @@ class ProjectsList extends Component
     {
         $this->validateOnly($fields, [
             'name' => 'required',
+            'autorisation' => 'required',
             'image' => 'image|max:3024',
             'ville' => 'required',
             'datef' => 'required|date',
             'dated' => 'required|date',
             'id_bureau' => 'required|integer',
             'id_caisse' => 'required|integer',
+            'superfice' => 'required|regex:/^\d*(\.\d{2})?$/',
         ]);
     }
 
@@ -64,6 +67,8 @@ class ProjectsList extends Component
             'dated' => 'required|date',
             'id_bureau' => 'required|integer',
             'id_caisse' => 'required|integer',
+            'superfice' => 'required|regex:/^\d*(\.\d{2})?$/',
+
 
         ]);
 
@@ -116,6 +121,7 @@ class ProjectsList extends Component
 
     public function editProject($id)
     {
+
         $projet = Projet::where('id', $id)->first();
         $this->project_edit_id = $projet->id;
         $this->id = $projet->id;
@@ -132,10 +138,23 @@ class ProjectsList extends Component
         $this->id_caisse = $projet->id_caisse;
         
 
+
     }
 
     public function editData()
     {
+        $this->validate([
+            'name' => 'required',
+            'autorisation' => 'required',
+            'ville' => 'required',
+            'datef' => 'required|date',
+            'dated' => 'required|date',
+            'id_bureau' => 'required|integer',
+            'id_caisse' => 'required|integer',
+            'superfice' => 'required|regex:/^\d*(\.\d{2})?$/',
+
+
+        ]);
         $projet = Projet::where('id', $this->project_edit_id)->first();
         $projet->name = $this->name;
         $projet->consistance = $this->consistance;
@@ -176,8 +195,7 @@ class ProjectsList extends Component
 
     public function deleteData()
     {
-       
-           
+
         $charge= Charge::where('id_projet',$this->project_edit_id)->get();
         if(count($charge)>0){
             session()->flash('error','you selectd a project use as forieng key in other table');
@@ -193,7 +211,7 @@ class ProjectsList extends Component
 
         }
 
-       
+
 
     }
     public function deleteSelected()
@@ -213,11 +231,13 @@ class ProjectsList extends Component
             session()->flash('message', 'projet bien supprimer');
             $this->resetInputs();
 
+
         }
         $this->dispatchBrowserEvent('close-model');
-        
 
-      
+
+
+
 
     }
     public function updatedSelectAll($value)
@@ -250,7 +270,7 @@ class ProjectsList extends Component
         session()->flash('error',''.$e);
        }
        $this->dispatchBrowserEvent('close-model');
-        
+
 
 
     }
@@ -269,7 +289,7 @@ class ProjectsList extends Component
         return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
 
     }
-    // sort function 
+    // sort function
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -290,7 +310,7 @@ class ProjectsList extends Component
     }
 
     public function excel($path){
-        
+
         $spreadsheet = IOFactory::load(storage_path('app/' . $path));
 
         $i = 0;
@@ -389,13 +409,12 @@ class ProjectsList extends Component
             $startcount++;
             $i++;
         }
-       
-        return $this->excel_data;
 
+        return $this->excel_data;
     }
 
-    // export data 
+    // export data
     public function export(){
-        return Excel::download(new ProjectExport, 'projects.xlsx');
+        return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
     }
 }

@@ -16,6 +16,7 @@ class CreateContratsTable extends Migration
         Schema::create('contrats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('cin_Ouv');
             $table->date('datedebut');
             $table->date('datefin');
             $table->float('montant');

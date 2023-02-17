@@ -43,11 +43,15 @@
             @if (!is_null($releverB))
                 <div class="row">
                     <div class="col mt-6">
-                        <p>Relevé au : {{ $releverB->date }}</p>
-                        {{-- <p>Compte : {{ $releverB->compte->numero }}</p> --}}
+                        <p>Relevé au : {{ $releverB->dateR }}</p>
+                        @if (!is_null($releverB->compte))
+                        <p>Compte : {{ $releverB->compte->numero }}</p>
+                        @endif
                     </div>
                     <div class="col mt-6">
-                        {{-- <p>Solde en MAD : {{ $releverB->compte->sold }}</p> --}}
+                        @if (!is_null($releverB->compte))
+                        <p>Solde en MAD : {{ $releverB->compte->sold }}</p>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -57,6 +61,7 @@
 
 
             @if (!is_null($transactions))
+            @if($transactions->count() != 0)
                 <div class="table-responsive">
                     <table class="table table-bordered table-social">
                         <tbody>
@@ -79,6 +84,7 @@
                         </tbody>
                     </table>
                 </div>
+            @endif
             @endif
         </div>
 
@@ -121,11 +127,6 @@
 
 
         </div>
-
-
-
-
-
         {{-- import modal end --}}
 
 
