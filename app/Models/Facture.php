@@ -19,6 +19,7 @@ class Facture extends Model
         'numero',
         'date',
         'scan_pdf',
+        'montant',
     ];
 
     public function fournisseur(){

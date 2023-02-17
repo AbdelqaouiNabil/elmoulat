@@ -136,6 +136,7 @@ class ProjectsList extends Component
         $this->superfice = $projet->superfice;
         $this->id_bureau = $projet->id_bureau;
         $this->id_caisse = $projet->id_caisse;
+        
 
 
     }
@@ -195,7 +196,6 @@ class ProjectsList extends Component
     public function deleteData()
     {
 
-
         $charge= Charge::where('id_projet',$this->project_edit_id)->get();
         if(count($charge)>0){
             session()->flash('error','you selectd a project use as forieng key in other table');
@@ -231,8 +231,10 @@ class ProjectsList extends Component
             session()->flash('message', 'projet bien supprimer');
             $this->resetInputs();
 
+
         }
         $this->dispatchBrowserEvent('close-model');
+
 
 
 
@@ -393,7 +395,6 @@ class ProjectsList extends Component
         $startcount = 1;
         // $data = array();
         foreach ($row_range as $row) {
-
             $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
             $this->excel_data[$i]['consistance'] = $sheet->getCell('C' . $row)->getValue();
             $this->excel_data[$i]['titre_finance'] = $sheet->getCell('D' . $row)->getValue();

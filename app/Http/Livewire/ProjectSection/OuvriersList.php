@@ -66,7 +66,7 @@ class OuvriersList extends Component
            'nom'=>'required',
            'datenais'=>'required|date',
            'cin'=>'mimes:pdf',
-           'n_cin'=>'required',
+           'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
            'datedebut'=>'required|date',
            'observation'=>'required',
            'notation'=>'required|integer',
@@ -125,7 +125,7 @@ class OuvriersList extends Component
             'nom'=>'required',
             'datenais'=>'required|date',
             'cin'=>'mimes:pdf',
-            'n_cin'=>'required',
+            'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
             'datedebut'=>'required|date',
             'observation'=>'required',
             'notation'=>'required|integer',
@@ -187,7 +187,7 @@ class OuvriersList extends Component
         $validatedata=$this->validate([
             'nom'=>'required',
             'datenais'=>'required|date',
-            'n_cin'=>'required',
+            'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
             'datedebut'=>'required|date',
             'observation'=>'required',
             'notation'=>'required|integer',
@@ -272,8 +272,3 @@ class OuvriersList extends Component
 
 
 
-
-
-
-
-}
