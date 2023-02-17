@@ -53,7 +53,7 @@ class BureauList extends Component
         $this->validateOnly($fields,[
             'name'=>'required',
             'ville'=>'required',
-            'phone'=>'required|integer',
+            'phone'=>'required|regex:/[0-9]*/',
         ]);
     }
     // this function for reset inputs
@@ -69,7 +69,7 @@ class BureauList extends Component
         $this->validate([
             'name'=>'required',
             'ville'=>'required',
-            'phone'=>'required|integer',
+            'phone'=>'required|regex:/[0-9]*/',
            
         ]);
         $bureau = new Bureau;
@@ -101,6 +101,13 @@ class BureauList extends Component
     }
     
     public function editData(){
+
+        $this->validate([
+            'name'=>'required',
+            'ville'=>'required',
+            'phone'=>'required|regex:/[0-9]*/',
+           
+        ]);
         $bureau = Bureau::where('id',$this->id_bureau)->first();
         $bureau->nom = $this->name;
         $bureau->ville = $this->ville;

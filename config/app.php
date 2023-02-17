@@ -171,11 +171,22 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
+
+    // 'providers' => [
+    //     Maatwebsite\Excel\ExcelServiceProvider::class,
+    // ],
+    'aliases' => [
+        'Excel' =>
+        Maatwebsite\Excel\Facades\Excel::class,
+    ],
+
+// weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
 
     /*
     |--------------------------------------------------------------------------

@@ -10,6 +10,7 @@ use App\Models\Charge;
 use App\Models\Fournisseur;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Excel;
 
 
 class FournisseursList extends Component
@@ -59,7 +60,7 @@ class FournisseursList extends Component
         return view('livewire.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
     }
 
-    // sort function  for order data by table head 
+    // sort function  for order data by table head
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -84,7 +85,7 @@ class FournisseursList extends Component
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
             'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
         ]);
@@ -96,8 +97,8 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
 
@@ -119,10 +120,9 @@ class FournisseursList extends Component
 
         $this->resetInputs();
 
-        $this->dispatchBrowserEvent('add');
-
         // for hidden the model
         $this->dispatchBrowserEvent('close-model');
+        $this->dispatchBrowserEvent('add');
 
 
     }
@@ -160,8 +160,8 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
 
@@ -194,13 +194,13 @@ class FournisseursList extends Component
 
     public function deleteData()
     {
-        
+
         $check= Charge::where('fournisseur_id',$this->id_fournisseur)->first();
         $check2= Facture::where('fournisseur_id',$this->id_fournisseur)->first();
         if($check || $check2){
             session()->flash('error','You selected an fournisseur aready used in charge table as ForingKey');
             return;
-            
+
         }else {
             $fournisseur = Fournisseur::where('id', $this->id_fournisseur)->first();
             $fournisseur->delete();
@@ -263,19 +263,14 @@ class FournisseursList extends Component
         // $path = file_get_contents($tt);
 
         $path = $this->exelFile->store('', 'app');
-        Excel::import(new ProjetsImport($this->exelFile, $path), $path);
+        // Excel::import(new ProjetsImport($this->exelFile, $path), $path);
         session()->flash('message', 'projet bien imposter');
 
 
     }
     //import project end
 
-    //  validate function 
-    public function validationdata()
-    {
 
-        
-    }
 
 
 

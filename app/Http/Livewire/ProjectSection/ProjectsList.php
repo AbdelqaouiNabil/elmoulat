@@ -4,6 +4,7 @@ namespace App\Http\Livewire\ProjectSection;
 
 use App\Exports\ProjectExport;
 use App\Imports\ProjetsImport;
+use App\Models\Charge;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
 use App\Models\Projet;
@@ -17,6 +18,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
+use \PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use File;
 use DB;
@@ -128,6 +130,7 @@ class ProjectsList extends Component
         $this->superfice = $projet->superfice;
         $this->id_bureau = $projet->id_bureau;
         $this->id_caisse = $projet->id_caisse;
+        
 
     }
 
@@ -174,26 +177,45 @@ class ProjectsList extends Component
     public function deleteData()
     {
        
+           
+        $charge= Charge::where('id_projet',$this->project_edit_id)->get();
+        if(count($charge)>0){
+            session()->flash('error','you selectd a project use as forieng key in other table');
+
+        }else{
             $path = Storage::disk('local')->url($this->image);
             File::delete(public_path($path));
             Projet::where('id', $this->project_edit_id)->delete();
-            
             $this->resetInputs();
             session()->flash('message', 'projet bien supprimer');
-            $this->dispatchBrowserEvent('add');
             $this->dispatchBrowserEvent('close-model');
+            $this->dispatchBrowserEvent('add');
+
+        }
+
        
 
     }
     public function deleteSelected()
     {
+        $charge= Charge::whereIn('id_projet',$this->selectedProjects)->get();
+        if(count($charge)>0){
+            session()->flash('error','you selectd a project use as forieng key in other table');
+        }else{
+            $project=Projet::whereIn('id',$this->selectedProjects)->get();
+            foreach($project as $p){
+                $path = Storage::disk('local')->url($p->image);
+                File::delete(public_path($path));
+                $p->delete();
+            }
+            $this->selectedProjects = [];
+            $this->selectAll = false;
+            session()->flash('message', 'projet bien supprimer');
+            $this->resetInputs();
 
-
-       
-        Projet::query()->whereIn('id', $this->selectedProjects)->delete();
-        $this->selectedProjects = [];
-        $this->selectAll = false;
-        session()->flash('message', 'projet bien supprimer');
+        }
+        $this->dispatchBrowserEvent('close-model');
+        
 
       
 
@@ -212,6 +234,7 @@ class ProjectsList extends Component
 
     public function importData()
     {
+       try{
         $this->validate([
 
             'exelFile' => 'required|mimes:xlsx,xls',
@@ -221,8 +244,13 @@ class ProjectsList extends Component
         $path = $this->exelFile->store('excel', 'app');
         // Excel::import(new ProjetsImport($this->exelFile, $path), $path);
         $this->excel($path);
-        
         session()->flash('message', 'projet bien imposter');
+        $this->dispatchBrowserEvent('close-model');
+       }catch(QueryException $e){
+        session()->flash('error',''.$e);
+       }
+       $this->dispatchBrowserEvent('close-model');
+        
 
 
     }
@@ -342,13 +370,11 @@ class ProjectsList extends Component
         $spreadsheet = IOFactory::load(storage_path('app/' . $path));
         $sheet = $spreadsheet->getActiveSheet();
         $row_limit = $sheet->getHighestDataRow();
-        $column_limit = $sheet->getHighestDataColumn();
+        // $column_limit = $sheet->getHighestDataColumn();
         $row_range = range(1, $row_limit);
-        // $column_range = range('J', $column_limit);
         $startcount = 1;
-        $data = array();
+        // $data = array();
         foreach ($row_range as $row) {
-
             $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
             $this->excel_data[$i]['consistance'] = $sheet->getCell('C' . $row)->getValue();
             $this->excel_data[$i]['titre_finance'] = $sheet->getCell('D' . $row)->getValue();
@@ -356,16 +382,14 @@ class ProjectsList extends Component
             $this->excel_data[$i]['adress'] = $sheet->getCell('F' . $row)->getValue();
             $this->excel_data[$i]['ville'] = $sheet->getCell('G' . $row)->getValue();
             $this->excel_data[$i]['autorisation'] = $sheet->getCell('H' . $row)->getValue();
-            $this->excel_data[$i]['datedebut'] ="2023-01-08" ;//$sheet->getCell('I' . $row)->getValue();
-            $this->excel_data[$i]['datefin'] = "2023-02-08";//$sheet->getCell('J' . $row)->getValue();
+            $this->excel_data[$i]['datedebut'] = Date::excelToDateTimeObject($sheet->getCell('I' . $row)->getValue())->format('Y-m-d');
+            $this->excel_data[$i]['datefin'] =Date::excelToDateTimeObject($sheet->getCell('J' . $row)->getValue())->format('Y-m-d');
             $this->excel_data[$i]['id_bureau'] = $sheet->getCell('K' . $row)->getValue();
             $this->excel_data[$i]['id_caisse'] = $sheet->getCell('L' . $row)->getValue();
             $startcount++;
             $i++;
         }
        
-
-
         return $this->excel_data;
 
     }

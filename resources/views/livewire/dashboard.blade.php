@@ -1,4 +1,5 @@
-<div>
+{{-- <div>
+
     <aside class="sidebar-wrapper">
 
         <div class="sidebar sidebar-collapse" id="sidebar">
@@ -15,11 +16,12 @@
 
 
 
-                      <li>
+                    <li>
 
-                        <a  wire:click="changeTab('projet')" id="projet" class="$currentTab === 'projet' ? 'active' : ''">
+                        <a wire:click="changeTab('projet')" id="projet"
+                            class="$currentTab === 'projet' ? 'active' : ''">
 
-                            <span wire:ignore ><i data-feather="layers" class="nav-icon"></i></span>
+                            <span wire:ignore><i data-feather="layers" class="nav-icon"></i></span>
 
                             <span class="menu-text">Projet</span>
 
@@ -29,9 +31,10 @@
 
                     <li>
 
-                        <a  wire:click="changeTab('fournisseurs')"  class="$currentTab === 'fournisseurs' ? 'active' : ''">
+                        <a wire:click="changeTab('fournisseurs')"
+                            class="$currentTab === 'fournisseurs' ? 'active' : ''">
 
-                            <span wire:ignore ><i  data-feather="folder" class="nav-icon"></i></span>
+                            <span wire:ignore><i data-feather="folder" class="nav-icon"></i></span>
 
                             <span class="menu-text">Fournisseurs</span>
 
@@ -41,7 +44,7 @@
 
                     <li>
 
-                        <a  wire:click="changeTab('ouvriers')" class="$currentTab === 'ouvriers' ? 'active' : ''">
+                        <a wire:click="changeTab('ouvriers')" class="$currentTab === 'ouvriers' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="tool" class="nav-icon"></i></span>
 
@@ -51,9 +54,9 @@
 
                     </li>
 
-                     <li>
+                    <li>
 
-                        <a  wire:click="changeTab('clients')" class="$currentTab === 'clients' ? 'active' : ''">
+                        <a wire:click="changeTab('clients')" class="$currentTab === 'clients' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="dollar-sign" class="nav-icon"></i></span>
 
@@ -71,7 +74,7 @@
 
                     <li>
 
-                        <a  wire:click="changeTab('charges')" class="$currentTab === 'charges' ? 'active' : ''">
+                        <a wire:click="changeTab('charges')" class="$currentTab === 'charges' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -83,7 +86,7 @@
 
                     <li>
 
-                        <a  wire:click="changeTab('Contrats')" class="$currentTab === 'Contrats' ? 'active' : ''">
+                        <a wire:click="changeTab('Contrats')" class="$currentTab === 'Contrats' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -94,7 +97,7 @@
                     </li>
                     <li>
 
-                        <a  wire:click="changeTab('facture')" class="$currentTab === 'facture' ? 'active' : ''">
+                        <a wire:click="changeTab('facture')" class="$currentTab === 'facture' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -126,6 +129,17 @@
                         </a>
 
                     </li>
+                    <li>
+
+                        <a>
+
+                            <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                            <span class="menu-text">Depots</span>
+
+                        </a>
+
+                    </li>
 
                     <li class="menu-title m-top-30">
 
@@ -133,7 +147,7 @@
 
                     </li>
 
-                      <li>
+                    <li>
 
                         <a wire:click="changeTab('Comptes')" class="$currentTab === 'Comptes' ? 'active' : ''">
 
@@ -145,9 +159,9 @@
 
                     </li>
 
-                     <li>
+                    <li>
 
-                        <a  wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
+                        <a wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -157,11 +171,11 @@
 
                     </li>
 
-                     <li>
+                    <li>
 
                         <a wire:click="changeTab('chequier')" class="$currentTab === 'chequier' ? 'active' : ''">
 
-                            <span  wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
+                            <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
 
                             <span class="menu-text">chequier</span>
 
@@ -171,16 +185,16 @@
 
 
 
-                     <li class="menu-title m-top-30">
+                    <li class="menu-title m-top-30">
 
                         <span>RH</span>
 
                     </li>
 
 
-                     <li>
+                    <li>
 
-                        <a  wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
+                        <a wire:click="changeTab('Relever')" class="$currentTab === 'Relever' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -191,7 +205,7 @@
                     </li>
                     <li>
 
-                        <a  wire:click="changeTab('Bureau')" class="$currentTab === 'Bureau' ? 'active' : ''">
+                        <a wire:click="changeTab('Bureau')" class="$currentTab === 'Bureau' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -202,7 +216,7 @@
                     </li>
                     <li>
 
-                        <a  wire:click="changeTab('Employe')" class="$currentTab === 'Employe' ? 'active' : ''">
+                        <a wire:click="changeTab('Employe')" class="$currentTab === 'Employe' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -213,7 +227,8 @@
                     </li>
                     <li>
 
-                        <a style="cursor:pointer" wire:click="changeTab('conges')" class="$currentTab === 'conges' ? 'active' : ''">
+                        <a style="cursor:pointer" wire:click="changeTab('conges')"
+                            class="$currentTab === 'conges' ? 'active' : ''">
 
                             <span data-feather="folder" class="nav-icon"></span>
 
@@ -223,33 +238,36 @@
 
                     </li>
 
-                   
-                        <li class="has-child">
-                            <a href="#" class="">
-                                <span wire:ignore><i data-feather="aperture" class="nav-icon"></i></span>
-                                <span class="menu-text">Settings</span>
-                                <span class="toggle-icon"></span>
-                            </a>
-                            <ul>
-                                <li class="nav-item">
-                                    <a wire:click="changeTab('Bank')" class="$currentTab === 'Bank' ? 'active' : ''">Bank</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a wire:click="changeTab('domaine')" class="$currentTab === 'domaine' ? 'active' : ''">Domaine</a>
-                                </li>
-                                
-                                <li>
-                                    <a href="" class="">Profile Settings<span class="badge badge-success menuItem">New</span></a>
 
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="">Timeline</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="">Activity</a>
-                                </li>
-                            </ul>
-                        </li>
+                    <li class="has-child">
+                        <a href="#" class="">
+                            <span wire:ignore><i data-feather="aperture" class="nav-icon"></i></span>
+                            <span class="menu-text">Settings</span>
+                            <span class="toggle-icon"></span>
+                        </a>
+                        <ul>
+                            <li class="nav-item">
+                                <a wire:click="changeTab('Bank')"
+                                    class="$currentTab === 'Bank' ? 'active' : ''">Bank</a>
+                            </li>
+                            <li class="nav-item">
+                                <a wire:click="changeTab('domaine')"
+                                    class="$currentTab === 'domaine' ? 'active' : ''">Domaine</a>
+                            </li>
+
+                            <li>
+                                <a href="" class="">Profile Settings<span
+                                        class="badge badge-success menuItem">New</span></a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Timeline</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Activity</a>
+                            </li>
+                        </ul>
+                    </li>
 
                 </ul>
 
@@ -258,101 +276,90 @@
         </div>
 
     </aside>
-         <div>
+    <div>
 
 
-       @if($currentTab === 'projet')
-       <livewire:project-section.projects-list>
-
-       @endif
-       @if($currentTab === 'fournisseurs')
-
-       <livewire:project-section.fournisseurs-list>       
-
-       @endif
-       @if($currentTab === 'ouvriers')
-       <livewire:project-section.ouvriers-list>
-
-       @endif
-
-       @if($currentTab === 'clients')
-       <livewire:client-list>
-
-       @endif
-
-       @if($currentTab === 'domaine')
-       <livewire:settings.domaine-list>
-
-       @endif
-       @if($currentTab === 'Bureau')
-       <livewire:rh-section.bureau-list>
-
-       @endif
-       @if($currentTab === 'Employe')
-       <livewire:rh-section.employe-list>
-
-       @endif
-       @if($currentTab === 'conges')
-       <livewire:rh-section.conge-list>
-
-       @endif
-        @if($currentTab === 'chequier')
-       <livewire:transactions.chequier-list>
-
-       @endif
-
-       @if($currentTab === 'charges')
-       <livewire:charges-list>
-
-       @endif
-       @if($currentTab === 'Contrats')
-       <livewire:contrats-list>
-
-       @endif
-
-       @if($currentTab === 'depenses')
-       <livewire:depenses-list>
-
-       @endif
-
-       @if($currentTab === 'reglements')
-       <livewire:reglements-list>
-
-       @endif
-
-
-       @if($currentTab === 'Bank')
-       <livewire:settings.bank-list>
-
-       @endif
-
-       @if($currentTab === 'facture')
-       <livewire:facture-list>
+        @if ($currentTab === 'projet')
+            <livewire:project-section.projects-list>
+        @endif
+        @if ($currentTab === 'fournisseurs')
+            <livewire:project-section.fournisseurs-list>
+        @endif
+        @if ($currentTab === 'ouvriers')
+            <livewire:project-section.ouvriers-list>
         @endif
 
-        @if($currentTab === 'Comptes')
-       <livewire:transactions.comptes-list>
+        @if ($currentTab === 'clients')
+            <livewire:client-list>
+        @endif
 
-       @endif
+        @if ($currentTab === 'domaine')
+            <livewire:settings.domaine-list>
+        @endif
+        @if ($currentTab === 'Bureau')
+            <livewire:rh-section.bureau-list>
+        @endif
+        @if ($currentTab === 'Employe')
+            <livewire:rh-section.employe-list>
+        @endif
+        @if ($currentTab === 'conges')
+            <livewire:rh-section.conge-list>
+        @endif
+        @if ($currentTab === 'chequier')
+            <livewire:transactions.chequier-list>
+        @endif
+
+        @if ($currentTab === 'charges')
+            <livewire:charges-list>
+        @endif
+        @if ($currentTab === 'Contrats')
+            <livewire:contrats-list>
+        @endif
+
+        @if ($currentTab === 'depenses')
+            <livewire:depenses-list>
+        @endif
+
+        @if ($currentTab === 'reglements')
+            <livewire:reglements-list>
+        @endif
+
+        @if ($currentTab === 'Bank')
+            <livewire:settings.bank-list>
+        @endif
 
 
-       </div>
+        @if ($currentTab === 'Relever')
+            <livewire:relever-bankaire>
+        @endif
+
+        @if ($currentTab === 'facture')
+            <livewire:facture-list>
+        @endif
+
+        @if ($currentTab === 'Comptes')
+            <livewire:transactions.comptes-list>
+        @endif
+
+
+    </div>
+
+   
+       <h1> i'am a dashboard</h1>
 </div>
-@push('scripts')
-    <script>
-        window.addEventListener('close-model', event => {
-            $('#modal-basic').modal('hide');
-            $('#edit-modal').modal('hide');
-            $('#modal-info-delete').modal('hide');
-        });
+<script>
+    window.addEventListener('close-model', event => {
+        $('#modal-basic').modal('hide');
+        $('#edit-modal').modal('hide');
+        $('#modal-info-delete').modal('hide');
+    });
 
 
-        window.addEventListener('add', event =>{
-             Swal.fire(
-                  'Super!',
-                  'Vous avez ajouter un nouveau projet!',
-                'success'
-)
-        });
-    </script>
-@endpush
+    window.addEventListener('add', event => {
+        Swal.fire(
+            'Super!',
+            'Vous avez ajouter un nouveau projet!',
+            'success'
+        )
+    });
+</script> --}}

@@ -15,13 +15,15 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_cheque');
+            $table->unsignedBigInteger('id_cheque')->nullable();
             $table->unsignedBigInteger('id_releverbancaire');
-            $table->date('date');
-            $table->string('type');
-            $table->float('setiation');
-            $table->float('credit');
-            $table->float('debit');
+            $table->date('date_Operation');
+            $table->date('date_Valeur');
+            $table->string('typeCheck')->nullable();
+            $table->string('libelle');
+            // $table->float('situation');
+            $table->float('credit')->nullable();
+            $table->float('debit')->nullable();
             $table->foreign('id_cheque')->references('id')->on('cheques');
             $table->foreign('id_releverbancaire')->references('id')->on('relever_bancaires');
             $table->timestamps();
