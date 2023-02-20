@@ -88,6 +88,7 @@
                 <div class="alert alert-danger">
 
                     {{ session('error') }}
+                </div>
             @endif
             @if ($factures->count() > 0)
                 <div class="container-fluid">
@@ -143,6 +144,12 @@
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
+                                                    <span class="userDatatable-title">Montant</span>
+                                                    <a href="" wire:click.prevent="sort('montant')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
+                                                </th>
+
+                                                <th>
                                                     <span class="userDatatable-title">Date de Facture </span>
                                                     <a href="" wire:click.prevent="sort('date')"><i
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
@@ -194,6 +201,11 @@
                                                         <td>
                                                             <div class="orderDatatable-title">
                                                                 {{ $facture->type }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $facture->montant }}
                                                             </div>
                                                         </td>
                                                         <td>
@@ -284,11 +296,9 @@
                                     @enderror
 
                                 </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
-
                         <button type="button" class="btn btn-danger btn-outlined btn-sm"
                             data-dismiss="modal">Annuler</button>
                         <button type="submit" wire:click.prevent='importData'
@@ -337,20 +347,20 @@
                                     @enderror
 
                                 </div>
-                                
+
                                 <div class="form-group mb-25">
                                     <label class="required">Fournisseur </label>
-                                    <select name="select-size-1" wire:model.defer='fournisseur_id' id="select-size-1" class="form-control  form-control-lg">
+                                    <select name="select-size-1" wire:model.defer='fournisseur_id' id="select-size-1"
+                                        class="form-control  form-control-lg">
                                         <option value="" selected>select an option</option>
-                                    @foreach($fournisseurs as $fournisseur)
-                                        <option value="{{$fournisseur->id}}">{{$fournisseur->name}}</option>
-                                        
-                                    @endforeach
-                                        
+                                        @foreach ($fournisseurs as $fournisseur)
+                                            <option value="{{ $fournisseur->id }}">{{ $fournisseur->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('fournisseur_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
                                 </div>
                                 <div class="form-group mb-25">
@@ -364,13 +374,50 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label class="required">Type </label>
-                                    <select name="select-size-1" wire:model.defer='type' id="select-size-1" class="form-control  form-control-lg">
-                                        <option value="real" selected>Real</option>
+                                    <select name="select-size-1" wire:model='type' id="select-size-1"
+                                        class="form-control  form-control-lg">
+                                        <option selected >----select one---- </option>
+                                        <option value="real" >Real</option>
                                         <option value="fake">Fake</option>
+                                        <option value="ajustement">Ajustement</option>
                                     </select>
                                     @error('type')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                @if ($type == 'fake' || $type == 'ajustement')
+                                    <div class="form-group mb-25">
+                                        <label>Prix</label>
+                                        <input class="form-control form-control-lg" type="number" name="prix"
+                                            required wire:model.defer='prix'>
+                                        @error('prix')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label class="required">Caisse </label>
+                                        <select name="select-size-1" wire:model.defer='caisse' id="select-size-1"
+                                            required class="form-control  form-control-lg">
+                                            <option selected>select one</option>
+
+                                            @foreach ($caisses as $caisse)
+                                                <option value="{{ $caisse->id }}">{{ $caisse->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
+                                <div class="form-group mb-25">
+                                    <label>Montant</label>
+                                    <input class="form-control form-control-lg" type="number" name="montant"
+                                        wire:model.defer='montant'>
+                                    @error('montant')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
                                 </div>
                                 <div class="form-group mb-25">
@@ -396,7 +443,7 @@
 
 
 
-        {{-- edit project model --}}
+        {{-- edit facture model --}}
 
         <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog"
             aria-hidden="true">
@@ -425,32 +472,56 @@
                                     @enderror
 
                                 </div>
+
                                 <div class="form-group mb-25">
                                     <label class="required">Fournisseur </label>
-                                    <select name="select-size-1" wire:model.defer='fournisseur_id' id="select-size-1" class="form-control  form-control-lg">
+                                    <select name="select-size-1" wire:model.defer='fournisseur_id' id="select-size-1"
+                                        class="form-control  form-control-lg">
                                         <option value="" selected>select an option</option>
-                                    @foreach($fournisseurs as $fournisseur)
-                                        <option value="{{$fournisseur->id}}">{{$fournisseur->name}}</option>
-                                        
-                                    @endforeach
-                                        
+                                        @foreach ($fournisseurs as $fournisseur)
+                                            <option value="{{ $fournisseur->id }}">{{ $fournisseur->name }}</option>
+                                        @endforeach
+
                                     </select>
                                     @error('fournisseur_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
                                 </div>
+
                                 
+                                @if ($type == 'fake' || $type == 'ajustement')
+                                    <div class="form-group mb-25">
+                                        <label>Prix</label>
+                                        <input class="form-control form-control-lg" type="number" name="prix"
+                                            required wire:model.defer='prix'>
+                                        @error('prix')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label class="required">Caisse </label>
+                                        <select name="select-size-1" wire:model.defer='caisse' id="select-size-1"
+                                            required class="form-control  form-control-lg">
+                                            <option selected>select one</option>
+
+                                            @foreach ($caisses as $caisse)
+                                                <option value="{{ $caisse->id }}">{{ $caisse->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
                                 <div class="form-group mb-25">
-                                    <label class="required">Type </label>
-                                    <select name="select-size-1" wire:model.defer='type' id="select-size-1" class="form-control  form-control-lg">
-                                       
-                                        <option value="real" selected>Real</option>
-                                        <option value="fake">Fake</option>
-                                    </select>
-                                    @error('type')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    <label>Montant</label>
+                                    <input class="form-control form-control-lg" type="number" name="montant"
+                                        wire:model.defer='montant'>
+                                    @error('montant')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
                                 </div>
                                 <div class="form-group mb-25">
@@ -553,9 +624,19 @@
 
         <!-- ends: .modal-info-Delete -->
 
+        @push('scripts')
+            <script>
+                window.addEventListener('close-model', event => {
+                    
+                    $('#modal-basic').modal('hide');
+                    $('#edit-modal').modal('hide');
+                    $('#modal-info-delete').modal('hide');
+                })
+            </script>
+        @endpush
+
 
 
 
     </div>
-</div>
 </div>

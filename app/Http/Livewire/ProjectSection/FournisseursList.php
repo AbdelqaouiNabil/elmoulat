@@ -40,21 +40,9 @@ class FournisseursList extends Component
     {
         $this->bulkDisabled = count($this->selectedfournisseur) < 1;
 
-        if ($this->sorttype != "" && $this->sorttype != "id") {
-            $fournisseurs = Fournisseur::where('id_fdomaine', $this->sorttype)->paginate($this->pages, ['*'], 'new');
-
-
-        } elseif ($this->sorttype == "id") {
-            $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
-            ->orWhere('ice', 'like', '%'.$this->search.'%')
-            ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-
-        } else {
-            $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
-            ->orWhere('ice', 'like', '%'.$this->search.'%')
-            ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-
-        }
+        $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
+        ->orWhere('ice', 'like', '%'.$this->search.'%')
+        ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $fdomaines = f_domaine::all();
 
         return view('livewire.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
@@ -84,8 +72,8 @@ class FournisseursList extends Component
         $this->validateOnly($fields, [
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
         ]);
@@ -97,8 +85,8 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
 
@@ -120,10 +108,9 @@ class FournisseursList extends Component
 
         $this->resetInputs();
 
-        $this->dispatchBrowserEvent('add');
-
         // for hidden the model
         $this->dispatchBrowserEvent('close-model');
+        $this->dispatchBrowserEvent('add');
 
 
     }
@@ -161,8 +148,8 @@ class FournisseursList extends Component
         $this->validate([
             'name' => 'required',
             'id_fdomaine' => 'required|integer',
-            'ice' => 'required|integer|min:14',
-            'phone' => 'required|integer',
+            'ice' => 'required|regex:/[0-9]{14}/',
+            'phone' => 'required|regex:/[0-9]*/',
             'email' => 'required|email',
             'adress' => 'required',
 
@@ -271,12 +258,7 @@ class FournisseursList extends Component
     }
     //import project end
 
-    //  validate function
-    public function validationdata()
-    {
 
-
-    }
 
 
 

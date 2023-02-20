@@ -17,13 +17,15 @@ class CreateRetraitsTable extends Migration
             $table->id();
             $table->date('dateRet');
 
-            $table->float('montant');
+            $table->string('montant');
             $table->unsignedBigInteger('id_caisse');
             $table->foreign('id_caisse')->references('id')->on('caisses');
             $table->unsignedBigInteger('id_reglement')->nullable();
             $table->foreign('id_reglement')->references('id')->on('reglements');
             $table->unsignedBigInteger('id_depense')->nullable();
             $table->foreign('id_depense')->references('id')->on('depenses');
+            $table->unsignedBigInteger('id_facture')->nullable();
+            $table->foreign('id_facture')->references('id')->on('factures');
             $table->timestamps();
         });
     }

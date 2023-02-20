@@ -16,9 +16,9 @@ class CreateChequiersTable extends Migration
         Schema::create('chequiers', function (Blueprint $table) {
             $table->id();
             $table->date('dateDeMiseEnDisposition');
-            $table->integer('numeroDeDebut');
-            $table->integer('numeroDeFin');
-            $table->integer('nombreDeCheque');
+            $table->bigInteger('numeroDeDebut');
+            $table->bigInteger('numeroDeFin');
+            $table->bigInteger('nombreDeCheque');
             $table->unsignedBigInteger('id_compte');
             $table->foreign('id_compte')->references('id')->on('comptes'); 
             $table->timestamps();

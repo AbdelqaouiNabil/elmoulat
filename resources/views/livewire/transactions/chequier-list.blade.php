@@ -2,23 +2,12 @@
     <div>
         <div class="contents">
             <div class="container-fluid">
-
-                @if (count($comptes) == null)
-                    <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
-                        <span class="mr-2" aria-label="Warning:"><i
-                                class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
-                        <div>
-                            Vous deviez crée un compte banquaire avant de crée un chequier
-                        </div>
-                    </div>
-                @endif
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="shop-breadcrumb">
 
                             <div class="breadcrumb-main">
-
-                                
+                                <h4 class="text-capitalize breadcrumb-title">Chequiers</h4>
                                 <div class="col-md-6">
                                     <div class="search-result global-shadow rounded-pill bg-white">
 
@@ -51,192 +40,191 @@
                     </div>
                 </div>
             </div>
-            @if (session()->has('success'))
-                <div class="alert alert-success">
-
-                    {{ session('success') }}
-
+            @if (count($comptes) == null)
+                <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
+                    <span class="mr-2" aria-label="Warning:"><i
+                            class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
+                    <div>
+                        Vous deviez crée un compte banquaire avant de crée un chequier
+                    </div>
                 </div>
-            @endif
-            @if (session()->has('error'))
-                <div class="alert alert-danger">
+            @else
+                @if (session()->has('success'))
+                    <div class="alert alert-success">
 
-                    {{ session('error') }}
-
-                </div>
-            @endif
-            <div class="container-fluid">
-                @if ($selectedChequier)
-                    <div class="action-btn mb-3">
-
-                        <button type="button" class=" btn btn-sm btn-danger btn-add"
-                            @if ($bulkDisabled) disabled @endif data-target="#modal-all-delete"
-                            data-toggle="modal">
-                            <i class="la la-trash"></i>delete selected</button>
-
+                        {{ session('success') }}
 
                     </div>
                 @endif
-                <div class="row">
-                    <div class="col-lg-12">
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
 
-                        <div
-                            class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
-                            <div class="table-responsive">
-                                <table class="table mb-0 table-borderless border-0">
-                                    <thead>
-                                        <tr class="userDatatable-header">
-                                            <th>
+                        {{ session('error') }}
 
-                                                <div class="form-check">
-                                                    <input type="checkbox" wire:model="selectAll">
+                    </div>
+                @endif
+                @if ($chequier->count() > 0)
+                    <div class="container-fluid">
+                        @if ($selectedChequier)
+                            <div class="action-btn mb-3">
+
+                                <button type="button" class=" btn btn-sm btn-danger btn-add"
+                                    @if ($bulkDisabled) hidden @endif data-target="#modal-all-delete"
+                                    data-toggle="modal">
+                                    <i class="la la-trash"></i>delete selected</button>
 
 
-                                                </div>
+                            </div>
+                        @endif
+                        <div class="row">
+                            <div class="col-lg-12">
 
+                                <div
+                                    class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-borderless border-0">
+                                            <thead>
+                                                <tr class="userDatatable-header">
+                                                    <th>
 
-                                            </th>
-                                            <th>
-                                                <span class="userDatatable-title">id</span>
-                                            </th>
-                                            <th>
-                                                <span class="userDatatable-title">date de mise en disposition</span>
-                                            </th>
-                                            <th>
-                                                <span class="userDatatable-title">numero de debut</span>
-                                            </th>
-                                            <th>
-                                                <span class="userDatatable-title">numero de fin</span>
-                                            </th>
-
-                                            <th>
-                                                <span class="userDatatable-title">nombre de cheque</span>
-                                            </th>
-                                            <th>
-                                                <span class="userDatatable-title">Rip de compte</span>
-                                            </th>
-                                            <th>
-                                                <span class="userDatatable-title">Actions</span>
-                                            </th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @if ($chequier->count() > 0)
-
-                                            @foreach ($chequier as $chequier)
-                                                <tr>
-                                                    <td>
                                                         <div class="form-check">
-                                                            <input type="checkbox" wire:model="selectedChequier"
-                                                                value="{{ $chequier->id }}">
-
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $chequier->id }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $chequier->dateDeMiseEnDisposition }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $chequier->numeroDeDebut }}
-                                                        </div>
-                                                    </td>
+                                                            <input type="checkbox" wire:model="selectAll">
 
 
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $chequier->numeroDeFin }}
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $chequier->nombreDeCheque }}
-                                                        </div>
-                                                    </td>
 
-                                                    {{-- @foreach ($comptes as $compte)
-                                                @if ($compte->id == $chequier->id_compte)
-                                                    <td>
-                                                <div class="orderDatatable-title">
-                                                    {{ $compte->numero }}
-                                                </div>
-                                            </td>
-                                                @endif
-                                            @endforeach --}}
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $chequier->compte->numero }}
-                                                        </div>
-                                                    </td>
 
-                                                    <td>
-                                                        <ul class="orderDatatable_actions mb-0 d-flex">
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">id</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">date de mise en
+                                                            disposition</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">numero de debut</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">numero de fin</span>
+                                                    </th>
 
-                                                            <li><a href="#" class="remove" data-toggle="modal"
-                                                                    data-target="#edit-modal"
-                                                                    wire:click='editChequier({{ $chequier->id }})'><i
-                                                                        class="fa-regular fa-pen-to-square"></i></a>
-                                                            </li>
-                                                            <li><a href="#" class="remove" data-toggle="modal"
-                                                                    data-target="#modal-info-delete"
-                                                                    wire:click='deleteChequier({{ $chequier->id }})'
-                                                                    style="color: red;"><i
-                                                                        class="fa-solid fa-trash"></i></a>
-                                                            </li>
+                                                    <th>
+                                                        <span class="userDatatable-title">nombre de cheque</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Rip de compte</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Actions</span>
+                                                    </th>
 
-                                                        </ul>
-                                                    </td>
                                                 </tr>
-                                            @endforeach
-                                        @else
-                                        @endif
+                                            </thead>
+                                            <tbody>
 
-                                        <!-- End: tr -->
+                                                @foreach ($chequier as $chequier)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" wire:model="selectedChequier"
+                                                                    value="{{ $chequier->id }}">
 
-
-
-
-
-
-
-                                    </tbody>
-                                </table><!-- End: table -->
-                            </div>
-                            <div class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
-
-                                <nav class="atbd-page ">
-                                    <ul class="atbd-pagination d-flex">
-                                        <li class="atbd-pagination__item">
-                                            {{-- {{ $chequier->links('vendor.livewire.bootstrap') }} --}}
-                                        </li>
-                                        <li class="atbd-pagination__item">
-                                            <div class="paging-option">
-                                                <select wire:model="Chequierpage" name="page-number"
-                                                    class="page-selection">
-                                                    <option value="5">5/page</option>
-                                                    <option value="10">10/page</option>
-                                                    <option value="20">20/page</option>
-                                                    <option value="40">40/page</option>
-                                                </select>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $chequier->id }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $chequier->dateDeMiseEnDisposition }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $chequier->numeroDeDebut }}
+                                                            </div>
+                                                        </td>
 
 
-                            </div>
-                        </div><!-- End: .userDatatable -->
-                    </div><!-- End: .col -->
-                </div>
-            </div>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $chequier->numeroDeFin }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $chequier->nombreDeCheque }}
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $chequier->compte->numero }}
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <ul class="orderDatatable_actions mb-0 d-flex">
+
+                                                                <li><a href="#" class="remove" data-toggle="modal"
+                                                                        data-target="#edit-modal"
+                                                                        wire:click='editChequier({{ $chequier->id }})'><i
+                                                                            class="fa-regular fa-pen-to-square"></i></a>
+                                                                </li>
+                                                                <li><a href="#" class="remove" data-toggle="modal"
+                                                                        data-target="#modal-info-delete"
+                                                                        wire:click='deleteChequier({{ $chequier->id }})'
+                                                                        style="color: red;"><i
+                                                                            class="fa-solid fa-trash"></i></a>
+                                                                </li>
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+
+
+                                            </tbody>
+                                        </table><!-- End: table -->
+                                    </div>
+                                    <div
+                                        class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
+
+                                        <nav class="atbd-page ">
+                                            <ul class="atbd-pagination d-flex">
+                                                <li class="atbd-pagination__item">
+                                                    {{-- {{ $chequier->links('vendor.livewire.bootstrap') }} --}}
+                                                </li>
+                                                <li class="atbd-pagination__item">
+                                                    <div class="paging-option">
+                                                        <select wire:model="Chequierpage" name="page-number"
+                                                            class="page-selection">
+                                                            <option value="5">5/page</option>
+                                                            <option value="10">10/page</option>
+                                                            <option value="20">20/page</option>
+                                                            <option value="40">40/page</option>
+                                                        </select>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </nav>
+
+
+                                    </div>
+                                </div><!-- End: .userDatatable -->
+                            </div><!-- End: .col -->
+                        </div>
+                    </div>
+                @else
+                    <div class="h-100 d-flex align-items-center justify-content-center">
+                        table chequiers is empty
+                    </div>
+
+                @endif
+            @endif
 
             {{-- edit chequier modal START --}}
             <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog"
@@ -435,6 +423,9 @@
                                             @endforeach
 
                                         </select>
+                                        @error('compte_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
                                     </div>
                                 @endif
@@ -451,7 +442,17 @@
             </div>
         </div>
         {{-- add chequier model END --}}
+        @push('scripts')
+            <script>
+                window.addEventListener('close-model', event => {
+                    $('#modal-basic').modal('hide');
+                    $('#edit-modal').modal('hide');
+                    $('#modal-info-delete').modal('hide');
+                })
+            </script>
+        @endpush
 
 
 
     </div>
+</div>

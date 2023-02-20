@@ -15,7 +15,7 @@
 
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" wire:click="resetInputs()"
                                         data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
@@ -72,22 +72,22 @@
                                             <th>
                                                 <span class="userDatatable-title">id</span>
                                                 <a href="" wire:click.prevent="sort('id')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
-                                                <span class="userDatatable-title">Nome de Bureau</span>
+                                                <span class="userDatatable-title">Nom de Bureau</span>
                                                 <a href="" wire:click.prevent="sort('nom')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
                                                 <span class="userDatatable-title">Ville de Bureau</span>
                                                 <a href="" wire:click.prevent="sort('ville')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
                                                 <span class="userDatatable-title">Phone number</span>
                                                 <a href="" wire:click.prevent="sort('phone')"><i
-                                                    class="fa-sharp fa-solid fa-sort"></i></a>
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
 
                                             <th>
@@ -99,60 +99,60 @@
                                     </thead>
                                     <tbody>
 
-                                        
-
-                                            @foreach ($bureaus as $bureau)
-                                                <tr>
-                                                    <td>
-
-                                                        <input type="checkbox" wire:model="selectRows"
-                                                            value="{{ $bureau->id }}">
-
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $bureau->id }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $bureau->nom }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $bureau->ville }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $bureau->phone }}
-                                                        </div>
-                                                    </td>
 
 
+                                        @foreach ($bureaus as $bureau)
+                                            <tr>
+                                                <td>
 
-                                                    <td>
-                                                        <ul class="orderDatatable_actions mb-0 d-flex">
+                                                    <input type="checkbox" wire:model="selectRows"
+                                                        value="{{ $bureau->id }}">
 
-                                                            <li><a href="#" class="remove" data-toggle="modal"
-                                                                    data-target="#edit-modal"
-                                                                    wire:click='edit({{ $bureau->id }})'><i
-                                                                        class="fa-regular fa-pen-to-square"></i></a>
-                                                            </li>
-                                                            <li><a href="#" class="remove" data-toggle="modal"
-                                                                    data-target="#modal-info-delete"
-                                                                    wire:click='delete({{ $bureau->id }})'
-                                                                    style="color: red;"><i
-                                                                        class="fa-solid fa-trash"></i></a>
-                                                            </li>
+                                                </td>
 
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                            
+                                                <td>
+                                                    <div class="orderDatatable-title">
+                                                        {{ $bureau->id }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="orderDatatable-title">
+                                                        {{ $bureau->nom }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="orderDatatable-title">
+                                                        {{ $bureau->ville }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="orderDatatable-title">
+                                                        {{ $bureau->phone }}
+                                                    </div>
+                                                </td>
+
+
+
+                                                <td>
+                                                    <ul class="orderDatatable_actions mb-0 d-flex">
+
+                                                        <li><a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#edit-modal"
+                                                                wire:click='edit({{ $bureau->id }})'><i
+                                                                    class="fa-regular fa-pen-to-square"></i></a>
+                                                        </li>
+                                                        <li><a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-info-delete"
+                                                                wire:click='delete({{ $bureau->id }})'
+                                                                style="color: red;"><i
+                                                                    class="fa-solid fa-trash"></i></a>
+                                                        </li>
+
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
 
                                     </tbody>
                                 </table><!-- End: table -->
@@ -167,7 +167,8 @@
                                         <li class="atbd-pagination__item">
                                             <div class="paging-option">
                                                 <select name="page-number" class="page-selection"
-                                                    wire:model.defer="pages">
+                                                    wire:model="pages">
+                                                    <option value="5">05/page</option>
                                                     <option value="20">20/page</option>
                                                     <option value="40">40/page</option>
                                                     <option value="60">60/page</option>
@@ -273,55 +274,57 @@
                             <span data-feather="x"></span></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
 
-                            <form>
-                                <div class="form-basic">
-                                    <div class="form-group mb-25">
-                                        <label>Nom de Domaine</label>
-                                        <input class="form-control form-control-lg" type="text" name="name"
-                                            wire:model.defer='name'>
-                                        @error('name')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
 
-                                    </div>
-
-                                    <div class="form-group mb-25">
-                                        <label>ville</label>
-                                        <input class="form-control form-control-lg" type="text" name="ville"
-                                            wire:model.defer='ville'>
-                                        @error('ville')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-
-                                    </div>
-                                    <div class="form-group mb-25">
-                                        <label>Phone</label>
-                                        <input class="form-control form-control-lg" type="number" name="phone"
-                                            wire:model.defer='phone'>
-                                        @error('phone')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-
-                                    </div>
+                        <form>
+                            <div class="form-basic">
+                                <div class="form-group mb-25">
+                                    <label>Nom de Domaine</label>
+                                    <input class="form-control form-control-lg" type="text" name="name"
+                                        wire:model.defer='name'>
+                                    @error('name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
                                 </div>
 
-                        </div>
+                                <div class="form-group mb-25">
+                                    <label>ville</label>
+                                    <input class="form-control form-control-lg" type="text" name="ville"
+                                        wire:model.defer='ville'>
+                                    @error('ville')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Phone</label>
+                                    <input class="form-control form-control-lg" type="number" name="phone"
+                                        wire:model.defer='phone'>
+                                    @error('phone')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+                            </div>
 
 
+
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary btn-sm"
+                                    wire:click.prevent='editData()'> Save
+                                    Bureau</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm" wire:click.prevent='editData()'> Save
-                            Bureau</button>
-                    </div>
-                    </form>
                 </div>
+
+
+
             </div>
-
-
-
         </div>
 
 
@@ -398,8 +401,18 @@
         <!-- ends: .modal-info-Delete -->
 
 
-
+        @push('scripts')
+            <script>
+                window.addEventListener('close-model', event => {
+                    $('#modal-basic').modal('hide');
+                    $('#edit-modal').modal('hide');
+                    $('#modal-info-delete').modal('hide');
+                });
+                
+                
+            </script>
+        @endpush
 
     </div>
-</div>
+
 </div>

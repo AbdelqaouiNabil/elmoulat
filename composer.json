@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-dompdf": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "illuminate/support": "*",
@@ -18,7 +19,8 @@
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.65",
         "phpoffice/phpspreadsheet": "^1.26",
-        "realrashid/sweet-alert": "^5.1"
+        "realrashid/sweet-alert": "^5.1",
+        "santigarcor/laratrust": "^7.1"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",

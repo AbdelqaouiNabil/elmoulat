@@ -20,7 +20,8 @@ class CreateFacturesTable extends Migration
             $table->string('numero')->unique();
             $table->date('date');
             $table->string('scan_pdf');
-            $table->enum('type',['real','fake']);
+            $table->string('montant')->nullable();
+            $table->enum('type',['real','fake','ajustement']);
             $table->timestamps();
         });
     }
