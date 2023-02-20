@@ -60,14 +60,13 @@ class ReglementsList extends Component
                 break;
         }
         if ($this->search != "") {
-            $contrat = Contrat::where('cin_Ouv', 'like', '%'. $this->search . '%')->first();
-            if(!is_null($contrat)){
-                $reglements = Reglement::where('id_contrat',$contrat->id)
-                ->orWhere('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
-            }else{
+            $contrat = Contrat::where('cin_Ouv', 'like', '%' . $this->search . '%')->first();
+            if (!is_null($contrat)) {
+                $reglements = Reglement::where('id_contrat', $contrat->id)
+                    ->orWhere('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+            } else {
                 $reglements = Reglement::where('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
             }
-
         }
 
         return view('livewire.reglements-list', ["reglements" => $reglements, "factures" => $factures]);
@@ -251,7 +250,7 @@ class ReglementsList extends Component
         $reglement = reglement::where('id', $this->id_reg)->first();
         if (!is_null($reglement->numero_cheque)) {
             $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-            if(!is_null($cheque)){
+            if (!is_null($cheque)) {
                 $cheque->situation = "disponible";
                 $cheque->save();
             }
@@ -270,22 +269,20 @@ class ReglementsList extends Component
             $reglement = reglement::where('id', $this->selectedRegs[$j])->first();
             if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                if(!is_null($cheque)){
+                if (!is_null($cheque)) {
                     $cheque->situation = "disponible";
                     $cheque->save();
                 }
-
             }
 
             // update charge situation
             $charge = Charge::where('id_reglement', $this->selectedRegs[$j])->get();
             for ($i = 0; $i < count($charge); $i++) {
-                if(!is_null($charge[$i])){
+                if (!is_null($charge[$i])) {
                     $charge[$i]->situation = "notPayed";
                     $charge[$i]->id_reglement = null;
                     $charge[$i]->save();
                 }
-
             }
         }
         reglement::query()
@@ -301,12 +298,11 @@ class ReglementsList extends Component
     {
         $charge = Charge::where('id_reglement', $idR)->get();
         for ($i = 0; $i < count($charge); $i++) {
-            if(!is_null($charge[$i])){
+            if (!is_null($charge[$i])) {
                 $charge[$i]->situation = "notPayed";
                 $charge[$i]->id_reglement = null;
                 $charge[$i]->save();
             }
-
         }
     }
 
@@ -315,7 +311,8 @@ class ReglementsList extends Component
 
 
     // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
-    public function updateCaisseAfterSave(){
+    public function updateCaisseAfterSave()
+    {
         $projet = Projet::where('id', $this->id_projet)->first();
         $caisse = Caisse::where('id', $projet->id_caisse)->first();
         Retrait::create([
@@ -414,6 +411,19 @@ class ReglementsList extends Component
 
 
 
+    public $noContrat = false;
+    public function buttonAjouter()
+    {
+        $this->resetInputs();
+        $contrats = Contrat::all();
+        if($contrats->isEmpty()){
+            session()->flash('warning', "Contrat's table is null");
+            $this->noContrat = true;
+        }else{
+            $this->noContrat = false;
+        }
+    }
+
 
 
     public function resetInputs()
@@ -424,7 +434,6 @@ class ReglementsList extends Component
         $this->num_facture = "";
         $this->cin_Ouv = "";
         $this->dateR = "";
-
     }
 
     public function updatedSelectAll($value)

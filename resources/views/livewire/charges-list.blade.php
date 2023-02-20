@@ -58,7 +58,7 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            wire:click="resetInputs" data-toggle="modal" data-target="#modal-basic">
+                                            wire:click="buttonAjouter" data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
 
                                     </div>
@@ -233,12 +233,16 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $CH->projet->name }}
+                                                            @if (!is_null($CH->projet))
+                                                                {{ $CH->projet->name }}
+                                                            @endif
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $CH->fournisseur->name }}
+                                                            @if (!is_null($CH->fournisseur))
+                                                                {{ $CH->fournisseur->name }}
+                                                            @endif
                                                         </div>
                                                     </td>
                                                     <td>
@@ -340,11 +344,15 @@
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
 
+                                    @if (session()->has('warning'))
+                                        <div class="alert alert-warning form-group mb-25">
 
+                                            {{ session('warning') }}
+
+                                        </div>
+                                    @endif
                                     <div class="row">
                                         <div class="col mt-6">
-
-
 
                                             <div class="form-group mb-25">
                                                 <label>Nom de charge</label>
@@ -488,6 +496,7 @@
                         </div>
                         <div class="modal-footer">
                             <button wire:click.prevent="saveCharge" type="submit"
+                                @if ($noProjectOrFourniss) disabled @endif
                                 class="btn btn-primary btn-sm">Enregistrer
                                 Charge</button>
                         </div>
