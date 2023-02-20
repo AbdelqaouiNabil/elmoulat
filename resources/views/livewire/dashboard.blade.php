@@ -1,4 +1,4 @@
-{{-- <div>
+<div>
 
     <aside class="sidebar-wrapper">
 
@@ -349,7 +349,81 @@
     </div>
 
 
-       <h1> I am a dashboard</h1>
+
+    <main>
+        <div class="container-fluid mt-5 pt-5" name="maindiv">
+            <div class="container ms-5 divContainer">
+
+                {{-- <h1 id="h11"> I am a dashboard</h1> --}}
+                <div class="row">
+                    <div class="card">
+                        <h2 class="fourniss">Fournisseur</h2>
+                        <div class="valContainer">
+                            <h4 class="val">5900</h4>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2 class="proje">Projets</h2>
+                        <div class="valContainer">
+                            <h4 class="val">48</h4>
+                        </div>
+                    </div>
+                    <div class=" card cardCaisse">
+                        <h2>Caisse</h2>
+                        <div class="row">
+                            <div class="col mt-3">
+                                <h4 class="justified">justified <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                        height="16" fill="currentColor" class="bi bi-arrow-up-right"
+                                        viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z" />
+                                    </svg>
+                                </h4>
+                            </div>
+                            <div class="col mt-3">
+                                <h4 class="val">4522.00</h4>
+                            </div>
+                            <div class="col mt-3">
+                                <h4 class="nonJustified">non Justified
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-arrow-down-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M14 13.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h4.793L2.146 2.854a.5.5 0 1 1 .708-.708L13 12.293V7.5a.5.5 0 0 1 1 0v6z" />
+                                    </svg>
+                                </h4>
+                            </div>
+                            <div class="col mt-3">
+                                <h4 class="val">2333.89</h4>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 <script>
     window.addEventListener('close-model', event => {
@@ -366,4 +440,4 @@
             'success'
         )
     });
-</script> --}}
+</script>
