@@ -42,11 +42,11 @@ Route::get('/', function () {
     return view('auth.login');
 });
 Route::middleware(['middleware'=>'PreventBack'])->group(function () {
-    
+
     Auth::routes();
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::get('/addRole', function(){
@@ -61,7 +61,7 @@ Route::get('/addRole', function(){
 // Admin Routes
 
 
-Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']], function(){
+Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack']], function(){
     Route::get('/dashboard',Dashboard::class)->name('admin.dashboard');
     Route::get('/Projetslist',ProjectsList::class)->name('admin.projects');
     Route::get('/fournisseurlist',FournisseursList::class)->name('admin.fournisseurs');
@@ -83,8 +83,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin','auth','PreventBack']]
     Route::get('/cheques',ChequeList::class)->name('admin.cheques');
     Route::get('/caisse',CaisseList::class)->name('admin.caisses');
     Route::get('/Pdf',[ProjectsList::class,'pdfExport'])->name('admin.pdf');
- 
-    
+
+
 });
 
 
