@@ -15,11 +15,11 @@ class CreateDepotsTable extends Migration
     {
         Schema::create('depots', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->integer('numero_cheque');
+            $table->date('dateC');
+            $table->string('numero_cheque');
             $table->float('montant');
             $table->unsignedBigInteger('id_caisse');
-            $table->foreign('id_caisse')->references('id')->on('caisses'); 
+            $table->foreign('id_caisse')->references('id')->on('caisses');
             $table->timestamps();
         });
     }

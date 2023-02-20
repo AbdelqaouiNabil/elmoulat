@@ -17,7 +17,7 @@ class Depense extends Model
 
         'id_projet',
         'id_ouvrier',
-        'date',
+        'dateDep',
         'description',
         'Aqui',
         'type',

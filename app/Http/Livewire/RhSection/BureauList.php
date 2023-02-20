@@ -122,7 +122,6 @@ class BureauList extends Component
     // delete data row 
 
     public function delete($id){
-        $bureau = Bureau::where('id',$id)->first();
         $this->id_bureau = $id;
      
     }
@@ -147,20 +146,22 @@ class BureauList extends Component
     // delete selected rows on the table 
     public function  deleteSelectedRows(){
 
-        foreach ($this->selectRows as $r) {
-            $check = Employe::where('bureau_id', $r)->first();
-            $check2 = Projet::where('id_bureau', $r)->first();
-            if ($check || $check2) {
-                session()->flash('error', 'You selected an Bureau aready used  as ForingKey');
-                return;
-            } else {
-                $bureau = Bureau::where('id', $r)->first();
-                $bureau->delete();
-                session()->flash('message', 'les Congés bien supprimer');
-                $this->resetInputs();
-                $this->dispatchBrowserEvent('add');
-            }
+      
+        $employe = Employe::whereIn('bureau_id', $this->selectRows)->get();
+        $projet = Projet::whereIn('id_bureau', $this->selectRows)->get();
+
+        if (count($projet)>0 || count($employe)>0 ) {
+            session()->flash('error', 'there is one or more bureaus is aready used  as ForingKey ');
+            return;
+        } else {
+            $bureau = Bureau::whereIn('id', $this->selectRows);
+            $bureau->delete();
+            session()->flash('message', 'les bureau bien supprimer');
+            $this->selectRows=[];
+            $this->selectAll=false;
         }
+        $this->resetInputs();
+        $this->dispatchBrowserEvent('close-model');
    }
    
    

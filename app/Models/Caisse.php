@@ -13,7 +13,17 @@ class Caisse extends Model
         'sold_nonjustify',
         'sold',
         'total'
-
     ];
+
+    protected static function boot() {
+        parent::boot();
+    
+        static::updating(function($model){
+            $model->total = $model->sold_nonjustify + $model->sold;
+        }); 
+        static::saving(function($model){
+            $model->total = $model->sold_nonjustify + $model->sold;
+        });
+    }
 
 }

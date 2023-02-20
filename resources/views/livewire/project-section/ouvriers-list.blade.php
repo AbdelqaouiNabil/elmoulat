@@ -623,6 +623,7 @@
 
                                 </div>
 
+
                                 <div class="row">
                                     <div class="form-group mb-25 col-lg-12">
                                         <label>Adress</label>
@@ -632,6 +633,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+
                                 </div>
                             </div>
 

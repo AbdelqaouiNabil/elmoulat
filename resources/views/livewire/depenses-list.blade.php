@@ -8,8 +8,22 @@
 
                         <div class="breadcrumb-main">
                             <h4 class="text-capitalize breadcrumb-title">Depense</h4>
-                            <div class="breadcrumb-action justify-content-center flex-wrap">
 
+                            <div class="col-md-6">
+                                <div class="search-result global-shadow rounded-pill bg-white">
+
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                        <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                            type="search" placeholder="chercher par l'utiliter ..."
+                                            aria-label="Search">
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="breadcrumb-action justify-content-center flex-wrap">
                                 <div class="dropdown action-btn">
                                     <div class="dropdown dropdown-click">
 
@@ -45,7 +59,7 @@
                                 <div class="action-btn">
 
                                     <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
-                                        data-target="#modal-basic">
+                                        wire:click="buttonAjouter" data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
                                 </div>
@@ -73,24 +87,6 @@
 
         @if ($depenses->count() > 0)
             <div class="container-fluid">
-
-
-                <div class="row mb-3">
-                    <div class="col mt-6">
-                        <div class="breadcrumb-main__wrapper bg-white rounded-pill">
-                            <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                                <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                                <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
-                                    placeholder="chercher par ..." aria-label="Search">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col mt-6">
-                    </div>
-                </div>
-
-
-
 
                 {{-- <div class="action-btn mb-3">
                     <button type="button"
@@ -184,12 +180,14 @@
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $dep->date }}
+                                                        {{ $dep->dateDep }}
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $dep->projet->name }}
+                                                        @if (!is_null($dep->projet))
+                                                            {{ $dep->projet->name }}
+                                                        @endif
                                                     </div>
                                                 </td>
                                                 <td>
@@ -257,11 +255,8 @@
                 </div>
             </div>
         @else
-            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <div>
-                    <span class="mr-2" aria-label="Warning:"><i
-                            class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Depense table is empty
-                </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                table Depenses is empty
             </div>
         @endif
 
@@ -281,19 +276,25 @@
                         <h6 class="modal-title">Ajouter Nouveau Depense</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger">
-
-                                {{ session('error') }}
-
-                            </div>
-                        @endif
                     </div>
                     <div class="modal-body">
 
                         <form enctype="multipart/form-data">
                             <div class="form-basic">
+                                @if (session()->has('error'))
+                                <div class="alert alert-danger">
 
+                                    {{ session('error') }}
+
+                                </div>
+                            @endif
+                            @if (session()->has('warning'))
+                                <div class="alert alert-warning form-group mb-25">
+
+                                    {{ session('warning') }}
+
+                                </div>
+                            @endif
                                 <div class="form-group mb-25">
                                     <label>Montant de depense</label>
                                     <input class="form-control form-control-lg" type="text" name="montant"
@@ -333,9 +334,9 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
-                                        wire:model.defer='date'>
-                                    @error('date')
+                                    <input class="form-control form-control-lg" type="date" name="dateDep"
+                                        wire:model.defer='dateDep'>
+                                    @error('dateDep')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -343,6 +344,7 @@
                                     <label>Projet</label>
                                     <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
                                         class="form-control  form-control-lg">
+                                        <option selected>Choisir un projet</option>
                                         @foreach ($projets as $p)
                                             <option value="{{ $p->id }}">{{ $p->name }}
                                             </option>
@@ -371,6 +373,7 @@
                     </div>
                     <div class="modal-footer">
                         <button wire:click.prevent="saveDepense" type="submit"
+                            @if ($noProjects) disabled @endif
                             class="btn btn-primary btn-sm">Enregistrer
                             Depense</button>
                     </div>
@@ -409,9 +412,9 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
-                                        wire:model.defer='date'>
-                                    @error('date')
+                                    <input class="form-control form-control-lg" type="date" name="dateDep"
+                                        wire:model.defer='dateDep'>
+                                    @error('dateDep')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -596,16 +599,18 @@
                                     <label>Date de depense</label>
                                 </div>
                                 <div class="col mt-6">
-                                    <label>{{ $date }}</label>
+                                    <label>{{ $dateDep }}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mt-6">
                                     <label>Projet</label>
                                 </div>
-                                {{-- <div class="col mt-6">
-                                    <label>{{$depenseInfos->projet->name}}</label>
-                                </div> --}}
+                                <div class="col mt-6">
+                                    @if (!is_null($depenseInfos))
+                                        <label>{{ $depenseInfos->projet->name }}</label>
+                                    @endif
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col mt-6">

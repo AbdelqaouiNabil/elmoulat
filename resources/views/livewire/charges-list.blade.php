@@ -9,11 +9,23 @@
 
                             <div class="breadcrumb-main">
                                 <h4 class="text-capitalize breadcrumb-title">Charge</h4>
-                                <div class="breadcrumb-action justify-content-center flex-wrap">
+                                <div class="col-md-6">
+                                    <div class="search-result global-shadow rounded-pill bg-white">
 
+                                        <div
+                                            class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                            <input wire:model="search" class="form-control border-0 box-shadow-none"
+                                                type="search" placeholder="chercher par nom ou type..."
+                                                aria-label="Search">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="breadcrumb-action justify-content-center flex-wrap">
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
-
                                             <select name="select-size-1" wire:model="filter"
                                                 class="form-control  form-control-lg">
                                                 <option value="" selected>Order By</option>
@@ -46,7 +58,7 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            data-toggle="modal" data-target="#modal-basic">
+                                            wire:click="buttonAjouter" data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
 
                                     </div>
@@ -81,33 +93,12 @@
             @if ($charges->count() > 0)
                 <div class="container-fluid">
 
-
-                    <div class="row mb-3">
-                        <div class="col mt-6">
-                            <div class="breadcrumb-main__wrapper bg-white rounded-pill">
-                                <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
-                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                                    <input wire:model="search" class="form-control border-0 box-shadow-none" type="search"
-                                        placeholder="chercher par nom de projet ou fournisseur..." aria-label="Search">
-                                </div>
-                            </div>
+                    @if (!$bulkDisabled)
+                        <div class="action-btn mb-3">
+                            <button type="button" class="btn btn-sm btn-danger" wire:click="deleteSelected">
+                                <i class="la la-trash"></i>delete selected</button>
                         </div>
-                        <div class="col mt-6">
-                        </div>
-                    </div>
-
-
-
-
-
-                    <div class="action-btn mb-3">
-                        <button type="button"
-                            class="@if ($bulkDisabled) disabled @endif btn btn-sm btn-danger"
-                            wire:click="deleteSelected">
-                            <i class="la la-trash"></i>delete selected</button>
-                    </div>
-
-
+                    @endif
 
                     <div class="row">
                         <div class="col-lg-12">
@@ -242,12 +233,16 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $CH->projet->name }}
+                                                            @if (!is_null($CH->projet))
+                                                                {{ $CH->projet->name }}
+                                                            @endif
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $CH->fournisseur->name }}
+                                                            @if (!is_null($CH->fournisseur))
+                                                                {{ $CH->fournisseur->name }}
+                                                            @endif
                                                         </div>
                                                     </td>
                                                     <td>
@@ -307,11 +302,8 @@
                     </div>
                 </div>
             @else
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <div>
-                        <span class="mr-2" aria-label="Warning:"><i
-                                class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>Charges table is empty
-                    </div>
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                    table Charges is empty
                 </div>
             @endif
 
@@ -352,11 +344,15 @@
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
 
+                                    @if (session()->has('warning'))
+                                        <div class="alert alert-warning form-group mb-25">
 
+                                            {{ session('warning') }}
+
+                                        </div>
+                                    @endif
                                     <div class="row">
                                         <div class="col mt-6">
-
-
 
                                             <div class="form-group mb-25">
                                                 <label>Nom de charge</label>
@@ -397,6 +393,7 @@
                                                 <select name="fournisseur_id" id="select-size-1"
                                                     wire:model.defer='fournisseur_id'
                                                     class="form-control  form-control-lg">
+                                                    <option value="" selected>select an option</option>
                                                     @foreach ($fournisseurs as $f)
                                                         <option value="{{ $f->id }}">{{ $f->name }}
                                                         </option>
@@ -447,6 +444,7 @@
                                                 <select name="id_projet" id="select-size-1"
                                                     wire:model.defer='id_projet'
                                                     class="form-control  form-control-lg">
+                                                    <option value="" selected>select an option</option>
                                                     @foreach ($projets as $p)
                                                         <option value="{{ $p->id }}">{{ $p->name }}
                                                         </option>
@@ -498,6 +496,7 @@
                         </div>
                         <div class="modal-footer">
                             <button wire:click.prevent="saveCharge" type="submit"
+                                @if ($noProjectOrFourniss) disabled @endif
                                 class="btn btn-primary btn-sm">Enregistrer
                                 Charge</button>
                         </div>
@@ -708,19 +707,20 @@
                             <span data-feather="x"></span></button>
                     </div>
                     <div class="modal-body">
-                        {{-- <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
-                                                <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
-                                                <div>
-                                                    Vous sélectionnez une charge payé
-                                                </div>
-                                            </div> --}}
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger form-group mb-25">
+
+                                {{ session('error') }}
+
+                            </div>
+                        @endif
                         <form enctype="multipart/form-data">
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
-                                        wire:model.defer='date'>
-                                    @error('date')
+                                    <input class="form-control form-control-lg" type="date" name="dateR"
+                                        wire:model.defer='dateR'>
+                                    @error('dateR')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -785,14 +785,8 @@
                                 class="btn btn-primary btn-sm">Enregistrer le règlement</button>
                         </div>
                     @endif
-                    {{-- <div class="modal-footer">
-                                <button wire:click.prevent="addReg"   @if ($check) disable @endif type="submit" class="btn btn-primary btn-sm">Enregistrer le règlement</button>
-                            </div> --}}
 
                     </form>
-
-
-
 
 
                 </div>

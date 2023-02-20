@@ -131,7 +131,7 @@
                     </li>
                     <li>
 
-                        <a>
+                        <a wire:click="changeTab('depots')" class="$currentTab === 'depots' ? 'active' : ''">
 
                             <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -324,6 +324,10 @@
             <livewire:reglements-list>
         @endif
 
+        @if ($currentTab === 'depots')
+            <livewire:depots-list>
+        @endif
+
         @if ($currentTab === 'Bank')
             <livewire:settings.bank-list>
         @endif
@@ -344,8 +348,8 @@
 
     </div>
 
-   
-       <h1> i'am a dashboard</h1>
+
+       <h1> I am a dashboard</h1>
 </div>
 <script>
     window.addEventListener('close-model', event => {

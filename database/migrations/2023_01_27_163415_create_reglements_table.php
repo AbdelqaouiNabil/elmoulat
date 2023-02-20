@@ -16,7 +16,7 @@ class CreateReglementsTable extends Migration
         Schema::create('reglements', function (Blueprint $table) {
             $table->id();
 
-            $table->date('date');
+            $table->date('dateR');
             $table->string('methode');
             $table->float('montant');
             $table->integer('numero_cheque')->nullable();
