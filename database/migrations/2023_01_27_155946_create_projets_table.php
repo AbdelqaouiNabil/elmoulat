@@ -19,7 +19,7 @@ class CreateProjetsTable extends Migration
             $table->string('image');
             $table->string('consistance');
             $table->string('titre_finance');
-            $table->float('superfice');
+            $table->string('superfice');
             $table->string('adress');
             $table->string('ville');
             $table->string('autorisation');
