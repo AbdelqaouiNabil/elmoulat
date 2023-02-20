@@ -15,7 +15,7 @@ class CreateRetraitsTable extends Migration
     {
         Schema::create('retraits', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('dateRet');
 
             $table->string('montant');
             $table->unsignedBigInteger('id_caisse');

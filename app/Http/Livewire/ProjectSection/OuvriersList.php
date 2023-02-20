@@ -30,7 +30,7 @@ class OuvriersList extends Component
     public $search;
     protected $listeners = ['saveData' => 'saveData'];
 
-   
+
 
     public function render()
     {
@@ -41,7 +41,7 @@ class OuvriersList extends Component
         return view('livewire.project-section.ouvriers-list',['ouvriers'=>$ouvriers]);
     }
 
-     // sort function  for order data by table head 
+     // sort function  for order data by table head
     public function sort($value){
         if($this->sortname==$value && $this->sortdrection=="DESC"){
             $this->sortdrection="ASC";
@@ -58,11 +58,11 @@ class OuvriersList extends Component
     // for paginate
     public function updatingPages($value){
         $this->resetPage('new');
-        
+
     }
 
     public function saveData(){
-       
+
         $validatedata=$this->validate([
            'nom'=>'required',
            'datenais'=>'required|date',
@@ -72,12 +72,12 @@ class OuvriersList extends Component
            'observation'=>'required',
            'notation'=>'required|integer',
            'phone'=>'required|integer',
-           
+
         ]);
 
         $cinfile=$this->cin->store('Documents/ouvrier','public');
-        
-        
+
+
         $ouvrier=new Ouvrier();
         $ouvrier->nom=$this->nom;
         $ouvrier->datenais=$this->datenais;
@@ -89,7 +89,7 @@ class OuvriersList extends Component
         $ouvrier->phone=$this->phone;
         $ouvrier->email=$this->email;
         $ouvrier->adress=$this->adress;
-        
+
         $ouvrier->save();
 
         $this->resetInputs();
@@ -98,7 +98,7 @@ class OuvriersList extends Component
 
         // for hidden the model
         $this->dispatchBrowserEvent('close-model');
-        
+
 
 
     }
@@ -115,7 +115,7 @@ class OuvriersList extends Component
         $this->email="";
         $this->phone="";
         $this->adress="";
-      
+
 
     }
 
@@ -139,7 +139,7 @@ class OuvriersList extends Component
 // delete ouvrier
 
     public function deleteOuvrier($id){
-       
+
         $ouvrier = Ouvrier::where('id',$id)->first();
         $this->id_ouvrier = $ouvrier->id;
         $this->nom= $ouvrier->nom;
@@ -152,10 +152,11 @@ class OuvriersList extends Component
         $this->phone= $ouvrier->phone;
         $this->email=$ouvrier->email;
         $this->adress=$ouvrier->adress;
-    
+
     }
 
     public function deleteData(){
+
 
         $contart= Contrat::where('id_ouvrier',$this->id_ouvrier)->get();
         $depense= Depense::where('id_ouvrier',$this->id_ouvrier)->get();
@@ -172,17 +173,18 @@ class OuvriersList extends Component
             session()->flash('message','ouvrier bien supprimer ');
             $this->dispatchBrowserEvent('add');
         }
+
         
         $this->dispatchBrowserEvent('close-model');
     }
 
 
-    
+
    //edit ouvrier=====================
 
     public function editOuvrier($id){
         $ouvrier = Ouvrier::where('id',$id)->first();
-        $this->id_ouvrier = $id; 
+        $this->id_ouvrier = $id;
         $this->nom= $ouvrier->nom;
         $this->datenais = $ouvrier->datenais;
         $this->cin = $ouvrier->cin;
@@ -193,7 +195,7 @@ class OuvriersList extends Component
         $this->phone= $ouvrier->phone;
         $this->email=$ouvrier->email;
         $this->adress=$ouvrier->adress;
-        
+
     }
 
     public function editData(){
@@ -205,7 +207,7 @@ class OuvriersList extends Component
             'observation'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|integer',
-            
+
          ]);
 
         $ouvrier = Ouvrier::where('id',$this->id_ouvrier)->first();
@@ -247,13 +249,24 @@ class OuvriersList extends Component
             session()->flash('message', 'projet bien supprimer');
             $this->resetInputs();
         }
-        $this->dispatchBrowserEvent('close-model');
-        
+
+        if (count($deleted) > 0) {
+            session()->flash('message', "Deleted seccesfully Ouvriers of Id=[" . implode(",", $deleted) . "]");
+        }
+        if(count($id)>0){
+            session()->flash('error', "Can't delete Ouvriers of Id=[" . implode(",", $id) . "] Because is Used as ForeignKey ");
+        }
+        $this->checked_id = $id;
+        $this->selectAll = false;
+        $id = [];
+        $deleted = [];
+
+
     }
     public function updatedselectAll($value){
         if($value){
             $this->checked_id=Ouvrier::pluck('id');
-        
+
         }
         else{
             $this->checked_id=[];
@@ -264,20 +277,20 @@ class OuvriersList extends Component
 
 
 
-    //  import ouvrier 
+    //  import ouvrier
 
     public function importData(){
         $this->validate([
-           
+
             'excelFile'=>'required|mimes:xlsx,xls',
         ]);
         // $path= $this->exelFile->store('documents/OuvrierExcel','app');
         // $path = file_get_contents($path);
         Excel::import(new ImportOuvrier,$this->excelFile->store('Documents/ouvrier','app'));
         session()->flash('message','ouvriers bien importer');
-        
+
      }
 //  import project end
 
 
-}
+

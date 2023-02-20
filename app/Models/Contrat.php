@@ -15,7 +15,8 @@ class Contrat extends Model
         'datefin',
         'montant',
         'avance',
-        'id_ouvrier'
+        'id_ouvrier',
+        'cin_Ouv'
 
     ];
 

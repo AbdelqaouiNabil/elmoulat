@@ -21,7 +21,7 @@ class CreateComptesTable extends Migration
             $table->date('date_creation');
             $table->string('sold');
             $table->timestamps();
-            
+
         });
     }
 

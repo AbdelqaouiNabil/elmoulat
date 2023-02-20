@@ -12,7 +12,7 @@ class Retrait extends Model
         'id_caisse',
         'id_reglement',
         'montant',
-        'date',
+        'dateRet',
         'id_depense',
 
 

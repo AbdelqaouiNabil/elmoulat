@@ -71,10 +71,11 @@
     <header class="header-top">
         <nav class="navbar navbar-light">
             <div class="navbar-left">
-                <a href="" class="sidebar-toggle">
-                    <img class="svg" src="{{ asset('img/svg/bars.svg') }}" alt="img"></a>
-                <a class="navbar-brand" href="#"><img class="dark" src="{{ asset('img/logo_dark.png') }}"
-                        alt="svg"><img class="light" src="{{ asset('img/logo_white.png') }}" alt="img"></a>
+
+                <a href="{{route('owner.dashboard')}}" class="sidebar-toggle">
+                    <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
+                <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
+
 
                 <div class="top-menu">
 
@@ -203,7 +204,7 @@
                                                 <a href="profile.html" class="">Profile</a>
                                             </li>
                                             <li>
-                                                <a href="profile-setting.html" class="">Profile Settings</a>
+                                                <a href="" class="">Profile Settings</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -1127,7 +1128,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.projects') }}">
+                            <a href="{{ route('owner.projects') }}">
 
                                 <span wire:ignore><i data-feather="layers" class="nav-icon"></i></span>
 
@@ -1141,7 +1142,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.fournisseurs') }}"
+                            <a href="{{ route('owner.fournisseurs') }}"
                                 class="$currentTab === 'fournisseurs' ? 'active' : ''">
 
                                 <span wire:ignore><i data-feather="folder" class="nav-icon"></i></span>
@@ -1154,7 +1155,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.ouvriers') }}">
+                            <a href="{{ route('owner.ouvriers') }}">
 
                                 <span wire:ignore><i data-feather="tool" class="nav-icon"></i></span>
 
@@ -1166,7 +1167,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.clients') }}">
+                            <a href="{{ route('owner.clients') }}">
 
                                 <span wire:ignore><i data-feather="dollar-sign" class="nav-icon"></i></span>
 
@@ -1184,7 +1185,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.charges') }}">
+                            <a href="{{ route('owner.charges') }}">
 
                                 <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -1196,7 +1197,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.contrats') }}">
+                            <a href="{{ route('owner.contrats') }}">
 
                                 <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -1207,7 +1208,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.factures') }}">
+                            <a href="{{ route('owner.factures') }}">
 
                                 <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -1219,7 +1220,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.depenses') }}">
+                            <a href="{{ route('owner.depenses') }}">
 
                                 <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -1230,7 +1231,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.reglements') }}">
+                            <a href="{{ route('owner.reglements') }}">
 
                                 <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
 
@@ -1248,7 +1249,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.comptes') }}">
+                            <a href="{{ route('owner.comptes') }}">
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1272,7 +1273,7 @@
 
                         <li>
 
-                            <a href="{{ route('admin.chequiers') }}">
+                            <a href="{{ route('owner.chequiers') }}">
 
                                 <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
 
@@ -1326,7 +1327,9 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.bureaus') }}">
+
+                            <a href="{{ route('owner.bureaus') }}">
+
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1337,7 +1340,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.employes') }}">
+                            <a href="{{ route('owner.employes') }}">
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1348,7 +1351,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.conges') }}">
+                            <a href="{{ route('owner.conges') }}">
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1367,19 +1370,19 @@
                             </a>
                             <ul>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.banks') }}">Bank</a>
+                                    <a href="{{ route('owner.banks') }}">Bank</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.domaines') }}">Domaine</a>
+                                    <a href="{{ route('owner.domaines') }}">Domaine</a>
                                 </li>
 
                                 <li>
-                                    <a href="" class="">Profile Settings<span
+                                    <a href="{{route('owner.users')}}" class="">Utilisateur<span
                                             class="badge badge-success menuItem">New</span></a>
 
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="">Timeline</a>
+                                    <a class="nav-link" href="{{route('owner.role')}}">Roles</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="">Activity</a>
@@ -1495,9 +1498,9 @@
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
     @stack('scripts')
     @livewireScripts
-    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
-        data-turbolinks-eval="false"></script>
-    {{-- <script src="{{asset('js/app.js')}}"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
+    <script src="{{mix('js/app.js')}}"></script> --}}
+
     <!-- endinject-->
 </body>
 

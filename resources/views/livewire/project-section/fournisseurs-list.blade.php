@@ -106,6 +106,7 @@
 
                 </div>
             @endif
+
             @if (session()->has('error'))
             <div class="alert alert-danger">
 
@@ -113,6 +114,7 @@
 
             </div>
         @endif
+
 
             @if ($fournisseurs->count() > 0)
                 <div class="container-fluid">
@@ -303,6 +305,7 @@
 
             @endif
         @endif
+
         {{-- import modal start --}}
         <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-import" tabindex="-1"
             role="dialog" aria-hidden="true">
@@ -626,6 +629,7 @@
 
 
         </div>
+
         @push('scripts')
             <script>
                 window.addEventListener('close-model', event => {
@@ -635,5 +639,6 @@
                 })
             </script>
         @endpush
+
     </div>
 </div>

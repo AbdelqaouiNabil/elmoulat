@@ -19,9 +19,13 @@ use \PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use File;
 use DB;
+
 use PDF;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
+
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
+
 
 class ProjectsList extends Component
 {
@@ -137,6 +141,7 @@ class ProjectsList extends Component
         $this->id_caisse = $projet->id_caisse;
 
 
+
     }
 
     public function editData()
@@ -230,8 +235,10 @@ class ProjectsList extends Component
             session()->flash('message', 'projet bien supprimer');
             $this->resetInputs();
 
+
         }
         $this->dispatchBrowserEvent('close-model');
+
 
 
 
@@ -361,7 +368,6 @@ class ProjectsList extends Component
 
 
 
-
     }
     //  import project end
 
@@ -378,7 +384,7 @@ class ProjectsList extends Component
         return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
 
     }
-    // sort function 
+    // sort function
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -397,6 +403,18 @@ class ProjectsList extends Component
     {
         $this->resetPage('new');
     }
+
+
+    public function excel($path){
+
+        $spreadsheet = IOFactory::load(storage_path('app/' . $path));
+
+        $i = 0;
+        $j = 0;
+        $currentImage = "";
+        //  fetch images from exel file
+        foreach ($spreadsheet->getActiveSheet()->getDrawingCollection() as $drawing) {
+
 
 
     // export data 
@@ -493,7 +511,39 @@ class ProjectsList extends Component
 
 
 
-       
+
+    public function readData($path)
+    {
+        $i = 0;
+        $spreadsheet = IOFactory::load(storage_path('app/' . $path));
+        $sheet = $spreadsheet->getActiveSheet();
+        $row_limit = $sheet->getHighestDataRow();
+        // $column_limit = $sheet->getHighestDataColumn();
+        $row_range = range(1, $row_limit);
+        $startcount = 1;
+        // $data = array();
+        foreach ($row_range as $row) {
+            $this->excel_data[$i]['name'] = $sheet->getCell('A' . $row)->getValue();
+            $this->excel_data[$i]['consistance'] = $sheet->getCell('C' . $row)->getValue();
+            $this->excel_data[$i]['titre_finance'] = $sheet->getCell('D' . $row)->getValue();
+            $this->excel_data[$i]['superfice'] = $sheet->getCell('E' . $row)->getValue();
+            $this->excel_data[$i]['adress'] = $sheet->getCell('F' . $row)->getValue();
+            $this->excel_data[$i]['ville'] = $sheet->getCell('G' . $row)->getValue();
+            $this->excel_data[$i]['autorisation'] = $sheet->getCell('H' . $row)->getValue();
+            $this->excel_data[$i]['datedebut'] = Date::excelToDateTimeObject($sheet->getCell('I' . $row)->getValue())->format('Y-m-d');
+            $this->excel_data[$i]['datefin'] =Date::excelToDateTimeObject($sheet->getCell('J' . $row)->getValue())->format('Y-m-d');
+            $this->excel_data[$i]['id_bureau'] = $sheet->getCell('K' . $row)->getValue();
+            $this->excel_data[$i]['id_caisse'] = $sheet->getCell('L' . $row)->getValue();
+            $startcount++;
+            $i++;
+        }
+
+        return $this->excel_data;
+    }
+
+    // export data
+    public function export(){
+        return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
 
     }
 }
