@@ -33,12 +33,11 @@
                                     <div class="dropdown dropdown-click">
 
                                         <select @if (count($f_domaines) == null) disabled @endif name="select-size-1"
-                                            wire:model='sorttype' id="select-size-1"
+                                            wire:model='search' id="select-size-1"
                                             class="form-control  form-control-lg">
                                             <option value="" selected>Order By Domaine</option>
-                                            <option value="id">id</option>
                                             @foreach ($f_domaines as $f_domaine)
-                                                <option value="{{ $f_domaine->id }}">{{ $f_domaine->name }}</option>
+                                                <option value="{{ $f_domaine->name }}">{{ $f_domaine->name }}</option>
                                             @endforeach
 
                                         </select>

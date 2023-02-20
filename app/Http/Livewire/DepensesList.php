@@ -278,6 +278,22 @@ class DepensesList extends Component
         $this->dispatchBrowserEvent('close-model');
     }
 
+
+
+    public $noProjects = false;
+    public function buttonAjouter()
+    {
+        $this->resetInputs();
+        $projects = Projet::all();
+        if ($projects->isEmpty()) {
+            session()->flash('warning', "Project's table is null");
+            $this->noProjects = true;
+        } else {
+            $this->noProjects = false;
+        }
+    }
+
+
     public function resetInputs()
     {
         $this->montant = "";
@@ -336,10 +352,14 @@ class DepensesList extends Component
     public function UpdateCaisseAfterUpdate()
     {
         $dep = Depense::where('id', $this->id_depense)->first();
-        $retrait = Retrait::where('id', $this->id_depense)->first();
+
+        // update new record on retrait
+        $retrait = Retrait::where('id_depense', $dep->id)->first();
         $retrait->montant = $this->montant;
         $retrait->dateRet = $this->dateDep;
         $retrait->save();
+
+        // update Caisse's sold
         $caisse = Caisse::where('id', $retrait->id_caisse)->first();
         $montantAfterUpdate = ($this->montantBeforeUpdate) - ($this->montant);
         if ($dep->type == "Justifier") {

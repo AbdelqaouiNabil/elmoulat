@@ -15,7 +15,7 @@
 
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" wire:click="resetInputs()"
                                         data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
@@ -75,7 +75,7 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
-                                                <span class="userDatatable-title">Nome de Bureau</span>
+                                                <span class="userDatatable-title">Nom de Bureau</span>
                                                 <a href="" wire:click.prevent="sort('nom')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
@@ -167,7 +167,8 @@
                                         <li class="atbd-pagination__item">
                                             <div class="paging-option">
                                                 <select name="page-number" class="page-selection"
-                                                    wire:model.defer="pages">
+                                                    wire:model="pages">
+                                                    <option value="5">05/page</option>
                                                     <option value="20">20/page</option>
                                                     <option value="40">40/page</option>
                                                     <option value="60">60/page</option>

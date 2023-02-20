@@ -172,11 +172,10 @@ class ChargesList extends Component
             //modifier cheque situation
             if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                if(!is_null($cheque)){
+                if (!is_null($cheque)) {
                     $cheque->situation = "livrer";
                     $cheque->save();
                 }
-
             }
             session()->flash('message', 'Reglement added successfully');
             $this->resetInputs();
@@ -338,6 +337,25 @@ class ChargesList extends Component
         $this->dispatchBrowserEvent('close-model');
     }
 
+
+    public $noProjectOrFourniss = false;
+    public function buttonAjouter()
+    {
+        $this->resetInputs();
+        $projects = Projet::all();
+        $fournisseurs = Fournisseur::all();
+        if ($projects->isEmpty() || $fournisseurs->isEmpty()) {
+            session()->flash('warning', "Project or fournisseur 's table is null");
+            $this->noProjectOrFourniss = true;
+        } else {
+            $this->noProjectOrFourniss = false;
+        }
+    }
+
+
+
+
+
     public function resetInputs()
     {
 
@@ -350,8 +368,6 @@ class ChargesList extends Component
         $this->prix_TTC = "";
         $this->MTTTC = "";
     }
-
-    
 
     public function validation()
     {
@@ -366,6 +382,9 @@ class ChargesList extends Component
             'MTTTC' => 'required',
         ]);
     }
+
+
+
 
 
     public function updatedSelectAll($value)

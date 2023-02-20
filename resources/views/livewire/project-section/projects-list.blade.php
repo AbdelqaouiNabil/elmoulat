@@ -34,7 +34,7 @@
                                         <div class="dropdown-divider"></div>
                                         <a href="" class="dropdown-item">
                                             <i class="la la-print"></i> Printer</a>
-                                        <a href="" class="dropdown-item">
+                                        <a href="{{route('admin.pdf',['id'=>$selectedProjects])}}" target="_blank" type="application/pdf" class="dropdown-item">
                                             <i class="la la-file-pdf"></i> PDF</a>
                                         <i class="la la-file-excel"></i> Excel (XLSX)</a>
                                         <a href="" class="dropdown-item" wire:click.prevent='export()'>
@@ -46,13 +46,13 @@
                                     <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif type="button"
                                         class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                         data-target="#modal-import">
-                                        <i class="la la-plus"></i>importer</button>
+                                        <i class="la la-plus"></i>Importer</button>
 
                                 </div>
 
                                 <div class="action-btn">
 
-                                    <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif type="button"
+                                    <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif type="button" wire:click="resetInputs()"
                                         class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                         data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
@@ -86,7 +86,6 @@
             @else
                 @if (session()->has('message'))
                     <div class="alert alert-success">
-
                         {{ session('message') }}
 
                     </div>
@@ -120,63 +119,63 @@
 
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">id</span>
+                                                        <span class="userDatatable-title">Id</span>
                                                         <a href="" wire:click.prevent="sort('id')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">Nome de projet</span>
+                                                        <span class="userDatatable-title">Nom de Projet</span>
                                                         <a href="" wire:click.prevent="sort('name')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">image</span>
+                                                        <span class="userDatatable-title">Image</span>
                                                         <a href="" wire:click.prevent="sort('image')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">ville</span>
+                                                        <span class="userDatatable-title">Ville</span>
                                                         <a href="" wire:click.prevent="sort('ville')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">adress</span>
+                                                        <span class="userDatatable-title">Adresse</span>
                                                         <a href="" wire:click.prevent="sort('adress')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">consistance</span>
+                                                        <span class="userDatatable-title">Consistance</span>
                                                         <a href="" wire:click.prevent="sort('consistance')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">titre_finance</span>
+                                                        <span class="userDatatable-title">Titre Finance</span>
                                                         <a href=""
                                                             wire:click.prevent="sort('titre_finance')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
 
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">autorisation</span>
+                                                        <span class="userDatatable-title">Autorisation</span>
                                                         <a href="" wire:click.prevent="sort('autorisation')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
 
 
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">superfice</span>
+                                                        <span class="userDatatable-title">Superfice</span>
                                                         <a href="" wire:click.prevent="sort('superfice')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
 
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">date de debut</span>
+                                                        <span class="userDatatable-title">Date de Début</span>
                                                         <a href="" wire:click.prevent="sort('datedebut')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
 
                                                     </th>
                                                     <th>
-                                                        <span class="userDatatable-title">date de fin</span>
+                                                        <span class="userDatatable-title">Date de Fin</span>
 
                                                         <a href="" wire:click.prevent="sort('datefin')"><i
                                                                 class="fa-sharp fa-solid fa-sort"></i></a>
@@ -349,7 +348,7 @@
                 @else
                     <div class="h-100 d-flex align-items-center justify-content-center">
 
-                        table Projet is empty
+                        Table Project is empty
                     </div>
 
                 @endif
@@ -386,7 +385,7 @@
                         <button type="button" class="btn btn-danger btn-outlined btn-sm"
                             data-dismiss="modal">Annuler</button>
                         <button type="submit" wire:click.prevent='importData'
-                            class="btn btn-success btn-outlined btn-sm">importer</button>
+                            class="btn btn-success btn-outlined btn-sm">Importer</button>
 
                     </div>
                     </form>
@@ -426,7 +425,7 @@
 
                                         <div class="row ">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Nom de projet</label>
+                                                <label>Nom de Projet</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="name" wire:model.defer='name'>
                                                 @error('name')
@@ -438,7 +437,7 @@
 
                                         <div class="row ">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>consistance</label>
+                                                <label>Consistance</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="consistance" wire:model.defer='consistance'>
                                                 @error('consistance')
@@ -448,7 +447,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>titre_finance</label>
+                                                <label>Titre Finance</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="titre_finance" wire:model.defer='titre_finance'>
                                                 @error('titre_finance')
@@ -458,7 +457,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Date de Dubet</label>
+                                                <label>Date de Début</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     wire:model.defer='dated' name="dated">
                                                 <div
@@ -477,7 +476,7 @@
                                                     id="select-size-1" class="form-control  form-control-lg">
                                                     <option value="" selected>select an option</option>
                                                     @foreach ($caisses as $caisse)
-                                                        <option value="{{ $caisse->id }}">{{ $caisse->id }}
+                                                        <option value="{{ $caisse->id }}">{{ $caisse->name }}
                                                         </option>
                                                     @endforeach
 
@@ -506,7 +505,7 @@
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>superfice</label>
+                                                <label>Superfice</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="superfice" wire:model.defer='superfice'>
                                                 @error('superfice')
@@ -517,7 +516,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>autorisation</label>
+                                                <label>Autorisation</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="autorisation" wire:model.defer='autorisation'>
                                                 @error('autorisation')
@@ -537,7 +536,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Date de fin</label>
+                                                <label>Date de Fin</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     wire:model.defer='datef' name="datef">
                                                 <div
@@ -568,7 +567,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>adress</label>
+                                                <label>Adress</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="adress" wire:model.defer='adress'>
                                                 @error('adress')
@@ -584,7 +583,7 @@
 
                             <div class="modal-footer">
                                 <button wire:click.prevent="saveData" class="btn btn-primary btn-sm">Enregistrer
-                                    projet</button>
+                                    Projet</button>
                             </div>
                         </form>
                     </div>
@@ -608,7 +607,7 @@
 
 
 
-                        <h6 class="modal-title">Ajouter Nouveau Projet</h6>
+                        <h6 class="modal-title">Edit Projet</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -622,7 +621,7 @@
 
                                         <div class="row ">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Nom de projet</label>
+                                                <label>Nom de Projet</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="name" wire:model.defer='name'>
                                                 @error('name')
@@ -634,7 +633,7 @@
 
                                         <div class="row ">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>consistance</label>
+                                                <label>Consistance</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="consistance" wire:model.defer='consistance'>
                                                 @error('consistance')
@@ -644,7 +643,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>titre_finance</label>
+                                                <label>Titre Finance</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="titre_finance" wire:model.defer='titre_finance'>
                                                 @error('titre_finance')
@@ -654,7 +653,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Date de Dubet</label>
+                                                <label>Date de Début</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     wire:model.defer='dated' name="dated">
                                                 <div
@@ -673,7 +672,7 @@
                                                     id="select-size-1" class="form-control  form-control-lg">
                                                     <option value="" selected>select an option</option>
                                                     @foreach ($caisses as $caisse)
-                                                        <option value="{{ $caisse->id }}">{{ $caisse->id }}
+                                                        <option value="{{ $caisse->id }}">{{ $caisse->name }}
                                                         </option>
                                                     @endforeach
 
@@ -686,7 +685,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>ville</label>
+                                                <label>Ville</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="ville" wire:model.defer='ville'>
                                                 @error('ville')
@@ -698,7 +697,7 @@
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>superfice</label>
+                                                <label>Superfice</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="superfice" wire:model.defer='superfice'>
                                                 @error('superfice')
@@ -709,7 +708,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>autorisation</label>
+                                                <label>Autorisation</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="autorisation" wire:model.defer='autorisation'>
                                                 @error('autorisation')
@@ -720,7 +719,7 @@
 
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>Date de fin</label>
+                                                <label>Date de Fin</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     wire:model.defer='datef' name="datef">
                                                 <div
@@ -751,7 +750,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
-                                                <label>adress</label>
+                                                <label>Addresse</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="adress" wire:model.defer='adress'>
                                                 @error('adress')
@@ -768,7 +767,7 @@
 
 
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary btn-sm">Enregistrer projet</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Edit Projet</button>
                             </div>
                         </form>
                     </div>
@@ -805,9 +804,9 @@
                     <div class="modal-footer">
 
                         <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                            data-dismiss="modal">annuler</button>
+                            data-dismiss="modal">Annuler</button>
                         <button type="button" wire:click.prevent='deleteData'
-                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
+                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">Supprimer</button>
 
                     </div>
                 </div>
@@ -817,7 +816,7 @@
         </div>
 
 
-        
+
 
         <!-- ends: .modal-info-Delete -->
 
@@ -854,6 +853,7 @@
                     $('#modal-basic').modal('hide');
                     $('#edit-modal').modal('hide');
                     $('#modal-info-delete').modal('hide');
+                    $('#modal-import').modal('hide');
                 })
             </script>
         @endpush

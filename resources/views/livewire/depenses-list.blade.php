@@ -58,8 +58,8 @@
 
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" wire:click="resetInputs"
-                                        data-target="#modal-basic">
+                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                        wire:click="buttonAjouter" data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
                                 </div>
@@ -186,7 +186,7 @@
                                                 <td>
                                                     <div class="orderDatatable-title">
                                                         @if (!is_null($dep->projet))
-                                                        {{ $dep->projet->name }}
+                                                            {{ $dep->projet->name }}
                                                         @endif
                                                     </div>
                                                 </td>
@@ -255,9 +255,9 @@
                 </div>
             </div>
         @else
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            table Depenses is empty
-        </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                table Depenses is empty
+            </div>
         @endif
 
 
@@ -276,19 +276,25 @@
                         <h6 class="modal-title">Ajouter Nouveau Depense</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger">
-
-                                {{ session('error') }}
-
-                            </div>
-                        @endif
                     </div>
                     <div class="modal-body">
 
                         <form enctype="multipart/form-data">
                             <div class="form-basic">
+                                @if (session()->has('error'))
+                                <div class="alert alert-danger">
 
+                                    {{ session('error') }}
+
+                                </div>
+                            @endif
+                            @if (session()->has('warning'))
+                                <div class="alert alert-warning form-group mb-25">
+
+                                    {{ session('warning') }}
+
+                                </div>
+                            @endif
                                 <div class="form-group mb-25">
                                     <label>Montant de depense</label>
                                     <input class="form-control form-control-lg" type="text" name="montant"
@@ -367,6 +373,7 @@
                     </div>
                     <div class="modal-footer">
                         <button wire:click.prevent="saveDepense" type="submit"
+                            @if ($noProjects) disabled @endif
                             class="btn btn-primary btn-sm">Enregistrer
                             Depense</button>
                     </div>
@@ -601,7 +608,7 @@
                                 </div>
                                 <div class="col mt-6">
                                     @if (!is_null($depenseInfos))
-                                    <label>{{$depenseInfos->projet->name}}</label>
+                                        <label>{{ $depenseInfos->projet->name }}</label>
                                     @endif
                                 </div>
                             </div>

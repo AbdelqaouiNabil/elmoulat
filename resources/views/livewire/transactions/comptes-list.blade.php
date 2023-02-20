@@ -28,7 +28,7 @@
 
                                     <div class="action-btn">
 
-                                        <button type="button" @if (count($comptes) == null) disabled @endif
+                                        <button type="button" @if (count($comptes) == null) disabled @endif wire:click="resetInputs()"
                                             class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                             data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>

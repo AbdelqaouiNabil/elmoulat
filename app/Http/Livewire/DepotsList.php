@@ -7,8 +7,14 @@ use App\Models\Depot;
 use App\Models\Caisse;
 use App\Models\Cheque;
 
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+
 class DepotsList extends Component
 {
+
+    use WithFileUpLoads;
+    use WithPagination;
 
 
 
@@ -18,7 +24,7 @@ class DepotsList extends Component
     public $bulkDisabled = true;
     public $selectedDepots = [];
     public $selectAll = false;
-
+    public $oldNumeroCheque;
 
 
     public function updatedPages()
@@ -46,6 +52,12 @@ class DepotsList extends Component
                     'dateC' => $this->dateC,
                     'montant' => $this->montant
                 ]);
+
+                //update Cheque after Adding Depot
+                $cheque = Cheque::where('numero', $this->numero_cheque)->first();
+                $cheque->situation = 'livrer';
+                $cheque->save();
+
                 session()->flash('message', 'depot created successfully');
                 $this->augmenteCaisse($this->id_caisse);
                 $this->resetInputs();
@@ -82,21 +94,37 @@ class DepotsList extends Component
     public function deleteData()
     {
         $this->updateCaisseAfterDelete();
-        Depot::findOrFail($this->id_Depot)->delete();
+
+        $depot = Depot::where('id', $this->id_Depot)->first();
+        //update Cheque After Delete
+        $cheque = Cheque::where('numero', $depot->numero_cheque)->first();
+        $cheque->situation = 'disponible';
+        $cheque->save();
+        $depot->delete();
+
+        // Depot::findOrFail($this->id_Depot)->delete();
         session()->flash('message', 'depot deleted successfully');
         $this->dispatchBrowserEvent('close-model');
     }
 
 
-    public function  deleteSelected()
-    {
-        Depot::query()
-            ->whereIn('id', $this->selectedDepots)
-            ->delete();
+    // public function  deleteSelected()
+    // {
+    //     //update Cheques
+    //     // for($i = 0; $i< count($this->selectedDepots); $i++){
+    //     //     $depot = Depot::where('id', $this->selectedDepots[$i])->first();
+    //     //     $cheque = Cheque::where('numero', $depot->numero_cheque)->first();
+    //     //     $cheque->situation = 'disponible';
+    //     //     $cheque->save();
+    //     // }
 
-        $this->selectedDepots = [];
-        $this->selectAll = false;
-    }
+    //     Depot::query()
+    //         ->whereIn('id', $this->selectedDepots)
+    //         ->delete();
+
+    //     $this->selectedDepots = [];
+    //     $this->selectAll = false;
+    // }
 
 
 
@@ -109,6 +137,7 @@ class DepotsList extends Component
         $this->numero_cheque = $depot->numero_cheque;
         $this->dateC = $depot->dateC;
         $this->id_caisse = $depot->id_caisse;
+        $this->oldNumeroCheque = $depot->numero_cheque;
     }
 
     public function updateDepot()
@@ -121,6 +150,17 @@ class DepotsList extends Component
                 $depot->dateC = $this->dateC;
                 $depot->numero_cheque = $this->numero_cheque;
                 $depot->save();
+
+                //update old Cheque after Adding Depot
+                $cheque = Cheque::where('numero', $this->oldNumeroCheque)->first();
+                $cheque->situation = 'disponible';
+                $cheque->save();
+
+                //update Cheque after Adding Depot
+                $cheque = Cheque::where('numero', $this->numero_cheque)->first();
+                $cheque->situation = 'livrer';
+                $cheque->save();
+
                 session()->flash('message', 'depot bien modifer');
                 $this->resetInputs();
                 $this->dispatchBrowserEvent('close-model');
@@ -139,13 +179,14 @@ class DepotsList extends Component
         if (is_null($cheque)) {
             return false;
         } else {
-            if($cheque-> situation != 'disponible'){
+            if ($cheque->situation == 'disponible') {
                 return true;
             }
         }
     }
 
-    public function augmenteCaisse($idCaisse){
+    public function augmenteCaisse($idCaisse)
+    {
         $caisse = Caisse::where('id', $idCaisse)->first();
         //update soldNonJustifier
         $caisse->sold_nonjustify = $caisse->sold_nonjustify + $this->montant;
@@ -153,7 +194,8 @@ class DepotsList extends Component
         $caisse->save();
     }
 
-    public function updateCaisseAfterDelete(){
+    public function updateCaisseAfterDelete()
+    {
         $depot = Depot::where('id', $this->id_Depot)->first();
         $caisse = Caisse::where('id', $depot->id_caisse)->first();
         //update soldNonJustifier

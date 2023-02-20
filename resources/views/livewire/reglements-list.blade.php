@@ -57,7 +57,7 @@
 
                                     <div class="action-btn">
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            wire:click="resetInputs" data-toggle="modal" data-target="#modal-basic">
+                                            wire:click="buttonAjouter" data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
                                     </div>
                                     {{-- @if ($contrats->count() > 0)
@@ -289,6 +289,13 @@
 
                                 </div>
                             @endif
+                            @if (session()->has('warning'))
+                                <div class="alert alert-warning form-group mb-25">
+
+                                    {{ session('warning') }}
+
+                                </div>
+                            @endif
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
                                     <div class="form-group mb-25">
@@ -353,7 +360,7 @@
                                 </div>
                         </div>
                         <div class="modal-footer">
-                            <button wire:click.prevent="saveReglement" type="submit"
+                            <button wire:click.prevent="saveReglement" type="submit" @if ($noContrat) disabled @endif
                                 class="btn btn-primary btn-sm">Enregistrer
                                 Reglement</button>
                         </div>
