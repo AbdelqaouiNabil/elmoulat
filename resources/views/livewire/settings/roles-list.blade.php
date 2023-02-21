@@ -236,16 +236,26 @@
 
                                 </div>
                                       <div class="form-group mb-25">
-                                      @foreach($permissions as $permission)
-                                        <label>{{$permission->display_name}}</label>
-                                    <input class="form-control form-control-lg" type="checkbox" name="name"
-                                        wire:model.defer='name'>
-                                      @endforeach
                                     
-                                    @error('name')
+                                          <div class="checkbox-group-wrapper row">
+
+
+                                        <div class="checkbox-group ">
+                                          @foreach($permissions as $permission)
+                                            <div class="checkbox-theme-default">
+                                                <input type="checkbox" value="{{$permission->display_name}}"  wire:model.defer='permission'>
+                                                <label >
+                                                    <span class="checkbox-text">{{$permission->display_name}}</span>
+                                                </label>
+                                            </div>
+                                              @endforeach
+                                        </div>
+                                         @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-
+                                        
+                                    </div>
+ 
                                 </div>
                                
                              

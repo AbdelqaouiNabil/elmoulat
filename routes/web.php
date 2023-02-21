@@ -38,6 +38,8 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -46,7 +48,7 @@ Route::middleware(['middleware'=>'PreventBack'])->group(function () {
     Auth::routes();
 });
 
-// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::get('/addRole', function(){
@@ -59,6 +61,7 @@ Route::get('/addRole', function(){
 
 
 // Admin Routes
+
 
 
 Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack']], function(){
@@ -90,29 +93,26 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
 
 
     Route::group(['prefix'=>'owner', 'middleware' => ['role:owner','auth','PreventBack']], function(){
-          Route::get('/dashboard',Dashboard::class)->name('owner.dashboard');
-    Route::get('/Projetslist',ProjectsList::class)->name('owner.projects');
-    Route::get('/fournisseurlist',FournisseursList::class)->name('owner.fournisseurs');
-    Route::get('/ouvrierlist',OuvriersList::class)->name('owner.ouvriers');
-    Route::get('/facturelist',FactureList::class)->name('owner.factures');
-    Route::get('/clientlist',ClientList::class)->name('owner.clients');
-    Route::get('/chargeliste',ChargesList::class)->name('owner.charges');
-    Route::get('/contratlist',ContratsList::class)->name('owner.contrats');
-    Route::get('/depenselist',DepensesList::class)->name('owner.depenses');
-    Route::get('/reglementlist',ReglementsList::class)->name('owner.reglements');
-    Route::get('/comptelist',ComptesList::class)->name('owner.comptes');
-    Route::get('/chequierlist',ChequierList::class)->name('owner.chequiers');
-    Route::get('/bureaulist',BureauList::class)->name('owner.bureaus');
-    Route::get('/domainelist',DomaineList::class)->name('owner.domaines');
-    Route::get('/congelist',CongeList::class)->name('owner.conges');
-    Route::get('/employelist',EmployeList::class)->name('owner.employes');
-    Route::get('/banklist',BankList::class)->name('owner.banks');
-    Route::get('/list-utilisateurs',UsersList::class)->name('owner.users');
-    Route::get('/list-roles',RolesList::class)->name('owner.role');
 
-
-
-
+            Route::get('/dashboard',Dashboard::class)->name('owner.dashboard');
+            Route::get('/Projetslist',ProjectsList::class)->name('owner.projects');
+            Route::get('/fournisseurlist',FournisseursList::class)->name('owner.fournisseurs');
+            Route::get('/ouvrierlist',OuvriersList::class)->name('owner.ouvriers');
+            Route::get('/facturelist',FactureList::class)->name('owner.factures');
+            Route::get('/clientlist',ClientList::class)->name('owner.clients'); 
+            Route::get('/chargeliste',ChargesList::class)->name('owner.charges');
+            Route::get('/contratlist',ContratsList::class)->name('owner.contrats');
+            Route::get('/depenselist',DepensesList::class)->name('owner.depenses');
+            Route::get('/reglementlist',ReglementsList::class)->name('owner.reglements');
+            Route::get('/comptelist',ComptesList::class)->name('owner.comptes');
+            Route::get('/chequierlist',ChequierList::class)->name('owner.chequiers');
+            Route::get('/bureaulist',BureauList::class)->name('owner.bureaus');
+            Route::get('/domainelist',DomaineList::class)->name('owner.domaines');
+            Route::get('/congelist',CongeList::class)->name('owner.conges');
+            Route::get('/employelist',EmployeList::class)->name('owner.employes');
+            Route::get('/banklist',BankList::class)->name('owner.banks');
+            Route::get('/list-utilisateurs',UsersList::class)->name('owner.users');
+            Route::get('/list-roles',RolesList::class)->name('owner.role');
     });
 
 
@@ -124,9 +124,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
 
 //  normal user routes
 
-Route::group(['prefix'=>'user', 'middleware'=>['isUser','auth','PreventBack']], function(){
+           Route::group(['prefix'=>'user', 'middleware'=>['isUser','auth','PreventBack']], function(){
 
-Route::get('dashboard',[UserController::class,'index'])->name('user.dashboard');
-});
+                       Route::get('dashboard',[UserController::class,'index'])->name('user.dashboard');
+         });
 
 
