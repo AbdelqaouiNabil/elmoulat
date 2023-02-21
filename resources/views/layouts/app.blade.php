@@ -1058,7 +1058,7 @@
                                         <img src="img/author-nav.jpg" alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        <h6>Abdullah Bin Talha</h6>
+                                        <h6>{{Auth::user()->name}}</h6>
                                         <span>UI Designer</span>
                                     </div>
                                 </div>
@@ -1284,7 +1284,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.cheques') }}">
+                            <a href="{{ route('owner.cheques')}}">
 
                                 <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
 
@@ -1295,7 +1295,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.caisses') }}">
+                            <a href="{{ route('owner.caisses') }}">
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1370,7 +1370,7 @@
                             </a>
                             <ul>
                                 <li class="nav-item">
-                                    <a href="{{ route('owner.banks') }}">Bank</a>
+                                    <a href="{{ route('owner.banks') }}">Banque</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('owner.domaines') }}">Domaine</a>
@@ -1380,13 +1380,7 @@
                                     <a href="{{route('owner.users')}}" class="">Utilisateur<span
                                             class="badge badge-success menuItem">New</span></a>
 
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('owner.role')}}">Roles</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="">Activity</a>
-                                </li>
+                                </li>                              
                             </ul>
                         </li>
 
@@ -1447,7 +1441,11 @@
     <div class="overlay-dark-sidebar"></div>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- inject:js-->
-
+ 
+    <script>
+              
+      </script>
+  
 
 
     <script src="{{ asset('assets/vendor_assets/js/jquery/jquery-3.5.1.min.js') }}"></script>
@@ -1496,11 +1494,10 @@
     <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
-    @stack('scripts')
     @livewireScripts
     {{-- <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
     <script src="{{mix('js/app.js')}}"></script> --}}
-
+ 
     <!-- endinject-->
 </body>
 

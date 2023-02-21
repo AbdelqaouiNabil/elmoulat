@@ -113,6 +113,10 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/banklist',BankList::class)->name('owner.banks');
             Route::get('/list-utilisateurs',UsersList::class)->name('owner.users');
             Route::get('/list-roles',RolesList::class)->name('owner.role');
+            Route::get('/caisse',CaisseList::class)->name('owner.caisses');
+            Route::get('/cheques',ChequeList::class)->name('owner.cheques');
+
+
     });
 
 

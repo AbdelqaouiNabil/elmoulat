@@ -45,16 +45,7 @@
 
         @if (count($users) > 0)
             <div class="container-fluid">
-                <div class="action-btn mb-3">
-
-                    <button type="button" class=" btn btn-sm btn-danger btn-add  "
-                        {{-- @if ($bulkDisabled) hidden @endif data-target="#modal-all-delete" --}}
-                        data-toggle="modal">
-
-                        <i class="la la-trash"></i>delete selected</button>
-
-
-                </div>
+              
                 <div class="row">
                     <div class="col-lg-12">
 
@@ -66,9 +57,6 @@
                                     <thead>
                                         <tr class="userDatatable-header">
 
-                                            <th>
-                                                <input type="checkbox" wire:model="selectAll">
-                                            </th>
 
                                             <th>
                                                 <span class="userDatatable-title">id</span>
@@ -86,7 +74,7 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                              <th>
-                                                <span class="userDatatable-title">permissions</span>
+                                                <span class="userDatatable-title">Role</span>
                                                 <a href="" wire:click.prevent="sort('name')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
@@ -104,13 +92,7 @@
 
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td>
-
-                                                    <input type="checkbox" wire:model="selectRows"
-                                                        value="{{ $user->id }}">
-
-                                                </td>
-
+                                               
                                                 <td>
                                                     <div class="orderDatatable-title">
                                                         {{ $user->id }}
@@ -128,9 +110,9 @@
                                                 </td>
                                                   <td>
                                                   
-                                                     @foreach($user->allPermissions()  as $permission)
-                                                        <span class="badge badge-success" style="border-radius:10px"> {{ $permission->name}}</span> <br>
-                                                    @endforeach
+                                                    
+                                                <span class="badge badge-success" style="border-radius:10px"> {{ $user->roles()->get()[0]->name}}</span> <br>
+                                            
                                                   
                                                    </div>
                                             
@@ -148,11 +130,11 @@
 
                                                         <li><a href="#" class="remove" data-toggle="modal"
                                                                 data-target="#edit-modal"
-                                                                wire:click='edit({{ $user->id }})'><i
+                                                                wire:click='editUser({{ $user->id }})'><i
                                                                     class="fa-regular fa-pen-to-square"></i></a></li>
                                                         <li><a href="#" class="remove" data-toggle="modal"
                                                                 data-target="#modal-info-delete"
-                                                                wire:click='delete({{ $user->id }})'
+                                                                wire:click='deleteUser({{ $user->id }})'
                                                                 style="color: red;"><i
                                                                     class="fa-solid fa-trash"></i></a>
                                                         </li>
@@ -268,7 +250,7 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
 
-                                            </div>
+                                 </div>
 
                             </div>
 
@@ -299,7 +281,7 @@
 
 
 
-                        <h6 class="modal-title">Edit Ouvrier</h6>
+                        <h6 class="modal-title">Edit Utilisateur</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -308,8 +290,8 @@
 
                         <form>
                             <div class="form-basic">
-                                <div class="form-group mb-25">
-                                    <label>Nom de Domaine</label>
+                                    <div class="form-group mb-25">
+                                    <label>Nom utilisateur</label>
                                     <input class="form-control form-control-lg" type="text" name="name"
                                         wire:model.defer='name'>
                                     @error('name')
@@ -317,11 +299,44 @@
                                     @enderror
 
                                 </div>
+                                <div class="form-group mb-25">
+                                    <label>Email utilisateur</label>
+                                    <input class="form-control form-control-lg" type="text" name="email"
+                                        wire:model.defer='email'>
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
 
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Mot de passe</label>
+                                    <input class="form-control form-control-lg" type="text" name="password"
+                                        wire:model.defer='password'>
+                                    @error('password')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                               <div class="form-group mb-25">
+                                                <label>Role </label>
+                                                <select name="select-size-1" wire:model.defer='role'
+                                                    id="select-size-1" class="form-control  form-control-lg">
+                                                    <option value="" selected>select an option</option>
+                                                    @foreach ($roles as $role)
+                                                        <option value="{{ $role->id }}">{{ $role->name }}
+                                                        </option>
+                                                    @endforeach
+
+                                                </select>
+                                                @error('role')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+
+                                 </div>
                             </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-sm" wire:click.prevent='editData()'> Save
+                        <button type="button" class="btn btn-primary btn-sm" wire:click.prevent='editUserData()'> Save
                             changes</button>
                     </div>
                     </form>
@@ -351,7 +366,7 @@
                             </div>
 
                             <div class="modal-info-text">
-                                <h6>Voulez-vous supprimer ce domaine</h6>
+                                <h6>Voulez-vous supprimer ce utilisateur</h6>
                             </div>
 
                         </div>
@@ -360,7 +375,7 @@
 
                         <button type="button" class="btn btn-danger btn-outlined btn-sm"
                             data-dismiss="modal">annuler</button>
-                        <button type="button" wire:click.prevent='deleteData()'
+                        <button type="button" wire:click.prevent='deleteUserData()'
                             class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
 
                     </div>
@@ -410,5 +425,6 @@
 
 
     </div>
+    
 </div>
 </div>
