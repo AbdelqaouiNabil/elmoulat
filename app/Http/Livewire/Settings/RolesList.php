@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Settings;
 
 use Livewire\Component;
 use App\Models\Role;
+use App\Models\Permission;
 
 class RolesList extends Component
 {
