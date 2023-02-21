@@ -29,7 +29,7 @@ class ReglementsList extends Component
     public $selectAll = false;
     public $cin_Ouv, $nom_contrat;
 
-    public $old_numero_cheque;
+    public $old_numero_cheque, $old_montant;
     public $filter, $search;
 
 
@@ -138,6 +138,7 @@ class ReglementsList extends Component
 
 
 
+
     public function editReglement($id)
     {
         $reglement = Reglement::where('id', $id)->first();
@@ -159,7 +160,7 @@ class ReglementsList extends Component
             }
         }
 
-        //modifier old cheque situation (livrer to dispo)
+        // Save the old cheque numero
         if (!is_null($reglement->numero_cheque)) {
             $this->old_numero_cheque = $reglement->numero_cheque;
         }
@@ -217,7 +218,14 @@ class ReglementsList extends Component
             $reglement->id_facture = $this->id_facture;
             $reglement->id_contrat = $this->id_contrat;
             $reglement->save();
-            //modifier cheques situation
+
+            //modifier sold
+            if ($reglement->methode == "cash") {
+                $this->UpdateCaisseAfterUpdate();
+            }
+
+
+            //modifier cheques situations
             $OLDcheque = Cheque::where('numero', $this->old_numero_cheque)->first();
             $OLDcheque->situation = "disponible";
             $OLDcheque->save();
@@ -256,42 +264,45 @@ class ReglementsList extends Component
             }
         }
 
+        
+
         Reglement::findOrFail($this->id_reg)->delete();
         session()->flash('message', 'reglement deleted successfully');
         $this->dispatchBrowserEvent('close-model');
     }
 
-    public function deleteSelected()
-    {
-        for ($j = 0; $j < count($this->selectedRegs); $j++) {
+    // public function deleteSelected()
+    // {
+    //     for ($j = 0; $j < count($this->selectedRegs); $j++) {
 
-            // update cheque situations
-            $reglement = reglement::where('id', $this->selectedRegs[$j])->first();
-            if (!is_null($reglement->numero_cheque)) {
-                $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                if (!is_null($cheque)) {
-                    $cheque->situation = "disponible";
-                    $cheque->save();
-                }
-            }
+    //         $reglement = reglement::where('id', $this->selectedRegs[$j])->first();
 
-            // update charge situation
-            $charge = Charge::where('id_reglement', $this->selectedRegs[$j])->get();
-            for ($i = 0; $i < count($charge); $i++) {
-                if (!is_null($charge[$i])) {
-                    $charge[$i]->situation = "notPayed";
-                    $charge[$i]->id_reglement = null;
-                    $charge[$i]->save();
-                }
-            }
-        }
-        reglement::query()
-            ->whereIn('id', $this->selectedRegs)
-            ->delete();
+    //         // update cheque situations
+    //         if (!is_null($reglement->numero_cheque)) {
+    //             $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
+    //             if (!is_null($cheque)) {
+    //                 $cheque->situation = "disponible";
+    //                 $cheque->save();
+    //             }
+    //         }
 
-        $this->selectedRegs = [];
-        $this->selectAll = false;
-    }
+    //         // update charge situation
+    //         $charge = Charge::where('id_reglement', $this->selectedRegs[$j])->get();
+    //         for ($i = 0; $i < count($charge); $i++) {
+    //             if (!is_null($charge[$i])) {
+    //                 $charge[$i]->situation = "notPayed";
+    //                 $charge[$i]->id_reglement = null;
+    //                 $charge[$i]->save();
+    //             }
+    //         }
+    //     }
+    //     reglement::query()
+    //         ->whereIn('id', $this->selectedRegs)
+    //         ->delete();
+
+    //     $this->selectedRegs = [];
+    //     $this->selectAll = false;
+    // }
 
     // update the charges table after deleting the reglement
     public function updateChargeReg($idR)
@@ -305,38 +316,6 @@ class ReglementsList extends Component
             }
         }
     }
-
-
-
-
-
-    // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
-    public function updateCaisseAfterSave()
-    {
-        $projet = Projet::where('id', $this->id_projet)->first();
-        $caisse = Caisse::where('id', $projet->id_caisse)->first();
-        Retrait::create([
-            'montant' => $this->montant,
-            'date' => $this->date,
-            'id_depense' => $this->id_depense,
-            'id_caisse' => $caisse->id,
-            'id_reglement' => null
-        ]);
-        if ($this->type == 'Justifier') {
-            $caisse->sold = ($caisse->sold) - ($this->montant);
-            $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
-            $caisse->save();
-        } else {
-            $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
-            $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
-            $caisse->save();
-        }
-    }
-
-
-
-
-
 
     public function saveReglement()
     {
@@ -387,6 +366,13 @@ class ReglementsList extends Component
                 'id_contrat' => $this->id_contrat,
             ]);
 
+            //modifier sold
+            if ($reg->methode == "cash") {
+                $this->UpdateCaisseAfterSave();
+            }
+
+
+
             //modifier cheque situation
             if (!is_null($reg->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reg->numero_cheque)->first();
@@ -398,6 +384,32 @@ class ReglementsList extends Component
             $this->dispatchBrowserEvent('close-model');
         }
     }
+
+
+      // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
+      public function UpdateCaisseAfterSave()
+      {
+          $projet = Projet::where('id', $this->id_projet)->first();
+          $caisse = Caisse::where('id', $projet->id_caisse)->first();
+          Retrait::create([
+              'montant' => $this->montant,
+              'dateRet' => $this->dateDep,
+              'id_depense' => $this->id_depense,
+              'id_caisse' => $caisse->id,
+              'id_reglement' => null
+          ]);
+          if ($this->type == 'Justifier') {
+              $caisse->sold = ($caisse->sold) - ($this->montant);
+              $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
+              $caisse->save();
+          } else {
+              $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
+              $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
+              $caisse->save();
+          }
+      }
+
+
 
 
     public function validation()
@@ -416,10 +428,10 @@ class ReglementsList extends Component
     {
         $this->resetInputs();
         $contrats = Contrat::all();
-        if($contrats->isEmpty()){
+        if ($contrats->isEmpty()) {
             session()->flash('warning', "Contrat's table is null");
             $this->noContrat = true;
-        }else{
+        } else {
             $this->noContrat = false;
         }
     }

@@ -25,6 +25,7 @@ use App\Http\Livewire\ProjectSection\FournisseursList;
 use App\Http\Livewire\ProjectSection\ProjectsList;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\ownerDashboard;
+use App\Http\Livewire\ReleverBankaire;
 use App\Models\User;
 
 
@@ -48,7 +49,7 @@ Route::middleware(['middleware'=>'PreventBack'])->group(function () {
     Auth::routes();
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::get('/addRole', function(){
@@ -99,7 +100,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/fournisseurlist',FournisseursList::class)->name('owner.fournisseurs');
             Route::get('/ouvrierlist',OuvriersList::class)->name('owner.ouvriers');
             Route::get('/facturelist',FactureList::class)->name('owner.factures');
-            Route::get('/clientlist',ClientList::class)->name('owner.clients'); 
+            Route::get('/clientlist',ClientList::class)->name('owner.clients');
             Route::get('/chargeliste',ChargesList::class)->name('owner.charges');
             Route::get('/contratlist',ContratsList::class)->name('owner.contrats');
             Route::get('/depenselist',DepensesList::class)->name('owner.depenses');
@@ -108,6 +109,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/chequierlist',ChequierList::class)->name('owner.chequiers');
             Route::get('/bureaulist',BureauList::class)->name('owner.bureaus');
             Route::get('/domainelist',DomaineList::class)->name('owner.domaines');
+
+            Route::get('/releverBancairelist',ReleverBankaire::class)->name('owner.relevers');
+
             Route::get('/congelist',CongeList::class)->name('owner.conges');
             Route::get('/employelist',EmployeList::class)->name('owner.employes');
             Route::get('/banklist',BankList::class)->name('owner.banks');
