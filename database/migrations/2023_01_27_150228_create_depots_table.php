@@ -17,7 +17,7 @@ class CreateDepotsTable extends Migration
             $table->id();
             $table->date('dateC');
             $table->string('numero_cheque');
-            $table->float('montant');
+            $table->double('montant');
             $table->unsignedBigInteger('id_caisse');
             $table->foreign('id_caisse')->references('id')->on('caisses');
             $table->timestamps();

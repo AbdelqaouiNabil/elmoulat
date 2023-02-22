@@ -11,6 +11,20 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
     <!-- inject:css-->
 
+
+
+    {{-- High Charts --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+
+
+
+
     <link rel="stylesheet" href="{{ asset('css/dashboardStyle.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/bootstrap/bootstrap.css') }}">
 
@@ -1230,6 +1244,7 @@
                             </a>
 
                         </li>
+
                         <li>
 
                             <a href="{{ route('owner.reglements') }}">
@@ -1241,7 +1256,17 @@
                             </a>
 
                         </li>
+                        <li>
 
+                            <a href="{{ route('owner.depots') }}">
+
+                                <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Depots</span>
+
+                            </a>
+
+                        </li>
                         <li class="menu-title m-top-30">
 
                             <span>Transactions</span>
@@ -1497,6 +1522,10 @@
     <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
+
+    {{-- High Charts --}}
+
+
     @stack('scripts')
     @livewireScripts
     {{-- <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
@@ -1506,3 +1535,21 @@
 </body>
 
 </html>
+
+
+<script>
+    window.addEventListener('close-model', event => {
+        $('#modal-basic').modal('hide');
+        $('#edit-modal').modal('hide');
+        $('#modal-info-delete').modal('hide');
+    });
+
+
+    window.addEventListener('add', event => {
+        Swal.fire(
+            'Super!',
+            'Vous avez ajouter un nouveau projet!',
+            'success'
+        )
+    });
+</script>

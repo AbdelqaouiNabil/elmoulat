@@ -2,7 +2,7 @@
 {
     color: blueviolet;
 } */
-.divContainer{
+.cardContainer{
     margin-left: 16%;
 }
 .card{
@@ -16,16 +16,20 @@
 .cardCaisse{
     align-items: center;
     height: 150px;
-    width: 650px;
+    width: 1000px;
     padding-top: 10px;
     border-radius: 15px;
+    /* margin-right: -100px; */
 }
 .fourniss{
-    color: orange;
+    color: blueviolet ;
 }
 .proje
 {
-    color: blue;
+    color: blueviolet;
+}
+.caiss{
+    color: blueviolet;
 }
 .valContainer{
     padding: 10px;
@@ -33,13 +37,24 @@
 
 }
 .val{
-    font-size: x-large;
-    color: darkgray;
-    /* width: 100px; */
+    font-size: large;
+    color: rgb(97, 94, 94);
+    width: 120px;
 }
 .justified{
     color: green;
 }
 .nonJustified{
     color:red;
+}
+.total{
+    color: blue;
+}
+
+.chartContainer{
+    margin-left: 16%;
+    margin-top: 30px;
+}
+.chart3{
+    margin-top: 15px;
 }

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Contrat;
 use App\Models\Ouvrier;
+use App\Models\Projet;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 
@@ -15,7 +16,7 @@ class ContratsList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_contrat, $name, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN;
+    public $id_contrat, $name, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN, $id_projet, $projectNAME;
     public $selectedContrats = [];
     public $pages = 10;
     public $bulkDisabled = true;
@@ -37,6 +38,7 @@ class ContratsList extends Component
         $this->bulkDisabled = count($this->selectedContrats) < 1;
         $contrats = Contrat::latest()->paginate($this->pages, ['*'], 'new');
         $ouvriers = Ouvrier::all();
+        $projects = Projet::all();
 
         if ($this->search != "") {
             $contrats = Contrat::where('cin_Ouv', 'like', '%' . $this->search . '%')
@@ -44,7 +46,7 @@ class ContratsList extends Component
                 ->orWhere('name', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
         }
 
-        return view('livewire.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers]);
+        return view('livewire.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects"=>$projects]);
     }
 
     public function editContrat($id)
@@ -59,11 +61,19 @@ class ContratsList extends Component
         $this->cin_Ouv = $contrat->cin_Ouv;
         // $ouvrier = Ouvrier::where('id', $contrat->id_ouvrier)->first();
         // $this->ouvrierCIN = $ouvrier->n_cin;
+        $projet = Projet::where('id', $contrat->id_projet)->first();
+        if(!is_null($projet)){
+            $this->projectNAME = $projet->name;
+            $this->id_projet = $projet->id;
+        }
+
     }
     public function updateContrat()
     {
         $ouvrier = Ouvrier::where('n_cin', $this->cin_Ouv)->first();
-        if (!is_null($ouvrier)) {
+        $projet = Projet::where('id', $this->id_projet)->first();
+
+        if (!is_null($ouvrier) && !is_null($projet)) {
             $this->id_ouvrier = $ouvrier->id;
 
             // update contrat
@@ -74,6 +84,7 @@ class ContratsList extends Component
             $contrat->montant = $this->montant;
             $contrat->avance = $this->avance;
             $contrat->id_ouvrier = $this->id_ouvrier;
+            $contrat->id_projet = $this->id_projet;
             $contrat->cin_Ouv = $this->cin_Ouv;
             $contrat->save();
             session()->flash('message', 'Contrat bien modifer');
@@ -81,7 +92,7 @@ class ContratsList extends Component
             $this->dispatchBrowserEvent('close-model');
         }
         else{
-            session()->flash('error', 'error on Ouvrier Cin');
+            session()->flash('error', 'error on Ouvrier Cin ou Projet');
         }
     }
 
@@ -112,7 +123,8 @@ class ContratsList extends Component
     {
         $this->validation();
         $ouvrier = Ouvrier::where('n_cin', $this->cin_Ouv)->first();
-        if (!is_null($ouvrier)) {
+        $projet = Projet::where('id', $this->id_projet)->first();
+        if (!is_null($ouvrier) && !is_null($projet)) {
             $this->id_ouvrier = $ouvrier->id;
             $contrat = Contrat::create([
                 'name' => $this->name,
@@ -121,13 +133,14 @@ class ContratsList extends Component
                 'montant' => $this->montant,
                 'avance' => $this->avance,
                 'cin_Ouv' => $this->cin_Ouv,
-                'id_ouvrier' => $this->id_ouvrier
+                'id_ouvrier' => $this->id_ouvrier,
+                'id_projet' => $this->id_projet
             ]);
             session()->flash('message', 'contrat created successfully');
             $this->resetInputs();
             $this->dispatchBrowserEvent('close-model');
         } else {
-            session()->flash('error', 'Ouvrier does not exist');
+            session()->flash('error', 'Ouvrier or Projet does not exist');
             // $this->dispatchBrowserEvent('close-model');
         }
     }
@@ -145,6 +158,7 @@ class ContratsList extends Component
         $this->montant = "";
         $this->avance = "";
         $this->cin_Ouv = "";
+        $this->id_projet = "";
     }
 
     public function validation()
@@ -155,7 +169,8 @@ class ContratsList extends Component
             'datefin' => 'required',
             'montant' => 'required',
             'avance' => 'required',
-            'cin_Ouv' => 'required'
+            'cin_Ouv' => 'required',
+            'id_projet' => 'required',
         ]);
     }
 

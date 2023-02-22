@@ -19,10 +19,12 @@ class CreateContratsTable extends Migration
             $table->string('cin_Ouv');
             $table->date('datedebut');
             $table->date('datefin');
-            $table->float('montant');
-            $table->float('avance');
+            $table->double('montant');
+            $table->double('avance');
             $table->unsignedBigInteger('id_ouvrier');
             $table->foreign('id_ouvrier')->references('id')->on('ouvriers');
+            $table->unsignedBigInteger('id_projet');
+            $table->foreign('id_projet')->references('id')->on('projets');
             $table->timestamps();
         });
     }

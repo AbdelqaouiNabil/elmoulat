@@ -22,8 +22,8 @@ class CreateTransactionsTable extends Migration
             $table->string('typeCheck')->nullable();
             $table->string('libelle');
             // $table->float('situation');
-            $table->float('credit')->nullable();
-            $table->float('debit')->nullable();
+            $table->double('credit')->nullable();
+            $table->double('debit')->nullable();
             $table->foreign('id_cheque')->references('id')->on('cheques');
             $table->foreign('id_releverbancaire')->references('id')->on('relever_bancaires');
             $table->timestamps();

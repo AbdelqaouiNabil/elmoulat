@@ -24,6 +24,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Livewire\ProjectSection\FournisseursList;
 use App\Http\Livewire\ProjectSection\ProjectsList;
 use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\DepotsList;
 use App\Http\Livewire\ownerDashboard;
 use App\Http\Livewire\ReleverBankaire;
 use App\Models\User;
@@ -111,6 +112,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/domainelist',DomaineList::class)->name('owner.domaines');
 
             Route::get('/releverBancairelist',ReleverBankaire::class)->name('owner.relevers');
+            Route::get('/depots',DepotsList::class)->name('owner.depots');
 
             Route::get('/congelist',CongeList::class)->name('owner.conges');
             Route::get('/employelist',EmployeList::class)->name('owner.employes');

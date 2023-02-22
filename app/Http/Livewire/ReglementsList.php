@@ -55,7 +55,7 @@ class ReglementsList extends Component
             case 'cheque':
                 $reglements = Reglement::where('methode', 'cheque')->paginate($this->pages, ['*'], 'new');
                 break;
-            default:
+            default: 
                 $reglements = Reglement::latest()->paginate($this->pages, ['*'], 'new');
                 break;
         }
@@ -264,7 +264,7 @@ class ReglementsList extends Component
             }
         }
 
-        
+
 
         Reglement::findOrFail($this->id_reg)->delete();
         session()->flash('message', 'reglement deleted successfully');
