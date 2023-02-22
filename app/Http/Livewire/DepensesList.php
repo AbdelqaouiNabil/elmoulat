@@ -260,7 +260,6 @@ class DepensesList extends Component
         } else {
             $this->type = 'Justifier';
         }
-        // dd($this->dateDep);
         $depense = Depense::create([
             'montant' => $this->montant,
             'Aqui' => $this->Aqui,

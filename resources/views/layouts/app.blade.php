@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
     <!-- inject:css-->
 
+    <link rel="stylesheet" href="{{ asset('css/dashboardStyle.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/bootstrap/bootstrap.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/daterangepicker.css') }}">
@@ -1261,7 +1262,7 @@
 
                         <li>
 
-                            <a href="#">
+                            <a href="{{ route('owner.relevers') }}">
 
                                 <span data-feather="folder" class="nav-icon"></span>
 

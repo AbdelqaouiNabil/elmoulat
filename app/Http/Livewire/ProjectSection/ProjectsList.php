@@ -350,12 +350,13 @@ class ProjectsList extends Component
 
 
             }
+        session()->flash('message', 'les projets bien importer');
+
         } catch (Throwable $ex) {
             session()->flash('error', '', $ex);
             $this->dispatchBrowserEvent('close-model');
 
         }
-        session()->flash('message', 'les projets bien importer');
         $this->dispatchBrowserEvent('close-model');
 
 
@@ -405,11 +406,10 @@ class ProjectsList extends Component
         return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
     }
 
-    public function pdfExport(Request $request)
+    public function pdfExport()
     {
+     
         $projects = Projet::all();
-
-        
         $pdf = "
         <!DOCTYPE html><html><head> <style>
        table {
@@ -493,7 +493,6 @@ class ProjectsList extends Component
 
 
 
-       
 
     }
 }

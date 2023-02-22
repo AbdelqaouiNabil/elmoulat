@@ -34,11 +34,11 @@ class ReleverBankaire extends Component
     // public $selectAll = false;
     // protected $queryString  = ['search'];
 
-    // //transaction
+    // // TRANSACTION
     public $id_Trans, $date_Operation, $libelle, $debit, $credit, $date_Valeur, $typeCheck;
-    // //Compte
+    // // COMPTE
     public $id_Compte, $numCompte;
-    // //Cheque
+    // // CHEQUE
     public $id_cheque, $numCheque;
 
     public $file;
@@ -48,13 +48,19 @@ class ReleverBankaire extends Component
     {
 
         $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
-        $transactions = Transaction::where('id_releverbancaire', $this->id_Relever)->get();
 
         if (!is_null($this->filter)) {
             $releverB = $this->filterByDate($this->filter);
             if (!is_null($releverB)) {
 
                 // test compte later on
+                $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
+            } else {
+                $transactions = null;
+            }
+        } else {
+            $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
+            if (!is_null($releverB)) {
                 $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
             } else {
                 $transactions = null;
@@ -70,8 +76,8 @@ class ReleverBankaire extends Component
     public function filterByDate($filter)
     {
         $date = explode('-', $filter);
-        // dd($filter);
         $releverByDate = ReleverBancaire::Where('dateR', 'like', '%' . $date[0] . '-' . $date[1] . '-%')->first();
+        $this->filter = null;
         return $releverByDate;
     }
 
@@ -89,7 +95,15 @@ class ReleverBankaire extends Component
 
     public function importData()
     {
-        $data = Excel::toArray(new releverBancaireImport, $this->file);
+
+        try {
+            $data = Excel::toArray(new releverBancaireImport, $this->file);
+        } catch (\Exception $e) {
+            dd('yaay');
+        };
+
+
+
         // dd($data);
 
         // START (GETTING DATE AND ID_COMPTE AND CREATE A NEW RECORD ON THE DATABASE RELEVER BANCAIRE TABLE)
@@ -229,17 +243,19 @@ class ReleverBankaire extends Component
     {
         $compte = Compte::where('numero', $this->numCompte)->first();
 
-        //credit
-        $oldSoldNumeric = floatval($compte->sold);
-        $NewSoldNumeric = $oldSoldNumeric + $transaction->credit;
-        $compte->sold = (string) $NewSoldNumeric;
-        $compte->save();
+        if (!is_null($compte)) {
+            //credit---------------------
+            $oldSoldNumeric = floatval($compte->sold);
+            $NewSoldNumeric = $oldSoldNumeric + $transaction->credit;
+            $compte->sold = (string) $NewSoldNumeric;
+            $compte->save();
 
-        // debit
-        $oldSoldNumeric = floatval($compte->sold);
-        $NewSoldNumeric = $oldSoldNumeric - $transaction->debit;
-        $compte->sold = (string) $NewSoldNumeric;
-        $compte->save();
+            // debit---------------------
+            $oldSoldNumeric = floatval($compte->sold);
+            $NewSoldNumeric = $oldSoldNumeric - $transaction->debit;
+            $compte->sold = (string) $NewSoldNumeric;
+            $compte->save();
+        }
 
 
         // $compte->sold = $compte->sold + $transaction->credit;

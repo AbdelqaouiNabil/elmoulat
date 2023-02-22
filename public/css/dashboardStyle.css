@@ -1,0 +1,45 @@
+/* #h11
+{
+    color: blueviolet;
+} */
+.divContainer{
+    margin-left: 16%;
+}
+.card{
+    align-items: center;
+    height: 100px;
+    width: 200px;
+    margin-right: 30px;
+    padding-top: 10px;
+    border-radius: 15px;
+}
+.cardCaisse{
+    align-items: center;
+    height: 150px;
+    width: 650px;
+    padding-top: 10px;
+    border-radius: 15px;
+}
+.fourniss{
+    color: orange;
+}
+.proje
+{
+    color: blue;
+}
+.valContainer{
+    padding: 10px;
+    text-align: center;
+
+}
+.val{
+    font-size: x-large;
+    color: darkgray;
+    /* width: 100px; */
+}
+.justified{
+    color: green;
+}
+.nonJustified{
+    color:red;
+}
