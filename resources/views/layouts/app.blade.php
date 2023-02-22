@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -49,6 +49,7 @@
 
 
 
+
     <script src="sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
@@ -72,9 +73,10 @@
         <nav class="navbar navbar-light">
             <div class="navbar-left">
 
-                <a href="{{route('owner.dashboard')}}" class="sidebar-toggle">
-                    <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
-                <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
+                <a href="{{ route('owner.dashboard') }}" class="sidebar-toggle">
+                    <img class="svg" src="{{ asset('img/svg/bars.svg') }}" alt="img"></a>
+                <a class="navbar-brand" href="#"><img class="dark" src="{{ asset('img/logo_dark.png') }}"
+                        alt="svg"><img class="light" src="{{ asset('img/logo_white.png') }}" alt="img"></a>
 
 
                 <div class="top-menu">
@@ -1165,17 +1167,7 @@
 
                         </li>
 
-                        <li>
-
-                            <a href="{{ route('owner.clients') }}">
-
-                                <span wire:ignore><i data-feather="dollar-sign" class="nav-icon"></i></span>
-
-                                <span class="menu-text">Client</span>
-
-                            </a>
-
-                        </li>
+                        
 
                         <li class="menu-title m-top-30">
 
@@ -1284,7 +1276,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.cheques') }}">
+                            <a href="{{ route('owner.cheques') }}">
 
                                 <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
 
@@ -1295,7 +1287,7 @@
                         </li>
                         <li>
 
-                            <a href="{{ route('admin.caisses') }}">
+                            <a href="{{ route('owner.caisses') }}">
 
                                 <span data-feather="folder" class="nav-icon"></span>
 
@@ -1304,6 +1296,7 @@
                             </a>
 
                         </li>
+
 
 
 
@@ -1361,6 +1354,23 @@
 
                         </li>
 
+                        <li class="has-child">
+                            <a href="#" class="">
+                                <span wire:ignore><i data-feather="aperture" class="nav-icon"></i></span>
+                                <span class="menu-text">Vente Section</span>
+                                <span class="toggle-icon"></span>
+                            </a>
+                            <ul>
+                                <li class="nav-item">
+                                    <a href="{{ route('owner.clients') }}">Clients</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('owner.ventes') }}">Ventes</a>
+                                </li>
+
+                            </ul>
+                        </li>
+
 
                         <li class="has-child">
                             <a href="#" class="">
@@ -1377,12 +1387,12 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{route('owner.users')}}" class="">Utilisateur<span
+                                    <a href="{{ route('owner.users') }}" class="">Utilisateur<span
                                             class="badge badge-success menuItem">New</span></a>
 
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('owner.role')}}">Roles</a>
+                                    <a class="nav-link" href="{{ route('owner.role') }}">Roles</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="">Activity</a>

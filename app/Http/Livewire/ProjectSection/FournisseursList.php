@@ -206,21 +206,21 @@ class FournisseursList extends Component
 
     public function deleteSelected()
     {
-        foreach ($this->selectedfournisseur as $r) {
-        $check2= Facture::where('fournisseur_id',$this->id_fournisseur)->first();
-        $check = Charge::where('fournisseur_id', $r)->first();
-            if ($check || $check2) {
-                session()->flash('error', 'You selected an fournisseur aready used in charge table as ForingKey');
-                return;
+        
 
-            } else {
-                $fournisseur = Fournisseur::where('id', $r)->first();
-                $fournisseur->delete();
-                session()->flash('message', 'les fournisseur bien supprimer');
-                $this->resetInputs();
-                $this->dispatchBrowserEvent('add');
-            }
+        $facture = Facture::whereIn('fournisseur_id', $this->selectedfournisseur)->get();
+        $charge = Charge::whereIn('fournisseur_id', $this->selectedfournisseur)->get();
+        if (count($charge) > 0 || count($facture)>0) {
+            session()->flash('error', 'you selectd a fpurnisseur use as forieng key in other table');
+        } else {
+            Fournisseur::whereIn('id', $this->selectedfournisseur)->delete();
+            $this->selectedfournisseur = [];
+            $this->selectAll = false;
+            session()->flash('message', 'fournisseurs bien supprimer');
+            $this->resetInputs();
+
         }
+        $this->dispatchBrowserEvent('close-model');
 
     }
 
@@ -256,20 +256,6 @@ class FournisseursList extends Component
 
 
     }
-    //import project end
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

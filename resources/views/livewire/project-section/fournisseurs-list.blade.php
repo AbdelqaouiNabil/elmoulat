@@ -110,7 +110,7 @@
             @if (session()->has('error'))
             <div class="alert alert-danger">
 
-                {{ session('message') }}
+                {{ session('error') }}
 
             </div>
         @endif
@@ -530,7 +530,7 @@
                                     <select name="select-size-1" wire:model.defer='id_fdomaine' id="select-size-1"
                                         class="form-control  form-control-lg">
 
-                                        <option value="" selected>select an option</option>
+                                        <option selected>select an option</option>
                                         @foreach ($f_domaines as $f_domaine)
                                             <option value="{{ $f_domaine->id }}">{{ $f_domaine->name }}</option>
                                         @endforeach
@@ -629,16 +629,6 @@
 
 
         </div>
-
-        @push('scripts')
-            <script>
-                window.addEventListener('close-model', event => {
-                    $('#modal-basic').modal('hide');
-                    $('#edit-modal').modal('hide');
-                    $('#modal-info-delete').modal('hide');
-                })
-            </script>
-        @endpush
 
     </div>
 </div>

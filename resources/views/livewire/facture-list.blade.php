@@ -389,7 +389,7 @@
                                 @if ($type == 'fake' || $type == 'ajustement')
                                     <div class="form-group mb-25">
                                         <label>Prix</label>
-                                        <input class="form-control form-control-lg" type="number" name="prix"
+                                        <input class="form-control form-control-lg" type="text" name="prix"
                                             required wire:model.defer='prix'>
                                         @error('prix')
                                             <span class="text-danger">{{ $message }}</span>
@@ -413,7 +413,7 @@
                                 @endif
                                 <div class="form-group mb-25">
                                     <label>Montant</label>
-                                    <input class="form-control form-control-lg" type="number" name="montant"
+                                    <input class="form-control form-control-lg" type="text" name="montant"
                                         wire:model.defer='montant'>
                                     @error('montant')
                                         <span class="text-danger">{{ $message }}</span>
@@ -422,7 +422,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
+                                    <input class="form-control form-control-lg" type="date" name="date" 
                                         wire:model.defer='date'>
                                     @error('date')
                                         <span class="text-danger">{{ $message }}</span>
@@ -493,7 +493,7 @@
                                 @if ($type == 'fake' || $type == 'ajustement')
                                     <div class="form-group mb-25">
                                         <label>Prix</label>
-                                        <input class="form-control form-control-lg" type="number" name="prix"
+                                        <input class="form-control form-control-lg" type="text" name="prix"
                                             required wire:model.defer='prix'>
                                         @error('prix')
                                             <span class="text-danger">{{ $message }}</span>
@@ -517,7 +517,7 @@
                                 @endif
                                 <div class="form-group mb-25">
                                     <label>Montant</label>
-                                    <input class="form-control form-control-lg" type="number" name="montant"
+                                    <input class="form-control form-control-lg" type="text" name="montant"
                                         wire:model.defer='montant'>
                                     @error('montant')
                                         <span class="text-danger">{{ $message }}</span>

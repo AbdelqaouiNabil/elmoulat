@@ -19,7 +19,27 @@ class Vente extends Model
         'titre',
         'montant',
         'montantReal',
-        'contart',
+        'contrat',
+        'paye',
+        'reste',
+        'dateV',
     
     ];
+
+    public function client(){
+        return $this->belongsTo(Client::class,'client_id');
+    }
+    public function project(){
+        return $this->belongsTo(Projet::class,'project_id');
+    }
+    protected static function boot() {
+        parent::boot();
+    
+        static::updating(function($model){
+            $model->reste = $model->montantReal - $model->paye;
+        }); 
+        static::saving(function($model){
+            $model->reste = $model->montantReal - $model->paye;
+        });
+    }
 }

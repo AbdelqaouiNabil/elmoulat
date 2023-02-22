@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb53e73eba200efb8a8e9452dfcd259f",
-
+    "content-hash": "8fcc6f33d26fd5f4fdd0849703b20a5d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1483,17 +1482,67 @@
             "time": "2022-05-21T17:30:32+00:00"
         },
         {
-            "name": "laravel/framework",
-            "version": "v9.52.0",
+            "name": "kkszymanowski/traitor",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/laravel/framework.git",
-                "reference": "eb85cd9d72e5bfa54b4d0d9040786f26d6184a9e"
+                "url": "https://github.com/KKSzymanowski/Traitor.git",
+                "reference": "c16d90149e807d71562953eb5c9279e75170b63f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/eb85cd9d72e5bfa54b4d0d9040786f26d6184a9e",
-                "reference": "eb85cd9d72e5bfa54b4d0d9040786f26d6184a9e",
+                "url": "https://api.github.com/repos/KKSzymanowski/Traitor/zipball/c16d90149e807d71562953eb5c9279e75170b63f",
+                "reference": "c16d90149e807d71562953eb5c9279e75170b63f",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^1.0|^2.0|^3.0|^4.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Traitor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kuba Szymanowski",
+                    "email": "kuba.szymanowski@inf24.pl"
+                }
+            ],
+            "description": "Add a trait use statement to existing PHP class",
+            "keywords": [
+                "add",
+                "php",
+                "trait"
+            ],
+            "support": {
+                "email": "kuba.szymanowski@inf24.pl",
+                "issues": "https://github.com/kkszymanowski/traitor/issues",
+                "source": "https://github.com/kkszymanowski/traitor"
+            },
+            "time": "2022-03-02T17:32:19+00:00"
+        },
+        {
+            "name": "laravel/framework",
+            "version": "v9.52.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "cf021e5e9edf854f832b191ad5168e9f2327cdf7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/cf021e5e9edf854f832b191ad5168e9f2327cdf7",
+                "reference": "cf021e5e9edf854f832b191ad5168e9f2327cdf7",
                 "shasum": ""
             },
             "require": {
@@ -1678,7 +1727,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-02-14T14:51:14+00:00"
+            "time": "2023-02-21T18:19:59+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -1807,16 +1856,16 @@
         },
         {
             "name": "laravel/tinker",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
-                "reference": "74d0b287cc4ae65d15c368dd697aae71d62a73ad"
+                "reference": "04a2d3bd0d650c0764f70bf49d1ee39393e4eb10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/tinker/zipball/74d0b287cc4ae65d15c368dd697aae71d62a73ad",
-                "reference": "74d0b287cc4ae65d15c368dd697aae71d62a73ad",
+                "url": "https://api.github.com/repos/laravel/tinker/zipball/04a2d3bd0d650c0764f70bf49d1ee39393e4eb10",
+                "reference": "04a2d3bd0d650c0764f70bf49d1ee39393e4eb10",
                 "shasum": ""
             },
             "require": {
@@ -1869,9 +1918,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/tinker/issues",
-                "source": "https://github.com/laravel/tinker/tree/v2.8.0"
+                "source": "https://github.com/laravel/tinker/tree/v2.8.1"
             },
-            "time": "2023-01-10T18:03:30+00:00"
+            "time": "2023-02-15T16:40:09+00:00"
         },
         {
             "name": "laravel/ui",
@@ -2271,16 +2320,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v2.11.3",
+            "version": "v2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "5ab6266a12c637f645d38a2f0f61f84182f6249d"
+                "reference": "9da51085a7b02a8512a9d4c525d5ea96e8f52aa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/5ab6266a12c637f645d38a2f0f61f84182f6249d",
-                "reference": "5ab6266a12c637f645d38a2f0f61f84182f6249d",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/9da51085a7b02a8512a9d4c525d5ea96e8f52aa0",
+                "reference": "9da51085a7b02a8512a9d4c525d5ea96e8f52aa0",
                 "shasum": ""
             },
             "require": {
@@ -2332,7 +2381,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v2.11.3"
+                "source": "https://github.com/livewire/livewire/tree/v2.12.0"
             },
             "funding": [
                 {
@@ -2340,7 +2389,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-20T03:52:35+00:00"
+            "time": "2023-02-20T13:30:53+00:00"
         },
         {
             "name": "maatwebsite/excel",
@@ -4261,30 +4310,6 @@
             "time": "2022-05-28T13:28:03+00:00"
         },
         {
-<<<<<<< HEAD
-            "name": "santigarcor/laratrust",
-            "version": "7.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/santigarcor/laratrust.git",
-                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/3ac3b59d8df63c61b80d8e16ac69751283df115c",
-                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c",
-                "shasum": ""
-            },
-            "require": {
-                "kkszymanowski/traitor": "^1.0",
-                "laravel/framework": "~6.0|~7.0|~8.0|^9.0|^10.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.3.2",
-                "orchestra/testbench": "4.*|5.*|6.*|7.*|^8.0",
-                "phpunit/phpunit": "^7.5.15|^8.4|^9.0"
-=======
             "name": "sabberworm/php-css-parser",
             "version": "8.4.0",
             "source": {
@@ -4308,7 +4333,6 @@
             },
             "suggest": {
                 "ext-mbstring": "for parsing UTF-8 CSS"
->>>>>>> 3f2c7f7b227fed2dcd12511496a90a19a82cea44
             },
             "type": "library",
             "autoload": {
@@ -4333,7 +4357,75 @@
                 "stylesheet"
             ],
             "support": {
-<<<<<<< HEAD
+                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
+                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
+            },
+            "time": "2021-12-11T13:40:54+00:00"
+        },
+        {
+            "name": "santigarcor/laratrust",
+            "version": "7.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/santigarcor/laratrust.git",
+                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/3ac3b59d8df63c61b80d8e16ac69751283df115c",
+                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c",
+                "shasum": ""
+            },
+            "require": {
+                "kkszymanowski/traitor": "^1.0",
+                "laravel/framework": "~6.0|~7.0|~8.0|^9.0|^10.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.2",
+                "orchestra/testbench": "4.*|5.*|6.*|7.*|^8.0",
+                "phpunit/phpunit": "^7.5.15|^8.4|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laratrust\\LaratrustServiceProvider"
+                    ],
+                    "aliases": {
+                        "Laratrust": "Laratrust\\LaratrustFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laratrust\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Santiago Garcia",
+                    "homepage": "http://santigarcor.me"
+                }
+            ],
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+            "keywords": [
+                "Teams",
+                "acl",
+                "authorization",
+                "laratrust",
+                "laravel",
+                "multiusers",
+                "permissions",
+                "php",
+                "rbac",
+                "roles"
+            ],
+            "support": {
                 "issues": "https://github.com/santigarcor/laratrust/issues",
                 "source": "https://github.com/santigarcor/laratrust/tree/7.2.1"
             },
@@ -4344,12 +4436,6 @@
                 }
             ],
             "time": "2023-02-20T08:03:05+00:00"
-=======
-                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
-                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
-            },
-            "time": "2021-12-11T13:40:54+00:00"
->>>>>>> 3f2c7f7b227fed2dcd12511496a90a19a82cea44
         },
         {
             "name": "symfony/console",
@@ -7079,16 +7165,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.20.2",
+            "version": "v1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "5ae072b182b1efbec927409e8a3ce3b1078cc42c"
+                "reference": "758a914fc4da41f3f6ca5522c85902181b228bd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/5ae072b182b1efbec927409e8a3ce3b1078cc42c",
-                "reference": "5ae072b182b1efbec927409e8a3ce3b1078cc42c",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/758a914fc4da41f3f6ca5522c85902181b228bd1",
+                "reference": "758a914fc4da41f3f6ca5522c85902181b228bd1",
                 "shasum": ""
             },
             "require": {
@@ -7136,7 +7222,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2023-02-08T20:22:21+00:00"
+            "time": "2023-02-16T19:16:27+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -8854,16 +8940,16 @@
         },
         {
             "name": "spatie/backtrace",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/backtrace.git",
-                "reference": "4ee7d41aa5268107906ea8a4d9ceccde136dbd5b"
+                "reference": "7b34fee6c1ad45f8ee0498d17cd8ea9a076402c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/backtrace/zipball/4ee7d41aa5268107906ea8a4d9ceccde136dbd5b",
-                "reference": "4ee7d41aa5268107906ea8a4d9ceccde136dbd5b",
+                "url": "https://api.github.com/repos/spatie/backtrace/zipball/7b34fee6c1ad45f8ee0498d17cd8ea9a076402c1",
+                "reference": "7b34fee6c1ad45f8ee0498d17cd8ea9a076402c1",
                 "shasum": ""
             },
             "require": {
@@ -8899,8 +8985,7 @@
                 "spatie"
             ],
             "support": {
-                "issues": "https://github.com/spatie/backtrace/issues",
-                "source": "https://github.com/spatie/backtrace/tree/1.2.1"
+                "source": "https://github.com/spatie/backtrace/tree/1.2.2"
             },
             "funding": [
                 {
@@ -8912,7 +8997,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-11-09T10:57:15+00:00"
+            "time": "2023-02-21T08:29:12+00:00"
         },
         {
             "name": "spatie/flare-client-php",
