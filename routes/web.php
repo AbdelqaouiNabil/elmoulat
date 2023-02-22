@@ -26,6 +26,7 @@ use App\Http\Livewire\ProjectSection\ProjectsList;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\ownerDashboard;
 use App\Http\Livewire\ReleverBankaire;
+use App\Http\Livewire\user\Profile;
 use App\Models\User;
 
 
@@ -42,22 +43,25 @@ use App\Models\User;
 
 
 Route::get('/', function () {
-    return view('auth.login');
-});
+   
+     return view('auth.login');
+   
+    
+})->name('login')->middleware('guest');;
 Route::middleware(['middleware'=>'PreventBack'])->group(function () {
 
     Auth::routes();
 });
 
-// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-Route::get('/addRole', function(){
-    $admin = User::where('email','admin@gmail.com')->first();
-    $admin->attachRole('admin');
-    $owner = User::where('email','owner@gmail.com')->first();
-    $owner->attachRole('owner');
-});
+// Route::get('/addRole', function(){
+//     $admin = User::where('email','admin@gmail.com')->first();
+//     $admin->attachRole('admin');
+//     $owner = User::where('email','owner@gmail.com')->first();
+//     $owner->attachRole('owner');
+// });
 
 
 
@@ -119,6 +123,8 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/list-roles',RolesList::class)->name('owner.role');
             Route::get('/caisse',CaisseList::class)->name('owner.caisses');
             Route::get('/cheques',ChequeList::class)->name('owner.cheques');
+
+            Route::get('/profile-settings',Profile::class)->name('owner.profile');
 
 
     });

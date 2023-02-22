@@ -51,7 +51,7 @@
 
 
     <script src="sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{asset('style.css') }}">
 
     <!-- endinject -->
 
@@ -196,7 +196,7 @@
                                         </a>
                                     </li>
                                     <li class="has-subMenu-left">
-                                        <a href="#" class="">
+                                        <a href="" class="">
                                             <span data-feather="user" class="nav-icon"></span>
                                             <span class="menu-text">Profile</span>
                                         </a>
@@ -1051,12 +1051,12 @@
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="img/author-nav.jpg"
+                            <a href="javascript:;" class="nav-item-toggle"><img src="{{ Storage::disk('local')->url(Auth::user()->image) }}"
                                     alt="" class="rounded-circle"></a>
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
-                                        <img src="img/author-nav.jpg" alt="" class="rounded-circle">
+                                        <img src="{{ Storage::disk('local')->url(Auth::user()->image) }}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
                                         <h6>{{Auth::user()->name}}</h6>
@@ -1066,7 +1066,7 @@
                                 <div class="nav-author__options">
                                     <ul>
                                         <li>
-                                            <a href="">
+                                            <a href="{{route('owner.profile')}}">
                                                 <span data-feather="user"></span> Profile</a>
                                         </li>
                                         <li>

@@ -6,11 +6,16 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Livewire\WithFileUploads;
+use File;
 
 class UsersList extends Component
 {
 
-    public $name , $email , $password , $role , $userID;
+    use WithFileUploads;
+
+    public $name , $email , $password , $role , $userID , $profilImage;
     public $rules = [
         'role' => "required",
 
@@ -32,23 +37,25 @@ class UsersList extends Component
         $this->validate([
             'name'=> 'required',
             'email'=> 'required|email',
+            'profilImage' => 'image|mimes:jpeg,jpg,png',
             'password'=> 'required',
 
         ]);
-
+       
+        $imageNmae = $this->profilImage->store('images/userProfilImage', 'public'); 
         $user = new User;
         $user->name = $this->name;
+        $user->image = $imageNmae;
         $user->email = $this->email;
         $user->password =  Hash::make($this->password);
         $userAdded = $user->save();
         if($userAdded){
             $user->attachRole($this->role);
             // for hidden the model
-            
               $this->dispatchBrowserEvent('close-model');
               $this->dispatchBrowserEvent('add');
-            session()->flash('message', 'user bien ajouter');
-            $this->resetInputs();
+              session()->flash('message', 'user bien ajouter');
+              $this->resetInputs();
             
             
         }else{
@@ -69,9 +76,12 @@ class UsersList extends Component
         $user = User::where('id', $this->userID)->first();
       
        try{
+        $path = Storage::disk('local')->url($user->image);
+        File::delete(public_path($path));
         $role = $user->roles;
         $user->detachRole($role[0]->name);
         $deletedUser = $user->delete();
+       
         session()->flash('message','user bien supprimer');
             $this->dispatchBrowserEvent('add');
        }catch(Exception $e){

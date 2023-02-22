@@ -68,6 +68,11 @@
                                                 <a href="" wire:click.prevent="sort('name')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
+                                            <th>
+                                                <span class="userDatatable-title">Profil Image</span>
+                                                <a href="" wire:click.prevent="sort('profilImage')"><i
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
+                                            </th>
                                              <th>
                                                 <span class="userDatatable-title">Email</span>
                                                 <a href="" wire:click.prevent="sort('name')"><i
@@ -103,6 +108,12 @@
                                                         {{ $user->name }}
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div class="orderDatatable-title">
+                                                            <img src="{{ Storage::disk('local')->url($user->image) }}"
+                                                                        width="100" />
+                                                                </div>
+                                                     </td>
                                                   <td>
                                                     <div class="orderDatatable-title">
                                                         {{ $user->email }}
@@ -217,6 +228,14 @@
                                     @enderror
 
                                 </div>
+                                 <div class="form-group mb-25 col-lg-12">
+                                                <label>Image de profil</label>
+                                                <input class="form-control form-control-lg" type="file"
+                                                     wire:model.defer='profilImage'>
+                                                @error('profilImage')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                 <div class="form-group mb-25">
                                     <label>Email utilisateur</label>
                                     <input class="form-control form-control-lg" type="text" name="email"
@@ -420,10 +439,6 @@
         </div>
 
         <!-- ends: .modal-info-Delete -->
-
-
-
-
     </div>
     
 </div>
