@@ -16,7 +16,8 @@
                                             class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
                                             <span><i class="fa-solid fa-magnifying-glass"></i></span>
                                             <input wire:model="search" class="form-control border-0 box-shadow-none"
-                                                type="search" placeholder="chercher par nom ou type ou nom de fournisseur ..."
+                                                type="search"
+                                                placeholder="chercher par nom ou type ou nom de fournisseur ou nom du projet ..."
                                                 aria-label="Search">
                                         </div>
 
@@ -65,7 +66,7 @@
                                     @if ($charges->count() > 0)
                                         <div class="action-btn">
                                             <button type="button" class="btn btn-sm btn-primary btn-add"
-                                                wire:click="checkChargeSituation" data-toggle="modal"
+                                                wire:click="checkChargeBeforeAddReg" data-toggle="modal"
                                                 data-target="#cree-reglement"
                                                 @if ($errordAjoutReg) disabled @endif>
                                                 <i class="la la-plus"></i> Créer un Règlement
@@ -699,6 +700,14 @@
 
                             <div class="modal-info-text">
                                 <h6>Voulez-vous supprimer ce Charge</h6>
+                                @if (session()->has('warningDelete'))
+                                    <div class="alert alert-warning">
+
+                                        {{ session('warningDelete') }}
+
+                                    </div>
+                                @endif
+
                             </div>
 
                         </div>
@@ -708,7 +717,8 @@
                         <button type="button" class="btn btn-danger btn-outlined btn-sm"
                             data-dismiss="modal">annuler</button>
                         <button type="button" wire:click.prevent='deleteData'
-                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
+                            class="btn btn-success btn-outlined btn-sm"
+                            @if ($impossibleDeSupp) disabled @endif data-dismiss="modal">supprimer</button>
 
                     </div>
                 </div>

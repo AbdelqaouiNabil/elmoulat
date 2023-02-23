@@ -409,12 +409,21 @@
                                     <input class="form-control form-control-lg" type="date" name="dateR"
                                         wire:model.defer='dateR'>
                                 </div>
+                                @if (!($hideContratOuvrier))
                                 <div class="form-group mb-25">
                                     <label>Ouvrier Contrat</label>
                                     <input class="form-control form-control-lg" type="text"
                                         placeholder="Cin Ouvrier (ex:GN____)" name="cin_Ouv"
                                         wire:model.defer='cin_Ouv'>
                                 </div>
+                                @else
+                              
+                                @endif
+
+
+
+
+
                                 @error('cin_Ouv')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
