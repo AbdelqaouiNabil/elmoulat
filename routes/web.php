@@ -126,7 +126,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/caisse',CaisseList::class)->name('owner.caisses');
             Route::get('/cheques',ChequeList::class)->name('owner.cheques');
 
-            // Route::get('/profile-settings',Profile::class)->name('owner.profile');
+            Route::get('/profile-settings',Profile::class)->name('owner.profile');
 
 
     });
