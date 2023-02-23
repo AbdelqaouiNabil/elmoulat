@@ -9,10 +9,21 @@ class Caisse extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'name',
         'sold_nonjustify',
         'sold',
-        'total',
- 
+        'total'
     ];
-   
+
+    protected static function boot() {
+        parent::boot();
+    
+        static::updating(function($model){
+            $model->total = $model->sold_nonjustify + $model->sold;
+        }); 
+        static::saving(function($model){
+            $model->total = $model->sold_nonjustify + $model->sold;
+        });
+    }
+
 }

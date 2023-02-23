@@ -14,10 +14,15 @@ class Facture extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'fornisseur_id',
+        'fournisseur_id',
         'type',
         'numero',
         'date',
         'scan_pdf',
+        'montant',
     ];
+
+    public function fournisseur(){
+        return $this->belongsTo(Fournisseur::class,'fournisseur_id');
+    }
 }

@@ -17,7 +17,7 @@ class CreateBanksTable extends Migration
             $table->id();
             $table->string('nom');
             $table->string('email');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('adress');
             $table->string('ville');
             $table->timestamps();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Employe;
 
 class Conge extends Model
 {
@@ -17,8 +18,12 @@ class Conge extends Model
         
         'employe_id',
         'type',
-        'date_dubet',
+        'date_debut',
         'date_fin',
         'jours',
     ];
+
+    public function employe(){
+        return $this->belongsTo(Employe::class,'employe_id');
+    }
 }

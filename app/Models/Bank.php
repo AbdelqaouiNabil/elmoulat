@@ -14,11 +14,20 @@ class Bank extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+        'id',
         'nom',
         'email',
         'phone',
         'adress',
-        'ville',
+        'ville', 
     ];
+
+
+    public function compte(){
+        return $this->hasMany(Compte::class,'bank_id');
+    }
+
+
+  
 }
+

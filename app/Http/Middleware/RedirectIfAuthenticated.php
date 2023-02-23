@@ -25,11 +25,13 @@ class RedirectIfAuthenticated
             // if (Auth::guard($guard)->check()) {
             //     return redirect(RouteServiceProvider::HOME);
             // }
-            if(Auth::guard($guard)->check() && Auth::user()->role == 1){
+            if(Auth::guard($guard)->check() && Auth::user()->hasRole('admin')){
                 return redirect()->route('admin.dashboard');
             }
-            elseif(Auth::guard($guard)->check() && Auth::user()->role == 2){
-                return redirect()->route('user.dashboard');
+            elseif(Auth::guard($guard)->check() && Auth::user()->hasRole('owner')){
+                return redirect()->route('owner.dashboard'); 
+            } elseif(Auth::guard($guard)->check() && Auth::user()->hasRole('comptable')){
+                return redirect()->route('comptable.dashboard'); 
             }
         }
 

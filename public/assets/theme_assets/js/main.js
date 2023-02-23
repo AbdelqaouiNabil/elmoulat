@@ -1472,4 +1472,12 @@
     });
   })
 
+
+
 })(jQuery);
+
+window.addEventListener('close-model', event => {
+  $('#modal-basic').modal('hide');
+  $('#edit-modal').modal('hide');
+  $('#modal-info-delete').modal('hide');
+})

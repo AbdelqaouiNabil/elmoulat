@@ -9,12 +9,16 @@ class Depot extends Model
 {
     use HasFactory;
     protected $fillable = [
-        
+
         'numero_cheque',
         'id_caisse',
-        'date',
-        'montant',
-      
-      
+        'dateC',
+        'montant'
     ];
+
+
+
+    public function caisse(){
+        return $this->belongsTo(Caisse::class, 'id_caisse');
+    }
 }

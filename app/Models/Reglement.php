@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Contrat;
 class Reglement extends Model
 {
     use HasFactory;
@@ -14,16 +14,18 @@ class Reglement extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'date',
+        'dateR',
         'methode',
         'montant',
         'numero_cheque',
-        'id_transaction',
         'id_facture',
         'id_contrat',
-       
-
-       
-        
     ];
+
+
+    public function contrat(){
+        return $this->belongsTo(Contrat::class, 'id_contrat');
+    }
+
+
 }

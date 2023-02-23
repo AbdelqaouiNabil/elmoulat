@@ -30,11 +30,11 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
     public function redirectTo(){
-         if(Auth()->user()->role == 1){
+         if(auth()->user()->hasRole('admin')){
             return route('admin.dashboard');
          }
-         elseif(Auth()->user()->role == 2){
-            return route('user.dashboard');
+         elseif(auth()->user()->hasRole('owner')){
+            return route('owner.dashboard');
          }
     }
 
@@ -57,13 +57,13 @@ class LoginController extends Controller
     ]);
  
     if (auth()->attempt(array('email'=>$input['email'], 'password'=>$input['password']))) {
-        $user = Auth::getProvider()->retrieveByCredentials($input);
-        if(auth()->user()->role == 1){
-            Auth::login($user, $request->get('remember'));
+        // $user = Auth::getProvider()->retrieveByCredentials($input);
+        if(auth()->user()->hasRole('admin')){
+            // Auth::login($user, $request->get('remember'));
             return redirect()->route('admin.dashboard');
-        }elseif(auth()->user()->role == 2){
-            Auth::login($user, $request->get('remember'));
-            return redirect()->route('user.dashboard');
+        }elseif(auth()->user()->hasRole('owner')){
+            // Auth::login($user, $request->get('remember'));
+            return redirect()->route('owner.dashboard');
         }
         
     }else{

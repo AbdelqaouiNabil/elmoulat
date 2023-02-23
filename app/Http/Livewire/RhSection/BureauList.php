@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\RhSection;
 
+use App\Models\Employe;
+use App\Models\Projet;
 use Livewire\Component;
 use App\Models\Bureau;
 use Livewire\WithPagination;
@@ -17,20 +19,41 @@ class BureauList extends Component
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
+    public $sortname="id";
+    public $sortdrection="DESC";
     public $pages = 5;
     protected $listeners = ['saveData' => 'saveData'];
     
     public function render()
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
-        $bureaus=Bureau::all();
-        return view('livewire.rh-section.bureau-list',['bureaus'=>$bureaus]);
+        $bureaus=Bureau::orderBy($this->sortname,$this->sortdrection)->paginate($this->pages,['*'],'new');
+        return view('livewire.owner.rh-section.bureau-list',['bureaus'=>$bureaus]);
+    }
+    // sort function 
+    public function sort($value){
+        if($this->sortname==$value && $this->sortdrection=="DESC"){
+            $this->sortdrection="ASC";
+        }
+        else{
+            if($this->sortname==$value && $this->sortdrection=="ASC"){
+                $this->sortdrection="DESC";
+            }
+        }
+        $this->sortname=$value;
+
+    }
+
+    // for paginate
+    public function updatingPages($value){
+        $this->resetPage('new');
+        
     }
     public function updated($fields){
         $this->validateOnly($fields,[
             'name'=>'required',
             'ville'=>'required',
-            'phone'=>'required|integer',
+            'phone'=>'required|regex:/[0-9]*/',
         ]);
     }
     // this function for reset inputs
@@ -46,7 +69,7 @@ class BureauList extends Component
         $this->validate([
             'name'=>'required',
             'ville'=>'required',
-            'phone'=>'required|integer',
+            'phone'=>'required|regex:/[0-9]*/',
            
         ]);
         $bureau = new Bureau;
@@ -78,6 +101,13 @@ class BureauList extends Component
     }
     
     public function editData(){
+
+        $this->validate([
+            'name'=>'required',
+            'ville'=>'required',
+            'phone'=>'required|regex:/[0-9]*/',
+           
+        ]);
         $bureau = Bureau::where('id',$this->id_bureau)->first();
         $bureau->nom = $this->name;
         $bureau->ville = $this->ville;
@@ -85,48 +115,53 @@ class BureauList extends Component
         $bureau->save();
         session()->flash('message','bureau bien modifer');
         $this->dispatchBrowserEvent('close-model');
+        $this->resetInputs();
     }
    
 
     // delete data row 
 
     public function delete($id){
-        $bureau = Bureau::where('id',$id)->first();
         $this->id_bureau = $id;
-        $this->name = $bureau->nom;
-        $this->ville = $bureau->ville;
-        $this->phone = $bureau->phone;
-        
+     
     }
     
     public function deleteData(){
-       try{
-        $bureau = Bureau::where('id',$this->id_bureau)->first();
-        $bureau->delete();
-        session()->flash('message','bureau bien supprimer');
-        $this->dispatchBrowserEvent('add');
-        $this->dispatchBrowserEvent('close-model');
-       }catch(QueryException $e){
-        session()->flash('error','error');
-
-       }
+            $check= Employe::where('bureau_id',$this->id_bureau)->first();
+            $check2 = Projet::where('id_bureau', $this->id_bureau)->first();
+        if($check || $check2){
+            session()->flash('error','this Bureau is aready used  as ForingKey');
+            return;
+            
+        }else {
+            $bureau = Bureau::where('id', $this->id_bureau)->first();
+            $bureau->delete();
+            session()->flash('message', 'les bureau bien supprimer');
+            $this->resetInputs();
+            $this->dispatchBrowserEvent('add');
+        }
         
     }
 
     // delete selected rows on the table 
     public function  deleteSelectedRows(){
-        try{
-            Bureau::query()
-            ->whereIn('id',$this->selectRows)
-            ->delete();
-            $this->selectRows = [];
-           $this->selectAll = false;
-        }catch(QueryException $e){
-            session()->flash('error','error');
-            
 
+      
+        $employe = Employe::whereIn('bureau_id', $this->selectRows)->get();
+        $projet = Projet::whereIn('id_bureau', $this->selectRows)->get();
+
+        if (count($projet)>0 || count($employe)>0 ) {
+            session()->flash('error', 'there is one or more bureaus is aready used  as ForingKey ');
+            return;
+        } else {
+            $bureau = Bureau::whereIn('id', $this->selectRows);
+            $bureau->delete();
+            session()->flash('message', 'les bureau bien supprimer');
+            $this->selectRows=[];
+            $this->selectAll=false;
         }
-   
+        $this->resetInputs();
+        $this->dispatchBrowserEvent('close-model');
    }
    
    

@@ -17,12 +17,11 @@ class CreateDepensesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_projet');
             $table->foreign('id_projet')->references('id')->on('projets');
-            $table->unsignedBigInteger('id_ouvrier');
-            $table->foreign('id_ouvrier')->references('id')->on('ouvriers');  
-         
-            $table->date('date');
-            $table->string('methode');
-            $table->string('apartient');
+            $table->unsignedBigInteger('id_ouvrier')->nullable();
+            $table->foreign('id_ouvrier')->references('id')->on('ouvriers');
+            $table->date('dateDep');
+            $table->string('description')->nullable();
+            $table->string('Aqui');
             $table->string('type');
             $table->float('montant');
             $table->timestamps();

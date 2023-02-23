@@ -14,7 +14,7 @@ class Ouvrier extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+
         'nom',
         'datenais',
         'cin',
@@ -22,6 +22,12 @@ class Ouvrier extends Model
         'datedubet',
         'observation',
         'notation',
+        'phone',
+        'email',
+        'adress',
+        'contrat',
         
+
+
     ];
 }

@@ -101,17 +101,20 @@ NB: this file contains the list of components/scss partial along with the style.
     -- badges
     -- card
     -- email
-    -- maintenance
+    -- ma    intenance
     -- map
 
   05. RESPONSIVE CSS
 ***************************/
 
+
 .required:after {
-        content: '*';
-        color: red;
-        padding-left: 5px;
- }
+  content: '*';
+  color: red;
+  padding-left: 5px;
+}
+
+
 
 .m-top-0 {
   margin-top: 0px;
@@ -10210,6 +10213,7 @@ table.table-basic tr td.card .card-body,
   padding: 10px 20px;
   vertical-align: middle;
   white-space: nowrap;
+  text-align: center;
 }
 .userDatatable table thead tr:not(.footable-filtering) {
   border-radius: 10px;
@@ -10220,6 +10224,7 @@ table.table-basic tr td.card .card-body,
   border-top: 1px solid rgb(241, 242, 246);
   border-bottom: 1px solid rgb(241, 242, 246);
   white-space: nowrap;
+  text-align: center;
 }
 .userDatatable table thead tr:not(.footable-filtering) th:first-child {
   border-left: 1px solid rgb(241, 242, 246);
@@ -16130,11 +16135,14 @@ td.order-summery .total > div {
     flex-flow: column;
   }
 }
-
+.form-check{
+  text-align: center;
+}
 .orderDatatable-title {
   font-size: 14px;
   line-height: 1.4285714286;
   font-weight: 500;
+  text-align: center;
 }
 
 .orderDatatable-status span {
@@ -16147,9 +16155,10 @@ td.order-summery .total > div {
 }
 
 .orderDatatable_actions {
-  min-width: 130px;
+  min-width: 50px;
   max-width: 100%;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 .orderDatatable_actions li a {
   width: 40px;

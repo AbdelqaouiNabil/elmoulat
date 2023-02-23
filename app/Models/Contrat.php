@@ -5,17 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contart extends Model
+class Contrat extends Model
 {
     use HasFactory;
     protected $fillable = [
-        
+
         'name',
-        'datedubet',
+        'datedebut',
         'datefin',
         'montant',
         'avance',
-        'id_ouvrier'
-       
+        'id_ouvrier',
+        'cin_Ouv'
+
     ];
+
+    public function ouvrier(){
+        return $this->belongsTo('App\Models\Ouvrier', 'id_ouvrier');
+    }
 }

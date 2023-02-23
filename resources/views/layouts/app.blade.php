@@ -7,58 +7,64 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>StrikingDash</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
     <!-- inject:css-->
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/bootstrap/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/dashboardStyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/bootstrap/bootstrap.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/daterangepicker.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/daterangepicker.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/fontawesome.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/fontawesome.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/footable.standalone.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/footable.standalone.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/fullcalendar@5.2.0.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/fullcalendar@5.2.0.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/jquery-jvectormap-2.0.5.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/jquery-jvectormap-2.0.5.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/jquery.mCustomScrollbar.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/jquery.mCustomScrollbar.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/leaflet.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/leaflet.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/line-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/line-awesome.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/magnific-popup.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/MarkerCluster.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/MarkerCluster.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/MarkerCluster.Default.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/MarkerCluster.Default.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/select2.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/slick.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/slick.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/star-rating-svg.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/star-rating-svg.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/trumbowyg.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/trumbowyg.min.css') }}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor_assets/css/wickedpicker.min.css')}}">
-    
+    <link rel="stylesheet" href="{{ asset('assets/vendor_assets/css/wickedpicker.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+
+
     <script src="sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="{{asset("style.css")}}">
+    <link rel="stylesheet" href="{{asset('style.css') }}">
 
     <!-- endinject -->
 
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/favicon.png')}}">
-     @livewireStyles
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon.png') }}">
+    @livewireStyles
 </head>
 
 <body class="layout-light side-menu overlayScroll">
     <div class="mobile-search">
         <form class="search-form">
             <span data-feather="search"></span>
-            <input wire:model='search'  class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
+            <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text"
+                placeholder="Search...">
         </form>
     </div>
 
@@ -66,13 +72,12 @@
     <header class="header-top">
         <nav class="navbar navbar-light">
             <div class="navbar-left">
-                <a href="" class="sidebar-toggle">
-                    <img class="svg" src="img/svg/bars.svg" alt="img"></a>
-                <a class="navbar-brand" href="#"><img class="dark" src="img/logo_dark.png" alt="svg"><img class="light" src="img/logo_white.png" alt="img"></a>
-                <form action="/" class="search-form">
-                    <span data-feather="search"></span>
-                    <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                </form>
+
+                <a href="{{route('owner.dashboard')}}" class="sidebar-toggle">
+                    <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
+                <a class="navbar-brand" href="#"><img class="dark" src="{{asset('img/logo_dark.png')}}" alt="svg"><img class="light" src="{{asset('img/logo_white.png')}}" alt="img"></a>
+
+
                 <div class="top-menu">
 
                     <div class="strikingDash-top-menu position-relative">
@@ -191,7 +196,7 @@
                                         </a>
                                     </li>
                                     <li class="has-subMenu-left">
-                                        <a href="#" class="">
+                                        <a href="" class="">
                                             <span data-feather="user" class="nav-icon"></span>
                                             <span class="menu-text">Profile</span>
                                         </a>
@@ -200,7 +205,7 @@
                                                 <a href="profile.html" class="">Profile</a>
                                             </li>
                                             <li>
-                                                <a href="profile-setting.html" class="">Profile Settings</a>
+                                                <a href="" class="">Profile Settings</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -728,7 +733,8 @@
                         </a>
                         <form action="/" class="search-form-topMenu">
                             <span class="search-icon" data-feather="search"></span>
-                            <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
+                            <input wire:model='search' class="form-control mr-sm-2 box-shadow-none" type="text"
+                                placeholder="Search...">
                         </form>
                     </li>
                     <li class="nav-message">
@@ -736,7 +742,8 @@
                             <a href="javascript:;" class="nav-item-toggle">
                                 <span data-feather="mail"></span></a>
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Messages <span class="badge-circle badge-success ml-1">2</span></h2>
+                                <h2 class="dropdown-wrapper__title">Messages <span
+                                        class="badge-circle badge-success ml-1">2</span></h2>
                                 <ul>
                                     <li class="author-online has-new-message">
                                         <div class="user-avater">
@@ -744,7 +751,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">Web Design</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -760,7 +768,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">Web Design</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -776,7 +785,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">Web Design</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -792,7 +802,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">Web Design</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -807,7 +818,8 @@
                                         </div>
                                         <div class="user-message">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">Web Design</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">Web Design</a>
                                                 <span class="time-posted">3 hrs ago</span>
                                             </p>
                                             <p>
@@ -827,15 +839,18 @@
                             <a href="javascript:;" class="nav-item-toggle">
                                 <span data-feather="bell"></span></a>
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ml-1">4</span></h2>
+                                <h2 class="dropdown-wrapper__title">Notifications <span
+                                        class="badge-circle badge-warning ml-1">4</span></h2>
                                 <ul>
-                                    <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                    <li
+                                        class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
                                         <div class="nav-notification__type nav-notification__type--primary">
                                             <span data-feather="inbox"></span>
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">James</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -843,13 +858,15 @@
                                             </p>
                                         </div>
                                     </li>
-                                    <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                    <li
+                                        class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
                                         <div class="nav-notification__type nav-notification__type--secondary">
                                             <span data-feather="upload"></span>
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">James</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -857,13 +874,15 @@
                                             </p>
                                         </div>
                                     </li>
-                                    <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
+                                    <li
+                                        class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
                                         <div class="nav-notification__type nav-notification__type--success">
                                             <span data-feather="log-in"></span>
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">James</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -877,7 +896,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">James</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -891,7 +911,8 @@
                                         </div>
                                         <div class="nav-notification__details">
                                             <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
+                                                <a href="" class="subject stretched-link text-truncate"
+                                                    style="max-width: 180px;">James</a>
                                                 <span>sent you a message</span>
                                             </p>
                                             <p>
@@ -1017,7 +1038,8 @@
                     <!-- ends: .nav-support -->
                     <li class="nav-flag-select">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="img/flag.png" alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle"><img src="img/flag.png" alt=""
+                                    class="rounded-circle"></a>
                             <div class="dropdown-wrapper dropdown-wrapper--small">
                                 <a href=""><img src="img/eng.png" alt=""> English</a>
                                 <a href=""><img src="img/ger.png" alt=""> German</a>
@@ -1029,21 +1051,22 @@
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="img/author-nav.jpg" alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle"><img src="{{ Storage::disk('local')->url(Auth::user()->image) }}"
+                                    alt="" class="rounded-circle"></a>
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
-                                        <img src="img/author-nav.jpg" alt="" class="rounded-circle">
+                                        <img src="{{ Storage::disk('local')->url(Auth::user()->image) }}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        <h6>Abdullah Bin Talha</h6>
+                                        <h6>{{Auth::user()->name}}</h6>
                                         <span>UI Designer</span>
                                     </div>
                                 </div>
                                 <div class="nav-author__options">
                                     <ul>
                                         <li>
-                                            <a href="">
+                                            <a href="{{route('owner.profile')}}">
                                                 <span data-feather="user"></span> Profile</a>
                                         </li>
                                         <li>
@@ -1063,7 +1086,7 @@
                                                 <span data-feather="bell"></span> Help</a>
                                         </li>
                                     </ul>
-                                    <a href="{{route('logout')}}" class="nav-author__signout">
+                                    <a href="{{ route('logout') }}" class="nav-author__signout">
                                         <span data-feather="log-out"></span> Sign Out</a>
                                 </div>
                             </div>
@@ -1086,11 +1109,297 @@
     </header>
     <main class="main-content">
 
-       <livewire:dashboard>
-       
-      
-       
-       
+
+
+        <aside class="sidebar-wrapper">
+
+            <div class="sidebar sidebar-collapse" id="sidebar">
+
+                <div class="sidebar__menu-group">
+
+                    <ul class="sidebar_nav">
+
+                        <li class="menu-title">
+
+                            <span>Main menu</span>
+
+                        </li>
+
+
+
+                        <li>
+
+                            <a href="{{ route('owner.projects') }}">
+
+                                <span wire:ignore><i data-feather="layers" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Projet</span>
+
+                            </a>
+
+                        </li>
+
+
+
+                        <li>
+
+                            <a href="{{ route('owner.fournisseurs') }}"
+                                class="$currentTab === 'fournisseurs' ? 'active' : ''">
+
+                                <span wire:ignore><i data-feather="folder" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Fournisseurs</span>
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.ouvriers') }}">
+
+                                <span wire:ignore><i data-feather="tool" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Ouvriers</span>
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.clients') }}">
+
+                                <span wire:ignore><i data-feather="dollar-sign" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Client</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="menu-title m-top-30">
+
+                            <span>Charges</span>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.charges') }}">
+
+                                <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Charges</span>
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.contrats') }}">
+
+                                <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Contrats</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{ route('owner.factures') }}">
+
+                                <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Facture</span>
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.depenses') }}">
+
+                                <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Depenses</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{ route('owner.reglements') }}">
+
+                                <span wire:ignore><i data-feather="briefcase" class="nav-icon"></i></span>
+
+                                <span class="menu-text">Reglements</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="menu-title m-top-30">
+
+                            <span>Transactions</span>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.comptes') }}">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Compte Banquaire</span>
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.relevers') }}">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Relever Banquaire</span>
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ route('owner.chequiers') }}">
+
+                                <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
+
+                                <span class="menu-text">chequier</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{ route('owner.cheques')}}">
+
+                                <span wire:ignore><i data-feather="file-plus" class="nav-icon"></i></span>
+
+                                <span class="menu-text">cheques</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{ route('owner.caisses') }}">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Caisse</span>
+
+                            </a>
+
+                        </li>
+
+
+
+                        <li class="menu-title m-top-30">
+
+                            <span>RH</span>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="#">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Email</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+
+                            <a href="{{ route('owner.bureaus') }}">
+
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Bureau</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{ route('owner.employes') }}">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Employe</span>
+
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{ route('owner.conges') }}">
+
+                                <span data-feather="folder" class="nav-icon"></span>
+
+                                <span class="menu-text">Conges</span>
+
+                            </a>
+
+                        </li>
+
+
+                        <li class="has-child">
+                            <a href="#" class="">
+                                <span wire:ignore><i data-feather="aperture" class="nav-icon"></i></span>
+                                <span class="menu-text">Settings</span>
+                                <span class="toggle-icon"></span>
+                            </a>
+                            <ul>
+                                <li class="nav-item">
+                                    <a href="{{ route('owner.banks') }}">Banque</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('owner.domaines') }}">Domaine</a>
+                                </li>
+
+                                <li>
+                                    <a href="{{route('owner.users')}}" class="">Utilisateur<span
+                                            class="badge badge-success menuItem">New</span></a>
+
+                                </li>                              
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+
+        {{ $slot }}
+
+
+
         <footer class="footer-wrapper">
             <div class="container-fluid">
                 <div class="row">
@@ -1131,56 +1440,65 @@
         </span>
     </div>
     <div class="overlay-dark-sidebar"></div>
-   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- inject:js-->
-    <script src="{{asset('assets/vendor_assets/js/jquery/jquery-3.5.1.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery/jquery-ui.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/bootstrap/popper.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/bootstrap/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/moment/moment.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/accordion.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/autoComplete.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/Chart.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/charts.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/daterangepicker.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/drawer.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/dynamicBadge.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/dynamicCheckbox.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/feather.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/footable.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/fullcalendar@5.2.0.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/google-chart.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery.countdown.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery.filterizr.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery.mCustomScrollbar.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery.peity.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/jquery.star-rating-svg.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/leaflet.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/leaflet.markercluster.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/loader.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/message.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/moment.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/muuri.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/notification.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/popover.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/select2.full.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/slick.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/trumbowyg.min.js')}}"></script>
-    <script src="{{asset('assets/vendor_assets/js/wickedpicker.min.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/drag-drop.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/footable.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/full-calendar.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/googlemap-init.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/icon-loader.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/jvectormap-init.js')}}"></script>
-    <script src="{{asset('assets/theme_assets/js/leaflet-init.js')}}"></script>
+ 
+    <script>
+              
+      </script>
+  
+
+
+    <script src="{{ asset('assets/vendor_assets/js/jquery/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery/jquery-ui.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/bootstrap/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/accordion.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/autoComplete.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/Chart.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/charts.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/daterangepicker.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/drawer.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/dynamicBadge.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/dynamicCheckbox.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/footable.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/fullcalendar@5.2.0.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/google-chart.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery.filterizr.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery.mCustomScrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery.peity.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/jquery.star-rating-svg.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/leaflet.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/leaflet.markercluster.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/loader.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/message.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/moment.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/muuri.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/notification.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/popover.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/slick.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/trumbowyg.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/wickedpicker.min.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/drag-drop.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/footable.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/full-calendar.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/googlemap-init.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/icon-loader.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/jvectormap-init.js') }}"></script>
+    <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
-    <script src="{{asset('assets/theme_assets/js/main.js')}}"></script>
-    @stack('scripts')
+    <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
     @livewireScripts
+    {{-- <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
+    <script src="{{mix('js/app.js')}}"></script> --}}
+ 
     <!-- endinject-->
 </body>
 

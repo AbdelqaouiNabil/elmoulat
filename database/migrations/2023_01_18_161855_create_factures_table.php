@@ -17,10 +17,11 @@ class CreateFacturesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('fournisseur_id');
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs'); 
-            $table->integer('numero');
+            $table->string('numero')->unique();
             $table->date('date');
             $table->string('scan_pdf');
-            $table->string('type');
+            $table->string('montant')->nullable();
+            $table->enum('type',['real','fake','ajustement']);
             $table->timestamps();
         });
     }
