@@ -214,6 +214,6 @@ class BankList extends Component
     {
         $this->bulkDisabled = count($this->selectedBankID) < 1;
         $banks = Bank::all();
-        return view('livewire.settings.bank-list', ['banks' => $banks]);
+        return view('livewire.owner.settings.bank-list', ['banks' => $banks]);
     }
 }

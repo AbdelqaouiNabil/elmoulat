@@ -24,7 +24,7 @@ class UsersList extends Component
     {
         $users = User::whereRoleIs(['admin','comptable'])->get();
         $roles = Role::all();
-        return view('livewire.settings.users-list',['users'=>$users,'roles'=>$roles]);
+        return view('livewire.owner.settings.users-list',['users'=>$users,'roles'=>$roles]);
     }
 
     

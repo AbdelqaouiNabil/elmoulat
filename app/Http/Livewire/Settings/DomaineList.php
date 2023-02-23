@@ -30,7 +30,7 @@ class DomaineList extends Component
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
         $domaines=f_domaine::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.settings.domaine-list',['domaines'=>$domaines]);
+        return view('livewire.owner.settings.domaine-list',['domaines'=>$domaines]);
     }
 
 
