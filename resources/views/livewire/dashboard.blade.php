@@ -629,7 +629,14 @@
                 }
             ]
 
-        }]
+        }
+
+,
+
+
+
+
+    ]
     });
 
     Highcharts.chart('highchart3333', {
