@@ -44,10 +44,10 @@ use App\Models\User;
 
 
 Route::get('/', function () {
-   
+
      return view('auth.login');
-   
-    
+
+
 })->name('login')->middleware('guest');;
 Route::middleware(['middleware'=>'PreventBack'])->group(function () {
 
@@ -126,7 +126,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['role:admin','auth','PreventBack
             Route::get('/caisse',CaisseList::class)->name('owner.caisses');
             Route::get('/cheques',ChequeList::class)->name('owner.cheques');
 
-            Route::get('/profile-settings',Profile::class)->name('owner.profile');
+            // Route::get('/profile-settings',Profile::class)->name('owner.profile');
 
 
     });

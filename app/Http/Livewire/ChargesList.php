@@ -9,6 +9,8 @@ use App\Models\Cheque;
 use App\Models\Fournisseur;
 use App\Models\Reglement;
 use App\Models\Facture;
+use App\Models\Retrait;
+use App\Models\Caisse;
 use Carbon\Carbon;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -65,13 +67,18 @@ class ChargesList extends Component
         }
         if ($this->search != "") {
 
-            // filtr by fournisseur
+            // filtr by fournisseur or Projet
             $fournisseur = Fournisseur::where('name', 'like', '%' . $this->search . '%')->first();
+            $projet = Projet::where('name', 'like', '%' . $this->search . '%')->first();
             if (!is_null($fournisseur)) {
                 $charges = Charge::where('fournisseur_id', 'like', '%' . $fournisseur->id . '%')->paginate($this->pages, ['*'], 'new');
             } else {
-                $charges = Charge::where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('type', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+                if ((!is_null($projet))) {
+                    $charges = Charge::where('id_projet', 'like', '%' . $projet->id . '%')->paginate($this->pages, ['*'], 'new');
+                } else {
+                    $charges = Charge::where('name', 'like', '%' . $this->search . '%')
+                        ->orWhere('type', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+                }
             }
         }
         return view('livewire.charges-list', ['charges' => $charges, 'fournisseurs' => $fournisseurs, 'projets' => $projets, 'cheques' => $cheques]);
@@ -154,10 +161,45 @@ class ChargesList extends Component
                     $cheque->save();
                 }
             }
+
+            $this->updateChargeAfterReg($reglement);
+
+            // modifier sold
+            if ($reglement->methode == "cash") {
+                $this->UpdateCaisseAfterSave($reglement->id);
+            }
+
+
             session()->flash('message', 'Reglement added successfully');
             $this->resetInputs();
-            $this->updateChargeAfterReg($reglement);
             $this->dispatchBrowserEvent('close-model');
+        }
+    }
+
+
+    // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
+    public $ceProjet, $cetteCaisse;
+    public function UpdateCaisseAfterSave($regId)
+    {
+        //   get all the charge that has this saved reg
+        $charge = Charge::where('id_reglement', $regId)->first();
+        if (!is_null($charge)) {
+            $this->ceProjet = Projet::where('id', $charge->id_projet)->first();
+            if (!is_null($this->ceProjet)) {
+                $this->cetteCaisse = Caisse::where('id', $this->ceProjet->id_caisse)->first();
+                if (!is_null($this->cetteCaisse)) {
+                    Retrait::create([
+                        'montant' => $this->montant,
+                        'dateRet' => $this->dateR,
+                        'id_depense' => null,
+                        'id_caisse' => $this->cetteCaisse->id,
+                        'id_reglement' => null
+                    ]);
+                    $this->cetteCaisse->sold = ($this->cetteCaisse->sold) - ($this->montant);
+                    $this->cetteCaisse->total = (($this->cetteCaisse->sold) + ($this->cetteCaisse->sold_nonjustify));
+                    $this->cetteCaisse->save();
+                }
+            }
         }
     }
 
@@ -194,10 +236,14 @@ class ChargesList extends Component
     }
 
 
-    public function checkChargeSituation()
+    public function checkChargeBeforeAddReg()
     {
-        $this->dateR = date('Y.m.d');
+        // $this->dateR = date('Y.m.d');
         if (count($this->selectedCharges) != 0) {
+
+            // for checking whether they have the same project id
+            $chargeAComparer = Charge::where('id', $this->selectedCharges[0])->first();
+
             foreach ($this->selectedCharges as $ch) {
                 $charge = Charge::where('id', $ch)->first();
                 $situat = $charge->situation;
@@ -205,10 +251,19 @@ class ChargesList extends Component
                     $this->errordAjoutReg = true;
                     session()->flash('warning2', 'impossible de cree un reglement a une charge deja paye');
                 } else {
-                    $this->errordAjoutReg = false;
+
+                    if($charge->id_projet != $chargeAComparer->id_projet){
+                        $this->errordAjoutReg = true;
+                        session()->flash('warning2', 'les charges ne sont pas apartier au meme projet');
+                    }
+
+                    else{
+                        $this->errordAjoutReg = false;
+                    }
                 }
             }
         } else {
+
             $this->errordAjoutReg = true;
         }
     }
@@ -269,10 +324,16 @@ class ChargesList extends Component
         $this->dispatchBrowserEvent('close-model');
     }
 
+    public $impossibleDeSupp = false;
     public function deleteCharge($id)
     {
         $charge = Charge::where('id', $id)->first();
-        $this->id_Charge = $id;
+
+        if ($charge->id_reglement != null) {
+            session()->flash('warningDelete', "ce charge a deja un reglement !!! nous vous suggérons de supprimer le règlement en premier.");
+            $this->impossibleDeSupp = true;
+        }
+        // $this->id_Charge = $id;
     }
     public function deleteData()
     {
@@ -375,7 +436,7 @@ class ChargesList extends Component
         // } else {
         //     $this->errordAjoutReg = true;
         // }
-        $this->checkChargeSituation();
+        $this->checkChargeBeforeAddReg();
     }
 
     public function calculePrixTTC()

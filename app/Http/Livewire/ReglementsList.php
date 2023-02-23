@@ -138,7 +138,7 @@ class ReglementsList extends Component
 
 
 
-
+    public $hideContratOuvrier = false;
     public function editReglement($id)
     {
         $reglement = Reglement::where('id', $id)->first();
@@ -164,6 +164,14 @@ class ReglementsList extends Component
         if (!is_null($reglement->numero_cheque)) {
             $this->old_numero_cheque = $reglement->numero_cheque;
         }
+
+
+        // pour checker la method
+        if ($reglement->methode == 'cash'){
+            $this->hideContratOuvrier = true;
+        }else{
+            $this->hideContratOuvrier = false;
+        }
     }
 
 
@@ -171,7 +179,7 @@ class ReglementsList extends Component
 
     public function updateReglement()
     {
-        $this->validation();
+        // $this->validation();
         $pass = true;
 
         if ($this->num_facture != "") {
@@ -219,26 +227,25 @@ class ReglementsList extends Component
             $reglement->id_contrat = $this->id_contrat;
             $reglement->save();
 
-            //modifier sold
-            // if ($reglement->methode == "cash") {
-            //     $this->UpdateCaisseAfterUpdate();
-            // }
+            // modifier sold
+            if ($reglement->methode == "cash") {
+                $this->UpdateCaisseAfterUpdate($reglement->id);
+            }
 
 
             //modifier cheques situations
             $OLDcheque = Cheque::where('numero', $this->old_numero_cheque)->first();
-            if(!is_null($OLDcheque)){
+            if (!is_null($OLDcheque)) {
                 $OLDcheque->situation = "disponible";
                 $OLDcheque->save();
             }
 
             if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                if(!is_null($cheque)){
+                if (!is_null($cheque)) {
                     $cheque->situation = "livrer";
                     $cheque->save();
                 }
-
             }
             session()->flash('message', 'reglement bien modifer');
             $this->resetInputs();
@@ -325,7 +332,11 @@ class ReglementsList extends Component
 
     public function saveReglement()
     {
-        $this->validation();
+        $this->validate([
+            'dateR' => 'required',
+            'montant' => 'required',
+            'cin_Ouv' => 'required'
+        ]);
         $pass = true;
 
         if ($this->num_facture != "") {
@@ -372,13 +383,6 @@ class ReglementsList extends Component
                 'id_contrat' => $this->id_contrat,
             ]);
 
-            //modifier sold
-            // if ($reg->methode == "cash") {
-            //     $this->UpdateCaisseAfterSave();
-            // }
-
-
-
             //modifier cheque situation
             if (!is_null($reg->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reg->numero_cheque)->first();
@@ -392,28 +396,31 @@ class ReglementsList extends Component
     }
 
 
-      // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
-    //   public function UpdateCaisseAfterSave()
-    //   {
-    //       $projet = Projet::where('id', $this->id_projet)->first();
-    //       $caisse = Caisse::where('id', $projet->id_caisse)->first();
-    //       Retrait::create([
-    //           'montant' => $this->montant,
-    //           'dateRet' => $this->dateDep,
-    //           'id_depense' => $this->id_depense,
-    //           'id_caisse' => $caisse->id,
-    //           'id_reglement' => null
-    //       ]);
-    //       if ($this->type == 'Justifier') {
-    //           $caisse->sold = ($caisse->sold) - ($this->montant);
-    //           $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
-    //           $caisse->save();
-    //       } else {
-    //           $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
-    //           $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
-    //           $caisse->save();
-    //       }
-    //   }
+    // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
+    public $ceProjet, $cetteCaisse;
+    public function UpdateCaisseAfterUpdate($regId)
+    {
+        //   get all the charge that has this saved reg
+        $charge = Charge::where('id_reglement', $regId)->first();
+        if (!is_null($charge)) {
+            $this->ceProjet = Projet::where('id', $charge->id_projet)->first();
+            if (!is_null($this->ceProjet)) {
+                $this->cetteCaisse = Caisse::where('id', $this->ceProjet->id_caisse)->first();
+                if (!is_null($this->cetteCaisse)) {
+                    Retrait::create([
+                        'montant' => $this->montant,
+                        'dateRet' => $this->dateR,
+                        'id_depense' => null,
+                        'id_caisse' => $this->cetteCaisse->id,
+                        'id_reglement' => null
+                    ]);
+                    $this->cetteCaisse->sold_nonjustify = ($this->cetteCaisse->sold_nonjustify) - ($this->montant);
+                    $this->cetteCaisse->total = (($this->cetteCaisse->sold) + ($this->cetteCaisse->sold_nonjustify));
+                    $this->cetteCaisse->save();
+                }
+            }
+        }
+    }
 
 
 
@@ -481,4 +488,6 @@ class ReglementsList extends Component
             }
         }
     }
+
+
 }
