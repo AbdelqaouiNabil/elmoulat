@@ -11,7 +11,7 @@
                             <div class="col-md-6">
                                 <div class="search-result global-shadow rounded-pill bg-white">
 
-                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1 border-0">
                                         <span><i class="fa-solid fa-magnifying-glass"></i></span>
                                         <input wire:model="search" class="form-control border-0 box-shadow-none"
                                             type="search" placeholder="chercher par numero..." aria-label="Search">

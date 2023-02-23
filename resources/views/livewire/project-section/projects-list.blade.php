@@ -23,7 +23,7 @@
                             <div class="breadcrumb-action justify-content-center flex-wrap">
 
                                 <div class="dropdown action-btn">
-                                    <button @if (count($bureaus) == null || count($caisses) == null || count($selectedProjects) == null) disabled @endif
+                                    <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif
                                         class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
                                         id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
@@ -32,10 +32,9 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <span class="dropdown-item">Exporter</span>
                                         <div class="dropdown-divider"></div>
-                                        <a href="" class="dropdown-item" >
+                                        <a href="" class="dropdown-item">
                                             <i class="la la-print"></i> Printer</a>
-                                        <a href="{{ route('owner.pdf') }}"
-                                            target="_blank" type="application/pdf" class="dropdown-item">
+                                        <a href="{{route('admin.pdf',['id'=>$selectedProjects])}}" target="_blank" type="application/pdf" class="dropdown-item">
                                             <i class="la la-file-pdf"></i> PDF</a>
                                         <i class="la la-file-excel"></i> Excel (XLSX)</a>
                                         <a href="" class="dropdown-item" wire:click.prevent='export()'>
@@ -53,9 +52,9 @@
 
                                 <div class="action-btn">
 
-                                    <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif type="button"
-                                        wire:click="resetInputs()" class="btn btn-sm btn-primary btn-add"
-                                        data-toggle="modal" data-target="#modal-basic">
+                                    <button @if (count($bureaus) == null || count($caisses) == null) disabled @endif type="button" wire:click="resetInputs()"
+                                        class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                        data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
 
@@ -91,6 +90,12 @@
 
                     </div>
                 @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+
+                    </div>
+                @endif
                 @if ($projets->count() > 0)
                     <div class="container-fluid">
                         <div class="action-btn mb-3">
@@ -108,7 +113,7 @@
                                 <div
                                     class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
                                     <div class="table-responsive">
-                                        <table class="table mb-0 table-borderless border-0" id="datatable" cellspacing="0" cellpadding="0">
+                                        <table class="table mb-0 table-borderless border-0">
                                             <thead>
                                                 <tr class="userDatatable-header">
                                                     <th>
@@ -848,7 +853,16 @@
                 </div>
             </div>
         </div>
-      
-    
+        @push('scripts')
+            <script>
+                window.addEventListener('close-model', event => {
+                    $('#modal-basic').modal('hide');
+                    $('#edit-modal').modal('hide');
+                    $('#modal-info-delete').modal('hide');
+                    $('#modal-import').modal('hide');
+                })
+            </script>
+        @endpush
+
     </div>
 </div>

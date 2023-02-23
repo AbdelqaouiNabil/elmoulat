@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\VenteSection;
 
+use App\Models\Avence;
 use App\Models\Depense;
 use App\Models\Vente;
 use Illuminate\Database\QueryException;
@@ -130,9 +131,10 @@ class ClientList extends Component
     public function deleteData(){
 
         $vente= Vente::where('client_id',$this->id_client)->get();
+        $avence= Avence::where('id_client',$this->id_client)->get();
 
-        if(count($vente)>0){
-            session()->flash('error','This client is Used as ForienKey in anthor Table');
+        if(count($vente)>0 || count($avence)>0){
+            session()->flash('error','This client is Used as ForienKey');
 
         }
         else{
@@ -192,9 +194,11 @@ class ClientList extends Component
 
 
         $vente= Vente::whereIn('client_id',$this->checked_id)->get();
+        $avence= Avence::where('id_client',$this->id_client)->get();
 
-        if(count($vente)>0 ){
-            session()->flash('error','This client is Used as ForienKey in anthor Table');
+
+        if(count($vente)>0 || count($avence)>0){
+            session()->flash('error','This client is Used as ForienKey');
         }else{
             $clients=client::whereIn('id',$this->checked_id)->get();
             foreach($clients as $client){

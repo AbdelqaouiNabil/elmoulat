@@ -22,7 +22,7 @@ class CreateVentesTable extends Migration
             $table->string('montant');
             $table->string('montantReal');
             $table->string('reste');
-            $table->string('paye');
+            $table->string('paye')->default('0');
             $table->string('contrat');
             $table->foreign('project_id')->references('id')->on('projets');
             $table->foreign('client_id')->references('id')->on('clients');

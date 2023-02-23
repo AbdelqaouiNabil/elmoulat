@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\Depense;
 use App\Models\Projet;
 use App\Models\Vente;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,26 +23,33 @@ class VenteList extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $titre, $montant, $montantReal, $contrat, $avence, $id_project, $id_client, $id_vente, $name, $cin, $n_cin, $email, $ville_de_resi, $phone, $excelFile;
+    public $titre, $dateV, $montant, $montantReal, $contrat, $avence, $id_project, $id_client, $id_vente, $name, $cin, $n_cin, $email, $ville_de_resi, $phone, $type, $clientname, $totalavence, $excelFile;
     public $checked_id = [];
+    public $avences = [];
+
     public $selectAll = false;
     public $btndelete = true;
-    public $sortname = "id";
+    public $sortname = "ventes.id";
     public $sortdrection = "DESC";
     public $pages = 5;
     public $search;
+    public $cb_client = false;
     protected $listeners = ['saveData' => 'saveData'];
+
 
 
 
     public function render()
     {
+        // 
         $this->btndelete = count($this->checked_id) < 1;
         $projects = Projet::all();
+        $clients = Client::all();
         $ventes = vente::where('titre', 'like', '%' . $this->search . '%')
-            ->orWhere('project_id', 'like', '%' . $this->search . '%')
+            ->orWhereHase('client' , function($query){$query->where('clients.n_cin', 'like', '%' . $this->search . '%');})
+            ->orWhere('clients.name', 'like', '%' . $this->search . '%')
             ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.vente-section.vente-list', ['ventes' => $ventes, 'projects' => $projects]);
+        return view('livewire.vente-section.vente-list', ['ventes' => $ventes, 'projects' => $projects, 'clients' => $clients]);
     }
 
     // sort function  for order data by table head 
@@ -68,60 +76,69 @@ class VenteList extends Component
     public function saveData()
     {
 
-        
-        $this->validate([
-            'titre' => 'required',
-            'id_project' => 'required|integer',
-            'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'avence' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'contrat' => 'required|mimes:pdf',
-            'name' => 'required',
-            'cin' => 'required|mimes:pdf',
-            'n_cin' => 'required|unique:clients',
-            'phone' => 'required|regex:/[0-9]*/',
-        ]);
-        
 
-        
-        
-        $client = new Client();
-        $client->name = $this->name;
-        $client->cin = $this->cin->store('Documents/client', 'public');
-        $client->n_cin = $this->n_cin;
-        $client->phone = $this->phone;
-        $client->email = $this->email;
-        $client->ville_de_resi = $this->ville_de_resi;
-        $valide = $client->save();
+        if ($this->cb_client == true) {
+            $this->validate([
+                'titre' => 'required',
+                'dateV' => 'required|date',
+                'id_project' => 'required|integer',
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'contrat' => 'required|mimes:pdf',
+                'n_cin' => 'required',
+            ]);
+            $client = Client::where('n_cin', $this->n_cin)->first();
+            if (is_null($client)) {
+                session()->flash('myerror', 'Numero cin doesn\'t exist');
+                return;
+            } else {
+                $valide = true;
+            }
+
+
+        } else {
+            $this->validate([
+                'titre' => 'required',
+                'dateV' => 'required|date',
+                'id_project' => 'required|integer',
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'contrat' => 'required|mimes:pdf',
+                'name' => 'required',
+                'cin' => 'required|mimes:pdf',
+                'n_cin' => 'required|unique:clients',
+                'phone' => 'required|regex:/[0-9]*/',
+            ]);
+            $client = new Client();
+            $client->name = $this->name;
+            $client->cin = $this->cin->store('Documents/client', 'public');
+            $client->n_cin = $this->n_cin;
+            $client->phone = $this->phone;
+            $client->email = $this->email;
+            $client->ville_de_resi = $this->ville_de_resi;
+            $valide = $client->save();
+        }
 
         if ($valide) {
             $contrat = $this->contrat->store('Documents/vente', 'public');
             $vente = new Vente();
             $vente->titre = $this->titre;
+            $vente->dateV = $this->dateV;
             $vente->contrat = $contrat;
             $vente->montant = $this->montant;
             $vente->montantReal = $this->montantReal;
-            $vente->paye = $this->avence;
             $vente->project_id = $this->id_project;
             $vente->client_id = $client->id;
             $valide = $vente->save();
-            if($valide){
-                $avence=new Avence();
-                $avence->dateA =date('Y-m-d');
-                $avence->id_client=$client->id;
-                $avence->id_vente=$vente->id;
-                $avence->montant=$this->montant;
-                $valide=$avence->save();
-                
-            }
+
         }
 
-        if($valide){
-         session()->flash('message', 'vente bien ajouter');
-        $this->dispatchBrowserEvent('add');
-        $this->resetInputs();
-        }else{
-         session()->flash('error', 'you enterd rong type of data');
+        if ($valide) {
+            session()->flash('message', 'vente bien ajouter');
+            $this->dispatchBrowserEvent('add');
+            $this->resetInputs();
+        } else {
+            session()->flash('error', 'you enterd rong type of data');
 
         }
 
@@ -136,6 +153,8 @@ class VenteList extends Component
     {
 
         $this->name = "";
+        $this->titre = "";
+        $this->dateV = "";
         $this->cin = "";
         $this->n_cin = "";
         $this->email = "";
@@ -148,6 +167,7 @@ class VenteList extends Component
         $this->montantReal = "";
         $this->avence = "";
         $this->contrat = "";
+        $this->type = "";
 
 
     }
@@ -158,10 +178,10 @@ class VenteList extends Component
     {
         $this->validateOnly($fields, [
             'titre' => 'required',
+            'dateV' => 'required|date',
             'id_project' => 'required|integer',
             'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'avence' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'contrat' => 'required|mimes:pdf',
             'name' => 'required',
             'cin' => 'required|mimes:pdf',
@@ -176,7 +196,7 @@ class VenteList extends Component
 
     public function deletevente($id)
     {
-
+        dd($id);
         $this->id_vente = $id;
     }
 
@@ -185,16 +205,45 @@ class VenteList extends Component
 
         $avence = Avence::where('id_vente', $this->id_vente)->get();
 
-        if (count($avence) > 1) {
+        if (count($avence) > 0) {
             session()->flash('error', 'This vente is Used as ForienKey in anthor Table');
 
         } else {
-            $vente = vente::where('id', $this->id_vente)->first();
-            $path = Storage::disk('local')->url($vente->cin);
-            File::delete(public_path($path));
-            $vente->delete();
-            session()->flash('message', 'vente bien supprimer ');
-            $this->dispatchBrowserEvent('add');
+
+            $vente = Vente::where('id', $this->id_vente)->first();
+            $client = Vente::where('client_id', $vente->client_id)->get();
+            if (count($client) > 1) {
+                $path = Storage::disk('local')->url($vente->contrat);
+                File::delete(public_path($path));
+                $valide = $vente->delete();
+                if ($valide) {
+
+                    if ($valide) {
+                        session()->flash('message', 'vente bien supprimer ');
+                    } else {
+                        session()->flash('error', 'can\'t delete this vente cus is used as foreighn key ');
+                    }
+                }
+            } else {
+
+                $client = Client::where('id', $vente->client_id)->first();
+                $path = Storage::disk('local')->url($vente->contrat);
+                File::delete(public_path($path));
+                $path = Storage::disk('local')->url($client->cin);
+                File::delete(public_path($path));
+                $valide = $vente->delete();
+                if ($valide) {
+                    $valide = $client->delete();
+                    if ($valide) {
+                        session()->flash('message', 'vente bien supprimer avec le client ');
+                    } else {
+                        session()->flash('error', 'can\'t delete this vente cus is used as foreighn key ');
+                    }
+                }
+            }
+
+
+
         }
 
         $this->dispatchBrowserEvent('close-model');
@@ -209,39 +258,43 @@ class VenteList extends Component
         $vente = vente::where('id', $id)->first();
         $this->id_vente = $id;
         $this->titre = $vente->titre;
+        $this->dateV = $vente->dateV;
         $this->contrat = $vente->contrat;
         $this->montant = $vente->montant;
         $this->montantReal = $vente->montantReal;
-        $this->avence = $vente->paye;
-        $this->id_project = $vente->id_project;
-        $this->id_client = $vente->id_client;
+        $this->id_client = $vente->client_id;
+        $this->id_project = $vente->project_id;
 
     }
 
     public function editData()
     {
-        
+
         $this->validate([
             'titre' => 'required',
+            'dateV' => 'required|date',
             'id_project' => 'required|integer',
+            'id_client' => 'required|integer',
             'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'avence' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'name' => 'required',
-            'n_cin' => 'required|unique:clients',
-            'phone' => 'required|regex:/[0-9]*/',
-
         ]);
 
         $vente = vente::where('id', $this->id_vente)->first();
         $vente->titre = $this->titre;
         $vente->montant = $this->montant;
         $vente->montantReal = $this->montantReal;
-        $vente->email = $this->email;
-        $vente->ville_de_resi = $this->ville_de_resi;
-        $vente->update();
-        $this->resetInputs();
-        session()->flash('message', 'vente bien modifer');
+        $vente->dateV = $this->dateV;
+        $vente->client_id = $this->id_client;
+        $vente->project_id = $this->id_project;
+        $valide = $vente->update();
+        if ($valide) {
+            $this->resetInputs();
+            session()->flash('message', 'vente bien modifer');
+        } else {
+            session()->flash('error', 'can\'t update this vente');
+
+        }
+
         $this->dispatchBrowserEvent('close-model');
     }
 
@@ -298,7 +351,55 @@ class VenteList extends Component
         session()->flash('message', 'ventes bien importer');
 
     }
-//  import project end
+    //  import project end
+
+    // for add new avence from vente view 
+
+    public function afficher($id)
+    {
+        $this->avences = Avence::where('id_vente', $id)->get();
+        $vente = Vente::where('id', $id)->first();
+        $this->name = $vente->client->name;
+        $this->totalavence = $vente->paye;
+
+    }
+
+    public function addAvence($id)
+    {
+        $this->resetInputs();
+        $vente = Vente::where('id', $id)->first();
+        $this->clientname = $vente->client->name;
+        $this->titre = $vente->titre;
+        $this->id_vente = $id;
+    }
+    // add avence 
+    public function saveAvence()
+    {
+        $this->validate([
+            'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'type' => 'required',
+        ]);
+
+        $vente = Vente::where('id', $this->id_vente)->first();
+        $avence = new Avence();
+        $avence->dateA = date('Y-m-d');
+        $avence->id_client = $vente->client_id;
+        $avence->id_vente = $vente->id;
+        $avence->montant = $this->montant;
+        $avence->type = $this->type;
+        $valide = $avence->save();
+        if ($valide) {
+            $vente->paye = $vente->paye + $avence->montant;
+            $vente->update();
+            session()->flash('message', 'avence  bien Ajouter');
+            $this->resetInputs();
+        } else {
+            session()->flash('error', 'You enterd invalid data please try again ');
+        }
+
+        $this->dispatchBrowserEvent('close-model');
+
+    }
 
 
 }

@@ -11,7 +11,8 @@
                             <div class="col-md-6">
                                 <div class="search-result global-shadow rounded-pill bg-white">
 
-                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <div
+                                        class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1 border-0">
                                         <span><i class="fa-solid fa-magnifying-glass"></i></span>
                                         <input wire:model="search" class="form-control border-0 box-shadow-none"
                                             type="search" placeholder="chercher par nom et prenom ou cin ..."
@@ -77,6 +78,7 @@
             <div class="alert alert-danger">
 
                 {{ session('error') }}
+            </div>
         @endif
         @if ($ventes->count() > 0)
             <div class="container-fluid">
@@ -195,25 +197,25 @@
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $vente->montant }}
+                                                        {{ $vente->montant }} DH
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $vente->montantReal }}
+                                                        {{ $vente->montantReal }} DH
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $vente->reste }}
+                                                        {{ $vente->reste }} DH
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $vente->paye }}
+                                                        {{ $vente->paye }} DH
                                                     </div>
                                                 </td>
-                                                
+
 
                                                 <td>
                                                     <div class="orderDatatable-title">
@@ -226,7 +228,18 @@
 
                                                 <td>
                                                     <ul class="orderDatatable_actions mb-0 d-flex">
-
+                                                        <li><a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-afficher"
+                                                                wire:click='afficher({{ $vente->id }})'><i
+                                                                    style="color:rgb(21, 126, 218)"
+                                                                    class="fa-solid fa-eye"></i></a>
+                                                        </li>
+                                                        <li><a href="#" class="remove" data-toggle="modal"
+                                                                data-target="#modal-addAvence"
+                                                                wire:click='addAvence({{ $vente->id }})'><i
+                                                                    style="color:rgb(117, 187, 12)"
+                                                                    class="fa-solid fa-circle-plus"></i></a>
+                                                        </li>
                                                         <li><a href="#" class="remove" data-toggle="modal"
                                                                 data-target="#edit-modal"
                                                                 wire:click='editvente({{ $vente->id }})'><i
@@ -234,10 +247,13 @@
                                                         </li>
                                                         <li><a href="#" class="remove" data-toggle="modal"
                                                                 data-target="#modal-info-delete"
-                                                                wire:click='deletevente({{$vente->id}})'
+                                                                wire:click='deletevente({{ $vente->id }})'
                                                                 style="color: red;"><i
                                                                     class="fa-solid fa-trash"></i></a>
                                                         </li>
+
+
+
 
                                                     </ul>
                                                 </td>
@@ -345,7 +361,7 @@
                         <form enctype="multipart/form-data" wire:submit.prevent="saveData()">
                             <div class="form-basic">
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 ">
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
                                                 <label>Titre</label>
@@ -359,23 +375,35 @@
                                         </div>
 
                                         <div class="row">
-                            
+
                                             <div class="form-group mb-25 col-lg-12">
 
                                                 <label>Projet </label>
-                                                <select name="select-size-1" wire:model.defer='id_project' id="select-size-1"
-                                                    class="form-control  form-control-lg">
-            
+                                                <select name="select-size-1" wire:model.defer='id_project'
+                                                    id="select-size-1" class="form-control  form-control-lg">
+
                                                     <option selected>select an option</option>
                                                     @foreach ($projects as $project)
-                                                        <option value="{{$project->id}}">{{$project->name}}</option>
+                                                        <option value="{{ $project->id }}">{{ $project->name }}
+                                                        </option>
                                                     @endforeach
-            
+
                                                 </select>
                                                 @error('id_project')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-            
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group mb-25 col-lg-12">
+                                                <label>Date</label>
+                                                <input class="form-control form-control-lg" type="date"
+                                                    name="dateV" wire:model.defer='dateV'>
+                                                @error('dateV')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
@@ -398,16 +426,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label>L'avence</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="avence" wire:model.defer='avence'>
-                                                @error('avence')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+
                                         <div class="row">
                                             <div class="form-group mb-25 col-lg-12">
                                                 <label>Contrat(PDF)</label>
@@ -419,72 +438,97 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label>Nom et Pérnom de Client</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="name" wire:model.defer='name'>
-                                                @error('name')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                        @if ($cb_client == false)
+                                            <div class="row">
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label>Nom Client <input type="checkbox" wire:model='cb_client'>
+                                                        (<i style="color:rgb(160, 160, 18)"
+                                                            class="fa-solid fa-triangle-exclamation"></i>check if
+                                                        client exist)</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        name="name" wire:model.defer='name'>
+                                                    @error('name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label class="required">CIN</label>
-                                                <input class="form-control form-control-lg" type="text" name="n_cin"
-                                                    wire:model.defer='n_cin'>
-                                                @error('n_cin')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                            <div class="row">
+
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label class="required">CIN</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        name="n_cin" wire:model.defer='n_cin'>
+                                                    @error('n_cin')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label>Phone</label>
-                                                <input class="form-control form-control-lg" type="number"
-                                                    name="phone" wire:model.defer='phone'>
-                                                @error('phone')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div> 
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label>Email</label>
-                                                <input class="form-control form-control-lg" type="email"
-                                                    name="email" wire:model.defer='email'>
-                                                @error('email')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                            <div class="row">
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label>Phone</label>
+                                                    <input class="form-control form-control-lg" type="number"
+                                                        name="phone" wire:model.defer='phone'>
+                                                    @error('phone')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label>Ville de Résidence</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                     wire:model.defer='ville_de_resi'>
-                                                @error('ville_de_resi')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                            <div class="row">
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label>Email</label>
+                                                    <input class="form-control form-control-lg" type="email"
+                                                        name="email" wire:model.defer='email'>
+                                                    @error('email')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label>Ville de Résidence</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        wire:model.defer='ville_de_resi'>
+                                                    @error('ville_de_resi')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+
                                             </div>
 
-                                        </div>
-                                        
-                                        <div class="row">
-                                            <div class="form-group mb-25 col-lg-12">
-                                                <label>CIN(PDF)</label>
-                                                <input class="form-control form-control-lg" type="file"
-                                                    name="cin" wire:model.defer='cin'>
-                                                @error('cin')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                            <div class="row">
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label>CIN(PDF)</label>
+                                                    <input class="form-control form-control-lg" type="file"
+                                                        name="cin" wire:model.defer='cin'>
+                                                    @error('cin')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <div class="row">
+                                                <div class="form-group mb-25 col-lg-12">
+                                                    <label>CIN<input type="checkbox" wire:model='cb_client'> (<i
+                                                            style="color:rgb(160, 160, 18)"
+                                                            class="fa-solid fa-triangle-exclamation"></i>uncheck if
+                                                        client doesn't exist)</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        name="n_cin" wire:model.defer='n_cin'>
+                                                    @error('n_cin')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                    @if (session()->has('myerror'))
+                                                        <span class="text-danger">{{ session('myerror') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                        @endif
 
                                     </div>
+
 
                                 </div>
 
@@ -492,89 +536,313 @@
 
                             </div>
 
-                        <div class="modal-footer">
-                            <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        {{-- edit model --}}
+
+        <div wire:ignore.self class="modal-basic modal fade show" id="edit-modal" tabindex="-1" role="dialog"
+            aria-hidden="true">
+
+
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
 
 
 
+                        <h6 class="modal-title">Modifier Vente</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span data-feather="x"></span></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form enctype="multipart/form-data" wire:submit.prevent="editData()">
+                            <div class="form-basic">
 
 
-    {{-- delete model  --}}
+                                <div class="form-group mb-25">
+                                    <label class="required">Titre</label>
+                                    <input class="form-control form-control-lg" type="text" name="titre"
+                                        wire:model.defer='titre'>
+                                    @error('titre')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label class="required">Date</label>
+                                    <input class="form-control form-control-lg" type="date" name="dateV"
+                                        wire:model.defer='dateV'>
+                                    @error('dateV')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Projet </label>
+                                    <select name="select-size-1" wire:model.defer='id_project' id="select-size-1"
+                                        class="form-control  form-control-lg">
+
+                                        <option selected>select an option</option>
+                                        @foreach ($projects as $project)
+                                            <option value="{{ $project->id }}">{{ $project->name }}
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+                                    @error('id_project')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Client </label>
+                                    <select name="select-size-1" wire:model.defer='id_project' id="select-size-1"
+                                        class="form-control  form-control-lg">
+                                        <option selected>select an option</option>
+                                        @foreach ($clients as $client)
+                                            <option value="{{ $client->id }}">{{ $client->n_cin }}
+                                            </option>
+                                        @endforeach
+
+                                    </select>
+                                    @error('id_client')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+
+                                <div class="form-group mb-25">
+                                    <label class="required">Montant</label>
+                                    <input class="form-control form-control-lg" type="text" name="montant"
+                                        wire:model.defer='montant'>
+                                    @error('montant')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label class="required">Montant Real</label>
+                                    <input class="form-control form-control-lg" type="text" name="montantReal"
+                                        wire:model.defer='montantReal'>
+                                    @error('montantReal')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Enregistrer" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {{-- add avence model  --}}
+
+        <div wire:ignore.self class="modal-basic modal fade show" id="modal-addAvence" tabindex="-1" role="dialog"
+            aria-hidden="true">
+
+
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
 
 
 
-    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
-        role="dialog" aria-hidden="true">
+                        <h6 class="modal-title">Ajouter Avence</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span data-feather="x"></span></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form enctype="multipart/form-data" wire:submit.prevent="saveAvence()">
+                            <div class="form-basic">
 
 
-        <div class="modal-dialog modal-sm modal-info" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-info-body d-flex">
-                        <div class="modal-info-icon warning">
-                            <span data-feather="info"></span>
+                                <div class="form-group mb-25">
+                                    <label>Client</label>
+                                    <input class="form-control form-control-lg" type="text" disabled
+                                        wire:model.defer='clientname'>
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Titre</label>
+                                    <input class="form-control form-control-lg" type="text" disabled
+                                        wire:model.defer='titre'>
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label class="required">Type</label>
+                                    <input class="form-control form-control-lg" type="text" name="type"
+                                        wire:model.defer='type'>
+                                    @error('type')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+                                <div class="form-group mb-25">
+                                    <label class="required">Montant</label>
+                                    <input class="form-control form-control-lg" type="text" name="montant"
+                                        wire:model.defer='montant'>
+                                    @error('montant')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Ajouter" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- for afficher avence data  --}}
+
+        <div wire:ignore.self class="modal-basic modal fade show" id="modal-afficher" tabindex="-1" role="dialog"
+            aria-hidden="true">
+
+
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
+
+
+
+                        <h6 class="modal-title"> Liste d'avence </h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa-regular fa-circle-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            
+                            <div class="col-6"> <h6>Client : <span style="color:#5f63f2 ; margin:5px">{{ $name }}</span> </h6></div>
+                            
+                            <div class="col-6"> <h6>Total : <span style="color:#0be537 ; margin:5px">{{ $totalavence }}</span> </h6></div>
                         </div>
 
-                        <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce vente</h6>
-                        </div>
+                        <table class="table mb-0 table-borderless border-0">
+                            <thead>
+                                <tr style="background: #5f63f2; color:white; border-radius:10px">
+                                    <th>id</th>
+                                    <th>date</th>
+                                    <th>type</th>
+                                    <th>montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($avences as $avence)
+                                    <tr>
+                                        <td>{{ $avence->id }}</td>
+                                        <td>{{ $avence->dateA }}</td>
+                                        <td>{{ $avence->type }}</td>
+                                        <td>{{ $avence->montant }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+
+                        </table>
 
                     </div>
                 </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                        data-dismiss="modal">annuler</button>
-                    <button type="button" wire:click.prevent='deleteData()'
-                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
-
-                </div>
             </div>
         </div>
 
 
-    </div>
 
 
 
-    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
-        role="dialog" aria-hidden="true">
 
 
-        <div class="modal-dialog modal-sm modal-info" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-info-body d-flex">
-                        <div class="modal-info-icon warning">
-                            <span data-feather="info"></span>
+        {{-- delete model  --}}
+
+
+
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
+            role="dialog" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+
+                            <div class="modal-info-text">
+                                <h6>Voulez-vous supprimer ce vente</h6>
+                            </div>
+
                         </div>
+                    </div>
+                    <div class="modal-footer">
 
-                        <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce vente</h6>
-                        </div>
+                        <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                            data-dismiss="modal">annuler</button>
+                        <button type="button" wire:click.prevent='deleteData()'
+                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
 
                     </div>
                 </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                        data-dismiss="modal">annuler</button>
-                    <button type="button" wire:click.prevent='deletecheckedvente()'
-                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
-
-                </div>
             </div>
+
+
         </div>
 
 
+
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
+            role="dialog" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+
+                            <div class="modal-info-text">
+                                <h6>Voulez-vous supprimer ce vente</h6>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                            data-dismiss="modal">annuler</button>
+                        <button type="button" wire:click.prevent='deletecheckedvente()'
+                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- ends: .modal-info-Delete -->
+
     </div>
-
-    <!-- ends: .modal-info-Delete -->
-
 </div>

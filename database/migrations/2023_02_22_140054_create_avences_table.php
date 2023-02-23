@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('id_vente')->references('id')->on('ventes');
             $table->date('dateA');
             $table->string('montant');
+            $table->string('type');
             $table->timestamps();
         });
     }
