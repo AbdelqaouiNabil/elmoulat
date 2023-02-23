@@ -9,6 +9,7 @@ use App\Models\Cheque;
 use App\Models\Fournisseur;
 use App\Models\Reglement;
 use App\Models\Facture;
+use Carbon\Carbon;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 
@@ -17,7 +18,7 @@ class ChargesList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_Charge, $name, $fournisseur_id, $id_projet, $type,
+    public $id_Charge, $name, $dateR, $fournisseur_id, $id_projet, $type,
         $bon, $prix_ht, $tva, $QT, $prix_TTC, $MTTTC, $situation;
     public $selectedOption;
     public $pages = 10;
@@ -29,9 +30,9 @@ class ChargesList extends Component
     // protected $queryString  = ['search'];
 
     // reglement
-    public $montant, $dateR, $methode, $numero_cheque, $id_facture;
+    public $montant, $methode, $numero_cheque, $id_facture;
     public $numFacture;
-    public $errordAjoutReg = false;
+    public $errordAjoutReg = true;
     // Method check or Cash
 
 
@@ -42,6 +43,8 @@ class ChargesList extends Component
 
     public function render()
     {
+        // $this->dateR = date('Y.m.d');
+
         $this->bulkDisabled = count($this->selectedCharges) < 1;
         $fournisseurs = Fournisseur::all();
         $projets = Projet::all();
@@ -61,8 +64,15 @@ class ChargesList extends Component
                 break;
         }
         if ($this->search != "") {
-            $charges = Charge::where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('type', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+
+            // filtr by fournisseur
+            $fournisseur = Fournisseur::where('name', 'like', '%' . $this->search . '%')->first();
+            if (!is_null($fournisseur)) {
+                $charges = Charge::where('fournisseur_id', 'like', '%' . $fournisseur->id . '%')->paginate($this->pages, ['*'], 'new');
+            } else {
+                $charges = Charge::where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('type', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+            }
         }
         return view('livewire.charges-list', ['charges' => $charges, 'fournisseurs' => $fournisseurs, 'projets' => $projets, 'cheques' => $cheques]);
     }
@@ -186,12 +196,14 @@ class ChargesList extends Component
 
     public function checkChargeSituation()
     {
+        $this->dateR = date('Y.m.d');
         if (count($this->selectedCharges) != 0) {
             foreach ($this->selectedCharges as $ch) {
                 $charge = Charge::where('id', $ch)->first();
                 $situat = $charge->situation;
                 if ($situat === 'payed') {
                     $this->errordAjoutReg = true;
+                    session()->flash('warning2', 'impossible de cree un reglement a une charge deja paye');
                 } else {
                     $this->errordAjoutReg = false;
                 }
@@ -232,14 +244,14 @@ class ChargesList extends Component
         $this->prix_ht = $charge->prix_ht;
         $this->tva = $charge->tva;
         $this->QT = $charge->QT;
-        $this->prix_TTC = $charge->prix_TTC;
-        $this->MTTTC  = $charge->MTTTC;
         $this->id_projet = $charge->id_projet;
         $this->fournisseur_id = $charge->fournisseur_id;
     }
 
     public function updateCharge()
     {
+        $this->calculePrixTTC();
+        $this->calculerMTTTC();
         $charge = Charge::where('id', $this->id_Charge)->first();
         $charge->name = $this->name;
         $charge->type  = $this->type;
@@ -284,6 +296,8 @@ class ChargesList extends Component
     public function saveCharge()
     {
         $this->validation();
+        $this->calculePrixTTC();
+        $this->calculerMTTTC();
         $charge = Charge::create([
             'name' => $this->name,
             'type' => $this->type,
@@ -319,10 +333,6 @@ class ChargesList extends Component
         }
     }
 
-
-
-
-
     public function resetInputs()
     {
 
@@ -332,8 +342,6 @@ class ChargesList extends Component
         $this->prix_ht = "";
         $this->tva = "";
         $this->QT = "";
-        $this->prix_TTC = "";
-        $this->MTTTC = "";
     }
 
     public function validation()
@@ -345,14 +353,11 @@ class ChargesList extends Component
             'prix_ht' => 'required',
             'tva' => 'required',
             'QT' => 'required',
-            'prix_TTC' => 'required',
-            'MTTTC' => 'required',
+            'fournisseur_id' => 'required',
+            'id_projet' => 'required',
+            'situation' => 'required',
         ]);
     }
-
-
-
-
 
     public function updatedSelectAll($value)
     {
@@ -361,5 +366,24 @@ class ChargesList extends Component
         } else {
             $this->selectedCharges = [];
         }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////
+    public function updatedselectedCharges($value)
+    {
+        // if ($value) {
+        //     $this->errordAjoutReg = false;
+        // } else {
+        //     $this->errordAjoutReg = true;
+        // }
+        $this->checkChargeSituation();
+    }
+
+    public function calculePrixTTC()
+    {
+        $this->prix_TTC = ($this->prix_ht * ($this->tva / 100));
+    }
+    public function calculerMTTTC()
+    {
+        $this->MTTTC = ($this->prix_TTC * $this->QT);
     }
 }

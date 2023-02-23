@@ -16,11 +16,15 @@ class Contrat extends Model
         'montant',
         'avance',
         'id_ouvrier',
-        'cin_Ouv'
+        'cin_Ouv',
+        'id_projet'
 
     ];
 
     public function ouvrier(){
         return $this->belongsTo('App\Models\Ouvrier', 'id_ouvrier');
+    }
+    public function projet(){
+        return $this->belongsTo('App\Models\Projet', 'id_projet');
     }
 }

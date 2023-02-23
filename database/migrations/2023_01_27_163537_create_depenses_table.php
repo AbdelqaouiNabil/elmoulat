@@ -23,7 +23,7 @@ class CreateDepensesTable extends Migration
             $table->string('description')->nullable();
             $table->string('Aqui');
             $table->string('type');
-            $table->float('montant');
+            $table->double('montant');
             $table->timestamps();
         });
     }

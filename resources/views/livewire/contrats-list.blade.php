@@ -117,6 +117,9 @@
                                                     <span class="userDatatable-title">Ouvrier</span>
                                                 </th>
                                                 <th>
+                                                    <span class="userDatatable-title">Projet</span>
+                                                </th>
+                                                <th>
                                                     <span class="userDatatable-title float-right">Actions</span>
                                                 </th>
                                             </tr>
@@ -166,6 +169,13 @@
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             {{ $c->cin_Ouv }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            @if (!is_null($c->projet))
+                                                                {{ $c->projet->name }}
+                                                            @endif
                                                         </div>
                                                     </td>
                                                     <td>
@@ -312,6 +322,22 @@
                                                 @enderror
                                             </div>
 
+                                            <div class="form-group mb-25 ">
+                                                <label>Projet</label>
+                                                <select name="id_projet" id="select-size-1"
+                                                    wire:model.defer='id_projet'
+                                                    class="form-control  form-control-lg">
+                                                    <option selected>Select a project</option>
+                                                    @foreach ($projects as $p)
+                                                        <option value="{{ $p->id }}">{{ $p->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('id_projet')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -411,6 +437,20 @@
                                             <input class="form-control form-control-lg" type="text" name="cin_Ouv"
                                                 wire:model.defer='cin_Ouv'>
                                             @error('cin_Ouv')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group mb-25 ">
+                                            <label>Projet</label>
+                                            <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
+                                                class="form-control  form-control-lg">
+                                                <option selected>Select a project</option>
+                                                @foreach ($projects as $p)
+                                                    <option value="{{ $p->id }}">{{ $p->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('id_projet')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>

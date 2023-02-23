@@ -346,146 +346,97 @@
         @endif --}}
 
 
-    </div>
+</div>
 
 
 
-    <main>
-        <div class="container-fluid mt-5 pt-5" name="maindiv">
-            <div class="container ms-5 divContainer">
+<main>
+    <div class="container-fluid mt-5 pt-5" name="maindiv">
+        <div class="cardContainer">
 
-                {{-- <h1 id="h11"> I am a dashboard</h1> --}}
-                <div class="row">
-                    <div class="card">
-                        <h2 class="fourniss">Fournisseur</h2>
-                        <div class="valContainer">
-                            <h4 class="val">5900</h4>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h2 class="proje">Projets</h2>
-                        <div class="valContainer">
-                            <h4 class="val">48</h4>
-                        </div>
-                    </div>
-                    <div class=" card cardCaisse">
-                        <h2>Caisse</h2>
-                        <div class="row">
-                            <div class="col mt-3">
-                                <h4 class="justified">justified <svg xmlns="http://www.w3.org/2000/svg"
-                                        width="16" height="16" fill="currentColor"
-                                        class="bi bi-arrow-up-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z" />
-                                    </svg>
-                                </h4>
-                            </div>
-                            <div class="col mt-3">
-                                <h4 class="val">4522.00</h4>
-                            </div>
-                            <div class="col mt-3">
-                                <h4 class="nonJustified">non Justified
-
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-arrow-down-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M14 13.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h4.793L2.146 2.854a.5.5 0 1 1 .708-.708L13 12.293V7.5a.5.5 0 0 1 1 0v6z" />
-                                    </svg>
-                                </h4>
-                            </div>
-                            <div class="col mt-3">
-                                <h4 class="val">2333.89</h4>
-                            </div>
-                        </div>
+            {{-- <h1 id="h11"> I am a dashboard</h1> --}}
+            <div class="row">
+                <div class="card">
+                    <h2 class="fourniss">Fournisseur</h2>
+                    <div class="valContainer">
+                        <h4 class="val">5900</h4>
                     </div>
                 </div>
-
-
-
-
-                {{-- START DIAGRAMS  --}}
-
-                <div class="col-xl-12 col-12 mb-25">
-
-                    <div class="card broder-0">
-                        <div class="card-header">
-                            <h6>
-                                Total Revenue
-                                <span>Nov 23, 2019 - Nov 29, 2019</span>
-                            </h6>
-                            <div class="card-extra">
-                                <ul class="card-tab-links mr-3 nav-tabs nav" role="tablist">
-                                    <li>
-                                        <a href="#t_revenue-week" data-toggle="tab" id="t_revenue-week-tab"
-                                            role="tab" aria-selected="true">Week</a>
-                                    </li>
-                                    <li>
-                                        <a href="#t_revenue-month" data-toggle="tab" id="t_revenue-month-tab"
-                                            role="tab" aria-selected="false">Month</a>
-                                    </li>
-                                    <li>
-                                        <a class="active" href="#t_revenue-year" data-toggle="tab"
-                                            id="t_revenue-year-tab" role="tab" aria-selected="false">Year</a>
-                                    </li>
-                                </ul>
-                                <div class="dropdown dropleft">
-                                    <a href="#" role="button" id="cash" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="la la-ellipsis-h"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="cash">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="card">
+                    <h2 class="proje">Projets</h2>
+                    <div class="valContainer">
+                        <h4 class="val">48</h4>
+                    </div>
+                </div>
+                <div class=" card cardCaisse">
+                    <h2 class="caiss">Caisse</h2>
+                    <div class="row">
+                        <div class="col mt-3">
+                            <h4 class="justified">justified <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                    height="16" fill="currentColor" class="bi bi-arrow-up-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z" />
+                                </svg>
+                            </h4>
                         </div>
-                        <!-- ends: .card-header -->
-                        <div class="card-body">
+                        <div class="col mt-3">
+                            <h4 class="val">4522.00</h4>
+                        </div>
+
+                        <div class="col mt-3">
+                            <h4 class="total">Total</h4>
+                        </div>
+                        <div class="col mt-3">
+                            <h4 class="val">4599922.00</h4>
+                        </div>
+                        <div class="col mt-3">
+                            <h4 class="nonJustified">non Justified
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-arrow-down-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M14 13.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h4.793L2.146 2.854a.5.5 0 1 1 .708-.708L13 12.293V7.5a.5.5 0 0 1 1 0v6z" />
+                                </svg>
+                            </h4>
+                        </div>
+                        <div class="col mt-3">
+                            <h4 class="val">2333.89</h4>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            {{-- <div id="highchart2"></div> --}}
+
+
+
+
+            {{-- <h1>{{ print_r($depots) }} </h1> --}}
+
+
+            {{-- START DIAGRAMS  --}}
+
+            {{-- <div class="col-xl-12 col-12 mb-25">
+
+                <div class="card broder-0">
+                    <div class="card-header">
+                        <ul class="card-tab-links mr-3 nav-tabs nav">
+                            <li>
+                                <a href="#t_revenue-month" data-toggle="tab" id="t_revenue-month-tab" role="tab"
+                                    aria-selected="true">Month</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- ends: .card-header -->
+                        <div class="card-body ">
                             <div class="tab-content">
-                                <div class="tab-pane fade" id="t_revenue-week" role="tabpanel"
-                                    aria-labelledby="t_revenue-week-tab">
-                                    <div class="cashflow-display d-flex">
-                                        <div class="cashflow-display__single">
-                                            <span class="cashflow-display__title">Current Balance</span>
-                                            <h2 class="cashflow-display__amount color-primary">$2,784</h2>
-                                        </div>
-                                        <!-- ends: .cashflow-display__single -->
-                                        <div class="cashflow-display__single">
-                                            <span class="cashflow-display__title">Cash in</span>
-                                            <h2 class="cashflow-display__amount">$4,240</h2>
-                                        </div>
-                                        <!-- ends: .cashflow-display__single -->
-                                        <div class="cashflow-display__single">
-                                            <span class="cashflow-display__title">Cash out</span>
-                                            <h2 class="cashflow-display__amount">$2,470</h2>
-                                        </div>
-                                        <!-- ends: .cashflow-display__single -->
-                                    </div>
 
-                                    <div class="cashflow-chart">
-                                        <div class="parentContainer">
-
-
-                                            <div>
-                                                <canvas id="barChartCashflow_W"></canvas>
-                                            </div>
-
-
-                                        </div>
-                                        <ul class="legend-static">
-                                            <li class="custom-label">
-                                                <span style="background-color: rgb(95, 99, 242);"></span>Cash in
-                                            </li>
-                                            <li class="custom-label">
-                                                <span style="background-color: rgb(255, 77, 79);"></span>Cash out
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="t_revenue-month" role="tabpanel"
-                                    aria-labelledby="t_revenue-month-tab">
+                                <div class="tab-pane fade" id="t_revenue-month" aria-labelledby="t_revenue-month-tab">
                                     <div class="cashflow-display d-flex">
                                         <div class="cashflow-display__single">
                                             <span class="cashflow-display__title">Current Balance</span>
@@ -503,16 +454,13 @@
                                         </div>
                                         <!-- ends: .cashflow-display__single -->
                                     </div>
+                                    <h1>hello</h1>
 
                                     <div class="cashflow-chart">
                                         <div class="parentContainer">
-
-
                                             <div>
                                                 <canvas id="barChartCashflow_M"></canvas>
                                             </div>
-
-
                                         </div>
                                         <ul class="legend-static">
                                             <li class="custom-label">
@@ -524,108 +472,221 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade active show" id="t_revenue-year" role="tabpanel"
-                                    aria-labelledby="t_revenue-year-tab">
-                                    <div class="cashflow-display d-flex">
-                                        <div class="cashflow-display__single">
-                                            <span class="cashflow-display__title">Current Balance</span>
-                                            <h2 class="cashflow-display__amount color-primary">$92,784</h2>
-                                        </div>
-                                        <!-- ends: .cashflow-display__single -->
-                                        <div class="cashflow-display__single">
-                                            <span class="cashflow-display__title">Cash in</span>
-                                            <h2 class="cashflow-display__amount">$104,240</h2>
-                                        </div>
-                                        <!-- ends: .cashflow-display__single -->
-                                        <div class="cashflow-display__single">
-                                            <span class="cashflow-display__title">Cash out</span>
-                                            <h2 class="cashflow-display__amount">$872,470</h2>
-                                        </div>
-                                        <!-- ends: .cashflow-display__single -->
-                                    </div>
 
-                                    <div class="cashflow-chart">
-                                        <div class="parentContainer">
-
-
-                                            <div>
-                                                <div class="chartjs-size-monitor">
-                                                    <div class="chartjs-size-monitor-expand">
-                                                        <div class=""></div>
-                                                    </div>
-                                                    <div class="chartjs-size-monitor-shrink">
-                                                        <div class=""></div>
-                                                    </div>
-                                                </div>
-                                                <canvas id="barChartCashflow" height="281"
-                                                    style="display: block; width: 796px; height: 281px;"
-                                                    width="796" class="chartjs-render-monitor"></canvas>
-                                            </div>
-
-
-                                            <div class="chartjs-tooltip center"
-                                                style="opacity: 0; left: 786.421px; top: 253.702px; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 12px; font-style: normal; padding: 6px;">
-                                                <table>
-                                                    <thead></thead>
-                                                    <div class="tooltip-title">Dec</div>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td><span class="chartjs-tooltip-key"
-                                                                    style="background:#20C997; border-color:transparent; border-width: 2px; border-radius: 30px"></span><span
-                                                                    class="chart-data">30</span> <span
-                                                                    class="data-label">Cash in</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><span class="chartjs-tooltip-key"
-                                                                    style="background:#20C997; border-color:transparent; border-width: 2px; border-radius: 30px"></span><span
-                                                                    class="chart-data">20</span> <span
-                                                                    class="data-label">Cash out</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <ul class="legend-static">
-                                            <li class="custom-label">
-                                                <span style="background-color: rgb(95, 99, 242);"></span>Cash in
-                                            </li>
-                                            <li class="custom-label">
-                                                <span style="background-color: rgb(255, 77, 79);"></span>Cash out
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <!-- ends: .card-body -->
-                    </div>
 
 
                 </div>
 
-                {{-- end diagrams --}}
 
-            </div>
+            </div> --}}
+
+            {{-- end diagrams --}}
+
         </div>
 
-    </main>
+
+
+        {{-- my charts  --}}
+        <div class="chartContainer">
+            <div class="row">
+
+                <div class="col mt-6">
+                    <div id="highchart"></div>
+                </div>
+                <div class="col mt-6">
+                    <div id="highchartDiiii"></div>
+                </div>
+            </div>
+            <div class="row chart3" >
+                <div class="col mt-6">
+                    <div id="highchart3333"></div>
+                </div>
+            </div>
+
+        </div>
 
 
 
 
 
 
+    </div>
 
-
-
-
-
-
-
+</main>
 
 
 
 </div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+
+
+
+<script>
+    var domaines = @json($domaines);
+    var data = [];
+
+    // Loop through the $domaines array and create an object for each item
+    @foreach ($domaines as $item)
+        data.push({
+            name: '{{ $item->name }}',
+            y: {{ $item->domaineFois }}
+        });
+    @endforeach
+
+
+
+    Highcharts.chart('highchart', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Les Domaines les plus Utiliser'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            name: 'Pourcentage',
+            colorByPoint: true,
+            data: data // Use the data array to populate the series data
+        }]
+    });
+
+
+    ////////////////////////////////////////////////////////////////
+    Highcharts.chart('highchartDiiii', {
+        chart: {
+            //   plotBackgroundColor: null,
+            //   plotBorderWidth: null,
+            //   plotShadow: false,
+            type: 'column'
+        },
+        title: {
+            text: 'Browser market shares in January, 2018'
+        },
+
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: [{
+                    name: 'Internet Explorer',
+                    y: 11.84
+                },
+                {
+                    name: 'Firefox',
+                    y: 10.85
+                },
+                {
+                    name: 'Edge',
+                    y: 4.67
+                },
+                {
+                    name: 'Safari',
+                    y: 4.18
+                },
+                {
+                    name: 'Sogou Explorer',
+                    y: 1.64
+                },
+                {
+                    name: 'Opera',
+                    y: 1.6
+                },
+                {
+                    name: 'QQ',
+                    y: 1.2
+                },
+                {
+                    name: 'Other',
+                    y: 2.61
+                }
+            ]
+
+        }]
+    });
+
+    Highcharts.chart('highchart3333', {
+        chart: {
+            //   plotBackgroundColor: null,
+            //   plotBorderWidth: null,
+            //   plotShadow: false,
+            type: 'spline'
+        },
+        title: {
+            text: 'Browser market shares in January, 2018'
+        },
+
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: [{
+                    name: 'Internet Explorer',
+                    y: 11.84
+                },
+                {
+                    name: 'Firefox',
+                    y: 10.85
+                },
+                {
+                    name: 'Edge',
+                    y: 4.67
+                },
+                {
+                    name: 'Safari',
+                    y: 4.18
+                },
+                {
+                    name: 'Sogou Explorer',
+                    y: 1.64
+                },
+                {
+                    name: 'Opera',
+                    y: 1.6
+                },
+                {
+                    name: 'QQ',
+                    y: 1.2
+                },
+                {
+                    name: 'Other',
+                    y: 2.61
+                }
+            ]
+
+        }]
+    });
+</script>
+
+
+<script></script>
+
 <script>
     window.addEventListener('close-model', event => {
         $('#modal-basic').modal('hide');

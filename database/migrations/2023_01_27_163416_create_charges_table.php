@@ -24,11 +24,11 @@ class CreateChargesTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('bon');
-            $table->float('prix_ht');
+            $table->double('prix_ht');
             $table->float('tva');
-            $table->float('QT');
-            $table->float('prix_TTC');
-            $table->float('MTTTC');
+            $table->double('QT');
+            $table->double('prix_TTC');
+            $table->double('MTTTC');
             $table->enum('situation',['payed','notPayed'])->default('notPayed');
 
             $table->timestamps();

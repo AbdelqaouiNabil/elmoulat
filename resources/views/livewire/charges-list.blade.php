@@ -16,7 +16,7 @@
                                             class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
                                             <span><i class="fa-solid fa-magnifying-glass"></i></span>
                                             <input wire:model="search" class="form-control border-0 box-shadow-none"
-                                                type="search" placeholder="chercher par nom ou type..."
+                                                type="search" placeholder="chercher par nom ou type ou nom de fournisseur ..."
                                                 aria-label="Search">
                                         </div>
 
@@ -66,7 +66,8 @@
                                         <div class="action-btn">
                                             <button type="button" class="btn btn-sm btn-primary btn-add"
                                                 wire:click="checkChargeSituation" data-toggle="modal"
-                                                data-target="#cree-reglement">
+                                                data-target="#cree-reglement"
+                                                @if ($errordAjoutReg) disabled @endif>
                                                 <i class="la la-plus"></i> Créer un Règlement
                                             </button>
                                         </div>
@@ -82,6 +83,13 @@
                 <div class="alert alert-success">
 
                     {{ session('message') }}
+
+                </div>
+            @endif
+            @if (session()->has('warning2'))
+                <div class="alert alert-warning">
+
+                    {{ session('warning2') }}
 
                 </div>
             @endif
@@ -379,26 +387,29 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="form-group mb-25">
+                                            {{-- <div class="form-group mb-25">
                                                 <label>prix_TTC</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="prix_TTC" wire:model.defer='prix_TTC'>
                                                 @error('prix_TTC')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
 
                                             <div class="form-group mb-25 ">
                                                 <label>Fournisseur</label>
                                                 <select name="fournisseur_id" id="select-size-1"
                                                     wire:model.defer='fournisseur_id'
                                                     class="form-control  form-control-lg">
-                                                    <option value="" selected>select an option</option>
+                                                    <option selected>select an option</option>
                                                     @foreach ($fournisseurs as $f)
                                                         <option value="{{ $f->id }}">{{ $f->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                @error('fournisseur_id')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
 
@@ -431,25 +442,28 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="form-group mb-25">
+                                            {{-- <div class="form-group mb-25">
                                                 <label>MTTTC</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="MTTTC" wire:model.defer='MTTTC'>
                                                 @error('MTTTC')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group mb-25 ">
                                                 <label>Projet</label>
                                                 <select name="id_projet" id="select-size-1"
                                                     wire:model.defer='id_projet'
                                                     class="form-control  form-control-lg">
-                                                    <option value="" selected>select an option</option>
+                                                    <option selected>select an option</option>
                                                     @foreach ($projets as $p)
                                                         <option value="{{ $p->id }}">{{ $p->name }}
                                                         </option>
                                                     @endforeach
                                                 </select>
+                                                @error('id_projet')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
 
@@ -468,6 +482,9 @@
                                                         impayé
                                                     </label>
                                                 </div>
+                                                @error('situation')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
 
 
@@ -560,14 +577,14 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="form-group mb-25">
+                                        {{-- <div class="form-group mb-25">
                                             <label>prix_TTC</label>
                                             <input class="form-control form-control-lg" type="text"
                                                 name="prix_TTC" wire:model.defer='prix_TTC'>
                                             @error('prix_TTC')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
-                                        </div>
+                                        </div> --}}
 
                                         <div class="form-group mb-25 ">
                                             <label>Fournisseur</label>
@@ -578,6 +595,9 @@
                                                     <option value="{{ $f->id }}">{{ $f->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('fournisseur_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
 
@@ -610,14 +630,14 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="form-group mb-25">
+                                        {{-- <div class="form-group mb-25">
                                             <label>MTTTC</label>
                                             <input class="form-control form-control-lg" type="text" name="MTTTC"
                                                 wire:model.defer='MTTTC'>
                                             @error('MTTTC')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group mb-25 ">
                                             <label>Projet</label>
                                             <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
@@ -626,6 +646,9 @@
                                                     <option value="{{ $p->id }}">{{ $p->name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('id_projet')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
 
@@ -719,7 +742,7 @@
                                 <div class="form-group mb-25">
                                     <label>Date</label>
                                     <input class="form-control form-control-lg" type="date" name="dateR"
-                                        wire:model.defer='dateR'>
+                                        wire:model='dateR' value="{{ $dateR }}">
                                     @error('dateR')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -773,19 +796,11 @@
                                 @endIf
                             </div>
                     </div>
-
-                    @if ($errordAjoutReg)
-                        <div class="modal-footer">
-                            <button wire:click.prevent="addReg" type="submit" disabled
-                                class="btn btn-primary btn-sm">Enregistrer le règlement</button>
-                        </div>
-                    @else
-                        <div class="modal-footer">
-                            <button wire:click.prevent="addReg" type="submit"
-                                class="btn btn-primary btn-sm">Enregistrer le règlement</button>
-                        </div>
-                    @endif
-
+                    <div class="modal-footer">
+                        <button wire:click.prevent="addReg" type="submit"
+                            @if ($errordAjoutReg) disabled @endif
+                            class="btn btn-primary btn-sm">Enregistrer le règlement</button>
+                    </div>
                     </form>
 
 
@@ -799,5 +814,19 @@
 
 
 </div>
-</div>
-</div>
+<script>
+    window.addEventListener('close-model', event => {
+        $('#modal-basic').modal('hide');
+        $('#edit-modal').modal('hide');
+        $('#modal-info-delete').modal('hide');
+    });
+
+
+    window.addEventListener('add', event => {
+        Swal.fire(
+            'Super!',
+            'Vous avez ajouter un nouveau projet!',
+            'success'
+        )
+    });
+</script>
