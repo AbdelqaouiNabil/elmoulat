@@ -500,7 +500,7 @@
                     <div id="highchartDiiii"></div>
                 </div>
             </div>
-            <div class="row chart3" >
+            <div class="row chart3">
                 <div class="col mt-6">
                     <div id="highchart3333"></div>
                 </div>
@@ -533,7 +533,6 @@
 <script>
     var domaines = @json($domaines);
     var data = [];
-
     // Loop through the $domaines array and create an object for each item
     @foreach ($domaines as $item)
         data.push({
@@ -541,6 +540,7 @@
             y: {{ $item->domaineFois }}
         });
     @endforeach
+
 
 
 
@@ -580,6 +580,19 @@
     });
 
 
+
+
+    var listDepo = @json($ListeDepot);
+    var data2 = [];
+    // Loop through the $domaines array and create an object for each item
+    @foreach ($ListeDepot as $item)
+        data2.push({
+            name: '{{ $item->mois }}',
+            y: {{ $item->nbrDep }}
+        });
+    @endforeach
+
+
     ////////////////////////////////////////////////////////////////
     Highcharts.chart('highchartDiiii', {
         chart: {
@@ -593,51 +606,86 @@
         },
 
         series: [{
-            name: 'Brands',
-            colorByPoint: true,
-            data: [{
-                    name: 'Internet Explorer',
-                    y: 11.84
-                },
-                {
-                    name: 'Firefox',
-                    y: 10.85
-                },
-                {
-                    name: 'Edge',
-                    y: 4.67
-                },
-                {
-                    name: 'Safari',
-                    y: 4.18
-                },
-                {
-                    name: 'Sogou Explorer',
-                    y: 1.64
-                },
-                {
-                    name: 'Opera',
-                    y: 1.6
-                },
-                {
-                    name: 'QQ',
-                    y: 1.2
-                },
-                {
-                    name: 'Other',
-                    y: 2.61
-                }
-            ]
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                        name: 'Internet Explorer',
+                        y: 11.84
+                    },
+                    {
+                        name: 'Firefox',
+                        y: 10.85
+                    },
+                    {
+                        name: 'Edge',
+                        y: 4.67
+                    },
+                    {
+                        name: 'Safari',
+                        y: 4.18
+                    },
+                    {
+                        name: 'Sogou Explorer',
+                        y: 1.64
+                    },
+                    {
+                        name: 'Opera',
+                        y: 1.6
+                    },
+                    {
+                        name: 'QQ',
+                        y: 1.2
+                    },
+                    {
+                        name: 'Other',
+                        y: 2.61
+                    }
+                ]
 
-        }
+            }
+            ,
+            {
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                        name: 'Internet Explorer',
+                        y: 11.84
+                    },
+                    {
+                        name: 'Firefox',
+                        y: 10.85
+                    },
+                    {
+                        name: 'Edge',
+                        y: 4.67
+                    },
+                    {
+                        name: 'Safari',
+                        y: 4.18
+                    },
+                    {
+                        name: 'Sogou Explorer',
+                        y: 1.64
+                    },
+                    {
+                        name: 'Opera',
+                        y: 1.6
+                    },
+                    {
+                        name: 'QQ',
+                        y: 1.2
+                    },
+                    {
+                        name: 'Other',
+                        y: 2.61
+                    }
+                ]
 
-,
-
-
-
-
-    ]
+            }
+        ]
     });
+
+
 
     Highcharts.chart('highchart3333', {
         chart: {
