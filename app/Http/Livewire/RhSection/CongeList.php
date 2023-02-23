@@ -32,7 +32,7 @@ class CongeList extends Component
         $conges = Conge::where('id', 'like', '%'.$this->search.'%')
         ->orWhere('type', 'like', '%'.$this->search.'%')->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $employes = Employe::all();
-        return view('livewire.rh-section.conge-list', ['conges' => $conges, 'employes' => $employes]);
+        return view('livewire.owner.rh-section.conge-list', ['conges' => $conges, 'employes' => $employes]);
     }
     // sort function 
     public function sort($value)

@@ -30,6 +30,8 @@ class RedirectIfAuthenticated
             }
             elseif(Auth::guard($guard)->check() && Auth::user()->hasRole('owner')){
                 return redirect()->route('owner.dashboard'); 
+            } elseif(Auth::guard($guard)->check() && Auth::user()->hasRole('comptable')){
+                return redirect()->route('comptable.dashboard'); 
             }
         }
 

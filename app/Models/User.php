@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'image',
         'password',
     ];
 
@@ -45,7 +46,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function permissions(){
-        return $this->hasMany(Permission::class,'id');
-    } 
+   
 }
