@@ -376,7 +376,7 @@ class ProjectsList extends Component
             ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus = Bureau::all();
         $caisses = Caisse::all();
-        return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
+        return view('livewire.owner.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
 
     }
     // sort function 

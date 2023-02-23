@@ -38,7 +38,7 @@ class OuvriersList extends Component
         $ouvriers=Ouvrier::where('nom', 'like', '%'.$this->search.'%')
         ->orWhere('n_cin', 'like', '%'.$this->search.'%')
         ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.project-section.ouvriers-list',['ouvriers'=>$ouvriers]);
+        return view('livewire.owner.project-section.ouvriers-list',['ouvriers'=>$ouvriers]);
     }
 
      // sort function  for order data by table head 

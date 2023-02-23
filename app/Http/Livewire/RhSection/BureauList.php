@@ -28,7 +28,7 @@ class BureauList extends Component
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
         $bureaus=Bureau::orderBy($this->sortname,$this->sortdrection)->paginate($this->pages,['*'],'new');
-        return view('livewire.rh-section.bureau-list',['bureaus'=>$bureaus]);
+        return view('livewire.owner.rh-section.bureau-list',['bureaus'=>$bureaus]);
     }
     // sort function 
     public function sort($value){
