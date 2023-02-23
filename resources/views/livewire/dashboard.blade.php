@@ -359,13 +359,13 @@
                 <div class="card">
                     <h2 class="fourniss">Fournisseur</h2>
                     <div class="valContainer">
-                        <h4 class="val">5900</h4>
+                        <h4 class="val">{{ count($fournisseurs) }}</h4>
                     </div>
                 </div>
                 <div class="card">
                     <h2 class="proje">Projets</h2>
                     <div class="valContainer">
-                        <h4 class="val">48</h4>
+                        <h4 class="val">{{ count($projets) }}</h4>
                     </div>
                 </div>
                 <div class=" card cardCaisse">
@@ -380,14 +380,14 @@
                             </h4>
                         </div>
                         <div class="col mt-3">
-                            <h4 class="val">4522.00</h4>
+                            <h4 class="val">{{ $caisse->sold }}</h4>
                         </div>
 
                         <div class="col mt-3">
                             <h4 class="total">Total</h4>
                         </div>
                         <div class="col mt-3">
-                            <h4 class="val">4599922.00</h4>
+                            <h4 class="val">{{ $caisse->total }}</h4>
                         </div>
                         <div class="col mt-3">
                             <h4 class="nonJustified">non Justified
@@ -400,7 +400,7 @@
                             </h4>
                         </div>
                         <div class="col mt-3">
-                            <h4 class="val">2333.89</h4>
+                            <h4 class="val">{{ $caisse->sold_nonjustify }}</h4>
                         </div>
 
                     </div>

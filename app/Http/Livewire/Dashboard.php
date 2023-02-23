@@ -25,11 +25,18 @@ class Dashboard extends Component
         // $retraits = Retrait::where('id_caisse', $caisse)->pluck('id');
         $domaines = DB::select('select count(*) as domaineFois , d.name from fournisseurs f, f_domaines d
         where f.id_fdomaine = d.id group by d.name');
+        $projets = Projet::all();
+        $fournisseurs = Fournisseur::all();
+        $caisse = Caisse::where('id', 2)->first();
 
         // dd($domaines);
         return view('livewire.dashboard', [
             'currentTab' => $this->currentTab,
-            'domaines'=> $domaines
+            'domaines'=> $domaines,
+            'projets'=> $projets,
+            'fournisseurs'=>$fournisseurs,
+            'caisse'=> $caisse
+
         ]);
     }
 
