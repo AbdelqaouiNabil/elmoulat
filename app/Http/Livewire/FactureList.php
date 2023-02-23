@@ -32,7 +32,7 @@ class FactureList extends Component
         $factures = Facture::where('numero', 'like', '%' . $this->search . '%')
             ->orWhere('type', 'like', '%' . $this->search . '%')->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $fournisseurs = Fournisseur::all();
-        return view('livewire.facture-list', ['factures' => $factures, 'fournisseurs' => $fournisseurs, 'caisses' => $caisses]);
+        return view('livewire.owner.facture-list', ['factures' => $factures, 'fournisseurs' => $fournisseurs, 'caisses' => $caisses]);
     }
 
     public function sort($value)

@@ -29,7 +29,7 @@ class ComptesList extends Component
         $this->bulkDisabled = count($this->selectRows) < 1;
         $banks =Bank::all();
         $comptes = Compte::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.transactions.comptes-list', ['comptes' => $comptes, 'banks'=> $banks]);
+        return view('livewire.owner.transactions.comptes-list', ['comptes' => $comptes, 'banks'=> $banks]);
     }
     // sort function 
     public function sort($value)

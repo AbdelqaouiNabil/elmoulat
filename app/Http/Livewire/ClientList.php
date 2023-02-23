@@ -27,7 +27,7 @@ class ClientList extends Component
         
         $this->bulkDisabled = count($this->selectedClients) < 1;
         $clients = Client::orderBy('id', 'DESC')->paginate($this->pages);
-        return view('livewire.client-list',['clients'=>$clients]);
+        return view('livewire.owner.client-list',['clients'=>$clients]);
     }
 
 //   validation real -time

@@ -46,7 +46,7 @@ class ContratsList extends Component
                 ->orWhere('name', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
         }
 
-        return view('livewire.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects"=>$projects]);
+        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects"=>$projects]);
     }
 
     public function editContrat($id)

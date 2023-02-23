@@ -199,7 +199,7 @@ class ChequierList extends Component
         $chequier = Chequier::where('numeroDeDebut', 'like', '%' . $this->search . '%')
             ->orWhere('dateDeMiseEnDisposition', 'like', '%' . $this->search . '%')->paginate($this->Chequierpage);
         return view(
-            'livewire.transactions.chequier-list',
+            'livewire.owner.transactions.chequier-list',
             [
                 'comptes' => $comptes,
                 'chequier' => $chequier,

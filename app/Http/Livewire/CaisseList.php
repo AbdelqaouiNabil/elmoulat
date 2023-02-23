@@ -30,7 +30,7 @@ class CaisseList extends Component
     {
         $this->bulkDisabled = count($this->selectRows) < 1;
         $caisses = Caisse::orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.caisse-list', ['caisses' => $caisses]);
+        return view('livewire.owner.caisse-list', ['caisses' => $caisses]);
     }
     // sort function 
     public function sort($value)

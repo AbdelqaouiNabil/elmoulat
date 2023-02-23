@@ -26,7 +26,7 @@ class ChequeList extends Component
        $situationCheques=Cheque::query('select situation from cheque groupby(situation)')->get();
         $cheques = Cheque::where('numero', 'like', '%' . $this->search . '%')
             ->orWhere('situation', 'like', '%' . $this->search . '%')->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.cheque-list', ['cheques' => $cheques,'situationCheques'=>$situationCheques]);
+        return view('livewire.owner.cheque-list', ['cheques' => $cheques,'situationCheques'=>$situationCheques]);
     }
     // sort function 
     public function sort($value)

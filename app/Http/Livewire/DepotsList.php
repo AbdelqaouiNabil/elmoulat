@@ -37,7 +37,7 @@ class DepotsList extends Component
         $this->bulkDisabled = count($this->selectedDepots) < 1;
         $depots = Depot::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
         $caisses = Caisse::all();
-        return view('livewire.depots-list', ['depots' => $depots, 'caisses' => $caisses]);
+        return view('livewire.owner.depots-list', ['depots' => $depots, 'caisses' => $caisses]);
     }
 
 

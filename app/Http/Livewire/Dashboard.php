@@ -11,12 +11,11 @@ use App\Models\Retrait;
 use App\Models\Compte;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+
+
 class Dashboard extends Component
 {
-    public $currentTab = 'home';
-
-
-
+ 
 
     public function render()
     {
@@ -27,11 +26,10 @@ class Dashboard extends Component
         where f.id_fdomaine = d.id group by d.name');
         $projets = Projet::all();
         $fournisseurs = Fournisseur::all();
-        $caisse = Caisse::where('id', 2)->first();
+        $caisse = Caisse::where('id', 1)->first();
 
         // dd($domaines);
-        return view('livewire.dashboard', [
-            'currentTab' => $this->currentTab,
+        return view('livewire.owner.dashboard', [
             'domaines'=> $domaines,
             'projets'=> $projets,
             'fournisseurs'=>$fournisseurs,
@@ -39,15 +37,6 @@ class Dashboard extends Component
 
         ]);
     }
-
-    public function changeTab($tab)
-    {
-        $this->currentTab = $tab;
-    }
-
-
-
-
 
 
 }

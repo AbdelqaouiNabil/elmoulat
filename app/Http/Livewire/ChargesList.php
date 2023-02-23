@@ -81,7 +81,7 @@ class ChargesList extends Component
                 }
             }
         }
-        return view('livewire.charges-list', ['charges' => $charges, 'fournisseurs' => $fournisseurs, 'projets' => $projets, 'cheques' => $cheques]);
+        return view('livewire.owner.charges-list', ['charges' => $charges, 'fournisseurs' => $fournisseurs, 'projets' => $projets, 'cheques' => $cheques]);
     }
 
 
@@ -424,8 +424,11 @@ class ChargesList extends Component
     {
         if ($value) {
             $this->selectedCharges = Charge::pluck('id');
+            $this->errordAjoutReg= false;
+            
         } else {
             $this->selectedCharges = [];
+            $this->errordAjoutReg= true;
         }
     }
     //////////////////////////////////////////////////////////////////////////////////////

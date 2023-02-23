@@ -67,7 +67,7 @@ class ReleverBankaire extends Component
             }
         }
         // dd($transactions);
-        return view('livewire.relever-bankaire', ['transactions' => $transactions, 'releverB' => $releverB]);
+        return view('livewire.owner.relever-bankaire', ['transactions' => $transactions, 'releverB' => $releverB]);
     }
 
 

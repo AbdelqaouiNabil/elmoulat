@@ -69,7 +69,7 @@ class ReglementsList extends Component
             }
         }
 
-        return view('livewire.reglements-list', ["reglements" => $reglements, "factures" => $factures]);
+        return view('livewire.owner.reglements-list', ["reglements" => $reglements, "factures" => $factures]);
     }
 
 

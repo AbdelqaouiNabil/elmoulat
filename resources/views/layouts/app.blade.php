@@ -1465,14 +1465,13 @@
         </span>
     </div>
     <div class="overlay-dark-sidebar"></div>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- inject:js-->
+  @livewireScripts
+    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
+    {{-- <script src="{{mix('js/app.js')}}" defer data-turbolinks-track="reload"></script> --}}
  
-    <script>
-              
-      </script>
   
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="{{ asset('assets/vendor_assets/js/jquery/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/jquery/jquery-ui.js') }}"></script>
@@ -1481,8 +1480,6 @@
     <script src="{{ asset('assets/vendor_assets/js/moment/moment.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/accordion.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/autoComplete.js') }}"></script>
-    <script src="{{ asset('assets/vendor_assets/js/Chart.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor_assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/daterangepicker.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/drawer.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/dynamicBadge.js') }}"></script>
@@ -1502,10 +1499,7 @@
     <script src="{{ asset('assets/vendor_assets/js/leaflet.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/leaflet.markercluster.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/loader.js') }}"></script>
-    <script src="{{ asset('assets/vendor_assets/js/message.js') }}"></script>
-    <script src="{{ asset('assets/vendor_assets/js/moment.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/muuri.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor_assets/js/notification.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/popover.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/slick.min.js') }}"></script>
@@ -1516,20 +1510,12 @@
     <script src="{{ asset('assets/theme_assets/js/full-calendar.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/googlemap-init.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/icon-loader.js') }}"></script>
-    <script src="{{ asset('assets/theme_assets/js/jvectormap-init.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
 
-
     {{-- High Charts --}}
-
-
-  
-    @livewireScripts
-    {{-- <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
-    <script src="{{mix('js/app.js')}}"></script> --}}
- 
+   
     <!-- endinject-->
 </body>
 

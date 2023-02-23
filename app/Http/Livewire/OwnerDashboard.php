@@ -8,6 +8,6 @@ class OwnerDashboard extends Component
 {
     public function render()
     {
-        return view('livewire.owner-dashboard');
+        return view('livewire.owner.owner-dashboard');
     }
 }
