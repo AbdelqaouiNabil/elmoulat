@@ -306,7 +306,7 @@ class ProjectsList extends Component
                 $this->excel_data[$j]['image'] = 'public/images/projets/' . $myFileName;
                 $j++;
             }
-            //  add data to array from excel
+            //  add data to array from excel 
             $i = 0;
             $sheet = $spreadsheet->getActiveSheet();
             $row_limit = $sheet->getHighestDataRow();
@@ -350,12 +350,13 @@ class ProjectsList extends Component
 
 
             }
+        session()->flash('message', 'les projets bien importer');
+
         } catch (Throwable $ex) {
             session()->flash('error', '', $ex);
             $this->dispatchBrowserEvent('close-model');
 
         }
-        session()->flash('message', 'les projets bien importer');
         $this->dispatchBrowserEvent('close-model');
 
 
@@ -375,10 +376,10 @@ class ProjectsList extends Component
             ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus = Bureau::all();
         $caisses = Caisse::all();
-        return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
+        return view('livewire.owner.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
 
     }
-    // sort function
+    // sort function 
     public function sort($value)
     {
         if ($this->sortname == $value && $this->sortdrection == "DESC") {
@@ -399,17 +400,16 @@ class ProjectsList extends Component
     }
 
 
-    // export data
+    // export data 
     public function export()
     {
         return Excel::download(new ProjectExport($this->selectedProjects), 'projects.xlsx');
     }
 
-    public function pdfExport(Request $request)
+    public function pdfExport()
     {
+     
         $projects = Projet::all();
-
-
         $pdf = "
         <!DOCTYPE html><html><head> <style>
        table {
@@ -481,7 +481,7 @@ class ProjectsList extends Component
         }
 
         $pdf .= '</table></body></html>';
-
+        
         // $data = PDF::loadHtml($pdf);
         $file=PDF::loadHtml($pdf);
         // // (Optional) Setup the paper size and orientation
@@ -489,7 +489,6 @@ class ProjectsList extends Component
         // // Render the HTML as PDF
         $file->render();
         return $file->stream('project.pdf');
-
 
 
 

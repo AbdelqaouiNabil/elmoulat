@@ -45,7 +45,7 @@ class FournisseursList extends Component
         ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $fdomaines = f_domaine::all();
 
-        return view('livewire.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
+        return view('livewire.owner.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
     }
 
     // sort function  for order data by table head

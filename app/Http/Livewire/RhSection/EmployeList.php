@@ -31,7 +31,7 @@ class EmployeList extends Component
         $employes = Employe::where('nom', 'like', '%'.$this->search.'%')
         ->orWhere('prenom', 'like', '%'.$this->search.'%')->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus = Bureau::all();
-        return view('livewire.rh-section.employe-list', ['employes' => $employes, 'bureaus' => $bureaus]);
+        return view('livewire.owner.rh-section.employe-list', ['employes' => $employes, 'bureaus' => $bureaus]);
     }
 
     public function sort($value)

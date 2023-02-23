@@ -111,7 +111,7 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
-                                                <span class="userDatatable-title">Nome et Prenom</span>
+                                                <span class="userDatatable-title">Nom et Prenom</span>
                                                 <a href="" wire:click.prevent="sort('nom')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
@@ -289,7 +289,7 @@
                                         <li class="atbd-pagination__item">
                                             <div class="paging-option">
                                                 <select name="page-number" class="page-selection"
-                                                    wire:model.defer="pages">
+                                                    wire:model="pages">
                                                     <option value="20">20/page</option>
                                                     <option value="40">40/page</option>
                                                     <option value="60">60/page</option>
@@ -623,7 +623,6 @@
 
                                 </div>
 
-
                                 <div class="row">
                                     <div class="form-group mb-25 col-lg-12">
                                         <label>Adress</label>
@@ -633,7 +632,6 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
                                 </div>
                             </div>
 
@@ -646,7 +644,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
 
 
@@ -655,89 +652,77 @@
 
 
 
-    {{-- delete model  --}}
+
+        {{-- delete model  --}}
 
 
 
-    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
-        role="dialog" aria-hidden="true">
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-info-delete" tabindex="-1"
+            role="dialog" aria-hidden="true">
 
 
-        <div class="modal-dialog modal-sm modal-info" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-info-body d-flex">
-                        <div class="modal-info-icon warning">
-                            <span data-feather="info"></span>
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
+
+                            <div class="modal-info-text">
+                                <h6>Voulez-vous supprimer ce Ouvrier</h6>
+                            </div>
+
                         </div>
+                    </div>
+                    <div class="modal-footer">
 
-                        <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce Ouvrier</h6>
-                        </div>
+                        <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                            data-dismiss="modal">annuler</button>
+                        <button type="button" wire:click.prevent='deleteData()'
+                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
 
                     </div>
                 </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                        data-dismiss="modal">annuler</button>
-                    <button type="button" wire:click.prevent='deleteData()'
-                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
-
-                </div>
             </div>
+
+
         </div>
 
 
-    </div>
+
+        <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
+            role="dialog" aria-hidden="true">
 
 
+            <div class="modal-dialog modal-sm modal-info" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="modal-info-body d-flex">
+                            <div class="modal-info-icon warning">
+                                <span data-feather="info"></span>
+                            </div>
 
-    <div wire:ignore.self class="modal-info-delete modal fade show" id="modal-all-delete" tabindex="-1"
-        role="dialog" aria-hidden="true">
+                            <div class="modal-info-text">
+                                <h6>Voulez-vous supprimer ce Ouvrier</h6>
+                            </div>
 
-
-        <div class="modal-dialog modal-sm modal-info" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-info-body d-flex">
-                        <div class="modal-info-icon warning">
-                            <span data-feather="info"></span>
                         </div>
+                    </div>
+                    <div class="modal-footer">
 
-                        <div class="modal-info-text">
-                            <h6>Voulez-vous supprimer ce Ouvrier</h6>
-                        </div>
+                        <button type="button" class="btn btn-danger btn-outlined btn-sm"
+                            data-dismiss="modal">annuler</button>
+                        <button type="button" wire:click.prevent='deletecheckedouvrier()'
+                            class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
 
                     </div>
                 </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-danger btn-outlined btn-sm"
-                        data-dismiss="modal">annuler</button>
-                    <button type="button" wire:click.prevent='deletecheckedouvrier()'
-                        class="btn btn-success btn-outlined btn-sm" data-dismiss="modal">supprimer</button>
-
-                </div>
             </div>
+
+
         </div>
 
-
+        <!-- ends: .modal-info-Delete -->
     </div>
-
-    <!-- ends: .modal-info-Delete -->
-
-    @push('scripts')
-        <script>
-            window.addEventListener('close-model', event => {
-                $('#modal-basic').modal('hide');
-                $('#edit-modal').modal('hide');
-                $('#modal-info-delete').modal('hide');
-            })
-        </script>
-    @endpush
-
-
-</div>
-</div>
 </div>

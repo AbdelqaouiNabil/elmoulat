@@ -152,7 +152,8 @@ class CaisseList extends Component
     {
         $retrait = Retrait::where('id_caisse', $this->id_caisse)->get();
         $depot = Depot::where('id_caisse', $this->id_caisse)->get();
-        if (count($retrait)>0 || count($depot)>0 ) {
+        $project = Projet::whereIn('id_caisse', $this->selectRows)->get();
+        if (count($retrait)>0 || count($depot)>0 || count($project)>0 ) {
             session()->flash('error', 'this caisse is aready used  as ForingKey');
             return;
         } else {

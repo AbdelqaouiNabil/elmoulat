@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb53e73eba200efb8a8e9452dfcd259f",
-
+    "content-hash": "3b03266bde3c7d98e4fdc5d418c7b414",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1481,6 +1480,56 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
+            "name": "kkszymanowski/traitor",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KKSzymanowski/Traitor.git",
+                "reference": "c16d90149e807d71562953eb5c9279e75170b63f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KKSzymanowski/Traitor/zipball/c16d90149e807d71562953eb5c9279e75170b63f",
+                "reference": "c16d90149e807d71562953eb5c9279e75170b63f",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^1.0|^2.0|^3.0|^4.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Traitor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kuba Szymanowski",
+                    "email": "kuba.szymanowski@inf24.pl"
+                }
+            ],
+            "description": "Add a trait use statement to existing PHP class",
+            "keywords": [
+                "add",
+                "php",
+                "trait"
+            ],
+            "support": {
+                "email": "kuba.szymanowski@inf24.pl",
+                "issues": "https://github.com/kkszymanowski/traitor/issues",
+                "source": "https://github.com/kkszymanowski/traitor"
+            },
+            "time": "2022-03-02T17:32:19+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4261,30 +4310,6 @@
             "time": "2022-05-28T13:28:03+00:00"
         },
         {
-<<<<<<< HEAD
-            "name": "santigarcor/laratrust",
-            "version": "7.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/santigarcor/laratrust.git",
-                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/3ac3b59d8df63c61b80d8e16ac69751283df115c",
-                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c",
-                "shasum": ""
-            },
-            "require": {
-                "kkszymanowski/traitor": "^1.0",
-                "laravel/framework": "~6.0|~7.0|~8.0|^9.0|^10.0",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.3.2",
-                "orchestra/testbench": "4.*|5.*|6.*|7.*|^8.0",
-                "phpunit/phpunit": "^7.5.15|^8.4|^9.0"
-=======
             "name": "sabberworm/php-css-parser",
             "version": "8.4.0",
             "source": {
@@ -4308,7 +4333,6 @@
             },
             "suggest": {
                 "ext-mbstring": "for parsing UTF-8 CSS"
->>>>>>> 3f2c7f7b227fed2dcd12511496a90a19a82cea44
             },
             "type": "library",
             "autoload": {
@@ -4333,7 +4357,75 @@
                 "stylesheet"
             ],
             "support": {
-<<<<<<< HEAD
+                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
+                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
+            },
+            "time": "2021-12-11T13:40:54+00:00"
+        },
+        {
+            "name": "santigarcor/laratrust",
+            "version": "7.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/santigarcor/laratrust.git",
+                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/3ac3b59d8df63c61b80d8e16ac69751283df115c",
+                "reference": "3ac3b59d8df63c61b80d8e16ac69751283df115c",
+                "shasum": ""
+            },
+            "require": {
+                "kkszymanowski/traitor": "^1.0",
+                "laravel/framework": "~6.0|~7.0|~8.0|^9.0|^10.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.2",
+                "orchestra/testbench": "4.*|5.*|6.*|7.*|^8.0",
+                "phpunit/phpunit": "^7.5.15|^8.4|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laratrust\\LaratrustServiceProvider"
+                    ],
+                    "aliases": {
+                        "Laratrust": "Laratrust\\LaratrustFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laratrust\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Santiago Garcia",
+                    "homepage": "http://santigarcor.me"
+                }
+            ],
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+            "keywords": [
+                "Teams",
+                "acl",
+                "authorization",
+                "laratrust",
+                "laravel",
+                "multiusers",
+                "permissions",
+                "php",
+                "rbac",
+                "roles"
+            ],
+            "support": {
                 "issues": "https://github.com/santigarcor/laratrust/issues",
                 "source": "https://github.com/santigarcor/laratrust/tree/7.2.1"
             },
@@ -4344,12 +4436,6 @@
                 }
             ],
             "time": "2023-02-20T08:03:05+00:00"
-=======
-                "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
-                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
-            },
-            "time": "2021-12-11T13:40:54+00:00"
->>>>>>> 3f2c7f7b227fed2dcd12511496a90a19a82cea44
         },
         {
             "name": "symfony/console",
