@@ -55,7 +55,7 @@ class ReglementsList extends Component
             case 'cheque':
                 $reglements = Reglement::where('methode', 'cheque')->paginate($this->pages, ['*'], 'new');
                 break;
-            default: 
+            default:
                 $reglements = Reglement::latest()->paginate($this->pages, ['*'], 'new');
                 break;
         }
@@ -174,11 +174,11 @@ class ReglementsList extends Component
         $this->validation();
         $pass = true;
 
-        if ($this->optionF) {
+        if ($this->num_facture != "") {
             $facture = Facture::where('numero', $this->num_facture)->first();
             if (is_null($facture)) {
                 session()->flash('error', 'error on numero facture');
-                $this->id_facture = "";
+                $this->id_facture = null;
                 $pass = false;
             } else {
                 $this->id_facture = $facture->id;
@@ -189,13 +189,13 @@ class ReglementsList extends Component
 
         $contrat = Contrat::where('cin_Ouv', $this->cin_Ouv)->first();
         if (is_null($contrat)) {
-            session()->flash('error', 'error on ouvrier contrat');
-            $this->id_contrat = "";
-            $pass = false;
+            // session()->flash('error', 'error on ouvrier contrat');
+            $this->id_contrat = null;
+            // $pass = false;
         } else {
             $this->id_contrat = $contrat->id;
         }
-        if ($this->optionC) {
+        if ($this->numero_cheque != "") {
             $this->methode = 'cheque';
             $cheque = Cheque::where('numero', $this->numero_cheque)->first();
             if (is_null($cheque)) {
@@ -220,19 +220,25 @@ class ReglementsList extends Component
             $reglement->save();
 
             //modifier sold
-            if ($reglement->methode == "cash") {
-                $this->UpdateCaisseAfterUpdate();
-            }
+            // if ($reglement->methode == "cash") {
+            //     $this->UpdateCaisseAfterUpdate();
+            // }
 
 
             //modifier cheques situations
             $OLDcheque = Cheque::where('numero', $this->old_numero_cheque)->first();
-            $OLDcheque->situation = "disponible";
-            $OLDcheque->save();
+            if(!is_null($OLDcheque)){
+                $OLDcheque->situation = "disponible";
+                $OLDcheque->save();
+            }
+
             if (!is_null($reglement->numero_cheque)) {
                 $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-                $cheque->situation = "livrer";
-                $cheque->save();
+                if(!is_null($cheque)){
+                    $cheque->situation = "livrer";
+                    $cheque->save();
+                }
+
             }
             session()->flash('message', 'reglement bien modifer');
             $this->resetInputs();
@@ -322,28 +328,28 @@ class ReglementsList extends Component
         $this->validation();
         $pass = true;
 
-        if ($this->optionF) {
+        if ($this->num_facture != "") {
             $facture = Facture::where('numero', $this->num_facture)->first();
             if (is_null($facture)) {
                 session()->flash('error', 'error on numero facture');
-                $this->id_facture = "";
+                $this->id_facture = null;
                 $pass = false;
             } else {
                 $this->id_facture = $facture->id;
             }
-        } else {
-            $this->id_facture = null;
         }
 
         $contrat = Contrat::where('cin_Ouv', $this->cin_Ouv)->first();
         if (is_null($contrat)) {
             session()->flash('error', 'error on ouvrier contrat');
-            $this->id_contrat = "";
+            $this->id_contrat = null;
             $pass = false;
         } else {
             $this->id_contrat = $contrat->id;
+            // $pass = true;
         }
-        if ($this->optionC) {
+
+        if ($this->numero_cheque != "") {
             $this->methode = 'cheque';
             if (!($this->verifyCheque($this->numero_cheque))) {
                 session()->flash('error', 'error on numero cheque');
@@ -367,9 +373,9 @@ class ReglementsList extends Component
             ]);
 
             //modifier sold
-            if ($reg->methode == "cash") {
-                $this->UpdateCaisseAfterSave();
-            }
+            // if ($reg->methode == "cash") {
+            //     $this->UpdateCaisseAfterSave();
+            // }
 
 
 
@@ -387,27 +393,27 @@ class ReglementsList extends Component
 
 
       // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
-      public function UpdateCaisseAfterSave()
-      {
-          $projet = Projet::where('id', $this->id_projet)->first();
-          $caisse = Caisse::where('id', $projet->id_caisse)->first();
-          Retrait::create([
-              'montant' => $this->montant,
-              'dateRet' => $this->dateDep,
-              'id_depense' => $this->id_depense,
-              'id_caisse' => $caisse->id,
-              'id_reglement' => null
-          ]);
-          if ($this->type == 'Justifier') {
-              $caisse->sold = ($caisse->sold) - ($this->montant);
-              $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
-              $caisse->save();
-          } else {
-              $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
-              $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
-              $caisse->save();
-          }
-      }
+    //   public function UpdateCaisseAfterSave()
+    //   {
+    //       $projet = Projet::where('id', $this->id_projet)->first();
+    //       $caisse = Caisse::where('id', $projet->id_caisse)->first();
+    //       Retrait::create([
+    //           'montant' => $this->montant,
+    //           'dateRet' => $this->dateDep,
+    //           'id_depense' => $this->id_depense,
+    //           'id_caisse' => $caisse->id,
+    //           'id_reglement' => null
+    //       ]);
+    //       if ($this->type == 'Justifier') {
+    //           $caisse->sold = ($caisse->sold) - ($this->montant);
+    //           $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
+    //           $caisse->save();
+    //       } else {
+    //           $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
+    //           $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
+    //           $caisse->save();
+    //       }
+    //   }
 
 
 
@@ -416,8 +422,7 @@ class ReglementsList extends Component
     {
         $this->validate([
             'dateR' => 'required',
-            'montant' => 'required',
-            'cin_Ouv' => 'required',
+            'montant' => 'required'
         ]);
     }
 
@@ -465,6 +470,7 @@ class ReglementsList extends Component
     public function verifyCheque($numCheque)
     {
         $cheque = Cheque::where('numero', $numCheque)->first();
+
         if (is_null($cheque)) {
             return false;
         } else {
