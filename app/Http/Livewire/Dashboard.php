@@ -25,6 +25,19 @@ class Dashboard extends Component
         // $retraits = Retrait::where('id_caisse', $caisse)->pluck('id');
         $domaines = DB::select('select count(*) as domaineFois , d.name from fournisseurs f, f_domaines d
         where f.id_fdomaine = d.id group by d.name');
+
+        // dd($domaines);
+        // $mois = 1;
+        // $nbrDepots = DB::select("call nbrDepotParCaisse (".$mois.", ".$idCaisse.")");
+        $idCaisse = 1;
+        $ListeDepot = [];
+        for ($mois = 1; $mois <= 12; $mois++){
+            $nbrDepots = DB::select("call nbrDepotParCaisse (".$mois.", ".$idCaisse.")");
+            $nbrDepotsScalar = $nbrDepots[0]->nbrDepot;
+            $nbrDepotsString = strval($nbrDepotsScalar);
+            array_push($ListeDepot, (object) ['mois'=>$mois, 'nbrDep'=>$nbrDepotsString]);
+        }
+        // dd($ListeDepot);
         $projets = Projet::all();
         $fournisseurs = Fournisseur::all();
         $caisse = Caisse::where('id', 2)->first();
@@ -35,7 +48,8 @@ class Dashboard extends Component
             'domaines'=> $domaines,
             'projets'=> $projets,
             'fournisseurs'=>$fournisseurs,
-            'caisse'=> $caisse
+            'caisse'=> $caisse,
+            'ListeDepot'=>$ListeDepot
 
         ]);
     }
