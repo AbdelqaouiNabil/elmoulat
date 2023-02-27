@@ -5,6 +5,8 @@ namespace App\Http\Livewire\ProjectSection;
 use App;
 use App\Exports\ProjectExport;
 use App\Models\Charge;
+use App\Models\Depense;
+use App\Models\Vente;
 use Livewire\Component;
 use App\Models\Projet;
 use App\Models\Bureau;
@@ -196,7 +198,11 @@ class ProjectsList extends Component
 
 
         $charge = Charge::where('id_projet', $this->project_edit_id)->get();
-        if (count($charge) > 0) {
+        $vente = Vente::where('project_id', $this->project_edit_id)->get();
+        $depense = Depense::where('id_projet', $this->project_edit_id)->get();
+
+
+        if (count($charge) > 0 ||count($vente)>0 ||count($depense)>0) {
             session()->flash('error', 'you selectd a project use as forieng key in other table');
 
         } else {
@@ -216,7 +222,9 @@ class ProjectsList extends Component
     public function deleteSelected()
     {
         $charge = Charge::whereIn('id_projet', $this->selectedProjects)->get();
-        if (count($charge) > 0) {
+        $vente = Vente::whereIn('project_id', $this->selectedProjects)->get();
+        $depense = Depense::whereIn('id_projet', $this->selectedProjects)->get();
+        if (count($charge) > 0 || count($vente) > 0 || count($depense) > 0) {
             session()->flash('error', 'you selectd a project use as forieng key in other table');
         } else {
             $project = Projet::whereIn('id', $this->selectedProjects)->get();
@@ -376,7 +384,7 @@ class ProjectsList extends Component
             ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         $bureaus = Bureau::all();
         $caisses = Caisse::all();
-        return view('livewire.owner.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
+        return view('livewire.project-section.projects-list', ['projets' => $projets, 'bureaus' => $bureaus, 'caisses' => $caisses]);
 
     }
     // sort function 

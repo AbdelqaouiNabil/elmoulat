@@ -57,7 +57,7 @@ class FactureList extends Component
     public function updated($fields)
     {
         $this->validateOnly($fields, [
-            'numero' => 'required|regex:/[0-9]*/',
+            'numero' => 'required|unique:factures|regex:/[0-9]*/',
             'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
             'prix' => 'regex:/^\d*(\.\d{2})?$/',
             'scan_pdf' => 'required|mimes:pdf',
@@ -88,7 +88,7 @@ class FactureList extends Component
     {
         $this->validate([
 
-            'numero' => 'required|regex:/[0-9]*/',
+            'numero' => 'required|unique:factures|regex:/[0-9]*/',
             'scan_pdf' => 'required|mimes:pdf',
             'type' => 'required',
             'date' => 'required|date',
@@ -122,7 +122,7 @@ class FactureList extends Component
             $retrait->montant = $this->prix;
             $retrait->id_caisse = $this->caisse;
             $retrait->id_facture = $facture->id;
-            $retrait->date = date("Y/m/d");
+            $retrait->dateRet = date("Y-m-d");
             $valide = $retrait->save();
             if ($valide) {
                 $caisse = Caisse::where('id', $this->caisse)->first();

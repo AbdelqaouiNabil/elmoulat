@@ -90,6 +90,12 @@
 
                     </div>
                 @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+
+                    </div>
+                @endif
                 @if ($projets->count() > 0)
                     <div class="container-fluid">
                         <div class="action-btn mb-3">

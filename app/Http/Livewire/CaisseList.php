@@ -3,6 +3,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cheque;
 use App\Models\Projet;
 use App\Models\Retrait;
 use Livewire\Component;
@@ -17,7 +18,7 @@ class CaisseList extends Component
 
     use WithFileUploads;
     use WithPagination;
-    public $name, $sold_nonjustify, $sold, $id_caisse, $total;
+    public $name, $sold_nonjustify, $sold, $id_caisse, $total, $numero_cheque, $dateC, $montant, $type_sold;
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
@@ -68,6 +69,10 @@ class CaisseList extends Component
         $this->sold_nonjustify = "";
         $this->total = "";
         $this->id_caisse = "";
+        $this->montant = "";
+        $this->dateC = "";
+        $this->type_sold = "";
+        $this->numero_cheque = "";
     }
 
 
@@ -152,8 +157,10 @@ class CaisseList extends Component
     {
         $retrait = Retrait::where('id_caisse', $this->id_caisse)->get();
         $depot = Depot::where('id_caisse', $this->id_caisse)->get();
+
         $project = Projet::whereIn('id_caisse', $this->selectRows)->get();
         if (count($retrait)>0 || count($depot)>0 || count($project)>0 ) {
+
             session()->flash('error', 'this caisse is aready used  as ForingKey');
             return;
         } else {
@@ -174,22 +181,22 @@ class CaisseList extends Component
         $depot = Depot::whereIn('id_caisse', $this->selectRows)->get();
         $project = Projet::whereIn('id_caisse', $this->selectRows)->get();
 
-        if (count($retrait)>0 || count($depot)>0 || count($project)>0) {
+        if (count($retrait) > 0 || count($depot) > 0 || count($project) > 0) {
             session()->flash('error', 'there is a or more caisse is aready used  as ForingKey ');
             return;
         } else {
             $caisse = Caisse::whereIn('id', $this->selectRows);
             $caisse->delete();
             session()->flash('message', 'les caisse bien supprimer');
-            $this->selectRows=[];
-            $this->selectAll=false;
+            $this->selectRows = [];
+            $this->selectAll = false;
 
         }
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');
 
 
-       
+
     }
 
 
@@ -200,5 +207,52 @@ class CaisseList extends Component
         } else {
             $this->selectRows = [];
         }
+    }
+
+
+    // save depot
+    public function saveDepot()
+    {
+        $this->validate([
+            'numero_cheque' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'id_caisse' => 'required',
+            'dateC' => 'required|date',
+            'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+
+        ]);
+        $numeroCheque=str_pad(($this->numero_cheque), 7, '0', STR_PAD_LEFT) ;
+        $cheque = Cheque::where('numero', $numeroCheque)->get();
+        if (count($cheque) > 0 && $cheque->situation == 'disponible') {
+            
+             
+            Depot::create([
+                'numero_cheque' => $numeroCheque,
+                'id_caisse' => $this->id_caisse,
+                'dateC' => $this->dateC,
+                'montant' => $this->montant
+            ]);
+            $caisse = Caisse::where('id', $this->id_caisse)->first();
+            if ($this->type_sold == "sold_justify") {
+                $caisse->sold = $caisse->sold + $this->montant;
+                $caisse->update();
+
+            } else {
+                $caisse->sold_nonjustify = $caisse->sold_nonjustify + $this->montant;
+                $caisse->update();
+            }
+
+            //update Cheque after Adding Depot
+            $cheque = Cheque::where('numero', $numeroCheque)->first();
+            $cheque->situation = 'livrer';
+            $cheque->update();
+
+            session()->flash('message', 'depot created successfully');
+            $this->resetInputs();
+
+        } else {
+            session()->flash('error', 'number of cheque is rong or is used befor ');
+        }
+        $this->dispatchBrowserEvent('close-model');
+
     }
 }

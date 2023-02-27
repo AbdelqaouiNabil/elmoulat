@@ -25,7 +25,7 @@ class Ouvrier extends Model
         'phone',
         'email',
         'adress',
-        'contrat',
+    
         
 
 

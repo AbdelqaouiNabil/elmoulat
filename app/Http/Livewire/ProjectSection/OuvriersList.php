@@ -38,6 +38,7 @@ class OuvriersList extends Component
         $ouvriers=Ouvrier::where('nom', 'like', '%'.$this->search.'%')
         ->orWhere('n_cin', 'like', '%'.$this->search.'%')
         ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
+
         return view('livewire.owner.project-section.ouvriers-list',['ouvriers'=>$ouvriers]);
     }
 
@@ -61,17 +62,26 @@ class OuvriersList extends Component
         
     }
 
+
     public function saveData(){
        
         $validatedata=$this->validate([
            'nom'=>'required',
            'datenais'=>'required|date',
            'cin'=>'mimes:pdf',
+<<<<<<< HEAD
            'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
            'datedebut'=>'required|date',
            'observation'=>'required',
            'notation'=>'required|integer',
            'phone'=>'required|integer',
+=======
+           'n_cin'=>'required|unique:ouvriers',
+           'datedebut'=>'required|date',
+           'observation'=>'required',
+           'notation'=>'required|integer',
+           'phone'=>'required|regex:/[0-9]*/',
+>>>>>>> 7638ccb7d4530f9127e03d34bdad4e8496f648e9
            
         ]);
 
@@ -126,11 +136,19 @@ class OuvriersList extends Component
             'nom'=>'required',
             'datenais'=>'required|date',
             'cin'=>'mimes:pdf',
+<<<<<<< HEAD
             'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
             'datedebut'=>'required|date',
             'observation'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|integer',
+=======
+            'n_cin'=>'required|unique:ouvriers',
+            'datedebut'=>'required|date',
+            'observation'=>'required',
+            'notation'=>'required|integer',
+            'phone'=>'required|regex:/[0-9]*/',
+>>>>>>> 7638ccb7d4530f9127e03d34bdad4e8496f648e9
         ]);
     }
 
@@ -197,14 +215,22 @@ class OuvriersList extends Component
     }
 
     public function editData(){
-        $validatedata=$this->validate([
+       $this->validate([
             'nom'=>'required',
             'datenais'=>'required|date',
+<<<<<<< HEAD
             'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
             'datedebut'=>'required|date',
             'observation'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|integer',
+=======
+            'n_cin'=>'required|unique:ouvriers',
+            'datedebut'=>'required|date',
+            'observation'=>'required',
+            'notation'=>'required|integer',
+            'phone'=>'required|regex:/[0-9]*/',
+>>>>>>> 7638ccb7d4530f9127e03d34bdad4e8496f648e9
             
          ]);
 

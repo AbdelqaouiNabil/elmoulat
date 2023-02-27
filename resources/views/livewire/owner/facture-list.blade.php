@@ -11,7 +11,7 @@
                             <div class="col-md-6">
                                 <div class="search-result global-shadow rounded-pill bg-white">
 
-                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1">
+                                    <div class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1 border-0">
                                         <span><i class="fa-solid fa-magnifying-glass"></i></span>
                                         <input wire:model="search" class="form-control border-0 box-shadow-none"
                                             type="search" placeholder="chercher par numero..." aria-label="Search">
@@ -389,7 +389,7 @@
                                 @if ($type == 'fake' || $type == 'ajustement')
                                     <div class="form-group mb-25">
                                         <label>Prix</label>
-                                        <input class="form-control form-control-lg" type="number" name="prix"
+                                        <input class="form-control form-control-lg" type="text" name="prix"
                                             required wire:model.defer='prix'>
                                         @error('prix')
                                             <span class="text-danger">{{ $message }}</span>
@@ -413,7 +413,7 @@
                                 @endif
                                 <div class="form-group mb-25">
                                     <label>Montant</label>
-                                    <input class="form-control form-control-lg" type="number" name="montant"
+                                    <input class="form-control form-control-lg" type="text" name="montant"
                                         wire:model.defer='montant'>
                                     @error('montant')
                                         <span class="text-danger">{{ $message }}</span>
@@ -422,7 +422,7 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
+                                    <input class="form-control form-control-lg" type="date" name="date" 
                                         wire:model.defer='date'>
                                     @error('date')
                                         <span class="text-danger">{{ $message }}</span>
@@ -493,7 +493,7 @@
                                 @if ($type == 'fake' || $type == 'ajustement')
                                     <div class="form-group mb-25">
                                         <label>Prix</label>
-                                        <input class="form-control form-control-lg" type="number" name="prix"
+                                        <input class="form-control form-control-lg" type="text" name="prix"
                                             required wire:model.defer='prix'>
                                         @error('prix')
                                             <span class="text-danger">{{ $message }}</span>
@@ -517,7 +517,7 @@
                                 @endif
                                 <div class="form-group mb-25">
                                     <label>Montant</label>
-                                    <input class="form-control form-control-lg" type="number" name="montant"
+                                    <input class="form-control form-control-lg" type="text" name="montant"
                                         wire:model.defer='montant'>
                                     @error('montant')
                                         <span class="text-danger">{{ $message }}</span>
