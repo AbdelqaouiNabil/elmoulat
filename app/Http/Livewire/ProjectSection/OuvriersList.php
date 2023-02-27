@@ -69,19 +69,11 @@ class OuvriersList extends Component
            'nom'=>'required',
            'datenais'=>'required|date',
            'cin'=>'mimes:pdf',
-<<<<<<< HEAD
-           'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
-           'datedebut'=>'required|date',
-           'observation'=>'required',
-           'notation'=>'required|integer',
-           'phone'=>'required|integer',
-=======
            'n_cin'=>'required|unique:ouvriers',
            'datedebut'=>'required|date',
            'observation'=>'required',
            'notation'=>'required|integer',
            'phone'=>'required|regex:/[0-9]*/',
->>>>>>> 7638ccb7d4530f9127e03d34bdad4e8496f648e9
            
         ]);
 
@@ -136,19 +128,11 @@ class OuvriersList extends Component
             'nom'=>'required',
             'datenais'=>'required|date',
             'cin'=>'mimes:pdf',
-<<<<<<< HEAD
-            'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
-            'datedebut'=>'required|date',
-            'observation'=>'required',
-            'notation'=>'required|integer',
-            'phone'=>'required|integer',
-=======
             'n_cin'=>'required|unique:ouvriers',
             'datedebut'=>'required|date',
             'observation'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|regex:/[0-9]*/',
->>>>>>> 7638ccb7d4530f9127e03d34bdad4e8496f648e9
         ]);
     }
 
@@ -218,19 +202,11 @@ class OuvriersList extends Component
        $this->validate([
             'nom'=>'required',
             'datenais'=>'required|date',
-<<<<<<< HEAD
-            'n_cin'=>'required|regex:/([a-zA-Z]{2})([0-9]{6})/',
-            'datedebut'=>'required|date',
-            'observation'=>'required',
-            'notation'=>'required|integer',
-            'phone'=>'required|integer',
-=======
             'n_cin'=>'required|unique:ouvriers',
             'datedebut'=>'required|date',
             'observation'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|regex:/[0-9]*/',
->>>>>>> 7638ccb7d4530f9127e03d34bdad4e8496f648e9
             
          ]);
 

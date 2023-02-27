@@ -26,7 +26,6 @@ use App\Http\Livewire\ProjectSection\FournisseursList;
 use App\Http\Livewire\ProjectSection\ProjectsList;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DepotsList;
-use App\Http\Livewire\ownerDashboard;
 use App\Http\Livewire\ReleverBankaire;
 use App\Http\Livewire\user\Profile;
 use App\Models\User;
@@ -120,6 +119,9 @@ Route::group(['prefix' => 'owner', 'middleware' => ['role:owner', 'auth', 'Preve
     Route::get('/caisselist', CaisseList::class)->name('owner.caisses');
     Route::get('/chequelist', ChequeList::class)->name('owner.cheques');
     Route::get('/ventelist', VenteList::class)->name('owner.ventes');
+    Route::get('/profile', Profile::class)->name('owner.profile');
+    Route::get('/DepotsList', DepotsList::class)->name('owner.depots');
+    Route::get('/ReleverBankaire', ReleverBankaire::class)->name('owner.relevers');
     Route::get('/Pdf', [ProjectsList::class, 'pdfExport'] )->name('owner.pdf');
 
 
