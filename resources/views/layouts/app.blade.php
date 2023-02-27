@@ -90,7 +90,7 @@
 
                 <a href="{{ route('owner.dashboard') }}" class="sidebar-toggle">
                     <img class="svg" src="{{ asset('img/svg/bars.svg') }}" alt="img"></a>
-                <a class="navbar-brand" href="#"><img class="dark" src="{{ asset('img/logo_dark.png') }}"
+                <a class="navbar-brand" href="{{ route('owner.dashboard') }}"><img class="dark" src="{{ asset('img/logo_dark.png') }}"
                         alt="svg"><img class="light" src="{{ asset('img/logo_white.png') }}" alt="img"></a>
 
 
@@ -1482,9 +1482,9 @@
     </div>
     <div class="overlay-dark-sidebar"></div>
     <!-- inject:js-->
-  @livewireScripts
+  
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
-    {{-- <script src="{{mix('js/app.js')}}" defer data-turbolinks-track="reload"></script> --}}
+    {{-- <script src="{{('js/app.js')}}" ></script> --}}
  
   
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -1504,6 +1504,8 @@
     <script src="{{ asset('assets/vendor_assets/js/footable.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/fullcalendar@5.2.0.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/google-chart.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/Chart.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/jquery-jvectormap-2.0.5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/jquery-jvectormap-world-mill-en.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/jquery.countdown.min.js') }}"></script>
@@ -1529,7 +1531,14 @@
     <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
+  
 
+
+    
+
+
+
+@livewireScripts
     {{-- High Charts --}}
    
     <!-- endinject-->

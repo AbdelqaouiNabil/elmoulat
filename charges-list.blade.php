@@ -42,7 +42,7 @@
                                     </div>
                                     @if($charges->count() > 0)
                                     <div class="action-btn">
-                                        <button type="button" class="btn btn-sm btn-primary btn-add" wire:click="checkChargeSituation"  data-toggle="modal" data-target="#cree-reglement" >
+                                        <button type="button" class="btn btn-sm btn-primary btn-add" wire:click.prevent="checkChargeSituation"  data-toggle="modal" data-target="#cree-reglement" >
                                             <i class="la la-plus"></i> Créer un Règlement
                                         </button>
                                     </div>
@@ -673,24 +673,6 @@
                                         </div>
                                     @endIf
 
-
-                                    <div class="form-group mb-25">
-                                        <input class="radio" wire:click='avecFacture' type="checkbox">
-                                        <label>
-                                            <span class="radio-text">Avec Facture</span>
-                                        </label>
-                                    </div>
-                                    
-                                    @if ($avecF)
-                                        <div class="form-group mb-25">
-                                            <label>Numéro du Facture</label>
-                                            <input class="form-control form-control-lg" type="text" name="numFacture"
-                                            wire:model.defer='numFacture'>
-                                            @error('numFacture')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                        </div>
-                                    @endIf
                                 </div>
                             </div>
 

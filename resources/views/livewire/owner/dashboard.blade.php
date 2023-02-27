@@ -13,8 +13,8 @@
                                         <div class="ap-po-details radius-xl bg-white d-flex justify-content-between">
                                             <div>
                                                 <div class="overview-content">
-                                                    <h1>3,257</h1>
-                                                    <p>Orders</p>
+                                                    <h1>{{$chargeNonPayer[0]->MTTTC}} DH</h1>
+                                                    <p>Charge non payé</p>
                                                     <div class="ap-po-details-time">
                                                         <span class="color-success"><i class="las la-arrow-up"></i>
                                                             <strong>25%</strong></span>
