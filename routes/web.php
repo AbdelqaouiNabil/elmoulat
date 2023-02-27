@@ -48,13 +48,13 @@ Route::get('/', function () {
      return view('auth.login');
 
 
-})->name('login')->middleware('guest');;
+})->middleware('guest');;
 Route::middleware(['middleware'=>'PreventBack'])->group(function () {
 
     Auth::routes();
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout']);
 
 
 // Route::get('/addRole', function(){
