@@ -1484,7 +1484,6 @@
     <!-- inject:js-->
   @livewireScripts
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
-    {{-- <script src="{{mix('js/app.js')}}" defer data-turbolinks-track="reload"></script> --}}
  
   
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -1529,6 +1528,25 @@
     <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
+
+    <script>
+    window.addEventListener('add', event => {
+    Swal.fire(
+        'Super!',
+        'Vous avez ajouter un nouveau caisse!',
+        'success'
+    );});
+
+window.addEventListener('close-model', event => {
+    $('#modal-basic').modal('hide');
+    $('#edit-modal').modal('hide');
+    $('#modal-info-delete').modal('hide');
+    $('#add-modal-reglement').modal('hide');
+    
+    });
+    </script>
+
+   
 
     {{-- High Charts --}}
    

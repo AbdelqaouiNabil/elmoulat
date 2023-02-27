@@ -180,12 +180,17 @@
                                                     </td>
                                                     <td>
                                                         <ul class="orderDatatable_actions mb-0 d-flex">
-
+                                                            <li><a href="#" class="remove" data-toggle="modal"
+                                                                    data-target="#add-modal-reglement"
+                                                                    wire:click='addReglement({{ $c->id }})'><i
+                                                                        class="fa-solid fa-plus"></i></a>
+                                                            </li>
                                                             <li><a href="#" class="remove" data-toggle="modal"
                                                                     data-target="#edit-modal"
                                                                     wire:click='editContrat({{ $c->id }})'><i
                                                                         class="fa-regular fa-pen-to-square"></i></a>
                                                             </li>
+
                                                             <li><a href="#" class="remove" data-toggle="modal"
                                                                     data-target="#modal-info-delete"
                                                                     wire:click='deleteContrat({{ $c->id }})'
@@ -204,7 +209,8 @@
                                         </tbody>
                                     </table><!-- End: table -->
                                 </div>
-                                <div class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
+                                <div
+                                    class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
 
                                     <nav class="atbd-page ">
                                         <ul class="atbd-pagination d-flex">
@@ -457,16 +463,7 @@
 
                                     </div>
                                 </div>
-
-
-
-
-
-
-
                             </div>
-
-
                             <div class="modal-footer">
                                 <button type="submit" wire:click.prevent="updateContrat"
                                     class="btn btn-primary btn-sm">Enregistrer Contrat</button>
@@ -520,12 +517,99 @@
         </div>
 
 
+        {{-- add reglement model --}}
 
+        <div wire:ignore.self class="modal-basic modal fade show" id="add-modal-reglement" tabindex="-1"
+            role="dialog" aria-hidden="true">
+
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
+
+
+
+                        <h6 class="modal-title">Modifier Contrat</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span data-feather="x"></span></button>
+                    </div>
+                    <div class="modal-body">
+
+
+
+                        <form wire:submit.prevent='saveReglement()'>
+                            <div class="form-basic">
+
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group mb-25">
+                                            <label>Nom de Contrat</label>
+                                            <input class="form-control form-control-lg" type="text" disabled
+                                                name="name" wire:model.defer='name'>
+                                           
+
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+
+                                        <div class="form-group mb-25">
+                                            <label>Nom de Contrat</label>
+                                            <input class="form-control form-control-lg" type="text" disabled
+                                                name="montant" wire:model.defer='montant'>
+                                           
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Date Debut</label>
+                                    <input class="form-control form-control-lg" type="date" name="datedebut"
+                                        wire:model.defer='datedebut'>
+                                    @error('datedebut')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group mb-25">
+                                            <input class="radio"  wire:model='methode'  type="radio"  value='cheque' >
+                                            <label>
+                                                <span class="radio-text">Avec chèque</span>
+                                            </label>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <input class="radio" wire:model='methode'  type="radio" value='cash'>
+                                        <label>
+                                            <span class="radio-text">Avec Cash</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                @if ($methode=='cheque') 
+                                    <div class="form-group mb-25">
+                                        <input class="form-control form-control-lg" type="text"
+                                            name="numero_cheque" wire:model='numero_cheque'>
+                                            @error('numero_cheque')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    </div>
+                                @endIf
+
+
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm">Enregistrer Reglement</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-
-
 </div>
-{{-- </div>
-    </div> --}}

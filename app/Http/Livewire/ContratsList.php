@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Reglement;
+use Illuminate\Auth\Events\Validated;
 use Livewire\Component;
 use App\Models\Contrat;
 use App\Models\Ouvrier;
@@ -16,13 +18,15 @@ class ContratsList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_contrat, $name, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN, $id_projet, $projectNAME;
+    public $id_contrat, $name, $numero_cheque, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN, $id_projet, $id_reglement, $projectNAME;
     public $selectedContrats = [];
     public $pages = 10;
     public $bulkDisabled = true;
     public $selectAll = false;
 
     public $search;
+    public $methode = 'cheque';
+
 
 
     public function updatedPages()
@@ -46,7 +50,7 @@ class ContratsList extends Component
                 ->orWhere('name', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
         }
 
-        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects"=>$projects]);
+        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects" => $projects]);
     }
 
     public function editContrat($id)
@@ -62,7 +66,7 @@ class ContratsList extends Component
         // $ouvrier = Ouvrier::where('id', $contrat->id_ouvrier)->first();
         // $this->ouvrierCIN = $ouvrier->n_cin;
         $projet = Projet::where('id', $contrat->id_projet)->first();
-        if(!is_null($projet)){
+        if (!is_null($projet)) {
             $this->projectNAME = $projet->name;
             $this->id_projet = $projet->id;
         }
@@ -79,7 +83,7 @@ class ContratsList extends Component
             // update contrat
             $contrat = Contrat::where('id', $this->id_contrat)->first();
             $contrat->name = $this->name;
-            $contrat->datedebut  = $this->datedebut;
+            $contrat->datedebut = $this->datedebut;
             $contrat->datefin = $this->datefin;
             $contrat->montant = $this->montant;
             $contrat->avance = $this->avance;
@@ -90,8 +94,7 @@ class ContratsList extends Component
             session()->flash('message', 'Contrat bien modifer');
             $this->resetInputs();
             $this->dispatchBrowserEvent('close-model');
-        }
-        else{
+        } else {
             session()->flash('error', 'error on Ouvrier Cin ou Projet');
         }
     }
@@ -108,7 +111,7 @@ class ContratsList extends Component
         $this->dispatchBrowserEvent('close-model');
     }
 
-    public function  deleteSelected()
+    public function deleteSelected()
     {
 
         Contrat::query()
@@ -154,11 +157,11 @@ class ContratsList extends Component
 
         $this->name = "";
         $this->datedebut = "";
-        $this->datefin  = "";
+        $this->datefin = "";
         $this->montant = "";
         $this->avance = "";
         $this->cin_Ouv = "";
-        $this->id_projet = "";
+        $this->id_reglement = "";
     }
 
     public function validation()
@@ -182,4 +185,60 @@ class ContratsList extends Component
             $this->selectedContrats = [];
         }
     }
+
+    // save data of reglement 
+    public function addReglement($id)
+    {
+        $contrat = Contrat::where('id', $id)->first();
+        $this->id_contrat = $id;
+        $this->montant = $contrat->montant - $contrat->avance;
+        $this->name = $contrat->name;
+        $this->methode = 'cheque';
+        $this->datedebut = date('Y-m-d');
+
+
+
+    }
+
+    public function saveReglement()
+    {
+        $this->validate([
+            'datedebut' => 'required|date',
+        ]);
+        if ($this->methode == 'cheque') {
+            $this->validate([
+                'numero_cheque' => 'required|exists:cheques,numero',
+
+            ]);
+            $reglement = new Reglement();
+            $reglement->dateR = $this->datedebut;
+            $reglement->methode = $this->methode;
+            $reglement->montant = $this->montant;
+            $reglement->id_contrat = $this->id_contrat;
+            $reglement->numero_cheque = $this->numero_cheque;
+            $valide = $reglement->save();
+
+        } else {
+            $reglement = new Reglement();
+            $reglement->dateR = $this->datedebut;
+            $reglement->methode = $this->methode;
+            $reglement->montant = $this->montant;
+            $reglement->id_contrat = $this->id_contrat;
+            $valide = $reglement->save();
+
+        }
+
+      
+      
+        if ($valide) {
+            $this->dispatchBrowserEvent('close-model');
+            $this->dispatchBrowserEvent('add');
+        }else{
+            session()->flash('error', 'can\'t save this reglement ');
+        }
+
+
+    }
+
+// checked button 
 }

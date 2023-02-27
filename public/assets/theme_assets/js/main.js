@@ -1470,6 +1470,7 @@
     $("#overlayer").fadeOut(500, function () {
       $('body').removeClass('overlayScroll');
     });
-  })
+  });
+
 
 })(jQuery);

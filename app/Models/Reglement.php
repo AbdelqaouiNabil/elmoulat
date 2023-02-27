@@ -18,7 +18,6 @@ class Reglement extends Model
         'methode',
         'montant',
         'numero_cheque',
-        'id_facture',
         'id_contrat',
     ];
 

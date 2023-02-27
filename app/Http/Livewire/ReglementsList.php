@@ -46,45 +46,11 @@ class ReglementsList extends Component
         $this->bulkDisabled = count($this->selectedRegs) < 1;
         $reglements = Reglement::latest()->paginate($this->pages, ['*'], 'new');
         $factures = Facture::all();
-
-        // FILLTER BY SITUATION PAYED OR NOT PAYED
-        switch ($this->filter) {
-            case 'cash':
-                $reglements = Reglement::where('methode', 'cash')->paginate($this->pages, ['*'], 'new');
-                break;
-            case 'cheque':
-                $reglements = Reglement::where('methode', 'cheque')->paginate($this->pages, ['*'], 'new');
-                break;
-            default:
-                $reglements = Reglement::latest()->paginate($this->pages, ['*'], 'new');
-                break;
-        }
-        if ($this->search != "") {
-            $contrat = Contrat::where('cin_Ouv', 'like', '%' . $this->search . '%')->first();
-            if (!is_null($contrat)) {
-                $reglements = Reglement::where('id_contrat', $contrat->id)
-                    ->orWhere('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
-            } else {
-                $reglements = Reglement::where('dateR', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
-            }
-        }
-
+        $reglements = Reglement::where('dateR', 'like', '%' . $this->search . '%')
+        ->orWhere('methode', 'like', '%' . $this->search . '%')
+        ->paginate($this->pages, ['*'], 'new');
         return view('livewire.owner.reglements-list', ["reglements" => $reglements, "factures" => $factures]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function showReglement($id)
     {
@@ -147,12 +113,7 @@ class ReglementsList extends Component
         $this->montant = $reglement->montant;
         $this->methode = $reglement->methode;
         $this->numero_cheque = $reglement->numero_cheque;
-        if (!is_null($reglement->id_facture)) {
-            $facture = Facture::where('id', $reglement->id_facture)->first();
-            if (!is_null($facture)) {
-                $this->num_facture = $facture->numero;
-            }
-        }
+     
         if (!is_null($reglement->id_contrat)) {
             $contrat = Contrat::where('id', $reglement->id_contrat)->first();
             if (!is_null($contrat)) {
@@ -379,7 +340,6 @@ class ReglementsList extends Component
                 'montant' => $this->montant,
                 'methode' => $this->methode,
                 'numero_cheque' => $this->numero_cheque,
-                'id_facture' => $this->id_facture,
                 'id_contrat' => $this->id_contrat,
             ]);
 

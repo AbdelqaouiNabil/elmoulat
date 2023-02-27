@@ -15,8 +15,10 @@ class CreateFacturesTable extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fournisseur_id');
+            $table->unsignedBigInteger('fournisseur_id')->nullable();
             $table->foreign('fournisseur_id')->references('id')->on('fournisseurs'); 
+            $table->unsignedBigInteger('id_reglement')->nullable();
+            $table->foreign('id_reglement')->references('id')->on('fournisseurs'); 
             $table->string('numero')->unique();
             $table->date('date');
             $table->string('scan_pdf');
