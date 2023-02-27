@@ -20,8 +20,6 @@ class CreateReglementsTable extends Migration
             $table->string('methode');
             $table->float('montant');
             $table->integer('numero_cheque')->nullable();
-            $table->unsignedBigInteger('id_facture')->nullable();
-            $table->foreign('id_facture')->references('id')->on('factures');
             $table->unsignedBigInteger('id_contrat')->nullable();
             $table->foreign('id_contrat')->references('id')->on('contrats');
             $table->timestamps();

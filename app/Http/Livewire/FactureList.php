@@ -17,7 +17,7 @@ class FactureList extends Component
 {
     use WithFileUploads;
     use WithPagination;
-    public $numero, $date, $scan_pdf, $id_facture, $fournisseur_id, $type, $search, $montant, $prix, $caisse;
+    public $numero, $date, $scan_pdf, $id_facture, $fournisseur_id, $id_reglement, $type, $search, $montant, $prix, $caisse;
     public $selectRows = [];
     public $selectAll = false;
     public $bulkDisabled = true;
@@ -65,6 +65,8 @@ class FactureList extends Component
             'date' => 'required|date',
             'fournisseur_id' => 'required|integer',
             'caisse' => 'integer',
+            'id_reglement' => 'required|exists:reglements',
+
 
         ]);
     }
@@ -79,6 +81,7 @@ class FactureList extends Component
         $this->fournisseur_id = "";
         $this->montant = "";
         $this->prix = "";
+        $this->id_reglement = "";
 
     }
 
@@ -94,6 +97,8 @@ class FactureList extends Component
             'date' => 'required|date',
             'fournisseur_id' => 'required|integer',
             'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
+            'id_reglement' => 'required|exists:reglements',
+
            
         ]);
         if($this->type!='real'){
@@ -112,6 +117,7 @@ class FactureList extends Component
         $facture->type = $this->type;
         $facture->montant = $this->montant;
         $facture->fournisseur_id = $this->fournisseur_id;
+        $facture->id_reglement = $this->id_reglement;
         $facture->scan_pdf = $scanfile;
         $valide = $facture->save();
         
@@ -149,6 +155,7 @@ class FactureList extends Component
         $this->date = $facture->date;
         $this->type = $facture->type;
         $this->montant = $facture->montant;
+        $this->id_reglement = $facture->id_reglement;
         $this->fournisseur_id = $facture->fournisseur_id;
         if($this->type == 'fake' || $this->type == 'ajustement'){
          $retrait = Retrait::where('id_facture', $id)->first();
@@ -180,6 +187,8 @@ class FactureList extends Component
         $facture->type = $this->type;
         $facture->montant = $this->montant;
         $facture->fournisseur_id = $this->fournisseur_id;
+        $facture->id_reglement = $this->id_reglement;
+
         $valide = $facture->update();
         if ($valide && ($this->type == 'fake' || $this->type == 'ajustement')) {
             

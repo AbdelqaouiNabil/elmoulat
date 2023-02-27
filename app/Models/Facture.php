@@ -15,6 +15,7 @@ class Facture extends Model
      */
     protected $fillable = [
         'fournisseur_id',
+        'id_reglement',
         'type',
         'numero',
         'date',
