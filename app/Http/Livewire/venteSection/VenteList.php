@@ -46,8 +46,8 @@ class VenteList extends Component
         $projects = Projet::all();
         $clients = Client::all();
         $ventes = vente::where('titre', 'like', '%' . $this->search . '%')
-            ->orWhereHase('client' , function($query){$query->where('clients.n_cin', 'like', '%' . $this->search . '%');})
-            ->orWhere('clients.name', 'like', '%' . $this->search . '%')
+            ->orWhereHas('client' , function($query){$query->where('n_cin', 'like', '%' . $this->search . '%');})
+            ->orWhereHas('project' , function($query){$query->where('name', 'like', '%' . $this->search . '%');})
             ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
         return view('livewire.vente-section.vente-list', ['ventes' => $ventes, 'projects' => $projects, 'clients' => $clients]);
     }
@@ -196,7 +196,7 @@ class VenteList extends Component
 
     public function deletevente($id)
     {
-        dd($id);
+   
         $this->id_vente = $id;
     }
 
