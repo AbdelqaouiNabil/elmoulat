@@ -13,16 +13,16 @@
 
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-success btn-add" data-toggle="modal" wire:click="resetInputs()"
-                                        data-target="#modal-depot">
-                                        Ajouter  depot</button>
+                                    <button type="button" class="btn btn-sm btn-success btn-add" data-toggle="modal"
+                                        wire:click="resetInputs()" data-target="#modal-depot">
+                                        Ajouter depot</button>
 
 
                                 </div>
                                 <div class="action-btn">
 
-                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal" wire:click="resetInputs()"
-                                        data-target="#modal-basic">
+                                    <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
+                                        wire:click="resetInputs()" data-target="#modal-basic">
                                         <i class="la la-plus"></i>Ajouter</button>
 
 
@@ -182,8 +182,7 @@
                                         </li>
                                         <li class="atbd-pagination__item">
                                             <div class="paging-option">
-                                                <select name="page-number" class="page-selection"
-                                                    wire:model="pages">
+                                                <select name="page-number" class="page-selection" wire:model="pages">
                                                     <option value="05">05/page</option>
                                                     <option value="20">20/page</option>
                                                     <option value="40">40/page</option>
@@ -293,8 +292,8 @@
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label>Nom de Caisse</label>
-                                    <input class="form-control form-control-lg" type="text" name="name" required
-                                        wire:model.defer='name'>
+                                    <input class="form-control form-control-lg" type="text" name="name"
+                                        required wire:model.defer='name'>
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -303,8 +302,8 @@
 
                                 <div class="form-group mb-25">
                                     <label>Sold</label>
-                                    <input class="form-control form-control-lg" type="text" name="sold" required
-                                        wire:model.defer='sold'>
+                                    <input class="form-control form-control-lg" type="text" name="sold"
+                                        required wire:model.defer='sold'>
                                     @error('sold')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -312,8 +311,8 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Sold Non Justify</label>
-                                    <input class="form-control form-control-lg" type="text" name="sold_nonjustify" required
-                                        wire:model.defer='sold_nonjustify'>
+                                    <input class="form-control form-control-lg" type="text" name="sold_nonjustify"
+                                        required wire:model.defer='sold_nonjustify'>
                                     @error('sold_nonjustify')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -415,91 +414,92 @@
 
         {{-- add depot  modal --}}
         <div wire:ignore.self class="modal-basic modal fade show" id="modal-depot" tabindex="-1" role="dialog"
-        aria-hidden="true">
+            aria-hidden="true">
 
 
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content modal-bg-white ">
-                <div class="modal-header">
-                    <h6 class="modal-title">Ajouter Nouveau Depot</h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span data-feather="x"></span></button>
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Ajouter Nouveau Depot</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span data-feather="x"></span></button>
 
+                    </div>
+                    <div class="modal-body">
+
+                        <form enctype="multipart/form-data">
+                            <div class="form-basic">
+                                <div class="form-group mb-25">
+                                    <label>Montant</label>
+                                    <input class="form-control form-control-lg" type="text" name="montant"
+                                        wire:model.defer='montant'>
+                                    @error('montant')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Date</label>
+                                    <input class="form-control form-control-lg" type="date" name="dateC"
+                                        wire:model.defer='dateC'>
+                                    @error('dateC')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Numéro Cheque</label>
+                                    <input class="form-control form-control-lg" type="text" name="numero_cheque"
+                                        wire:model.defer='numero_cheque'>
+                                    @error('numero_cheque')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group mb-25 ">
+                                    <label>Caisse</label>
+                                    <select name="id_caisse" id="select-size-1" wire:model.defer='id_caisse'
+                                        class="form-control  form-control-lg">
+                                        <option value="" selected>select an option</option>
+                                        @foreach ($caisses as $c)
+                                            <option value="{{ $c->id }}">{{ $c->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('id_caisse')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group mb-25 ">
+                                    <label>Type Sold</label>
+                                    <select name="id_caisse" id="select-size-1" wire:model.defer='type_sold'
+                                        class="form-control  form-control-lg">
+                                        <option value="sold_nonJustify" selected>Non justify</option>
+                                        <option value="sold_justify">justify</option>
+
+                                    </select>
+                                    @error('type_sold')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button wire:click.prevent="saveDepot" type="submit"
+                            class="btn btn-primary btn-sm">Enregistrer
+                            Depot</button>
+                    </div>
+                    </form>
                 </div>
-                <div class="modal-body">
-
-                    <form enctype="multipart/form-data">
-                        <div class="form-basic">
-                            <div class="form-group mb-25">
-                                <label>Montant</label>
-                                <input class="form-control form-control-lg" type="text" name="montant"
-                                    wire:model.defer='montant'>
-                                @error('montant')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-
-                            </div>
-                            <div class="form-group mb-25">
-                                <label>Date</label>
-                                <input class="form-control form-control-lg" type="date" name="dateC"
-                                    wire:model.defer='dateC'>
-                                @error('dateC')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-25">
-                                <label>Numéro Cheque</label>
-                                <input class="form-control form-control-lg" type="text"
-                                    name="numero_cheque" wire:model.defer='numero_cheque'>
-                                @error('numero_cheque')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group mb-25 ">
-                                <label>Caisse</label>
-                                <select name="id_caisse" id="select-size-1" wire:model.defer='id_caisse'
-                                    class="form-control  form-control-lg">
-                                    <option value="" selected>select an option</option>
-                                    @foreach ($caisses as $c)
-                                        <option value="{{ $c->id }}">{{ $c->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('id_caisse')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group mb-25 ">
-                                <label>Type Sold</label>
-                                <select name="id_caisse" id="select-size-1" wire:model.defer='type_sold'
-                                    class="form-control  form-control-lg">
-                                    <option value="sold_nonJustify" selected>Non justify</option>
-                                    <option value="sold_justify" >justify</option>
-                                   
-                                </select>
-                                @error('type_sold')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button wire:click.prevent="saveDepot" type="submit"
-                        class="btn btn-primary btn-sm">Enregistrer
-                        Depot</button>
-                </div>
-                </form>
             </div>
         </div>
+
     </div>
+
+
+
+
 
 </div>
 
 
-
-
-    </div>
-
-</div>

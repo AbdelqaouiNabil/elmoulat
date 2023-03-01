@@ -42,8 +42,9 @@ class FournisseursList extends Component
 
         $fournisseurs = Fournisseur::where('name', 'like', '%'.$this->search.'%')
         ->orWhere('ice', 'like', '%'.$this->search.'%')
+        ->orWhereHas('domaine',function($query){$query->where('name', 'like', '%'.$this->search.'%');})
         ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        $fdomaines = f_domaine::all();
+        $fdomaines = f_domaine::groupBy('name')->get();
 
         return view('livewire.owner.project-section.fournisseurs-list', ['fournisseurs' => $fournisseurs, 'f_domaines' => $fdomaines]);
     }

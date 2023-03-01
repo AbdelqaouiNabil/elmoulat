@@ -152,6 +152,11 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
+                                                <span class="userDatatable-title">Domaine</span>
+                                                <a href="" wire:click.prevent="sort('id_domaine')"><i
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
+                                            </th>
+                                            <th>
                                                 <span class="userDatatable-title">adress</span>
                                                 <a href="" wire:click.prevent="sort('adress')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
@@ -231,6 +236,11 @@
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             {{ $ouvrier->notation }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $ouvrier->domaine->name }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -486,6 +496,23 @@
                                         </div>
 
                                     </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group mb-25">
+
+                                            <label>Domaine </label>
+                                            <select name="select-size-1" wire:model.defer='id_domaine' id="select-size-1"
+                                                class="form-control  form-control-lg">
+                                                <option selected>select an option</option>
+                                                @foreach ($domaines as $domaine)
+                                                    <option value="{{ $domaine->id }}">{{ $domaine->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('id_domaine')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+        
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -573,6 +600,16 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group mb-25 col-lg-12">
+                                                <label>Adress</label>
+                                                <input class="form-control form-control-lg" type="text" name="adress"
+                                                    wire:model.defer='adress'>
+                                                @error('adress')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
 
                                     </div>
                                     <div class="col-lg-6">
@@ -617,22 +654,31 @@
                                             </div>
 
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group mb-25 col-lg-12">
+    
+                                                <label>Domaine </label>
+                                                <select name="select-size-1" wire:model.defer='id_domaine' id="select-size-1"
+                                                    class="form-control  form-control-lg">
+                                                    <option selected>select an option</option>
+                                                    @foreach ($domaines as $domaine)
+                                                        <option value="{{ $domaine->id }}">{{ $domaine->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('id_domaine')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+            
+                                            </div>
+                                        </div>
+    
 
 
                                     </div>
 
                                 </div>
 
-                                <div class="row">
-                                    <div class="form-group mb-25 col-lg-12">
-                                        <label>Adress</label>
-                                        <input class="form-control form-control-lg" type="text" name="adress"
-                                            wire:model.defer='adress'>
-                                        @error('adress')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                
                             </div>
 
 

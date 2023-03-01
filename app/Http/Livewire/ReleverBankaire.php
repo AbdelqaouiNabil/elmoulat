@@ -96,6 +96,7 @@ class ReleverBankaire extends Component
 
     public function importData()
     {
+
        $this->validate([
         'file' => 'required|mimes:xlsx,xls'
        ]);
@@ -103,6 +104,7 @@ class ReleverBankaire extends Component
         $data = Excel::toArray(new releverBancaireImport, $this->file);
       
         // dd($data);
+
 
         // START (GETTING DATE AND ID_COMPTE AND CREATE A NEW RECORD ON THE DATABASE RELEVER BANCAIRE TABLE)
         $this->dateRelever = $this->getDateReleverBank($data[0][0]);

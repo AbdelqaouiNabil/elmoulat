@@ -11,12 +11,10 @@ class Retrait extends Model
     protected $fillable = [
         'id_caisse',
         'id_reglement',
+        'id_facture',
+        'id_depense',
         'montant',
         'dateRet',
         'id_depense',
-
-
-
-
     ];
 }

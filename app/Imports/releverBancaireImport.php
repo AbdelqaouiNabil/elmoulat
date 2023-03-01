@@ -20,6 +20,7 @@ class releverBancaireImport implements ToModel
         //    'ville'    => $row[1],
         //    'phone' => $row[2],
         // ]);
+        
     }
 
 

@@ -1484,7 +1484,9 @@
     <!-- inject:js-->
   
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
+
     {{-- <script src="{{('js/app.js')}}" ></script> --}}
+
  
   
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -1538,7 +1540,31 @@
 
 
 
+
 @livewireScripts
+=======
+    <script>
+    window.addEventListener('add', event => {
+    Swal.fire(
+        'Super!',
+        'Vous avez ajouter un nouveau caisse!',
+        'success'
+    );});
+
+window.addEventListener('close-model', event => {
+    $('#modal-basic').modal('hide');
+    $('#edit-modal').modal('hide');
+    $('#modal-info-delete').modal('hide');
+    $('#add-modal-reglement').modal('hide');
+    $('#modal-import').modal('hide');
+    
+    
+    });
+    </script>
+
+   
+
+
     {{-- High Charts --}}
    
     <!-- endinject-->

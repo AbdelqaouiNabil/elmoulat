@@ -364,6 +364,15 @@
 
                                 </div>
                                 <div class="form-group mb-25">
+                                    <label>Reglement (ID)</label>
+                                    <input class="form-control form-control-lg" type="text" name="id_reglement"
+                                        wire:model='id_reglement'>
+                                    @error('id_reglement')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
                                     <label>Facture PDF</label>
                                     <input class="form-control form-control-lg" type="file" name="scan_pdf"
                                         wire:model.defer='scan_pdf'>
@@ -484,6 +493,15 @@
 
                                     </select>
                                     @error('fournisseur_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Reglement (ID)</label>
+                                    <input class="form-control form-control-lg" type="text" name="id_reglement"
+                                        wire:model='id_reglement'>
+                                    @error('id_reglement')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
