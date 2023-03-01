@@ -27,11 +27,11 @@
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
-                                            <select name="select-size-1" wire:model="filter"
+                                            <select name="select-size-1" wire:model="search"
                                                 class="form-control  form-control-lg">
                                                 <option value="" selected>Order By</option>
                                                 <option value="payed">Payed</option>
-                                                <option value="notPayed">notPayed</option>
+                                                <option value="notPayed">Not Payed</option>
                                             </select>
                                         </div>
                                     </div>
@@ -59,16 +59,15 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            wire:click="buttonAjouter" data-toggle="modal" data-target="#modal-basic">
+                                            @if (is_null($projets) || is_null($fournisseurs) ) disabled @endif wire:click="resetInputs()"
+                                            data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
 
                                     </div>
-                                    @if ($charges->count() > 0)
+                                    @if (count($charges) > 0 && count($selectedCharges) > 0 && $checkIfnotPayed==true)
                                         <div class="action-btn">
                                             <button type="button" class="btn btn-sm btn-primary btn-add"
-                                                wire:click="checkChargeBeforeAddReg" data-toggle="modal"
-                                                data-target="#cree-reglement"
-                                                @if ($errordAjoutReg) disabled @endif>
+                                                data-toggle="modal" data-target="#cree-reglement">
                                                 <i class="la la-plus"></i> Créer un Règlement
                                             </button>
                                         </div>
@@ -80,267 +79,242 @@
                     </div>
                 </div>
             </div>
-            @if (session()->has('message'))
-                <div class="alert alert-success">
+            @if (count($projets) > 0 && count($fournisseurs) > 0)
+                @if (session()->has('message'))
+                    <div class="alert alert-success">
 
-                    {{ session('message') }}
+                        {{ session('message') }}
 
-                </div>
-            @endif
-            @if (session()->has('warning2'))
-                <div class="alert alert-warning">
+                    </div>
+                @endif
+                @if (session()->has('warning2'))
+                    <div class="alert alert-warning">
 
-                    {{ session('warning2') }}
+                        {{ session('warning2') }}
 
-                </div>
-            @endif
+                    </div>
+                @endif
+
+                @if ($charges->count() > 0)
+                    <div class="container-fluid">
+
+                        @if (!$bulkDisabled)
+                            <div class="action-btn mb-3">
+                                <button type="button" class="btn btn-sm btn-danger" wire:click="deleteSelected">
+                                    <i class="la la-trash"></i>delete selected</button>
+                            </div>
+                        @endif
+
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div
+                                    class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-borderless border-0">
+                                            <thead>
+                                                <tr class="userDatatable-header">
+                                                    <th>
+
+                                                        <div class="form-check">
+                                                            <input type="checkbox" wire:model="selectAll">
+                                                        </div>
 
 
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">id</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Nome de charge</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Bon</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Bon(PDF)</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Montant</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Date</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">type</span>
+                                                    </th>
 
 
+                                                    <th>
+                                                        <span class="userDatatable-title">situation</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Projet</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title">Fournisseur</span>
+                                                    </th>
+                                                    <th>
+                                                        <span class="userDatatable-title float-right">Actions</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-            @if ($charges->count() > 0)
-                <div class="container-fluid">
 
-                    @if (!$bulkDisabled)
-                        <div class="action-btn mb-3">
-                            <button type="button" class="btn btn-sm btn-danger" wire:click="deleteSelected">
-                                <i class="la la-trash"></i>delete selected</button>
-                        </div>
-                    @endif
+                                                @foreach ($charges as $CH)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input type="checkbox" wire:model="selectedCharges"
+                                                                    value="{{ $CH->id }}">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->id }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->name }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->bon }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                <a href=" {{ Storage::disk('local')->url($CH->bonpdf) }}"
+                                                                    target="_blank" type="application/pdf"
+                                                                    style="color: red; font-size:20px;"><i
+                                                                        class="fa-solid fa-file-pdf"></i></a>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->montant }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->date }}
+                                                            </div>
+                                                        </td>
 
-                    <div class="row">
-                        <div class="col-lg-12">
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->type }}
+                                                            </div>
+                                                        </td>
 
-                            <div
-                                class="userDatatable orderDatatable shipped-dataTable global-shadow border p-30 bg-white radius-xl w-100 mb-30">
-                                <div class="table-responsive">
-                                    <table class="table mb-0 table-borderless border-0">
-                                        <thead>
-                                            <tr class="userDatatable-header">
-                                                <th>
 
-                                                    <div class="form-check">
-                                                        <input type="checkbox" wire:model="selectAll">
+                                                        <td>
+                                                            @if ($CH->situation === 'payed')
+                                                                <div class="orderDatatable-title">
+                                                                    <span class="badge rounded-pill bg-success "
+                                                                        style="color:white; font-weight:700;">{{ $CH->situation }}</span>
+                                                                </div>
+                                                            @endif
+                                                            @if ($CH->situation === 'notPayed')
+                                                                <div class="orderDatatable-title">
+                                                                    <span class="badge rounded-pill bg-danger"
+                                                                        style="color:white;  font-weight:700;">{{ $CH->situation }}</span>
+                                                                </div>
+                                                            @endIf
+
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+
+                                                                {{ $CH->projet->name }}
+
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="orderDatatable-title">
+                                                                {{ $CH->fournisseur->name }}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <ul class="orderDatatable_actions mb-0 d-flex">
+
+                                                                <li><a href="#" class="remove"
+                                                                        data-toggle="modal" data-target="#edit-modal"
+                                                                        wire:click='editCharge({{ $CH->id }})'><i
+                                                                            class="fa-regular fa-pen-to-square"></i></a>
+                                                                </li>
+                                                                <li><a href="#" class="remove"
+                                                                        data-toggle="modal"
+                                                                        data-target="#modal-info-delete"
+                                                                        wire:click='deleteCharge({{ $CH->id }})'
+                                                                        style="color: red;"><i
+                                                                            class="fa-solid fa-trash"></i></a>
+                                                                </li>
+
+                                                            </ul>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+
+
+                                                <!-- End: tr -->
+
+                                            </tbody>
+                                        </table><!-- End: table -->
+                                    </div>
+                                    <div
+                                        class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
+
+                                        <nav class="atbd-page ">
+                                            <ul class="atbd-pagination d-flex">
+                                                <li class="atbd-pagination__item">
+                                                    {{ $charges->links('vendor.livewire.bootstrap') }}
+                                                </li>
+                                                <li class="atbd-pagination__item">
+
+                                                    <div class="paging-option">
+                                                        <select wire:model="pages" name="pages"
+                                                            class="page-selection">
+                                                            <option value="5">5/page</option>
+                                                            <option value="10">10/page</option>
+                                                            <option value="20">20/page</option>
+                                                            <option value="40">40/page</option>
+                                                        </select>
                                                     </div>
 
 
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">id</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">Nome de charge</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">type</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">bon</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">prix HT</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">TVA</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">QT</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">prix TTC</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">MTTTC</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">situation</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">Projet</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title">Fournisseur</span>
-                                                </th>
-                                                <th>
-                                                    <span class="userDatatable-title float-right">Actions</span>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                                </li>
+                                            </ul>
+                                        </nav>
 
 
-                                            @foreach ($charges as $CH)
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <input type="checkbox" wire:model="selectedCharges"
-                                                                value="{{ $CH->id }}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->id }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->name }}
-                                                        </div>
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->type }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->bon }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->prix_ht }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->tva }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->QT }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->prix_TTC }}
-                                                        </div>
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            {{ $CH->MTTTC }}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        @if ($CH->situation === 'payed')
-                                                            <div class="orderDatatable-title">
-                                                                <span class="badge rounded-pill bg-success "
-                                                                    style="color:white; font-weight:700;">{{ $CH->situation }}</span>
-                                                            </div>
-                                                        @endif
-                                                        @if ($CH->situation === 'notPayed')
-                                                            <div class="orderDatatable-title">
-                                                                <span class="badge rounded-pill bg-danger"
-                                                                    style="color:white;  font-weight:700;">{{ $CH->situation }}</span>
-                                                            </div>
-                                                        @endIf
-
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            @if (!is_null($CH->projet))
-                                                                {{ $CH->projet->name }}
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="orderDatatable-title">
-                                                            @if (!is_null($CH->fournisseur))
-                                                                {{ $CH->fournisseur->name }}
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <ul class="orderDatatable_actions mb-0 d-flex">
-
-                                                            <li><a href="#" class="remove" data-toggle="modal"
-                                                                    data-target="#edit-modal"
-                                                                    wire:click='editCharge({{ $CH->id }})'><i
-                                                                        class="fa-regular fa-pen-to-square"></i></a>
-                                                            </li>
-                                                            <li><a href="#" class="remove" data-toggle="modal"
-                                                                    data-target="#modal-info-delete"
-                                                                    wire:click='deleteCharge({{ $CH->id }})'
-                                                                    style="color: red;"><i
-                                                                        class="fa-solid fa-trash"></i></a>
-                                                            </li>
-
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-
-
-                                            <!-- End: tr -->
-
-                                        </tbody>
-                                    </table><!-- End: table -->
-                                </div>
-                                <div
-                                    class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
-
-                                    <nav class="atbd-page ">
-                                        <ul class="atbd-pagination d-flex">
-                                            <li class="atbd-pagination__item">
-                                                {{ $charges->links('vendor.livewire.bootstrap') }}
-                                            </li>
-                                            <li class="atbd-pagination__item">
-
-                                                <div class="paging-option">
-                                                    <select wire:model="pages" name="pages" class="page-selection">
-                                                        <option value="5">5/page</option>
-                                                        <option value="10">10/page</option>
-                                                        <option value="20">20/page</option>
-                                                        <option value="40">40/page</option>
-                                                    </select>
-                                                </div>
-
-
-                                            </li>
-                                        </ul>
-                                    </nav>
-
-
-                                </div>
-                            </div><!-- End: .userDatatable -->
-                        </div><!-- End: .col -->
+                                    </div>
+                                </div><!-- End: .userDatatable -->
+                            </div><!-- End: .col -->
+                        </div>
+                    </div>
+                @else
+                    <div class="h-100 d-flex align-items-center justify-content-center">
+                        table Charges is empty
+                    </div>
+                @endif
+            @else
+                <div class="alert alert-warning d-flex align-items-center mt-5" role="alert">
+                    <span class="mr-2" aria-label="Warning:"><i
+                            class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
+                    <div>
+                        Vous deviez crée un projet et un fournisseur avant de crée un charge
                     </div>
                 </div>
-            @else
-                <div class="h-100 d-flex align-items-center justify-content-center">
-                    table Charges is empty
-                </div>
+
             @endif
-
-
-
-            {{--
-            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer>
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('#myTable01').DataTable({
-                        dom: 'ft',
-                    });
-                });
-            </script> --}}
-
-
-
-
-
-
-
 
             {{-- add Charge  modal --}}
             <div wire:ignore.self class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog"
                 aria-hidden="true">
-
-
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content modal-bg-white ">
                         <div class="modal-header">
@@ -350,16 +324,10 @@
                         </div>
                         <div class="modal-body">
 
-                            <form enctype="multipart/form-data">
+                            <form enctype="multipart/form-data" wire:submit.prevent="saveCharge">
                                 <div class="form-basic">
 
-                                    @if (session()->has('warning'))
-                                        <div class="alert alert-warning form-group mb-25">
 
-                                            {{ session('warning') }}
-
-                                        </div>
-                                    @endif
                                     <div class="row">
                                         <div class="col mt-6">
 
@@ -373,7 +341,7 @@
 
                                             </div>
                                             <div class="form-group mb-25">
-                                                <label>bon</label>
+                                                <label>Numéro Bon</label>
                                                 <input class="form-control form-control-lg" type="text"
                                                     name="bon" wire:model.defer='bon'>
                                                 @error('bon')
@@ -381,22 +349,13 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group mb-25">
-                                                <label>tva</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="tva" wire:model.defer='tva'>
-                                                @error('tva')
+                                                <label>Le Bon (PDF)</label>
+                                                <input class="form-control form-control-lg" type="file"
+                                                    name="bonpdf" wire:model.defer='bonpdf'>
+                                                @error('bonpdf')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            {{-- <div class="form-group mb-25">
-                                                <label>prix_TTC</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="prix_TTC" wire:model.defer='prix_TTC'>
-                                                @error('prix_TTC')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div> --}}
-
                                             <div class="form-group mb-25 ">
                                                 <label>Fournisseur</label>
                                                 <select name="fournisseur_id" id="select-size-1"
@@ -412,45 +371,63 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-
-
-
+                                            @if ($calculateMontant)
+                                                <div class="form-group mb-25">
+                                                    <label>Prix HT</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        id="prix" name="prixht" wire:model='prixht'>
+                                                    @error('prixht')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group mb-25">
+                                                    <label>TVA</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        name="tva" wire:model='tva'>
+                                                    @error('tva')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="col mt-6">
 
-
+                                            <div class="form-group mb-25">
+                                                <label>Date</label>
+                                                <input class="form-control form-control-lg" type="date"
+                                                    name="date" wire:model.defer='date'>
+                                                @error('date')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                             <div class="form-group mb-25">
                                                 <label>Type</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="type" wire:model.defer='type'>
+                                                <select name="type" id="select-size-1" wire:model.defer='type'
+                                                    class="form-control  form-control-lg">
+                                                    <option selected>select an option</option>
+                                                    @foreach ($this->chargetype as $type)
+                                                        <option value="{{ $type }}">{{ $type }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                                 @error('type')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                             <div class="form-group mb-25">
-                                                <label>prix_ht</label>
+                                                <label>Montant Total <input type="checkbox"
+                                                        wire:model='calculateMontant'>
+                                                    (<i style="color:rgb(160, 160, 18)"
+                                                        class="fa-solid fa-triangle-exclamation"></i>check to
+                                                    calculate)</label>
                                                 <input class="form-control form-control-lg" type="text"
-                                                    name="prix_ht" wire:model.defer='prix_ht'>
-                                                @error('prix_ht')
+                                                    @if ($calculateMontant) disabled @endif name="montant"
+                                                    wire:model.defer='montant'>
+                                                @error('montant')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="form-group mb-25">
-                                                <label>QT</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="QT" wire:model.defer='QT'>
-                                                @error('QT')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            {{-- <div class="form-group mb-25">
-                                                <label>MTTTC</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="MTTTC" wire:model.defer='MTTTC'>
-                                                @error('MTTTC')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div> --}}
+
                                             <div class="form-group mb-25 ">
                                                 <label>Projet</label>
                                                 <select name="id_projet" id="select-size-1"
@@ -466,57 +443,30 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+                                            @if ($calculateMontant)
+                                                <div class="form-group mb-25">
+                                                    <label>QT</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        name="QT" wire:model='QT'>
+                                                    @error('QT')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
 
+                                                <div class="form-group mb-25">
+                                                    <label>Montant Total</label>
+                                                    <input class="form-control form-control-lg"
+                                                        value="{{ $montant }} DH" disabled name="montant">
 
-
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col mt-6">
-
-
-                                            <div class="form-group mb-25">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="situation"
-                                                        value="notPayed" checked wire:model.defer='situation'>
-                                                    <label class="form-check-label">
-                                                        impayé
-                                                    </label>
-                                                </div>
-                                                @error('situation')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-
-
-                                        </div>
-                                        <div class="col mt-6">
-
-
-                                            <div class="form-group mb-25">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="radio" value="payed"
-                                                        disabled wire:model.defer='situation' name="situation">
-                                                    <label class="form-check-label">
-                                                        payé
-                                                    </label>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-
-
 
                                 </div>
                         </div>
                         <div class="modal-footer">
-                            <button wire:click.prevent="saveCharge" type="submit"
-                                @if ($noProjectOrFourniss) disabled @endif
-                                class="btn btn-primary btn-sm">Enregistrer
-                                Charge</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Enregistrer Charge</button>
                         </div>
                         </form>
                     </div>
@@ -544,14 +494,8 @@
 
                         <form wire:submit.prevent='editData'>
                             <div class="form-basic">
-
-
-
-
                                 <div class="row">
                                     <div class="col mt-6">
-
-
 
                                         <div class="form-group mb-25">
                                             <label>Nom de charge</label>
@@ -563,7 +507,7 @@
 
                                         </div>
                                         <div class="form-group mb-25">
-                                            <label>bon</label>
+                                            <label>Numéro Bon</label>
                                             <input class="form-control form-control-lg" type="text" name="bon"
                                                 wire:model.defer='bon'>
                                             @error('bon')
@@ -571,29 +515,23 @@
                                             @enderror
                                         </div>
                                         <div class="form-group mb-25">
-                                            <label>tva</label>
-                                            <input class="form-control form-control-lg" type="text" name="tva"
-                                                wire:model.defer='tva'>
-                                            @error('tva')
+                                            <label>Le Bon (PDF)</label>
+                                            <input class="form-control form-control-lg" type="file" name="bonpdf"
+                                                value="{{ asset('' . $bonpdf . '') }}" wire:model.defer='bonpdf'>
+
+                                            @error('bonpdf')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        {{-- <div class="form-group mb-25">
-                                            <label>prix_TTC</label>
-                                            <input class="form-control form-control-lg" type="text"
-                                                name="prix_TTC" wire:model.defer='prix_TTC'>
-                                            @error('prix_TTC')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div> --}}
-
                                         <div class="form-group mb-25 ">
                                             <label>Fournisseur</label>
                                             <select name="fournisseur_id" id="select-size-1"
                                                 wire:model.defer='fournisseur_id'
                                                 class="form-control  form-control-lg">
+                                                <option selected>select an option</option>
                                                 @foreach ($fournisseurs as $f)
-                                                    <option value="{{ $f->id }}">{{ $f->name }}</option>
+                                                    <option value="{{ $f->id }}">{{ $f->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('fournisseur_id')
@@ -601,50 +539,48 @@
                                             @enderror
                                         </div>
 
-
-
                                     </div>
                                     <div class="col mt-6">
 
-
+                                        <div class="form-group mb-25">
+                                            <label>Date</label>
+                                            <input class="form-control form-control-lg" type="date" name="date"
+                                                wire:model.defer='date'>
+                                            @error('date')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                         <div class="form-group mb-25">
                                             <label>Type</label>
-                                            <input class="form-control form-control-lg" type="text" name="type"
-                                                wire:model.defer='type'>
+                                            <select name="type" id="select-size-1" wire:model.defer='type'
+                                                class="form-control  form-control-lg">
+                                                <option selected>select an option</option>
+                                                @foreach ($this->chargetype as $type)
+                                                    <option value="{{ $type }}">{{ $type }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                             @error('type')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="form-group mb-25">
-                                            <label>prix_ht</label>
-                                            <input class="form-control form-control-lg" type="text" name="prix_ht"
-                                                wire:model.defer='prix_ht'>
-                                            @error('prix_ht')
+                                            <label>Montant Total </label>
+                                            <input class="form-control form-control-lg" type="text" name="montant"
+                                                wire:model.defer='montant'>
+                                            @error('montant')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="form-group mb-25">
-                                            <label>QT</label>
-                                            <input class="form-control form-control-lg" type="text" name="QT"
-                                                wire:model.defer='QT'>
-                                            @error('QT')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        {{-- <div class="form-group mb-25">
-                                            <label>MTTTC</label>
-                                            <input class="form-control form-control-lg" type="text" name="MTTTC"
-                                                wire:model.defer='MTTTC'>
-                                            @error('MTTTC')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div> --}}
+
                                         <div class="form-group mb-25 ">
                                             <label>Projet</label>
                                             <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
                                                 class="form-control  form-control-lg">
+                                                <option selected>select an option</option>
                                                 @foreach ($projets as $p)
-                                                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                                    <option value="{{ $p->id }}">{{ $p->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error('id_projet')
@@ -652,20 +588,9 @@
                                             @enderror
                                         </div>
 
-
-
                                     </div>
                                 </div>
-
-
-
-
-
-
-
                             </div>
-
-
                             <div class="modal-footer">
                                 <button type="submit" wire:click.prevent="updateCharge"
                                     class="btn btn-primary btn-sm">Enregistrer Charge</button>
@@ -742,9 +667,7 @@
                     <div class="modal-body">
                         @if (session()->has('error'))
                             <div class="alert alert-danger form-group mb-25">
-
                                 {{ session('error') }}
-
                             </div>
                         @endif
                         <form enctype="multipart/form-data">
@@ -757,8 +680,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-
                                 <div class="form-group mb-25">
                                     <label>Montant Total</label>
                                     <input class="form-control form-control-lg" type="text"
@@ -820,23 +741,4 @@
 
     </div>
 
-
-
-
 </div>
-<script>
-    window.addEventListener('close-model', event => {
-        $('#modal-basic').modal('hide');
-        $('#edit-modal').modal('hide');
-        $('#modal-info-delete').modal('hide');
-    });
-
-
-    window.addEventListener('add', event => {
-        Swal.fire(
-            'Super!',
-            'Vous avez ajouter un nouveau projet!',
-            'success'
-        )
-    });
-</script>

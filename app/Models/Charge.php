@@ -22,24 +22,22 @@ class Charge extends Model
        'name',
        'type',
        'bon',
-       'prix_ht',
-       'tva',
-       'QT',
-       'prix_TTC',
-       'MTTTC',
+       'bonpdf',
+       'date',
+       'montant',
        'situation',
    ];
 
 
     public function projet(){
-    return $this->belongsTo('App\Models\Projet', 'id_projet');
+    return $this->belongsTo(Projet::class, 'id_projet');
    }
     public function reglement(){
-        return $this->belongsTo('App\Models\Reglement', 'id_reglement');
+        return $this->belongsTo(Reglement::class, 'id_reglement');
     }
 
     public function fournisseur(){
-    return $this->belongsTo('App\Models\Fournisseur', 'fournisseur_id');
+    return $this->belongsTo(Fournisseur::class, 'fournisseur_id');
    }
 
 

@@ -23,12 +23,10 @@ class CreateChargesTable extends Migration
             $table->foreign('id_reglement')->references('id')->on('reglements');
             $table->string('name');
             $table->string('type');
+            $table->date('date');
             $table->string('bon');
-            $table->double('prix_ht');
-            $table->float('tva');
-            $table->double('QT');
-            $table->double('prix_TTC');
-            $table->double('MTTTC');
+            $table->string('bonpdf');
+            $table->double('montant');
             $table->enum('situation',['payed','notPayed'])->default('notPayed');
 
             $table->timestamps();

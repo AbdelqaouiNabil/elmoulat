@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use File;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use App\Models\Charge;
 use App\Models\Projet;
@@ -20,80 +22,59 @@ class ChargesList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_Charge, $name, $dateR, $fournisseur_id, $id_projet, $type,
-        $bon, $prix_ht, $tva, $QT, $prix_TTC, $MTTTC, $situation;
-    public $selectedOption;
-    public $pages = 10;
+    public $id_Charge, $name, $date, $montant, $bonpdf, $dateR, $fournisseur_id, $id_projet, $type,
+    $bon, $prixht, $tva, $QT, $prix_TTC, $MTTTC, $situation, $calculateMontant;
+    public $search;
+    public $checkIfnotPayed=false;
+    public $pages = 5;
     public $bulkDisabled = true;
     public $selectedCharges = [];
     public $selectAll = false;
-    public $filter;
-    public $search = "";
-   
-    // protected $queryString  = ['search'];
-
-    // reglement
-    public $montant;
+    public $sortname="id";
+    public $sortdrection="DESC";
     public $montantArray = [];
-    public  $methode, $numero_cheque, $id_facture;
+    public $methode, $numero_cheque, $id_facture;
     public $numFacture;
     public $errordAjoutReg = true;
     // Method check or Cash
-  
-    public function mount(){
-        $this->montant = 0;
-    }
 
+   
     public function updatedPages()
     {
         $this->resetPage('new');
     }
 
+    public $chargetype = ["Administration", "Aluminium", "Ascenseur", "Béton", "Branchement", "Brique", "Bureautique", "Carrelage", "Ciment", "Climatisation", "Concassore	", "Divers", "Entretien", "Fer", "Ferronnerie", "Gravette", "Grillage", "Honoraire", "Hourdis", "Marbre", "Matériel cuisine", "Matériel électricité", "Matériel Plomberie", "Menuiserie", "MO carrelage", "MO chef chantier", "MO construction", "MO divers", "MO Electricité", "MO Gardiennage", "MO Ménage et Nettoyage", "MO Peinture", "MO plâtre", "MO Plomberie", "Parquet", "Peinture", "Pointe", "Poutrelle", "Sable", "Sanitaire", "Signalisation et publicité", "Taxe et impôt", "Terrain", "Transport et véhicule",];
     public function render()
     {
-        // $this->dateR = date('Y.m.d');
 
         $this->bulkDisabled = count($this->selectedCharges) < 1;
         $fournisseurs = Fournisseur::all();
         $projets = Projet::all();
         $cheques = Cheque::where('situation', 'disponible')->get();
-
-
-        // FILLTER BY SITUATION PAYED OR NOT PAYED
-        switch ($this->filter) {
-            case 'payed':
-                $charges = Charge::where('situation', 'payed')->paginate($this->pages, ['*'], 'new');
-                break;
-            case 'notPayed':
-                $charges = Charge::where('situation', 'notPayed')->paginate($this->pages, ['*'], 'new');
-                break;
-            default:
-                $charges = Charge::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
-                break;
-        }
-        if ($this->search != "") {
-
-            // filtr by fournisseur or Projet
-            $fournisseur = Fournisseur::where('name', 'like', '%' . $this->search . '%')->first();
-            $projet = Projet::where('name', 'like', '%' . $this->search . '%')->first();
-            if ($fournisseur) {
-                $charges = Charge::where('fournisseur_id', 'like', '%' . $fournisseur->id . '%')->paginate($this->pages, ['*'], 'new');
-            } else {
-                if ($projet) {
-                    $charges = Charge::where('id_projet', 'like', '%' . $projet->id . '%')->paginate($this->pages, ['*'], 'new');
-                } else {
-                    $charges = Charge::where('name', 'like', '%' . $this->search . '%')
-                        ->orWhere('type', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
-                }
-            }
-        }
+        $charges = Charge::where('name', 'like', '%' . $this->search . '%')
+        ->orWhere('situation', 'like', '%' . $this->search . '%')
+        ->orWhereHas('fournisseur', function($query){$query->where('name', 'like', '%' . $this->search . '%');})
+        ->orWhereHas('projet', function($query){$query->where('name', 'like', '%' . $this->search . '%');})
+        ->orderBy($this->sortname, $this->sortdrection)
+        ->paginate($this->pages, ['*'], 'new');
         return view('livewire.owner.charges-list', ['charges' => $charges, 'fournisseurs' => $fournisseurs, 'projets' => $projets, 'cheques' => $cheques]);
     }
 
+    public function sort($value){
+        if($this->sortname==$value && $this->sortdrection=="DESC"){
+            $this->sortdrection="ASC";
+        }
+        else{
+            if($this->sortname==$value && $this->sortdrection=="ASC"){
+                $this->sortdrection="DESC";
+            }
+        }
+        $this->sortname=$value;
 
+    }
 
     // REGLEMENTS
-
     // method cheque ou non cheque
     public $optionC = false;
     public function optionCheque()
@@ -114,9 +95,9 @@ class ChargesList extends Component
             $this->avecF = true;
         }
     }
-  
-   
-   
+
+
+
     // REGLEMENT CRUD
     public function addReg()
     {
@@ -125,7 +106,6 @@ class ChargesList extends Component
             'montant' => 'required',
         ]);
         $pass = true;
-
         // getting the facture's id from facture table
         if (!(is_null($this->numFacture))) {
             $facture = Facture::where('numero', $this->numFacture)->first();
@@ -171,12 +151,10 @@ class ChargesList extends Component
             }
 
             $this->updateChargeAfterReg($reglement);
-
             // modifier sold
             if ($reglement->methode == "cash") {
                 $this->UpdateCaisseAfterSave($reglement->id);
             }
-
 
             session()->flash('message', 'Reglement added successfully');
             $this->resetInputs();
@@ -248,74 +226,82 @@ class ChargesList extends Component
     {
         // $this->dateR = date('Y.m.d');
         if ($this->selectedCharges) {
-            
+
             // for checking whether they have the same project id
             $chargeAComparer = Charge::where('id', $this->selectedCharges[0])->first();
-            $this->montant = Charge::whereIn('id',$this->selectedCharges)->sum('MTTTC');
-            
-            foreach($this->selectedCharges as $ch) {
+            $this->montant = Charge::whereIn('id', $this->selectedCharges)->sum('MTTTC');
+
+            foreach ($this->selectedCharges as $ch) {
                 $charge = Charge::where('id', $ch)->first();
-               
                 $situat = $charge->situation;
                 if ($situat === 'payed') {
                     $this->errordAjoutReg = true;
                     session()->flash('warning2', 'impossible de cree un reglement a une charge deja paye');
                 } else {
 
-                    if($charge->id_projet != $chargeAComparer->id_projet){
+                    if ($charge->id_projet != $chargeAComparer->id_projet) {
                         $this->errordAjoutReg = true;
                         session()->flash('warning2', 'les charges ne sont pas apartier au meme projet');
-                    }
+                    } else {
 
-                    else{
-                       
                         $this->errordAjoutReg = false;
                     }
                 }
             }
         } else {
-           
+
             $this->errordAjoutReg = true;
         }
-     
+
     }
-
-
-
-
     // CHARGE CRUD
-
     public function editCharge($id)
     {
+        $this->resetInputs();
         $charge = Charge::where('id', $id)->first();
-        $this->id_Charge = $charge->id;
+        $this->id_Charge = $id;
         $this->name = $charge->name;
         $this->type = $charge->type;
         $this->bon = $charge->bon;
-        $this->prix_ht = $charge->prix_ht;
-        $this->tva = $charge->tva;
-        $this->QT = $charge->QT;
+        $this->montant = $charge->montant;
+        $this->date = $charge->date;
         $this->id_projet = $charge->id_projet;
         $this->fournisseur_id = $charge->fournisseur_id;
     }
 
     public function updateCharge()
     {
-        $this->calculePrixTTC();
-        $this->calculerMTTTC();
+        $this->validate([
+            'name' => 'required',
+            'type' => 'required',
+            'bon' => 'required',
+            'bonpdf' => 'mimes:pdf',
+            'date' => 'required|date',
+            'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'fournisseur_id' => 'required',
+            'id_projet' => 'required',
+        ]);
+
         $charge = Charge::where('id', $this->id_Charge)->first();
+        if ($this->bonpdf ) {
+            $path = Storage::disk('local')->url($charge->bonpdf);
+            File::delete(public_path($path));
+            $charge->bonpdf = $this->bonpdf->store('Documents/charge/bon', 'public');
+        }
         $charge->name = $this->name;
-        $charge->type  = $this->type;
+        $charge->type = $this->type;
         $charge->bon = $this->bon;
-        $charge->prix_ht = $this->prix_ht;
-        $charge->tva = $this->tva;
-        $charge->QT = $this->QT;
-        $charge->prix_TTC = $this->prix_TTC;
-        $charge->MTTTC = $this->MTTTC;
-        $charge->id_projet  = $this->id_projet;
-        $charge->fournisseur_id  = $this->fournisseur_id;
-        $charge->save();
-        session()->flash('message', 'Charge bien modifer');
+        $charge->montant = $this->montant;
+        $charge->date = $this->date;
+        $charge->id_projet = $this->id_projet;
+        $charge->fournisseur_id = $this->fournisseur_id;
+        $valide=$charge->save();
+        if($valide){
+         session()->flash('message', 'Charge bien modifer');
+
+        }else{
+        session()->flash('error', 'invalide data of charge');
+        }
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');
     }
@@ -337,9 +323,7 @@ class ChargesList extends Component
         session()->flash('message', 'Charge deleted successfully');
         $this->dispatchBrowserEvent('close-model');
     }
-
-
-    public function  deleteSelected()
+    public function deleteSelected()
     {
 
         Charge::query()
@@ -349,107 +333,113 @@ class ChargesList extends Component
         $this->selectedCharges = [];
         $this->selectAll = false;
     }
-
-
-
+    // for calcalte montant when the user typing inside inputs 
+    public function updatedQT()
+    {
+        if (is_numeric($this->tva) && is_numeric($this->prixht) && is_numeric($this->QT)) {
+            $this->montant = (($this->prixht * ($this->tva * 0.01)) + $this->prixht) * $this->QT;
+        }
+    }
+    public function updatedTva()
+    {
+        if (is_numeric($this->tva) && is_numeric($this->prixht) && is_numeric($this->QT)) {
+            $this->montant = (($this->prixht * ($this->tva * 0.01)) + $this->prixht) * $this->QT;
+        }
+    }
+    public function updatedPrixht()
+    {
+        if (is_numeric($this->tva) && is_numeric($this->prixht) && is_numeric($this->QT)) {
+            $this->montant = (($this->prixht * ($this->tva * 0.01)) + $this->prixht) * $this->QT;
+        }
+    }
     public function saveCharge()
     {
-        $this->validation();
-        $this->calculePrixTTC();
-        $this->calculerMTTTC();
+        if ($this->calculateMontant) {
+
+            $this->validate([
+                'name' => 'required',
+                'type' => 'required',
+                'bon' => 'required',
+                'bonpdf' => 'required|mimes:pdf',
+                'date' => 'required|date',
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'fournisseur_id' => 'required',
+                'id_projet' => 'required',
+                'prixht' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'QT' => 'required|integer',
+                'tva' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+
+            ]);
+            $this->montant = (($this->prixht * ($this->tva * 0.01)) + $this->prixht) * $this->QT;
+        } else {
+            $this->validate([
+                'name' => 'required',
+                'type' => 'required',
+                'bon' => 'required',
+                'bonpdf' => 'required|mimes:pdf',
+                'date' => 'required|date',
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'fournisseur_id' => 'required',
+                'id_projet' => 'required',
+
+            ]);
+        }
+
+        $pdf = $this->bonpdf->store('Documents/charge/bon', 'public');
         $charge = Charge::create([
             'name' => $this->name,
             'type' => $this->type,
             'bon' => $this->bon,
-            'prix_ht' => $this->prix_ht,
-            'tva' => $this->tva,
-            'QT' => $this->QT,
-            'prix_TTC' => $this->prix_TTC,
-            'MTTTC' => $this->MTTTC,
-            'situation' => $this->situation,
+            'bonpdf' => $pdf,
+            'date' => $this->date,
+            'montant' => $this->montant,
             'id_projet' => $this->id_projet,
             'fournisseur_id' => $this->fournisseur_id,
             'id_reglement' => null,
         ]);
+        if ($charge) {
+            session()->flash('message', 'Charge created successfully');
 
-        session()->flash('message', 'Charge created successfully');
+        } else {
+            session()->flash('error', 'invalide data');
+        }
+
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');
     }
 
-
-    public $noProjectOrFourniss = false;
-
-    public function buttonAjouter()
-    {
-        $this->resetInputs();
-        $projects = Projet::all();
-        $fournisseurs = Fournisseur::all();
-        if ($projects->isEmpty() || $fournisseurs->isEmpty()) {
-            session()->flash('warning', "Project or fournisseur 's table is null");
-            $this->noProjectOrFourniss = true;
-        } else {
-            $this->noProjectOrFourniss = false;  
-        }
-    }
 
     public function resetInputs()
     {
 
         $this->name = "";
         $this->type = "";
-        $this->bon  = "";
-        $this->prix_ht = "";
-        $this->tva = "";
+        $this->bon = "";
+        $this->bonpdf = "";
+        $this->prixht = "";
+        $this->date = date('Y-m-d');
         $this->QT = "";
-    }
-
-    public function validation()
-    {
-        $this->validate([
-            'name' => 'required',
-            'type' => 'required',
-            'bon' => 'required',
-            'prix_ht' => 'required',
-            'tva' => 'required',
-            'QT' => 'required',
-            'fournisseur_id' => 'required',
-            'id_projet' => 'required',
-            'situation' => 'required',
-        ]);
+        $this->montant = "";
+        $this->tva = "";
     }
 
     public function updatedSelectAll($value)
     {
         if ($value) {
             $this->selectedCharges = Charge::pluck('id');
-            $this->errordAjoutReg= false;
-            
-            
+
         } else {
             $this->selectedCharges = [];
-            $this->errordAjoutReg= true;
+            $this->errordAjoutReg = true;
         }
     }
-    
-    public function updatedselectedCharges($value)
-    {
-        if($value){
-            $this->checkChargeBeforeAddReg();
-        }
+
+    public function updatedSelectedCharges(){
+        $charge=Charge::whereIn('id', $this->selectedCharges)->where('situation','payed')->get();
+        $this->checkIfnotPayed=(count($charge)>0)?false:true;
         
-       
-       
     }
 
-  
+    
 
-    public function calculePrixTTC()
-    {
-        $this->prix_TTC = $this->prix_ht + ($this->prix_ht * ($this->tva / 100));
-    }
-    public function calculerMTTTC()
-    {
-        $this->MTTTC = ($this->prix_TTC * $this->QT);
-    }
 }
