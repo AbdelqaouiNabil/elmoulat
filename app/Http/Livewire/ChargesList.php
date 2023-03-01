@@ -29,14 +29,20 @@ class ChargesList extends Component
     public $selectAll = false;
     public $filter;
     public $search = "";
+   
     // protected $queryString  = ['search'];
 
     // reglement
-    public $montant, $methode, $numero_cheque, $id_facture;
+    public $montant;
+    public $montantArray = [];
+    public  $methode, $numero_cheque, $id_facture;
     public $numFacture;
     public $errordAjoutReg = true;
     // Method check or Cash
-
+  
+    public function mount(){
+        $this->montant = 0;
+    }
 
     public function updatedPages()
     {
@@ -70,10 +76,10 @@ class ChargesList extends Component
             // filtr by fournisseur or Projet
             $fournisseur = Fournisseur::where('name', 'like', '%' . $this->search . '%')->first();
             $projet = Projet::where('name', 'like', '%' . $this->search . '%')->first();
-            if (!is_null($fournisseur)) {
+            if ($fournisseur) {
                 $charges = Charge::where('fournisseur_id', 'like', '%' . $fournisseur->id . '%')->paginate($this->pages, ['*'], 'new');
             } else {
-                if ((!is_null($projet))) {
+                if ($projet) {
                     $charges = Charge::where('id_projet', 'like', '%' . $projet->id . '%')->paginate($this->pages, ['*'], 'new');
                 } else {
                     $charges = Charge::where('name', 'like', '%' . $this->search . '%')
@@ -108,7 +114,9 @@ class ChargesList extends Component
             $this->avecF = true;
         }
     }
-
+  
+   
+   
     // REGLEMENT CRUD
     public function addReg()
     {
@@ -239,13 +247,15 @@ class ChargesList extends Component
     public function checkChargeBeforeAddReg()
     {
         // $this->dateR = date('Y.m.d');
-        if (count($this->selectedCharges) != 0) {
-
+        if ($this->selectedCharges) {
+            
             // for checking whether they have the same project id
             $chargeAComparer = Charge::where('id', $this->selectedCharges[0])->first();
-
-            foreach ($this->selectedCharges as $ch) {
+            $this->montant = Charge::whereIn('id',$this->selectedCharges)->sum('MTTTC');
+            
+            foreach($this->selectedCharges as $ch) {
                 $charge = Charge::where('id', $ch)->first();
+               
                 $situat = $charge->situation;
                 if ($situat === 'payed') {
                     $this->errordAjoutReg = true;
@@ -258,31 +268,17 @@ class ChargesList extends Component
                     }
 
                     else{
+                       
                         $this->errordAjoutReg = false;
                     }
                 }
             }
         } else {
-
+           
             $this->errordAjoutReg = true;
         }
+     
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -354,6 +350,8 @@ class ChargesList extends Component
         $this->selectAll = false;
     }
 
+
+
     public function saveCharge()
     {
         $this->validation();
@@ -381,6 +379,7 @@ class ChargesList extends Component
 
 
     public $noProjectOrFourniss = false;
+
     public function buttonAjouter()
     {
         $this->resetInputs();
@@ -390,7 +389,7 @@ class ChargesList extends Component
             session()->flash('warning', "Project or fournisseur 's table is null");
             $this->noProjectOrFourniss = true;
         } else {
-            $this->noProjectOrFourniss = false;
+            $this->noProjectOrFourniss = false;  
         }
     }
 
@@ -426,25 +425,28 @@ class ChargesList extends Component
             $this->selectedCharges = Charge::pluck('id');
             $this->errordAjoutReg= false;
             
+            
         } else {
             $this->selectedCharges = [];
             $this->errordAjoutReg= true;
         }
     }
-    //////////////////////////////////////////////////////////////////////////////////////
+    
     public function updatedselectedCharges($value)
     {
-        // if ($value) {
-        //     $this->errordAjoutReg = false;
-        // } else {
-        //     $this->errordAjoutReg = true;
-        // }
-        $this->checkChargeBeforeAddReg();
+        if($value){
+            $this->checkChargeBeforeAddReg();
+        }
+        
+       
+       
     }
+
+  
 
     public function calculePrixTTC()
     {
-        $this->prix_TTC = ($this->prix_ht * ($this->tva / 100));
+        $this->prix_TTC = $this->prix_ht + ($this->prix_ht * ($this->tva / 100));
     }
     public function calculerMTTTC()
     {

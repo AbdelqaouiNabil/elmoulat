@@ -43,13 +43,14 @@ class ReleverBankaire extends Component
 
     public $file;
     public $filter;
+    
 
     public function render()
     {
 
         $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
 
-        if (!is_null($this->filter)) {
+        if ($this->filter) {
             $releverB = $this->filterByDate($this->filter);
             if (!is_null($releverB)) {
 
@@ -96,24 +97,21 @@ class ReleverBankaire extends Component
     public function importData()
     {
 
-        // try {
-        //     $data = Excel::toArray(new releverBancaireImport, $this->file);
-        //     dd($data);
-        // } catch (\Exception $e) {
-        //     dd('yaay');
-        // };
+       $this->validate([
+        'file' => 'required|mimes:xlsx,xls'
+       ]);
+       
         $data = Excel::toArray(new releverBancaireImport, $this->file);
+      
+        // dd($data);
 
-
-
-
-        
 
         // START (GETTING DATE AND ID_COMPTE AND CREATE A NEW RECORD ON THE DATABASE RELEVER BANCAIRE TABLE)
         $this->dateRelever = $this->getDateReleverBank($data[0][0]);
         $this->numCompte = $this->getNumeroCompte($data[0][2]);
         $compte = Compte::where('numero', $this->numCompte)->first();
-        if (!is_null($compte)) {
+      
+        if ($compte) {
             $releverB = ReleverBancaire::create([
                 'dateR' => $this->dateRelever,
                 'compte_id' => $compte->id
