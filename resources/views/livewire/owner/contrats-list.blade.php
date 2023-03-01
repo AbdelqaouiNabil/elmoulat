@@ -97,30 +97,51 @@
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">id</span>
+                                                    <a href="" wire:click.prevent="sort('id')"><i
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">Nome de contrat</span>
+                                                    <span class="userDatatable-title">Nom de contrat</span>
+                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Date Debut</span>
+                                                    <a href="" wire:click.prevent="sort('datedebut')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Date Fin</span>
+                                                    <a href="" wire:click.prevent="sort('datefin')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Montant</span>
+                                                    <a href="" wire:click.prevent="sort('montant')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Avance</span>
+                                                    <a href="" wire:click.prevent="sort('avence')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
+                                                </th>
+                                                <th>
+                                                    <span class="userDatatable-title">Le reste</span>
+                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Ouvrier</span>
+                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Projet</span>
+                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title float-right">Actions</span>
+                                                    <span class="userDatatable-title ">Actions</span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -158,12 +179,17 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $c->montant }}
+                                                            {{ $c->montant }} DH
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $c->avance }}
+                                                            {{ $c->avance }} DH
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            {{ $c->montant - $c->avance }} DH
                                                         </div>
                                                     </td>
                                                     <td>
@@ -528,7 +554,7 @@
 
 
 
-                        <h6 class="modal-title">Modifier Contrat</h6>
+                        <h6 class="modal-title">Ajouter Reglement</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span data-feather="x"></span></button>
                     </div>
@@ -545,18 +571,18 @@
                                         <div class="form-group mb-25">
                                             <label>Nom de Contrat</label>
                                             <input class="form-control form-control-lg" type="text" disabled
-                                                name="name" wire:model.defer='name'>
-                                           
+                                                value="{{ $name }}" name="name">
+
 
                                         </div>
                                     </div>
                                     <div class="col-6">
 
                                         <div class="form-group mb-25">
-                                            <label>Nom de Contrat</label>
+                                            <label>Montant(le reste)</label>
                                             <input class="form-control form-control-lg" type="text" disabled
-                                                name="montant" wire:model.defer='montant'>
-                                           
+                                                value="{{ $montant }} DH" name="montant">
+
 
                                         </div>
                                     </div>
@@ -572,33 +598,50 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group mb-25">
-                                            <input class="radio"  wire:model='methode'  type="radio"  value='cheque' >
+                                            <input class="radio" wire:model='methode' type="radio"
+                                                value='cheque'>
                                             <label>
                                                 <span class="radio-text">Avec chèque</span>
                                             </label>
                                         </div>
-                                       
+
                                     </div>
                                     <div class="form-group mb-25">
-                                        <input class="radio" wire:model='methode'  type="radio" value='cash'>
+                                        <input class="radio" wire:model='methode' type="radio" value='cash'>
                                         <label>
                                             <span class="radio-text">Avec Cash</span>
                                         </label>
                                     </div>
                                 </div>
 
-                                @if ($methode=='cheque') 
+                                @if ($methode == 'cheque')
                                     <div class="form-group mb-25">
                                         <input class="form-control form-control-lg" type="text"
                                             name="numero_cheque" wire:model='numero_cheque'>
-                                            @error('numero_cheque')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                        @error('numero_cheque')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 @endIf
+                                @if ($methode == 'cash')
+                                    <div class="form-group mb-25">
 
+                                        <label>Caisse </label>
+                                        <select name="select-size-1" wire:model.defer='id_caisse'
+                                            id="select-size-1" class="form-control  form-control-lg">
 
+                                            <option value="" selected>select an option</option>
+                                            @foreach ($caisses as $caisse)
+                                                <option value="{{ $caisse->id }}">{{ $caisse->name }}</option>
+                                            @endforeach
 
+                                        </select>
+                                        @error('id_caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+
+                                    </div>
+                                @endif
 
                             </div>
 

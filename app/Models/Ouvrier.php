@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\f_domaine;
 
 class Ouvrier extends Model
 {
@@ -25,9 +26,9 @@ class Ouvrier extends Model
         'phone',
         'email',
         'adress',
-    
-        
-
-
+        'id_domaine',
     ];
+    public function domaine(){
+        return $this->belongsTo(f_domaine::class,'id_domaine');
+    }
 }

@@ -96,15 +96,18 @@ class ReleverBankaire extends Component
     public function importData()
     {
 
-        try {
-            $data = Excel::toArray(new releverBancaireImport, $this->file);
-        } catch (\Exception $e) {
-            dd('yaay');
-        };
+        // try {
+        //     $data = Excel::toArray(new releverBancaireImport, $this->file);
+        //     dd($data);
+        // } catch (\Exception $e) {
+        //     dd('yaay');
+        // };
+        $data = Excel::toArray(new releverBancaireImport, $this->file);
 
 
 
-        // dd($data);
+
+        
 
         // START (GETTING DATE AND ID_COMPTE AND CREATE A NEW RECORD ON THE DATABASE RELEVER BANCAIRE TABLE)
         $this->dateRelever = $this->getDateReleverBank($data[0][0]);

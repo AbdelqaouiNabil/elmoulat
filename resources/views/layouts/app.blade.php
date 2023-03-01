@@ -1542,6 +1542,8 @@ window.addEventListener('close-model', event => {
     $('#edit-modal').modal('hide');
     $('#modal-info-delete').modal('hide');
     $('#add-modal-reglement').modal('hide');
+    $('#modal-import').modal('hide');
+    
     
     });
     </script>

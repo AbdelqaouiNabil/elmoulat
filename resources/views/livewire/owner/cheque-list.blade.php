@@ -5,22 +5,6 @@
             color: #40464f;
         }
 
-        /* .badge-danger {
-            background-color: #f9e1e5;
-            color: #af233a;
-        }
-
-       
-
-        .badge-warning {
-            background-color: #fbf0da;
-            color: #73510d;
-        }
-
-        .badge-danger {
-            background-color: #f9e1e5;
-            color: #af233a;
-        } */
     </style>
     <div class="contents">
         <div class="container-fluid">
@@ -52,13 +36,12 @@
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
         
-                                            <select @if (count($cheques) == null) disabled @endif name="select-size-1" id="select-size-1" wire:model="search"
+                                            <select  name="select-size-1" id="select-size-1" wire:model="search"
                                                 class="form-control  form-control-lg">
-                                                <option value=""  selected>Order By situation</option>
-                                                @foreach ($situationCheques as $cheque)
-                                                    <option value="{{ $cheque->situation }}">{{ $cheque->situation }}</option>
-                                                @endforeach
-        
+                                                <option value="" selected >Order By situation</option>
+                                                    <option value="disponible">disponible</option>
+                                                    <option value="livrer">livrer</option>
+                                                    <option value="annuler">annuler</option>
                                             </select>
                                         </div>
                                     </div>

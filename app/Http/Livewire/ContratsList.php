@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Caisse;
+use App\Models\Cheque;
 use App\Models\Reglement;
+use App\Models\Retrait;
 use Illuminate\Auth\Events\Validated;
 use Livewire\Component;
 use App\Models\Contrat;
@@ -18,11 +21,14 @@ class ContratsList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_contrat, $name, $numero_cheque, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN, $id_projet, $id_reglement, $projectNAME;
+    public $id_contrat, $name, $numero_cheque, $datedebut, $cin_Ouv, $datefin, $montant, $avance, $id_ouvrier, $ouvrierCIN, $id_projet, $id_reglement,$id_caisse, $projectNAME;
     public $selectedContrats = [];
     public $pages = 10;
     public $bulkDisabled = true;
     public $selectAll = false;
+    public $sortname = "id";
+    public $sortdrection = "DESC";
+
 
     public $search;
     public $methode = 'cheque';
@@ -43,14 +49,28 @@ class ContratsList extends Component
         $contrats = Contrat::latest()->paginate($this->pages, ['*'], 'new');
         $ouvriers = Ouvrier::all();
         $projects = Projet::all();
+        $caisses = Caisse::all();
 
         if ($this->search != "") {
             $contrats = Contrat::where('cin_Ouv', 'like', '%' . $this->search . '%')
                 ->orWhere('datedebut', 'like', '%' . $this->search . '%')
-                ->orWhere('name', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+                ->orWhere('name', 'like', '%' . $this->search . '%')->orderBy($this->sortname,$this->sortdrection)->paginate($this->pages, ['*'], 'new');
         }
 
-        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects" => $projects]);
+        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects" => $projects, "caisses" => $caisses]);
+    }
+    // sort function  for order data by table head
+    public function sort($value)
+    {
+        if ($this->sortname == $value && $this->sortdrection == "DESC") {
+            $this->sortdrection = "ASC";
+        } else {
+            if ($this->sortname == $value && $this->sortdrection == "ASC") {
+                $this->sortdrection = "DESC";
+            }
+        }
+        $this->sortname = $value;
+
     }
 
     public function editContrat($id)
@@ -206,8 +226,10 @@ class ContratsList extends Component
             'datedebut' => 'required|date',
         ]);
         if ($this->methode == 'cheque') {
+            // add zero to left of nuemro cheque
+            $this->numero_cheque= strval(str_pad(($this->numero_cheque), 7, '0', STR_PAD_LEFT));
             $this->validate([
-                'numero_cheque' => 'required|exists:cheques,numero',
+                'numero_cheque' => 'required|exists:cheques,numero,situation,disponible',
 
             ]);
             $reglement = new Reglement();
@@ -217,14 +239,50 @@ class ContratsList extends Component
             $reglement->id_contrat = $this->id_contrat;
             $reglement->numero_cheque = $this->numero_cheque;
             $valide = $reglement->save();
+            if($valide){
+                $cheque= Cheque::where('numero',$reglement->numero_cheque)->first();
+                $cheque->situation='livrer';
+                $cheque->update();
+            }else{
+                session()->flash('error', 'cheque update data invalide  ');
+
+            }
 
         } else {
+            $this->validate([
+                'id_caisse' => 'required',
+
+            ]);
             $reglement = new Reglement();
             $reglement->dateR = $this->datedebut;
             $reglement->methode = $this->methode;
             $reglement->montant = $this->montant;
             $reglement->id_contrat = $this->id_contrat;
             $valide = $reglement->save();
+
+            if($valide){
+                $retrait=new Retrait();
+                $retrait->dateRet= $this->datedebut;
+                $retrait->id_caisse= $this->id_caisse;
+                $retrait->montant= $reglement->montant;
+                $valide=$retrait->save();
+                session()->flash('error', 'caisse update data invalide  ');
+
+                if($valide){
+                    $caisse=Caisse::where('id', $this->id_caisse)->first();
+                    $caisse->sold_nonjustify -=$retrait->montant;
+                    $valide=$caisse->update();
+
+                }else{
+                    session()->flash('error', 'caisse update data invalide  ');
+
+                }
+            }else{
+                session()->flash('error', 'Retrait insert data invalide  ');
+
+            }
+
+                     
 
         }
 

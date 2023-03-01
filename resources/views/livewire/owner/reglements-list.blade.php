@@ -249,8 +249,6 @@
                                                         <option value="40">40/page</option>
                                                     </select>
                                                 </div>
-
-
                                             </li>
                                         </ul>
                                     </nav>
