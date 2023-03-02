@@ -18,6 +18,7 @@ class CreateChequesTable extends Migration
             $table->string('numero')->unique();
             $table->date('date');
             $table->string('situation');
+            $table->double('montant')->nullable();
             $table->unsignedBigInteger('id_chequier');
             $table->foreign('id_chequier')->references('id')->on('chequiers'); 
             $table->timestamps();

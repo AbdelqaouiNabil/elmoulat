@@ -19,6 +19,7 @@ class Cheque extends Model
         'numero',
         'date',
         'situation',
+        'montant',
         'id_chequier',
        
     ];

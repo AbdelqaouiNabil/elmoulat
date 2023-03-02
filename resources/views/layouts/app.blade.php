@@ -14,11 +14,13 @@
 
 
     {{-- High Charts --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    {{-- select2 jquery --}}
 
 
 
@@ -62,11 +64,8 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 
-
-
-
     <script src="sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="{{asset('style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
 
     <!-- endinject -->
 
@@ -88,10 +87,13 @@
         <nav class="navbar navbar-light">
             <div class="navbar-left">
 
+
+
                 <a href="{{ route('owner.dashboard') }}" class="sidebar-toggle">
                     <img class="svg" src="{{ asset('img/svg/bars.svg') }}" alt="img"></a>
-                <a class="navbar-brand" href="{{ route('owner.dashboard') }}"><img class="dark" src="{{ asset('img/logo_dark.png') }}"
-                        alt="svg"><img class="light" src="{{ asset('img/logo_white.png') }}" alt="img"></a>
+                <a class="navbar-brand" href="{{ route('owner.dashboard') }}"><img class="dark"
+                        src="{{ asset('img/logo_dark.png') }}" alt="svg"><img class="light"
+                        src="{{ asset('img/logo_white.png') }}" alt="img"></a>
 
 
                 <div class="top-menu">
@@ -741,6 +743,7 @@
             <!-- ends: navbar-left -->
 
             <div class="navbar-right">
+
                 <ul class="navbar-right__menu">
                     <li class="nav-search d-none">
                         <a href="#" class="search-toggle">
@@ -1067,22 +1070,24 @@
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="{{ Storage::disk('local')->url(Auth::user()->image) }}"
-                                    alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle"><img
+                                    src="{{ Storage::disk('local')->url(Auth::user()->image) }}" alt=""
+                                    class="rounded-circle"></a>
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
-                                        <img src="{{ Storage::disk('local')->url(Auth::user()->image) }}" alt="" class="rounded-circle">
+                                        <img src="{{ Storage::disk('local')->url(Auth::user()->image) }}"
+                                            alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        <h6>{{Auth::user()->name}}</h6>
+                                        <h6>{{ Auth::user()->name }}</h6>
                                         <span>UI Designer</span>
                                     </div>
                                 </div>
                                 <div class="nav-author__options">
                                     <ul>
                                         <li>
-                                            <a href="{{route('owner.profile')}}">
+                                            <a href="{{ route('owner.profile') }}">
                                                 <span data-feather="user"></span> Profile</a>
                                         </li>
                                         <li>
@@ -1182,7 +1187,7 @@
 
                         </li>
 
-                        
+
 
                         <li class="menu-title m-top-30">
 
@@ -1482,13 +1487,13 @@
     </div>
     <div class="overlay-dark-sidebar"></div>
     <!-- inject:js-->
-  
+
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"></script>
 
     {{-- <script src="{{('js/app.js')}}" ></script> --}}
 
- 
-  
+
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="{{ asset('assets/vendor_assets/js/jquery/jquery-3.5.1.min.js') }}"></script>
@@ -1521,11 +1526,11 @@
     <script src="{{ asset('assets/vendor_assets/js/loader.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/muuri.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/popover.js') }}"></script>
-    <script src="{{ asset('assets/vendor_assets/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/slick.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/trumbowyg.min.js') }}"></script>
     <script src="{{ asset('assets/vendor_assets/js/wickedpicker.min.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/drag-drop.js') }}"></script>
+    <script src="{{ asset('assets/vendor_assets/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/footable.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/full-calendar.js') }}"></script>
     <script src="{{ asset('assets/theme_assets/js/googlemap-init.js') }}"></script>
@@ -1533,43 +1538,42 @@
     <script src="{{ asset('assets/theme_assets/js/leaflet-init.js') }}"></script>
     <script src="https://kit.fontawesome.com/1a35748197.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/theme_assets/js/main.js') }}"></script>
-  
 
 
-    
-
-
-
-
-@livewireScripts
-=======
+    @livewireScripts
+    =======
     <script>
-    window.addEventListener('add', event => {
-    Swal.fire(
-        'Super!',
-        'Vous avez ajouter un nouveau caisse!',
-        'success'
-    );});
+        window.addEventListener('add', event => {
+            Swal.fire(
+                'Super!',
+                'Vous avez ajouter un nouveau caisse!',
+                'success'
+            );
+        });
 
-window.addEventListener('close-model', event => {
-    $('#modal-basic').modal('hide');
-    $('#edit-modal').modal('hide');
-    $('#modal-info-delete').modal('hide');
-    $('#add-modal-reglement').modal('hide');
-    $('#modal-import').modal('hide');
-    
-    
-    });
+        window.addEventListener('close-model', event => {
+            $('#modal-basic').modal('hide');
+            $('#edit-modal').modal('hide');
+            $('#modal-info-delete').modal('hide');
+            $('#add-modal-reglement').modal('hide');
+            $('#modal-import').modal('hide');
+            $('#reglement-modal').modal('hide');
+
+
+        });
+        $(document).ready(function() {
+            $('#select_data').selectize({
+                sortField: 'text'
+            });
+        });
     </script>
 
-   
+
 
 
     {{-- High Charts --}}
-   
+
     <!-- endinject-->
 </body>
 
 </html>
-
-

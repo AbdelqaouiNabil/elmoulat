@@ -1,4 +1,5 @@
 <div>
+
     <div>
         <div class="contents">
             <div class="container-fluid">
@@ -59,15 +60,17 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            @if (is_null($projets) || is_null($fournisseurs) ) disabled @endif wire:click="resetInputs()"
+                                            @if (count($projets) == null || count($fournisseurs) == null) disabled @endif wire:click="resetInputs()"
                                             data-toggle="modal" data-target="#modal-basic">
                                             <i class="la la-plus"></i>Ajouter</button>
 
                                     </div>
-                                    @if (count($charges) > 0 && count($selectedCharges) > 0 && $checkIfnotPayed==true)
+
+                                    @if (count($charges) > 0 && count($selectedCharges) > 0 && $checkIfnotPayed == true)
                                         <div class="action-btn">
                                             <button type="button" class="btn btn-sm btn-primary btn-add"
-                                                data-toggle="modal" data-target="#cree-reglement">
+                                                wire:click.prevent="ajouterReglement()" data-toggle="modal"
+                                                data-target="#reglement-modal">
                                                 <i class="la la-plus"></i> Créer un Règlement
                                             </button>
                                         </div>
@@ -79,6 +82,7 @@
                     </div>
                 </div>
             </div>
+
             @if (count($projets) > 0 && count($fournisseurs) > 0)
                 @if (session()->has('message'))
                     <div class="alert alert-success">
@@ -104,6 +108,7 @@
                                     <i class="la la-trash"></i>delete selected</button>
                             </div>
                         @endif
+
 
                         <div class="row">
                             <div class="col-lg-12">
@@ -160,8 +165,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
-
                                                 @foreach ($charges as $CH)
                                                     <tr>
                                                         <td>
@@ -209,8 +212,6 @@
                                                                 {{ $CH->type }}
                                                             </div>
                                                         </td>
-
-
                                                         <td>
                                                             @if ($CH->situation === 'payed')
                                                                 <div class="orderDatatable-title">
@@ -258,7 +259,6 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
-
 
                                                 <!-- End: tr -->
 
@@ -652,25 +652,18 @@
 
         </div>
 
-        {{-- CREE REGLEMENT model --}}
-
-        <div wire:ignore.self class="modal-basic modal fade show" id="cree-reglement" tabindex="-1" role="dialog"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content modal-bg-white ">
+        <div wire:ignore.self class="modal fade" id="reglement-modal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title">Création d'un Règlement</h6>
-                        </h6>
+                        <h6 class="modal-title" id="exampleModalLabel">Ajouter Reglement</h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span data-feather="x"></span></button>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="modal-body">
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger form-group mb-25">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-                        <form enctype="multipart/form-data">
+                    <div class="modal-body" style="overflow: hidden">
+                        <form enctype="multipart/form-data" wire:submit.prevent="saveReglement()">
                             <div class="form-basic">
                                 <div class="form-group mb-25">
                                     <label>Date</label>
@@ -682,63 +675,125 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Montant Total</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        placeholder="0000.00 DH" name="montant" wire:model.defer='montant'>
+                                    <input class="form-control form-control-lg" type="text" disabled value="{{$montant}} DH">
                                     @error('montant')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="form-group mb-25">
-                                    <input class="radio" wire:click='optionCheque' type="checkbox">
-                                    <label>
-                                        <span class="radio-text">Avec chèque</span>
-                                    </label>
-                                </div>
-
-                                @if ($optionC)
-                                    <div class="form-group mb-25">
-                                        <label>Les chèques disponible</label>
-                                        <select name="numero_cheque" wire:model.defer='numero_cheque'
-                                            class="form-control  form-control-lg">
-                                            @foreach ($cheques as $ch)
-                                                <option value="{{ $ch->numero }}">{{ $ch->numero }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="row">
+                                    <div class="form-group mb-25 col-lg-3">
+                                        <input class="radio" wire:model="methode" type="radio" value="cach">
+                                        <label>
+                                            <span class="radio-text">Avec Cach</span>
+                                        </label>
                                     </div>
-                                @endIf
-
-
-                                <div class="form-group mb-25">
-                                    <input class="radio" wire:click='avecFacture' type="checkbox">
-                                    <label>
-                                        <span class="radio-text">Avec Facture</span>
-                                    </label>
+                                    <div class="form-group mb-25 col-lg-3">
+                                        <input class="radio" wire:model="methode" type="radio"
+                                            @if (count($cheques) == null) disabled @endif value="cheque">
+                                        <label>
+                                            <span class="radio-text">Avec chèque</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group mb-25 col-lg-3">
+                                        <input class="radio" wire:model="methode" type="radio" value="virement">
+                                        <label>
+                                            <span class="radio-text">Avec Virement</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group mb-25 col-lg-3">
+                                        <input class="radio" wire:model="methode" type="radio" value="mad">
+                                        <label>
+                                            <span class="radio-text">MAD</span>
+                                        </label>
+                                    </div>
                                 </div>
 
-                                @if ($avecF)
+
+
+
+                                @if ($methode == 'cheque' && count($cheques) >0)
+                                    <div class="form-group mb-25 ">
+                                        <label>
+                                            Numéro de Cheque
+                                        </label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            placeholder="search.." wire:model.defer="numero_cheque"
+                                            list="chequeList">
+                                        @error('numero_cheque')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                        <datalist id="chequeList">
+                                            @foreach ($cheques as $ch)
+                                                <option value="{{ $ch->numero }}"></option>
+                                            @endforeach
+                                        </datalist>
+
+                                    </div>
                                     <div class="form-group mb-25">
-                                        <label>Numéro du Facture</label>
-                                        <input class="form-control form-control-lg" type="text" name="numFacture"
-                                            wire:model.defer='numFacture'>
-                                        @error('numFacture')
+                                        <label>Montant de Cheque</label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            placeholder="0000.00 DH" name="montant"
+                                            wire:model.defer='montant_cheque'>
+                                        @error('montant_cheque')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                @endIf
+
+                                @elseif($methode=="virement")
+                                <div class="form-group mb-25">
+                                    <label>Réf Virement</label>
+                                    <input class="form-control form-control-lg" type="text"
+                                        wire:model.defer='ref_virement'>
+                                    @error('ref_virement')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                @elseif($methode=="mad")
+                                <div class="form-group mb-25">
+                                    <label>Réf MAD</label>
+                                    <input class="form-control form-control-lg" type="text"
+                                        wire:model.defer='ref_mad'>
+                                    @error('ref_mad')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                @elseif($methode=="cach")
+                                <div class="form-group mb-25">
+
+                                    <label>Caisse </label>
+                                    <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" selectedIndex=1
+                                        class="form-control  form-control-lg">
+                                        @foreach ($caisses as $caisse)
+                                            <option value="{{ $caisse->id }}">{{ $caisse->name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                    @error('id_fdomaine')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                                <div class="form-group mb-25">
+                                    <label>Sold </label>
+                                    <input class="form-control form-control-lg" type="text" disabled
+                                        value=''>
+                                    @error('ref_mad')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                @endif
                             </div>
+
                     </div>
                     <div class="modal-footer">
-                        <button wire:click.prevent="addReg" type="submit"
-                            @if ($errordAjoutReg) disabled @endif
-                            class="btn btn-primary btn-sm">Enregistrer le règlement</button>
+                        <button  type="submit" class="btn btn-primary btn-sm">Enregistrer
+                            Règlement</button>
                     </div>
                     </form>
-
-
                 </div>
+
             </div>
         </div>
-
     </div>
-
 </div>
