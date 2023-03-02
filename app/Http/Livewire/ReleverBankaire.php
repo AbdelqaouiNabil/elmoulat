@@ -7,7 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Imports\releverBancaireImport;
-
+Use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -28,7 +28,7 @@ class ReleverBankaire extends Component
 
     public $id_Relever, $dateRelever;
 
-    // public $pages = 10;
+    public $pages = 10;
     // public $bulkDisabled = true;
     // public $selectedCharges = [];
     // public $selectAll = false;
@@ -38,37 +38,44 @@ class ReleverBankaire extends Component
     public $id_Trans, $date_Operation, $libelle, $debit, $credit, $date_Valeur, $typeCheck;
     // // COMPTE
     public $id_Compte, $numCompte;
+    public $dateR ;
+   
     // // CHEQUE
     public $id_cheque, $numCheque;
-
+   public $transactions;
     public $file;
     public $filter;
     
-
+    public function updatedPages()
+    {
+        $this->resetPage('new');
+    }
     public function render()
     {
 
-        $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
+        // $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
+        $releverBanquaire = ReleverBanCaire::where('dateR', 'like', '%' . $this->dateR . '%')->paginate($this->pages,['*'],'new');
+        
 
-        if ($this->filter) {
-            $releverB = $this->filterByDate($this->filter);
-            if (!is_null($releverB)) {
+        // if ($this->filter) {
+        //     $releverB = $this->filterByDate($this->filter);
+        //     if (!is_null($releverB)) {
 
-                // test compte later on
-                $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
-            } else {
-                $transactions = null;
-            }
-        } else {
-            $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
-            if (!is_null($releverB)) {
-                $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
-            } else {
-                $transactions = null;
-            }
-        }
+        //         // test compte later on
+        //         $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
+        //     } else {
+        //         $transactions = null;
+        //     }
+        // } else {
+        //     $releverB = ReleverBancaire::where('id', $this->id_Relever)->first();
+        //     if (!is_null($releverB)) {
+        //         $transactions = Transaction::where('id_releverbancaire', $releverB->id)->get();
+        //     } else {
+        //         $transactions = null;
+        //     }
+        // }
         // dd($transactions);
-        return view('livewire.owner.relever-bankaire', ['transactions' => $transactions, 'releverB' => $releverB]);
+        return view('livewire.owner.relever-bankaire',['releverBanquaire' => $releverBanquaire]);
     }
 
 
@@ -85,7 +92,11 @@ class ReleverBankaire extends Component
 
 
 
+  public function viewReleverBanquaire($id){
 
+    $this->transactions = Transaction::where('id_releverbancaire', $id)->get();
+   
+  }
 
 
 
@@ -96,13 +107,13 @@ class ReleverBankaire extends Component
 
     public function importData()
     {
-       $this->validate([
-        'file' => 'required|mimes:xlsx,xls'
-       ]);
+       
+    //    $this->validate([
+    //     'file' => 'required|mimes:xlsx,xls',
+    //    ]);
        
         $data = Excel::toArray(new releverBancaireImport, $this->file);
       
-        // dd($data);
 
         // START (GETTING DATE AND ID_COMPTE AND CREATE A NEW RECORD ON THE DATABASE RELEVER BANCAIRE TABLE)
         $this->dateRelever = $this->getDateReleverBank($data[0][0]);
@@ -171,7 +182,6 @@ class ReleverBankaire extends Component
             $this->getDeepOnLibelle($this->libelle);
             $this->debit = $this->verifyFloat($arrTrans[$i][2]);
             $this->credit = $this->verifyFloat($arrTrans[$i][3]);
-
             $this->date_Operation = $this->verifyDate($arrTrans[$i][0]);
             $this->date_Valeur = $this->verifyDate($arrTrans[$i][4]);
 
@@ -192,12 +202,11 @@ class ReleverBankaire extends Component
 
     public function verifyDate($date)
     {
-        $adjustingDate = explode("/", $date);
-        $newDate = "";
-        for ($i = 0; $i < sizeof($adjustingDate); $i++) {
-            $newDate = $newDate . $adjustingDate[sizeof($adjustingDate) - ($i + 1)] . '-';
-        }
-        return $newDate;
+        $getdate = explode(' ', $date);
+        $date = $getdate[sizeof($getdate) - 1];
+        $date = str_replace('/','-',$date);
+        $date = date("Y-m-d",strtotime($date));
+        return $date;
     }
 
     // get rid of this => ' .

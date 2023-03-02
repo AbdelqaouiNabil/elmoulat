@@ -19,4 +19,6 @@ class Transaction extends Model
         'debit'
 
     ];
+
+    
 }

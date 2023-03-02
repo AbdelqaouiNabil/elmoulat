@@ -26,4 +26,6 @@ class Cheque extends Model
     public function chequier(){
         return $this->belongsTo(Chequier::class,'id_chequier');
     }
+
+    
 }

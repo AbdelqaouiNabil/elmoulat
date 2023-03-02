@@ -39,10 +39,6 @@ class ChargesList extends Component
     public $numFacture;
     public $errordAjoutReg = true;
     // Method check or Cash
-  
-    public function mount(){
-        $this->montant = 0;
-    }
 
     public function updatedPages()
     {
@@ -251,8 +247,6 @@ class ChargesList extends Component
             
             // for checking whether they have the same project id
             $chargeAComparer = Charge::where('id', $this->selectedCharges[0])->first();
-            $this->montant = Charge::whereIn('id',$this->selectedCharges)->sum('MTTTC');
-            
             foreach($this->selectedCharges as $ch) {
                 $charge = Charge::where('id', $ch)->first();
                
