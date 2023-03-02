@@ -62,8 +62,7 @@ class DomaineList extends Component
     //save data function
     public function saveData(){
         $this->validate([
-            'name'=>'required',
-           
+            'name'=>'required|unique:f_domaines,name',
         ]);
         $domaine = new f_domaine;
         $domaine->name = $this->name;     

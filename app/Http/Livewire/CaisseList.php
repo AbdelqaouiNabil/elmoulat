@@ -95,6 +95,7 @@ class CaisseList extends Component
         if ($valide) {
             session()->flash('message', 'caisse bien ajouter');
             $this->dispatchBrowserEvent('add');
+
         } else {
             session()->flash('error', 'you can\'t add this caisse please try again');
 
@@ -159,7 +160,7 @@ class CaisseList extends Component
         $depot = Depot::where('id_caisse', $this->id_caisse)->get();
 
         $project = Projet::whereIn('id_caisse', $this->selectRows)->get();
-        if (count($retrait)>0 || count($depot)>0 || count($project)>0 ) {
+        if (count($retrait) > 0 || count($depot) > 0 || count($project) > 0) {
 
             session()->flash('error', 'this caisse is aready used  as ForingKey');
             return;
@@ -220,11 +221,11 @@ class CaisseList extends Component
             'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
 
         ]);
-        $numeroCheque=str_pad(($this->numero_cheque), 7, '0', STR_PAD_LEFT) ;
+        $numeroCheque = str_pad(($this->numero_cheque), 7, '0', STR_PAD_LEFT);
         $cheque = Cheque::where('numero', $numeroCheque)->get();
         if (count($cheque) > 0 && $cheque->situation == 'disponible') {
-            
-             
+
+
             Depot::create([
                 'numero_cheque' => $numeroCheque,
                 'id_caisse' => $this->id_caisse,

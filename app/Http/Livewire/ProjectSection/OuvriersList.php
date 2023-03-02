@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\ProjectSection;
 
 use App\Models\Depense;
+use App\Models\f_domaine;
 use Illuminate\Database\QueryException;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,7 +20,7 @@ class OuvriersList extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $nom,$datenais,$cin,$n_cin,$datedebut,$observation,$notation,$email,$adress,$phone,$id_ouvrier,$excelFile;
+    public $nom,$datenais,$cin,$n_cin,$datedebut,$observation,$notation,$id_domaine,$email,$adress,$phone,$id_ouvrier,$excelFile;
 
     public $checked_id=[];
     public $selectAll=false;
@@ -37,9 +38,10 @@ class OuvriersList extends Component
         $this->btndelete=count($this->checked_id)<1;
         $ouvriers=Ouvrier::where('nom', 'like', '%'.$this->search.'%')
         ->orWhere('n_cin', 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-
-        return view('livewire.owner.project-section.ouvriers-list',['ouvriers'=>$ouvriers]);
+        ->orderBy($this->sortname, $this->sortdrection)
+        ->paginate($this->pages, ['*'], 'new');
+        $domaines=f_domaine::all();
+        return view('livewire.owner.project-section.ouvriers-list',['ouvriers'=>$ouvriers,'domaines'=>$domaines]);
     }
 
      // sort function  for order data by table head 
@@ -69,9 +71,10 @@ class OuvriersList extends Component
            'nom'=>'required',
            'datenais'=>'required|date',
            'cin'=>'mimes:pdf',
-           'n_cin'=>'required|unique:ouvriers',
+           'n_cin'=>'required|unique:ouvriers,n_cin',
            'datedebut'=>'required|date',
            'observation'=>'required',
+           'id_domaine'=>'required',
            'notation'=>'required|integer',
            'phone'=>'required|regex:/[0-9]*/',
            
@@ -91,6 +94,7 @@ class OuvriersList extends Component
         $ouvrier->phone=$this->phone;
         $ouvrier->email=$this->email;
         $ouvrier->adress=$this->adress;
+        $ouvrier->id_domaine=$this->id_domaine;
         
         $ouvrier->save();
 
@@ -117,6 +121,7 @@ class OuvriersList extends Component
         $this->email="";
         $this->phone="";
         $this->adress="";
+        $this->id_domaine="";
       
 
     }
@@ -128,9 +133,10 @@ class OuvriersList extends Component
             'nom'=>'required',
             'datenais'=>'required|date',
             'cin'=>'mimes:pdf',
-            'n_cin'=>'required|unique:ouvriers',
+            'n_cin'=>'required|unique:ouvriers,n_cin',
             'datedebut'=>'required|date',
             'observation'=>'required',
+            'id_domaine'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|regex:/[0-9]*/',
         ]);
@@ -141,20 +147,7 @@ class OuvriersList extends Component
 // delete ouvrier
 
     public function deleteOuvrier($id){
-       
-        $ouvrier = Ouvrier::where('id',$id)->first();
-        $this->id_ouvrier = $ouvrier->id;
-        $this->nom= $ouvrier->nom;
-        $this->datenais = $ouvrier->datenais;
-        $this->cin = $ouvrier->cin;
-        $this->n_cin = $ouvrier->n_cin;
-        $this->datedebut = $ouvrier->datedebut;
-        $this->observation = $ouvrier->observation ;
-        $this->notation = $ouvrier->notation ;
-        $this->phone= $ouvrier->phone;
-        $this->email=$ouvrier->email;
-        $this->adress=$ouvrier->adress;
-    
+        $this->id_ouvrier = $id;
     }
 
     public function deleteData(){
@@ -195,6 +188,7 @@ class OuvriersList extends Component
         $this->phone= $ouvrier->phone;
         $this->email=$ouvrier->email;
         $this->adress=$ouvrier->adress;
+        $this->id_domaine=$ouvrier->id_domaine;
         
     }
 
@@ -202,15 +196,21 @@ class OuvriersList extends Component
        $this->validate([
             'nom'=>'required',
             'datenais'=>'required|date',
-            'n_cin'=>'required|unique:ouvriers',
+            'n_cin'=>'required',
             'datedebut'=>'required|date',
             'observation'=>'required',
+            'id_domaine'=>'required',
             'notation'=>'required|integer',
             'phone'=>'required|regex:/[0-9]*/',
             
          ]);
 
+
+
         $ouvrier = Ouvrier::where('id',$this->id_ouvrier)->first();
+        if($ouvrier->n_cin!=$this->n_cin){
+            $this->validate(['n_cin'=>'required|unique:ouvriers,n_cin',]);
+        }
         $ouvrier->nom=$this->nom;
         $ouvrier->datenais=$this->datenais;
         $ouvrier->n_cin=$this->n_cin;
@@ -220,6 +220,7 @@ class OuvriersList extends Component
         $ouvrier->phone=$this->phone;
         $ouvrier->email=$this->email;
         $ouvrier->adress=$this->adress;
+        $ouvrier->id_domaine=$this->id_domaine;
         $ouvrier->save();
         $this->resetInputs();
         session()->flash('message','ouvrier bien modifer');

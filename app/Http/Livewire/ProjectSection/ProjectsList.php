@@ -267,10 +267,8 @@ class ProjectsList extends Component
         try {
             $path = $this->exelFile->store('excel', 'app');
             $spreadsheet = IOFactory::load(storage_path('app/' . $path));
-
             $i = 0;
             $j = 0;
-
             //  fetch images from exel file
             foreach ($spreadsheet->getActiveSheet()->getDrawingCollection() as $drawing) {
 
@@ -304,11 +302,7 @@ class ProjectsList extends Component
                     $extension = $drawing->getExtension();
                 }
 
-
                 $myFileName = time() . ++$i . '.' . $extension;
-
-
-
                 Storage::disk('local')->put('public/images/projets/' . $myFileName, $imageContents);
 
                 $this->excel_data[$j]['image'] = 'public/images/projets/' . $myFileName;
@@ -330,14 +324,25 @@ class ProjectsList extends Component
                 $this->excel_data[$i]['autorisation'] = $sheet->getCell('H' . $row)->getValue();
                 $this->excel_data[$i]['datedebut'] = Date::excelToDateTimeObject($sheet->getCell('I' . $row)->getValue())->format('Y-m-d');
                 $this->excel_data[$i]['datefin'] = Date::excelToDateTimeObject($sheet->getCell('J' . $row)->getValue())->format('Y-m-d');
-                $this->excel_data[$i]['id_bureau'] = $sheet->getCell('K' . $row)->getValue();
-                $this->excel_data[$i]['id_caisse'] = $sheet->getCell('L' . $row)->getValue();
 
+                $caisse=Caisse::where('name',$sheet->getCell('K' . $row)->getValue())->first();
+                $bureau=Bureau::where('nom',$sheet->getCell('L' . $row)->getValue())->first();
+                if($caisse && $bureau){
+                    $this->excel_data[$i]['id_bureau'] = $caisse->id;
+                    $this->excel_data[$i]['id_caisse'] = $bureau->id;
+                }else{
+                    session()->flash('error', 'invalide data of caisse or bureau');
+                    $this->dispatchBrowserEvent('close-model');
+                    return;
+                }
+                
+                
                 $i++;
             }
 
             //  save data to database from excel using our array
             $data = $this->excel_data;
+           
             foreach ($data as $d) {
 
                 $projet = array(
@@ -361,7 +366,7 @@ class ProjectsList extends Component
         session()->flash('message', 'les projets bien importer');
 
         } catch (Throwable $ex) {
-            session()->flash('error', '', $ex);
+            session()->flash('error', '', 'error');
             $this->dispatchBrowserEvent('close-model');
 
         }

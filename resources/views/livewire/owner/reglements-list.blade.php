@@ -27,7 +27,7 @@
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
-                                            <select name="select-size-1" wire:model="filter"
+                                            <select name="select-size-1" wire:model="search"
                                                 class="form-control  form-control-lg">
                                                 <option value="" selected>Order By</option>
                                                 <option value="cash">Cash</option>
@@ -249,8 +249,6 @@
                                                         <option value="40">40/page</option>
                                                     </select>
                                                 </div>
-
-
                                             </li>
                                         </ul>
                                     </nav>
@@ -325,42 +323,24 @@
                                         @enderror
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col mt-6">
-                                            <div class="form-group mb-25">
-                                                <input class="radio" wire:click='optionCheque' type="checkbox">
-                                                <label>
-                                                    <span class="radio-text">Avec chèque</span>
-                                                </label>
-                                            </div>
-
-                                            @if ($optionC)
-                                                <div class="form-group mb-25">
-                                                    <input class="form-control form-control-lg" type="text"
-                                                        name="numero_cheque" wire:model.defer='numero_cheque'>
-                                                </div>
-                                            @endIf
-                                        </div>
-                                        <div class="col mt-6">
-                                            <div class="form-group mb-25">
-                                                <input class="radio" wire:click='optionFacture' type="checkbox">
-                                                <label>
-                                                    <span class="radio-text">Avec Facture</span>
-                                                </label>
-                                            </div>
-                                            @if ($optionF)
-                                                <div class="form-group mb-25">
-                                                    <input class="form-control form-control-lg" type="text"
-                                                        name="num_facture" wire:model.defer='num_facture'>
-                                                </div>
-                                            @endIf
-                                        </div>
+                                    <div class="form-group mb-25">
+                                        <input class="radio" wire:click='optionCheque' type="checkbox">
+                                        <label>
+                                            <span class="radio-text">Avec chèque</span>
+                                        </label>
                                     </div>
 
+                                    @if ($optionC)
+                                        <div class="form-group mb-25">
+                                            <input class="form-control form-control-lg" type="text"
+                                                name="numero_cheque" wire:model.defer='numero_cheque'>
+                                        </div>
+                                    @endIf
                                 </div>
                         </div>
                         <div class="modal-footer">
-                            <button wire:click.prevent="saveReglement" type="submit" @if ($noContrat) disabled @endif
+                            <button wire:click.prevent="saveReglement" type="submit"
+                                @if ($noContrat) disabled @endif
                                 class="btn btn-primary btn-sm">Enregistrer
                                 Reglement</button>
                         </div>
@@ -409,55 +389,32 @@
                                     <input class="form-control form-control-lg" type="date" name="dateR"
                                         wire:model.defer='dateR'>
                                 </div>
-                                @if (!($hideContratOuvrier))
-                                <div class="form-group mb-25">
-                                    <label>Ouvrier Contrat</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        placeholder="Cin Ouvrier (ex:GN____)" name="cin_Ouv"
-                                        wire:model.defer='cin_Ouv'>
-                                </div>
+                                @if (!$hideContratOuvrier)
+                                    <div class="form-group mb-25">
+                                        <label>Ouvrier Contrat</label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            placeholder="Cin Ouvrier (ex:GN____)" name="cin_Ouv"
+                                            wire:model.defer='cin_Ouv'>
+                                        @error('cin_Ouv')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 @else
-                              
                                 @endif
 
-
-
-
-
-                                @error('cin_Ouv')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <div class="row">
-                                    <div class="col mt-6">
-                                        <div class="form-group mb-25">
-                                            <input class="radio" wire:click='optionCheque' type="checkbox">
-                                            <label>
-                                                <span class="radio-text">Avec chèque</span>
-                                            </label>
-                                        </div>
-
-                                        @if ($optionC)
-                                            <div class="form-group mb-25">
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="numero_cheque" wire:model.defer='numero_cheque'>
-                                            </div>
-                                        @endIf
-                                    </div>
-                                    <div class="col mt-6">
-                                        <div class="form-group mb-25">
-                                            <input class="radio" wire:click='optionFacture' type="checkbox">
-                                            <label>
-                                                <span class="radio-text">Avec Facture</span>
-                                            </label>
-                                        </div>
-                                        @if ($optionF)
-                                            <div class="form-group mb-25">
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="num_facture" wire:model.defer='num_facture'>
-                                            </div>
-                                        @endIf
-                                    </div>
+                                <div class="form-group mb-25">
+                                    <input class="radio" wire:click='optionCheque' type="checkbox">
+                                    <label>
+                                        <span class="radio-text">Avec chèque</span>
+                                    </label>
                                 </div>
+
+                                @if ($optionCheque==true)
+                                    <div class="form-group mb-25">
+                                        <input class="form-control form-control-lg" type="text"
+                                            name="numero_cheque" wire:model.defer='numero_cheque'>
+                                    </div>
+                                @endIf
 
 
                             </div>

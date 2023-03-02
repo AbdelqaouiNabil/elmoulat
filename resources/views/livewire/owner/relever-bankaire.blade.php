@@ -7,13 +7,16 @@
                     <div class="shop-breadcrumb">
 
                         <div class="breadcrumb-main">
+<<<<<<< HEAD
                             <h4 class="text-capitalize breadcrumb-title">Relever Banquaire</h4>
 
 
 
 
+=======
+                            <h4 class="text-capitalize breadcrumb-title">Relever Bancaire</h4>
+>>>>>>> 1e7d78c3b67ff8d90aad3fb4dc881af2dec5e089
                             <div class="breadcrumb-action justify-content-center flex-wrap">
-
                                 <div class="action-btn">
                                     <input class="form-control " type="date" value="21-15-2022"  wire:model.defer="dateR">
                                 </div>
@@ -21,7 +24,6 @@
                                     <button type="button" class="btn btn-sm btn-primary btn-add" data-toggle="modal"
                                         data-target="#modal-import">
                                         <i class="la la-plus"></i>importer</button>
-
                                 </div>
                             </div>
                         </div>
