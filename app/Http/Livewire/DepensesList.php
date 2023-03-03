@@ -28,11 +28,8 @@ class DepensesList extends Component
     public $search = "";
     protected $queryString  = ['search'];
     public $montantBeforeUpdate;
-    // reglement
-    // public $montant, $date, $methode, $numero_cheque, $id_facture;
-    // public $numFacture ;
-    // public $errordAjoutReg = false;
-    // Method check or Cash
+    public $typeDepense=["Autre","Personnel et charges sociales","Equipements et matériel","Entretien et aménagement","bureautique et documentations","Produit sanitaires et nettoyage"	,"Eau et électricité","Service communication","Transport et Véhicules"	,"Déplacements", "missions et réceptions","Location","Honoraires & Services","Assurances","Frais et Agios bancaire","Impôts, taxes, Pénalités et amendes","Prelevement Echance XXXX","Dons","Divers","Lot Terrain","Lot Construction","Lot Eau et Plomberie","Lot Menuiserie","Lot Ferronnerie","Lot Electricité","Lot Platerie","Lot Carreaux et marbre","Lot Peinture","Lot Climatisation","Lot Administration","Lot architecture, Ingénierie et études","Lot gardiennage et divers","Lot Ascenseur","Lot signalisation et publicité"];
+
     public $filter;
 
     public function updatedPages()

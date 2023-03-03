@@ -280,21 +280,7 @@
                     <div class="modal-body">
 
                         <form enctype="multipart/form-data">
-                            <div class="form-basic">
-                                @if (session()->has('error'))
-                                <div class="alert alert-danger">
-
-                                    {{ session('error') }}
-
-                                </div>
-                            @endif
-                            @if (session()->has('warning'))
-                                <div class="alert alert-warning form-group mb-25">
-
-                                    {{ session('warning') }}
-
-                                </div>
-                            @endif
+                            
                                 <div class="form-group mb-25">
                                     <label>Montant de depense</label>
                                     <input class="form-control form-control-lg" type="text" name="montant"
@@ -359,6 +345,21 @@
                                         placeholder="A qui (saisir le CIN si c'est un ouvrier)"
                                         wire:model.defer='Aqui'>
                                     @error('Aqui')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group mb-25 ">
+                                    <label>Type</label>
+                                    <select name="id_projet" id="select-size-1"
+                                        wire:model.defer='type_depence'
+                                        class="form-control  form-control-lg">
+                                        <option selected>select an option</option>
+                                        @foreach ($typeDepense as $type)
+                                            <option value="{{ $type}}">{{ $type }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('type_depence')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -451,120 +452,6 @@
             </div>
 
         </div>
-
-        {{-- CREE REGLEMENT model --}}
-
-        {{-- <div wire:ignore.self class="modal-basic modal fade show" id="cree-reglement" tabindex="-1" role="dialog"
-            aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content modal-bg-white ">
-                    <div class="modal-header">
-                        <h6 class="modal-title">Création d'un Règlement</h6>
-                        </h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span data-feather="x"></span></button>
-                    </div>
-                    <div class="modal-body"> --}}
-        {{-- <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
-                                                <span class="mr-2" aria-label="Warning:"><i class="fa-sharp fa-solid fa-triangle-exclamation"></i></span>
-                                                <div>
-                                                    Vous sélectionnez une charge payé
-                                                </div>
-                                            </div> --}}
-        {{-- <form enctype="multipart/form-data">
-                            <div class="form-basic">
-                                <div class="form-group mb-25">
-                                    <label>Date</label>
-                                    <input class="form-control form-control-lg" type="date" name="date"
-                                        wire:model.defer='date'>
-                                    @error('date')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-
-                                <div class="form-group mb-25">
-                                    <label>Montant Total</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        placeholder="0000.00 DH" name="montant" wire:model.defer='montant'>
-                                    @error('montant')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-25">
-                                    <input class="radio" wire:click='optionCheque' type="checkbox">
-                                    <label>
-                                        <span class="radio-text">Avec chèque</span>
-                                    </label>
-                                </div>
-
-                                @if ($optionC)
-                                    <div class="form-group mb-25">
-                                        <label>Les chèques disponible</label>
-                                        <select name="numero_cheque" wire:model.defer='numero_cheque'
-                                            class="form-control  form-control-lg">
-                                            @foreach ($cheques as $ch)
-                                                <option value="{{ $ch->numero }}">{{ $ch->numero }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endIf
-
-
-                                <div class="form-group mb-25">
-                                    <input class="radio" wire:click='avecFacture' type="checkbox">
-                                    <label>
-                                        <span class="radio-text">Avec Facture</span>
-                                    </label>
-                                </div>
-
-                                @if ($avecF)
-                                    <div class="form-group mb-25">
-                                        <label>Numéro du Facture</label>
-                                        <input class="form-control form-control-lg" type="text" name="numFacture"
-                                            wire:model.defer='numFacture'>
-                                        @error('numFacture')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                @endIf
-                            </div>
-                    </div>
-
-                    @if ($errordAjoutReg)
-                        <div class="modal-footer">
-                            <button wire:click.prevent="addReg" type="submit" disabled
-                                class="btn btn-primary btn-sm">Enregistrer le règlement</button>
-                        </div>
-                    @else
-                        <div class="modal-footer">
-                            <button wire:click.prevent="addReg" type="submit"
-                                class="btn btn-primary btn-sm">Enregistrer
-                                le règlement</button>
-                        </div>
-                    @endif --}}
-        {{-- <div class="modal-footer">
-                                <button wire:click.prevent="addReg"   @if ($check) disable @endif type="submit" class="btn btn-primary btn-sm">Enregistrer le règlement</button>
-                            </div> --}}
-
-        {{-- </form>
-
-
-
-
-
-                </div>
-            </div>
-        </div> --}}
-
-
-
-
-
-
-
-
-
 
 
         {{-- Show Depense model --}}

@@ -1,7 +1,7 @@
 <div>
     <style>
         .badge-secondary {
-            background-color: #ebedef;
+            background-color: #d7dadd;
             color: #40464f;
         }
 
@@ -92,7 +92,7 @@
                                             </th>
 
                                             <th>
-                                                <span class="userDatatable-title">id</span>
+                                                <span class="userDatatable-title">Id</span>
                                                 <a href="" wire:click.prevent="sort('id')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
@@ -102,10 +102,16 @@
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
                                             <th>
-                                                <span class="userDatatable-title">situation</span>
+                                                <span class="userDatatable-title">Type</span>
+                                                <a href="" wire:click.prevent="sort('type')"><i
+                                                        class="fa-sharp fa-solid fa-sort"></i></a>
+                                            </th>
+                                            <th>
+                                                <span class="userDatatable-title">Situation</span>
                                                 <a href="" wire:click.prevent="sort('situation')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
+                                            
                                             <th>
                                                 <span class="userDatatable-title">Chequier</span>
                                                 <a href="" wire:click.prevent="sort('id_chequier')"><i
@@ -144,6 +150,23 @@
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
+                                                        
+                                                        <span
+                                                            class="badge rounded-pill 
+                                                            @if (is_null($cheque->type)) badge-secondary 
+                                                            @elseif($cheque->type == 'charge') badge-primary
+                                                            @elseif($cheque->type == 'depence') badge-warning
+                                                            @else badge-secondary @endif">
+                                                            @if(is_null($cheque->type ))
+                                                            null
+                                                            @else
+                                                            {{ $cheque->type }}
+                                                            @endif
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="orderDatatable-title">
                                                         <span
                                                             class="badge rounded-pill 
                                                             @if ($cheque->situation == 'disponible') badge-success 
@@ -161,7 +184,7 @@
                                                     </div>
                                                 </td>
 
-
+                                                
                                                 <td>
 
                                                     @if ($cheque->situation == 'disponible')

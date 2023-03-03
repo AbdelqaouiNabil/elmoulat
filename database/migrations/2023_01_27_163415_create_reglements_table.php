@@ -20,8 +20,9 @@ class CreateReglementsTable extends Migration
             $table->string('methode');
             $table->double('montant');
             $table->string('numero_cheque')->nullable();
+            $table->string('cheque_pdf')->nullable();
             $table->integer('ref_virement')->nullable();
-            $table->integer('ref_mad')->nullable();
+            $table->integer('ref_med')->nullable();
             $table->unsignedBigInteger('id_contrat')->nullable();
             $table->foreign('id_contrat')->references('id')->on('contrats');
             $table->timestamps();

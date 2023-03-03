@@ -7,12 +7,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="shop-breadcrumb">
-
                             <div class="breadcrumb-main">
                                 <h4 class="text-capitalize breadcrumb-title">Charge</h4>
-                                <div class="col-md-6">
+                                <div class="col-md-6" @if ($filter_date == true) hidden @endif>
                                     <div class="search-result global-shadow rounded-pill bg-white">
-
                                         <div
                                             class="border-right d-flex align-items-center w-100  pl-25 pr-sm-25 pr-0 py-1 border-0">
                                             <span><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -23,9 +21,37 @@
                                         </div>
 
                                     </div>
+
+                                </div>
+                                <div class="col-md-6" @if ($filter_date == false) hidden @endif>
+                                    <div class="atbd-date-ranger position-relative d-flex align-items-center m-0 ">
+                                        <div class="form-group mb-0 ">
+                                            <input type="date" wire:model='startdate'
+                                                class="form-control form-control-default" id="date-from-2"
+                                                placeholder="Start">
+                                        </div>
+                                        <span class="divider">-</span>
+                                        <div class="form-group mb-0">
+                                            <input type="date" wire:model='enddate'
+                                                class="form-control form-control-default" id="date-to-2"
+                                                placeholder="End">
+                                        </div>
+                                        
+                                    </div>
                                 </div>
 
+                               
+                                
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
+                                    <div class="action-btn">
+                                    <button  class="btn btn-icon  btn-outline-info"  wire:click="filterbydate(false)" @if ($filter_date == false) hidden @endif>
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                    </button>
+                                    <button  class="btn btn-icon  btn-outline-info "  wire:click="filterbydate(true)" @if ($filter_date == true) hidden @endif>
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                    </div>
+
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
                                             <select name="select-size-1" wire:model="search"
@@ -36,6 +62,7 @@
                                             </select>
                                         </div>
                                     </div>
+
 
                                     <div class="dropdown action-btn">
                                         <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button"
@@ -57,6 +84,7 @@
                                     </div>
 
 
+
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
@@ -75,7 +103,12 @@
                                             </button>
                                         </div>
                                     @endif
+
+
+
+
                                 </div>
+
                             </div>
 
                         </div>
@@ -95,6 +128,13 @@
                     <div class="alert alert-warning">
 
                         {{ session('warning2') }}
+
+                    </div>
+                @endif
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+
+                        {{ session('error') }}
 
                     </div>
                 @endif
@@ -675,7 +715,8 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Montant Total</label>
-                                    <input class="form-control form-control-lg" type="text" disabled value="{{$montant}} DH">
+                                    <input class="form-control form-control-lg" type="text" disabled
+                                        value="{{ $montant }} DH">
                                     @error('montant')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -701,9 +742,9 @@
                                         </label>
                                     </div>
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode" type="radio" value="mad">
+                                        <input class="radio" wire:model="methode" type="radio" value="med">
                                         <label>
-                                            <span class="radio-text">MAD</span>
+                                            <span class="radio-text">MED</span>
                                         </label>
                                     </div>
                                 </div>
@@ -711,7 +752,7 @@
 
 
 
-                                @if ($methode == 'cheque' && count($cheques) >0)
+                                @if ($methode == 'cheque' && count($cheques) > 0)
                                     <div class="form-group mb-25 ">
                                         <label>
                                             Numéro de Cheque
@@ -730,6 +771,14 @@
 
                                     </div>
                                     <div class="form-group mb-25">
+                                        <label>Cheque(PDF)</label>
+                                        <input class="form-control form-control-lg" type="file"
+                                            wire:model.defer='cheque_pdf'>
+                                        @error('cheque_pdf')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-25">
                                         <label>Montant de Cheque</label>
                                         <input class="form-control form-control-lg" type="text"
                                             placeholder="0000.00 DH" name="montant"
@@ -738,56 +787,50 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                @elseif($methode == 'virement')
+                                    <div class="form-group mb-25">
+                                        <label>Réf Virement</label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            wire:model.defer='ref_virement'>
+                                        @error('ref_virement')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @elseif($methode == 'med')
+                                    <div class="form-group mb-25">
+                                        <label>Réf MED</label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            wire:model.defer='ref_med'>
+                                        @error('ref_med')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @elseif($methode == 'cach')
+                                    <div class="form-group mb-25">
 
-                                @elseif($methode=="virement")
-                                <div class="form-group mb-25">
-                                    <label>Réf Virement</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        wire:model.defer='ref_virement'>
-                                    @error('ref_virement')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                @elseif($methode=="mad")
-                                <div class="form-group mb-25">
-                                    <label>Réf MAD</label>
-                                    <input class="form-control form-control-lg" type="text"
-                                        wire:model.defer='ref_mad'>
-                                    @error('ref_mad')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                @elseif($methode=="cach")
-                                <div class="form-group mb-25">
-
-                                    <label>Caisse </label>
-                                    <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1" selectedIndex=1
-                                        class="form-control  form-control-lg">
-                                        @foreach ($caisses as $caisse)
-                                            <option value="{{ $caisse->id }}">{{ $caisse->name }}</option>
-                                        @endforeach
-
-                                    </select>
-                                    @error('id_fdomaine')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                </div>
-                                <div class="form-group mb-25">
-                                    <label>Sold </label>
-                                    <input class="form-control form-control-lg" type="text" disabled
-                                        value=''>
-                                    @error('ref_mad')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
+                                        <label>Caisse </label>
+                                        <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1"
+                                            class="form-control  form-control-lg">
+                                            <option>select option</option>
+                                            @foreach ($caisses as $caisse)
+                                                <option value="{{ $caisse->id }}">{{ $caisse->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label>Sold Total </label>
+                                        <input class="form-control form-control-lg" type="text" disabled
+                                            value='{{ $caisse_sold }} DH'>
+                                    </div>
                                 @endif
                             </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button  type="submit" class="btn btn-primary btn-sm">Enregistrer
+                        <button type="submit" class="btn btn-primary btn-sm">Enregistrer
                             Règlement</button>
                     </div>
                     </form>

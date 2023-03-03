@@ -19,8 +19,9 @@ class Reglement extends Model
         'montant',
         'numero_cheque',
         'ref_virement',
-        'ref_mad',
+        'ref_med',
         'numero_cheque',
+        'cheque_pdf',
         'id_contrat',
     ];
 
