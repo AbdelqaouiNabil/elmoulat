@@ -15,7 +15,6 @@ class Charge extends Model
     * @var array<int, string>
     */
    protected $fillable = [
-
        'fournisseur_id',
        'id_projet',
        'id_reglement',

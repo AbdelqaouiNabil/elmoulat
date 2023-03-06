@@ -445,7 +445,6 @@ class ChargesList extends Component
     {
         if ($value) {
             $this->selectedCharges = Charge::pluck('id');
-
         } else {
             $this->selectedCharges = [];
             $this->errordAjoutReg = true;
