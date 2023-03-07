@@ -23,7 +23,8 @@ class Depense extends Model
         'methode',
         'type_depense',
         'montant',
-        'ref_verement',
+        'ref_virement',
+        'ref_med',
         'numero_cheque'
     ];
 

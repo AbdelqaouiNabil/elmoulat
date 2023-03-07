@@ -172,9 +172,11 @@
 
                                     </tbody>
                                 </table><!-- End: table -->
+                                
                             </div>
+                            
                             <div class="d-flex justify-content-sm-end justify-content-start mt-15 pt-25 border-top">
-
+                                
                                 <nav class="atbd-page ">
                                     <ul class="atbd-pagination d-flex">
                                         <li class="atbd-pagination__item">

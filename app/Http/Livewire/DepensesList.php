@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Cheque;
 use App\Models\Depense;
+use App\Models\Facture;
 use App\Models\Projet;
 use App\Models\Ouvrier;
 use App\Models\Retrait;
@@ -21,7 +22,9 @@ class DepensesList extends Component
 
 
     public $depenseInfos;
-    public $id_depense, $id_project, $id_ouvrier, $id_caisse, $dateDep, $description, $Aqui, $type, $montant, $Aouvrier, $nonJustifier, $justifier, $cin_ouvrier, $autre_type, $type_depense, $numero_cheque,$ref_virement,$description_data, $checkIfnotJustify;
+    public $id_depense, $id_project, $id_ouvrier, $id_caisse, $dateDep, $description, $Aqui, $type, $montant, $Aouvrier,
+    $nonJustifier, $justifier, $cin_ouvrier, $autre_type, $type_depense,
+    $numero_cheque, $ref_virement, $ref_med, $description_data, $checkIfnotJustify, $numero_facture, $montant_facture, $montantTotal, $check_cheque;
     public $pages = 10;
     public $type_caisse = "sold_nonJustify";
     public $methode = "cach";
@@ -44,6 +47,8 @@ class DepensesList extends Component
 
     public function render()
     {
+
+        $this->montantTotal = (count($this->selectedDepenses) == 0) ? Depense::where('situation', 'Non Justify')->sum('montant') : $this->montantTotal = Depense::whereIn('id', $this->selectedDepenses)->sum('montant');
         $this->bulkDisabled = count($this->selectedDepenses) < 1;
         $projets = Projet::all();
         $caisses = Caisse::all();
@@ -55,10 +60,10 @@ class DepensesList extends Component
                 $depenses = Depense::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
                 break;
             case 'Justifier':
-                $depenses = Depense::where('type', 'Justifier')->paginate($this->pages, ['*'], 'new');
+                $depenses = Depense::where('situation', 'Justify')->paginate($this->pages, ['*'], 'new');
                 break;
             case 'Non Justifier':
-                $depenses = Depense::where('type', 'Non Justifier')->paginate($this->pages, ['*'], 'new');
+                $depenses = Depense::where('situation', 'Non Justify')->paginate($this->pages, ['*'], 'new');
                 break;
             default:
                 $depenses = Depense::orderBy('id', 'DESC')->paginate($this->pages, ['*'], 'new');
@@ -69,80 +74,208 @@ class DepensesList extends Component
             $depenses = Depense::where('Aqui', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
         }
 
-        return view('livewire.owner.depenses-list', ['depenses' => $depenses, 'projets' => $projets, 'caisses' => $caisses]);
+        return view('livewire.owner.depenses-list', ['depenses' => $depenses, 'projets' => $projets, 'caisses' => $caisses, 'montantTotal' => $this->montantTotal]);
     }
 
 
 
 
-    public function showDepense($id)
-    {
-        
-        $this->depenseInfos = Depense::where('id', $id)->first();
-        $this->id_depense = $this->depenseInfos->id;
-        $this->montant = $this->depenseInfos->montant;
-        $this->dateDep = $this->depenseInfos->dateDep;
-        $this->description = $this->depenseInfos->description;
-        $this->Aqui = $this->depenseInfos->Aqui;
-        $this->type = $this->depenseInfos->type;
-        $this->id_projet = $this->depenseInfos->id_projet;
-    }
+
 
     public function editDepense($id)
     {
         $depense = Depense::where('id', $id)->first();
-        $this->id_depense = $depense->id;
+        $this->id_depense = $id;
         $this->montant = $depense->montant;
         $this->dateDep = $depense->dateDep;
         $this->description = $depense->description;
-        $this->type_depense = $depense->type_depense;
+        $this->type_depense = (in_array($depense->type_depense, $this->typeDepense) == false) ? 'Autre' : $depense->type_depense;
+        $this->autre_type = ($this->type_depense == 'Autre') ? $depense->type_depense : null;
         $this->autre_type = $depense->type_depense;
         $this->methode = $depense->methode;
+        $this->cin_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('id', $depense->id_ouvrier)->pluck('n_cin')->first() : null;
         $this->numero_cheque = $depense->numero_cheque;
         $this->id_project = $depense->id_project;
+        $this->id_caisse = ($this->methode == "cach") ? Retrait::where('id_depense', $id)->pluck('id_caisse')->first() : null;
+        $this->type_caisse = ($this->methode == "cach") ? Retrait::where('id_depense', $id)->pluck('type_of_sold')->first() : null;
+
 
     }
 
-    public function updateDepense()
+    // update depense
+
+
+    public function modifierDepense()
     {
-        $this->validation();
-        if ($this->Aouvrier) {
-            $ouvrier = Ouvrier::where('n_cin', $this->Aqui)->first();
-            if (!is_null($ouvrier)) {
-                $this->id_ouvrier = $ouvrier->id;
+
+
+        $depense = Depense::where('id', $this->id_depense)->first();
+        if ($this->methode != $depense->methode) {
+
+            // clear data from old data
+            if ($depense->methode == "cach") {
+                $retrait = Retrait::where('id_depense', $depense->id)->first();
+                $caisse = Caisse::where('id', $retrait->id_caisse)->first();
+                ($retrait->type_of_sold == "Non Justify") ? $caisse->update(['sold_nonJustify' => ($caisse->sold_nonJustify += $retrait->montant)]) : $caisse->update(['sold_nonJustify' => ($caisse->sold += $retrait->montant)]);
+                $valide = $retrait->delete();
+            } elseif ($depense->methode == "cheque") {
+                $valide = Cheque::where('numero', $depense->numero_cheque)->update(['situation' => 'disponible', 'type' => null]);
             }
         }
-        $depense = Depense::where('id', $this->id_depense)->first();
-        $depense->montant = $this->montant;
-        $depense->dateDep = $this->dateDep;
-        $depense->Aqui = $this->Aqui;
-        $depense->description = $this->description;
-        $depense->id_ouvrier = $this->id_ouvrier;
-        $depense->save();
-        $this->UpdateCaisseAfterUpdate();
-        session()->flash('message', 'depense bien modifer');
+
+        if ($this->methode == "cheque") {
+            $this->validate([
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'numero_cheque' => 'required|exists:cheques,numero,situation,disponible',
+                'dateDep' => 'required|date',
+                'type_depense' => 'required',
+                'autre_type' => 'required_if:type_depense,Autre',
+                'cin_ouvrier' => 'required_if:type_depense,Ouvrier|exists:ouvriers,n_cin|nullable',
+                'id_project' => 'required',
+                'methode' => 'required',
+            ]);
+
+            $depense->montant = $this->montant;
+            $depense->dateDep = $this->dateDep;
+            $depense->description = $this->description;
+            $depense->id_project = $this->id_project;
+            $depense->numero_cheque = $this->numero_cheque;
+            $depense->situation = 'Non Justify';
+            $depense->methode = $this->methode;
+            $depense->ref_med = null;
+            $depense->ref_virement = null;
+            $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
+            $depense->id_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('n_cin', $this->cin_ouvrier)->pluck('id')->first() : null;
+            $valide = $depense->update();
+            if ($valide) {
+                $cheque = Cheque::where('numero', $this->numero_cheque)->first();
+                $cheque->situation = 'livrer';
+                $cheque->type = 'depense';
+                $valide = $cheque->update();
+            }
+        } elseif ($this->methode == "cach") {
+            $this->validate([
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'dateDep' => 'required|date',
+                'type_depense' => 'required',
+                'autre_type' => 'required_if:type_depense,Autre',
+                'cin_ouvrier' => 'required_if:type_depense,Ouvrier|exists:ouvriers,n_cin|nullable',
+                'id_project' => 'required',
+                'methode' => 'required',
+                'id_caisse' => 'required',
+                'type_caisse' => 'required',
+            ]);
+
+
+            $depense->montant = $this->montant;
+            $depense->dateDep = $this->dateDep;
+            $depense->description = $this->description;
+            $depense->id_project = $this->id_project;
+            $depense->situation = ($this->type_caisse == "sold_nonJustify") ? 'Non Justify' : 'justify';
+            $depense->methode = $this->methode;
+            $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
+            $depense->id_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('n_cin', $this->cin_ouvrier)->pluck('id')->first() : null;
+            $valide = $depense->update();
+
+
+            if ($valide) {
+                $retrait = Retrait::where('id_depense', $this->id_depense)->first();
+                if ($retrait) {
+                    $caisse = Caisse::where('id', $retrait->id_caisse)->first();
+                    ($retrait->type_of_sold == "Non Justify") ? $caisse->update(['sold_nonJustify' => ($caisse->sold_nonJustify += $retrait->montant)]) : $caisse->update(['sold' => ($caisse->sold += $retrait->montant)]);
+                    $valide = $retrait->delete();
+                }
+
+                $retrait = new Retrait();
+                $retrait->dateRet = date('Y-m-d');
+                $retrait->montant = $this->montant;
+                $retrait->id_caisse = $this->id_caisse;
+                $retrait->id_depense = $depense->id;
+                $retrait->type_of_sold = $this->type_caisse;
+                $valide = $retrait->save();
+                if ($valide) {
+                    $caisse = Caisse::where('id', $this->id_caisse)->first();
+                    if ($this->type_caisse == "sold_nonJustify") {
+                        $caisse->sold_nonJustify -= $this->montant;
+                    } else {
+                        $caisse->sold -= $this->montant;
+                    }
+                    $valide = $caisse->update();
+                }
+            }
+
+
+        } elseif ($this->methode == "virement") {
+
+            $this->validate([
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'ref_virement' => 'required',
+                'dateDep' => 'required|date',
+                'type_depense' => 'required',
+                'autre_type' => 'required_if:type_depense,Autre',
+                'cin_ouvrier' => 'required_if:type_depense,Ouvrier|exists:ouvriers,n_cin|nullable',
+                'id_project' => 'required',
+                'methode' => 'required',
+            ]);
+
+            $depense->montant = $this->montant;
+            $depense->dateDep = $this->dateDep;
+            $depense->description = $this->description;
+            $depense->id_project = $this->id_project;
+            $depense->ref_virement = $this->ref_virement;
+            $depense->ref_med = null;
+            $depense->numero_cheque = null;
+            $depense->situation = 'Non Justify';
+            $depense->methode = $this->methode;
+            $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
+            $depense->id_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('n_cin', $this->cin_ouvrier)->pluck('id')->first() : null;
+            $valide = $depense->update();
+
+
+        } elseif ($this->methode == "med") {
+            $this->validate([
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'ref_med' => 'required',
+                'dateDep' => 'required|date',
+                'type_depense' => 'required',
+                'autre_type' => 'required_if:type_depense,Autre',
+                'cin_ouvrier' => 'required_if:type_depense,Ouvrier|exists:ouvriers,n_cin|nullable',
+                'id_project' => 'required',
+                'methode' => 'required',
+            ]);
+
+
+            $depense->montant = $this->montant;
+            $depense->dateDep = $this->dateDep;
+            $depense->description = $this->description;
+            $depense->id_project = $this->id_project;
+            $depense->ref_med = $this->ref_med;
+            $depense->ref_virement = null;
+            $depense->numero_cheque = null;
+            $depense->situation = 'Non Justify';
+            $depense->methode = $this->methode;
+            $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
+            $depense->id_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('n_cin', $this->cin_ouvrier)->pluck('id')->first() : null;
+            $valide = $depense->update();
+        }
+        if ($valide) {
+            session()->flash('message', 'Depense update successfully');
+            $this->dispatchBrowserEvent('add');
+
+        } else {
+            session()->flash('error', 'invalide data');
+        }
         $this->resetInputs();
         $this->dispatchBrowserEvent('close-model');
+
+
+
     }
-
-    //     public function deleteDepense($id){
-    //         $this->id_depense = $id;
-    // }
-    //     public function deleteData(){
-    //         Depense::findOrFail($this->id_depense)->delete();
-    //         session()->flash('message', 'Depense deleted successfully');
-    //         $this->dispatchBrowserEvent('close-model');
-    // }
-    //     public function deleteSelected(){
-
-    //         Depense::query()
-    //             ->whereIn('id',$this->selectedDepenses)
-    //             ->delete();
-
-    //         $this->selectedDepenses = [];
-    //         $this->selectAll = false;
-    // }
-
+    // for check is there any disponible check to use inside ajouter button
+    public function checkCheque(){
+        $this->check_cheque=Cheque::where('situation','disponible')->get();
+    }
+    // save depense 
     public function saveDepense()
     {
         if ($this->methode == "cheque") {
@@ -156,14 +289,15 @@ class DepensesList extends Component
                 'id_project' => 'required',
                 'methode' => 'required',
             ]);
-            
-            // dd('cheque');
+
+
 
             $depense = new Depense();
             $depense->montant = $this->montant;
             $depense->dateDep = $this->dateDep;
             $depense->description = $this->description;
             $depense->id_project = $this->id_project;
+            $depense->numero_cheque = $this->numero_cheque;
             $depense->situation = 'Non Justify';
             $depense->methode = $this->methode;
             $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
@@ -175,8 +309,7 @@ class DepensesList extends Component
                 $cheque->type = 'depense';
                 $valide = $cheque->update();
             }
-        }
-        elseif ($this->methode == "cach") {
+        } elseif ($this->methode == "cach") {
             $this->validate([
                 'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
                 'dateDep' => 'required|date',
@@ -188,7 +321,7 @@ class DepensesList extends Component
                 'id_caisse' => 'required',
                 'type_caisse' => 'required',
             ]);
-            
+
             $depense = new Depense();
             $depense->montant = $this->montant;
             $depense->dateDep = $this->dateDep;
@@ -204,6 +337,8 @@ class DepensesList extends Component
                 $retrait->dateRet = date('Y-m-d');
                 $retrait->montant = $this->montant;
                 $retrait->id_caisse = $this->id_caisse;
+                $retrait->id_depense = $depense->id;
+                $retrait->type_of_sold = $this->type_caisse;
                 $valide = $retrait->save();
                 if ($valide) {
                     $caisse = Caisse::where('id', $this->id_caisse)->first();
@@ -217,8 +352,59 @@ class DepensesList extends Component
             }
 
 
-        }elseif($this->methode=="virement"){
+        } elseif ($this->methode == "virement") {
 
+            $this->validate([
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'ref_virement' => 'required',
+                'dateDep' => 'required|date',
+                'type_depense' => 'required',
+                'autre_type' => 'required_if:type_depense,Autre',
+                'cin_ouvrier' => 'required_if:type_depense,Ouvrier|exists:ouvriers,n_cin|nullable',
+                'id_project' => 'required',
+                'methode' => 'required',
+            ]);
+
+
+
+            $depense = new Depense();
+            $depense->montant = $this->montant;
+            $depense->dateDep = $this->dateDep;
+            $depense->description = $this->description;
+            $depense->id_project = $this->id_project;
+            $depense->ref_virement = $this->ref_virement;
+            $depense->situation = 'Non Justify';
+            $depense->methode = $this->methode;
+            $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
+            $depense->id_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('n_cin', $this->cin_ouvrier)->pluck('id')->first() : null;
+            $valide = $depense->save();
+
+
+        } elseif ($this->methode == "med") {
+            $this->validate([
+                'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'ref_med' => 'required',
+                'dateDep' => 'required|date',
+                'type_depense' => 'required',
+                'autre_type' => 'required_if:type_depense,Autre',
+                'cin_ouvrier' => 'required_if:type_depense,Ouvrier|exists:ouvriers,n_cin|nullable',
+                'id_project' => 'required',
+                'methode' => 'required',
+            ]);
+
+
+
+            $depense = new Depense();
+            $depense->montant = $this->montant;
+            $depense->dateDep = $this->dateDep;
+            $depense->description = $this->description;
+            $depense->id_project = $this->id_project;
+            $depense->ref_med = $this->ref_med;
+            $depense->situation = 'Non Justify';
+            $depense->methode = $this->methode;
+            $depense->type_depense = ($this->type_depense == "Autre") ? $this->autre_type : $this->type_depense;
+            $depense->id_ouvrier = ($this->type_depense == "Ouvrier") ? Ouvrier::where('n_cin', $this->cin_ouvrier)->pluck('id')->first() : null;
+            $valide = $depense->save();
         }
 
 
@@ -235,18 +421,6 @@ class DepensesList extends Component
 
 
 
-    public $noProjects = false;
-    public function buttonAjouter()
-    {
-        $this->resetInputs();
-        $projects = Projet::all();
-        if ($projects->isEmpty()) {
-            session()->flash('warning', "Project's table is null");
-            $this->noProjects = true;
-        } else {
-            $this->noProjects = false;
-        }
-    }
 
 
     public function resetInputs()
@@ -261,78 +435,87 @@ class DepensesList extends Component
         $this->Aouvrier = false;
     }
 
-    public function validation()
-    {
-        $this->validate([
-            'montant' => 'required',
-            'Aqui' => 'required',
-            'dateDep' => 'required',
-        ]);
-    }
     public function updatedSelectAll($value)
     {
         if ($value) {
             $this->selectedDepenses = Depense::pluck('id');
+            $this->checkIfnotJustify = false;
         } else {
             $this->selectedDepenses = [];
         }
     }
-    // on this function i will add a new record on table 'RETRAIT' then update the Caisse's sold AFTER THE SAVE DEPENSE
-    public function UpdateCaisseAfterSave()
-    {
-        $projet = Projet::where('id', $this->id_projet)->first();
-        $caisse = Caisse::where('id', $projet->id_caisse)->first();
-        Retrait::create([
-            'montant' => $this->montant,
-            'dateRet' => $this->dateDep,
-            'id_depense' => $this->id_depense,
-            'id_caisse' => $caisse->id,
-            'id_reglement' => null
-        ]);
-        if ($this->type == 'Justifier') {
-            $caisse->sold = ($caisse->sold) - ($this->montant);
-            $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
-            $caisse->save();
-        } else {
-            $caisse->sold_nonjustify = ($caisse->sold_nonjustify) - ($this->montant);
-            $caisse->total = (($caisse->sold_nonjustify) + ($caisse->sold));
-            $caisse->save();
-        }
-    }
 
-    // update Retrait and Caisse after updating the Depense
-    public function UpdateCaisseAfterUpdate()
-    {
-        $dep = Depense::where('id', $this->id_depense)->first();
-        // update new record on retrait
-        $retrait = Retrait::where('id_depense', $dep->id)->first();
-        $retrait->montant = $this->montant;
-        $retrait->dateRet = $this->dateDep;
-        $retrait->save();
-        // update Caisse's sold
-        $caisse = Caisse::where('id', $retrait->id_caisse)->first();
-        $montantAfterUpdate = ($this->montantBeforeUpdate) - ($this->montant);
-        if ($dep->type == "Justifier") {
-            $caisse->sold = (($caisse->sold) - ($montantAfterUpdate));
-            $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
-            $caisse->save();
-        } else {
-            $caisse->sold_nonjustify = (($caisse->sold_nonjustify) - ($montantAfterUpdate));
-            $caisse->total = (($caisse->sold) + ($caisse->sold_nonjustify));
-            $caisse->save();
-        }
-    }
     // for show discription inside modal 
-    public function Description($id){
-        $this->description_data=Depense::where('id',$id)->pluck('description')->first();
+    public function Description($id)
+    {
+        $this->description_data = Depense::where('id', $id)->pluck('description')->first();
     }
     // 
     public function updatedSelectedDepenses()
     {
         $depense = Depense::whereIn('id', $this->selectedDepenses)->where('situation', 'Justify')->get();
+
         $this->checkIfnotJustify = (count($depense) > 0) ? false : true;
         if ($this->checkIfnotJustify == false) {
             session()->flash('error', 'Error: you selected Justify Depense');
         }
+        $this->montantTotal = Depense::whereIn('id', $this->selectedDepenses)->sum('montant');
+
     }
+
+    // add facture to depense for justify them
+    public function addFacture()
+    {
+
+        $this->validate([
+            'numero_facture' => 'required|exists:factures,numero,type,fake',
+            'montant_facture' => 'required|exists:factures,montant,numero,' . $this->numero_facture . '|different:' . $this->montantTotal . '',
+        ]);
+        $facture = Facture::where('numero', $this->numero_facture)->pluck('id')->first();
+
+        if (count($this->selectedDepenses) > 0) {
+            $depense = Depense::whereIn('id', $this->selectedDepenses)->update(['id_facture' => $facture, 'situation' => 'justify']);
+        } else {
+            $depense = Depense::where('situation', 'Non Justify')->update(['id_facture' => $facture, 'situation' => 'justify']);
+        }
+
+        if ($depense) {
+            session()->flash('message', 'facture add succesfuly');
+        } else {
+            session()->flash('error', 'invalide data');
+        }
+        // $this->dispatchBrowserEvent('close-model');
+
+    }
+
+
+    // delete data 
+
+    public function deleteItem($id)
+    {
+        $this->id_depense = $id;
+    }
+    public function deleteData()
+    {
+        $retrait = Retrait::where('id_depense', $this->id_depense)->first();
+        if ($retrait) {
+            session()->flash('error', 'can\'t delete this item cus is used as foring key in retrait ');
+        } else {
+            $depense = Depense::where('id', $this->id_depense)->first();
+            ($depense->methode == 'cheque') ? Cheque::where('numero', $depense->numero_cheque)->update(['situation' => 'disponible', 'type' => null]) : false;
+            $valide = $depense->delete();
+            if ($valide) {
+                session()->flash('message', 'delete item succesfully');
+            } else {
+                session()->flash('error', 'errror');
+
+            }
+
+        }
+        $this->dispatchBrowserEvent('close-model');
+        $this->resetInputs();
+
+    }
+
+
 }

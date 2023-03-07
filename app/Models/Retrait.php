@@ -16,5 +16,6 @@ class Retrait extends Model
         'montant',
         'dateRet',
         'id_depense',
+        'type_of_sold',
     ];
 }

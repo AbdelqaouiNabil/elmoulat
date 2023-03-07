@@ -27,9 +27,9 @@ class CreateDepensesTable extends Migration
             $table->string('type_depense');
             $table->string('methode');
             $table->string('numero_cheque')->nullable();
-            $table->string('ref_verement')->nullable();
+            $table->string('ref_virement')->nullable();
+            $table->string('ref_med')->nullable();
             $table->double('montant');
-        
             $table->timestamps();
         });
     }
