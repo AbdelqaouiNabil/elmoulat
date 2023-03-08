@@ -15,6 +15,7 @@ class Avence extends Model
         'id_client',
         'id_vente',
         
+        
     ];
 
     public function client(){

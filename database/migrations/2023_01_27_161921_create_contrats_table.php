@@ -15,15 +15,18 @@ class CreateContratsTable extends Migration
     {
         Schema::create('contrats', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('cin_Ouv');
+            $table->string('titre');
             $table->date('datedebut');
             $table->date('datefin');
             $table->double('montant');
-            $table->double('avance');
-            $table->unsignedBigInteger('id_ouvrier');
+            $table->double('avance')->nullable();
+            $table->string('name_entreprise')->nullable();
+            $table->string('ice_entreprise')->nullable();
+            $table->unsignedBigInteger('id_ouvrier')->nullable();
             $table->foreign('id_ouvrier')->references('id')->on('ouvriers');
-            $table->unsignedBigInteger('id_projet');
+            $table->unsignedBigInteger('id_fournisseur')->nullable();
+            $table->foreign('id_fournisseur')->references('id')->on('fournisseurs');
+            $table->unsignedBigInteger('id_projet')->nullable();
             $table->foreign('id_projet')->references('id')->on('projets');
             $table->timestamps();
         });

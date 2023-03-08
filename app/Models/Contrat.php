@@ -10,21 +10,26 @@ class Contrat extends Model
     use HasFactory;
     protected $fillable = [
 
-        'name',
+        'titre',
         'datedebut',
         'datefin',
         'montant',
         'avance',
+        'name_entreprise',
+        'ice_entreprise',
         'id_ouvrier',
-        'cin_Ouv',
+        'id_fournisseur',
         'id_projet'
 
     ];
 
     public function ouvrier(){
-        return $this->belongsTo('App\Models\Ouvrier', 'id_ouvrier');
+        return $this->belongsTo(Ouvrier::class, 'id_ouvrier');
     }
     public function projet(){
-        return $this->belongsTo('App\Models\Projet', 'id_projet');
+        return $this->belongsTo(Projet::class, 'id_projet');
+    }
+    public function fournisseur(){
+        return $this->belongsTo(Fournisseur::class, 'id_fournisseur');
     }
 }

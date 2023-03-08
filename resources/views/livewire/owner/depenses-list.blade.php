@@ -388,15 +388,16 @@
                                     @error('numero_cheque')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror --}}
-                                    <div class="atbd-select ">
+                                    <div class="atbd-select">
 
-                                        <select  id="select-search" id="select-search" class="form-control" wire:model.defer='numero_cheque' >
+                                        <select  id="select-search"  class="form-control" wire:model.defer='numero_cheque' >
                                             @foreach($check_cheque as $cheque)
                                                <option value="{{$cheque->numero}}">{{$cheque->numero}}</option>
                                             @endforeach
                                         </select>
     
                                     </div>
+                                    
                                 </div>
 
                                 

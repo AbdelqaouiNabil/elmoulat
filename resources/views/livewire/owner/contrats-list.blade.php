@@ -98,11 +98,11 @@
                                                 <th>
                                                     <span class="userDatatable-title">id</span>
                                                     <a href="" wire:click.prevent="sort('id')"><i
-                                                        class="fa-sharp fa-solid fa-sort"></i></a>
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
-                                                    <span class="userDatatable-title">Nom de contrat</span>
-                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                    <span class="userDatatable-title">Titre</span>
+                                                    <a href="" wire:click.prevent="sort('titre')"><i
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
@@ -127,17 +127,22 @@
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Le reste</span>
-                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                    <a href="" wire:click.prevent="sort('titre')"><i
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Ouvrier</span>
-                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                    <a href="" wire:click.prevent="sort('titre')"><i
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
                                                     <span class="userDatatable-title">Projet</span>
-                                                    <a href="" wire:click.prevent="sort('name')"><i
+                                                    <a href="" wire:click.prevent="sort('titre')"><i
+                                                            class="fa-sharp fa-solid fa-sort"></i></a>
+                                                </th>
+                                                <th>
+                                                    <span class="userDatatable-title">Entreprise</span>
+                                                    <a href="" wire:click.prevent="sort('titre')"><i
                                                             class="fa-sharp fa-solid fa-sort"></i></a>
                                                 </th>
                                                 <th>
@@ -163,7 +168,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $c->name }}
+                                                            {{ $c->titre }}
                                                         </div>
                                                     </td>
 
@@ -184,7 +189,17 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $c->avance }} DH
+
+                                                            @if (is_null($c->avance))
+                                                                <a href="#" class="remove" data-toggle="modal"
+                                                                    data-target="#modal-addAvance"
+                                                                    wire:click='addAvance({{ $c->id }})'><i
+                                                                        class="fa-solid fa-plus"></i></a>
+                                                            @else
+                                                                {{ $c->avance }} DH
+                                                            @endif
+
+
                                                         </div>
                                                     </td>
                                                     <td>
@@ -194,13 +209,29 @@
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
-                                                            {{ $c->cin_Ouv }}
+                                                            @if (!is_null($c->id_ouvrier))
+                                                                {{ $c->ouvrier->n_cin }}
+                                                            @else
+                                                              <i style="color:grey ;font-size:18px" class="fa-solid fa-person-circle-xmark"></i>
+                                                            @endif
+
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="orderDatatable-title">
                                                             @if (!is_null($c->projet))
                                                                 {{ $c->projet->name }}
+                                                            @else
+                                                              <i style="color:gray;font-size:16px" class="fa-solid fa-building-circle-xmark"></i>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="orderDatatable-title">
+                                                            @if (!is_null($c->name_entreprise))
+                                                                {{ $c->name_entreprise }}
+                                                            @else
+                                                            null
                                                             @endif
                                                         </div>
                                                     </td>
@@ -291,29 +322,23 @@
                             <form enctype="multipart/form-data">
                                 <div class="form-basic">
 
-                                    @if (session()->has('error'))
-                                        <div class="alert alert-danger" class="form-group mb-25">
 
-                                            {{ session('error') }}
-
-                                        </div>
-                                    @endif
                                     <div class="row">
                                         <div class="col mt-6">
 
 
 
                                             <div class="form-group mb-25">
-                                                <label>Nom de contrat</label>
+                                                <label>Titre</label>
                                                 <input class="form-control form-control-lg" type="text"
-                                                    name="name" wire:model.defer='name'>
-                                                @error('name')
+                                                    wire:model.defer='titre'>
+                                                @error('titre')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
 
                                             </div>
                                             <div class="form-group mb-25">
-                                                <label>Date Debut</label>
+                                                <label>Date Début</label>
                                                 <input class="form-control form-control-lg" type="date"
                                                     name="datedebut" wire:model.defer='datedebut'>
                                                 @error('datedebut')
@@ -337,29 +362,88 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group mb-25">
-                                                <label>Avance</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="avance" wire:model.defer='avance'>
-                                                @error('avance')
+                                                <label>Type</label>
+                                                <select name="avec" id="select-size-1" wire:model='type_contrat'
+                                                    class="form-control  form-control-lg">
+                                                    <option value="ouvrier" selected>Ouvrier</option>
+                                                    <option value="fournisseur">Fournisseur</option>
+
+                                                </select>
+                                                @error('type_contrat')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
-
-                                            <div class="form-group mb-25 ">
-                                                <label>Ouvrier CIN</label>
-                                                <input class="form-control form-control-lg" type="text"
-                                                    name="cin_Ouv" wire:model.defer='cin_Ouv'>
-                                                @error('cin_Ouv')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-
+                                            @if ($type_contrat == 'ouvrier')
+                                                <div class="form-group mb-25">
+                                                    <label>Type de Caisse</label>
+                                                    <div class="row">
+                                                        <div class="col mt-6">
+                                                            <div class="form-group mb-25">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        value="particulier" checked
+                                                                        wire:model='type_ouvrier'>
+                                                                    <label class="form-check-label">
+                                                                        Particulier
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mt-6">
+                                                            <div class="form-group mb-25">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                                        value="entreprise" wire:model='type_ouvrier'>
+                                                                    <label class="form-check-label">
+                                                                        Entreprise
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if ($type_ouvrier == 'particulier')
+                                                    <div class="form-group mb-25 ">
+                                                        <label>Ouvrier CIN</label>
+                                                        <input class="form-control form-control-lg" type="text"
+                                                            wire:model.defer='cin_ouvrier'>
+                                                        @error('cin_ouvrier')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                @elseif($type_ouvrier == 'entreprise')
+                                                    <div class="form-group mb-25 ">
+                                                        <label>Nom D'entreprise</label>
+                                                        <input class="form-control form-control-lg" type="text"
+                                                            wire:model.defer='name_entreprise'>
+                                                        @error('name_entreprise')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                    <div class="form-group mb-25 ">
+                                                        <label>ICE</label>
+                                                        <input class="form-control form-control-lg" type="text"
+                                                            wire:model.defer='ice_entreprise'>
+                                                        @error('ice_entreprise')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                @endif
+                                            @elseif($type_contrat == 'fournisseur')
+                                                <div class="form-group mb-25 ">
+                                                    <label>ICE</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        wire:model.defer='ice_fournisseur'>
+                                                    @error('ice_fournisseur')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            @endif
                                             <div class="form-group mb-25 ">
                                                 <label>Projet</label>
-                                                <select name="id_projet" id="select-size-1"
-                                                    wire:model.defer='id_projet'
+                                                <select wire:model.defer='id_projet'
                                                     class="form-control  form-control-lg">
-                                                    <option selected>Select a project</option>
+                                                    <option selected>select project</option>
                                                     @foreach ($projects as $p)
                                                         <option value="{{ $p->id }}">{{ $p->name }}
                                                         </option>
@@ -627,8 +711,8 @@
                                     <div class="form-group mb-25">
 
                                         <label>Caisse </label>
-                                        <select name="select-size-1" wire:model.defer='id_caisse'
-                                            id="select-size-1" class="form-control  form-control-lg">
+                                        <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1"
+                                            class="form-control  form-control-lg">
 
                                             <option value="" selected>select an option</option>
                                             @foreach ($caisses as $caisse)
@@ -653,6 +737,189 @@
                 </div>
             </div>
         </div>
+
+
+
+        {{-- add avence model  --}}
+
+        <div wire:ignore.self class="modal-basic modal fade show" id="modal-addAvance" tabindex="-1" role="dialog"
+            aria-hidden="true">
+
+
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content modal-bg-white ">
+                    <div class="modal-header">
+
+
+
+                        <h6 class="modal-title">Ajouter Avence</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span data-feather="x"></span></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form enctype="multipart/form-data" wire:submit.prevent="saveAvance()">
+                            <div class="form-basic">
+
+                                <div class="form-group mb-25">
+                                    <label>Methode</label>
+                                    <div class="row">
+                                        <div class="col mt-3">
+                                            <div class="form-group mb-25">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" value="cach"  @if(count($caisses)==null)  disabled @endif
+                                                        wire:model='methode'>
+                                                    <label class="form-check-label">
+                                                        Cach
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col mt-3">
+                                            <div class="form-group mb-25">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" value="cheque" 
+                                                        wire:model='methode'>
+                                                    <label class="form-check-label">
+                                                        Cheque
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col mt-3">
+                                            <div class="form-group mb-25">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" value="virement"
+                                                        wire:model='methode'>
+                                                    <label class="form-check-label">
+                                                        Virement
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col mt-3">
+                                            <div class="form-group mb-25">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" value="med"
+                                                        wire:model='methode'>
+                                                    <label class="form-check-label">
+                                                        MED
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if ($methode == 'cheque')
+                                    <div class="form-group mb-25">
+    
+                                        {{-- <label>Numéro Cheque</label>
+                                        <input class="form-control form-control-lg" type="text" name="numero_cheque"
+                                            placeholder="Saisir Numéro de Cheque" wire:model.defer='numero_cheque' @if(count($check_cheque)==null) disabled @endif>
+                                        @error('numero_cheque')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror --}}
+                                        <div class="atbd-select">
+                                            <select  id="select-search"  class="form-control" wire:model.defer='numero_cheque' >
+                                                @foreach($chequeListe as $cheque)
+                                                   <option value="{{$cheque->numero}}">{{$cheque->numero}}</option>
+                                                @endforeach
+                                            </select>
+        
+                                        </div>
+                                        
+                                    </div>
+    
+                                    
+                                @endif
+                                @if ($methode == 'virement')
+                                    <div class="form-group mb-25">
+                                        <label>Réf Virement</label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            placeholder="Saisir Réf virement" wire:model.defer='ref_virement'>
+                                        @error('ref_virement')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
+                                @if ($methode == 'med')
+                                    <div class="form-group mb-25">
+                                        <label>Réf MED</label>
+                                        <input class="form-control form-control-lg" type="text"
+                                            placeholder="Saisir Réf virement" wire:model.defer='ref_med'>
+                                        @error('ref_med')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
+                                @if ($methode == 'cach')
+                                    <div class="form-group mb-25 ">
+                                        <label>Caisse</label>
+                                        <select wire:model.defer='id_caisse' class="form-control  form-control-lg" >
+                                            <option selected>Choisir un Caisse</option>
+                                            @foreach ($caisses as $caisse)
+                                                <option value="{{ $caisse->id }}">{{ $caisse->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('id_caisse')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-25">
+                                        <label>Type de Caisse</label>
+                                        <div class="row">
+                                            <div class="col mt-6">
+                                                <div class="form-group mb-25">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            value="sold_nonJustify" checked wire:model='type_caisse'>
+                                                        <label class="form-check-label">
+                                                            Non Justifier
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col mt-6">
+                                                <div class="form-group mb-25">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            value="sold_Justify" wire:model='type_caisse'>
+                                                        <label class="form-check-label">
+                                                            Justifier
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="form-group mb-25">
+                                    <label class="required">Montant</label>
+                                    <input class="form-control form-control-lg" type="text" name="montant"
+                                        wire:model.defer='montant'>
+                                    @error('montant')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Ajouter" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
     </div>
 
 </div>

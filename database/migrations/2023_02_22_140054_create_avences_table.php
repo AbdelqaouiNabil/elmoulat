@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('avences', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_client'); 
+            $table->unsignedBigInteger('id_client')->nullable(); 
             $table->foreign('id_client')->references('id')->on('clients');
-            $table->unsignedBigInteger('id_vente'); 
+            $table->unsignedBigInteger('id_vente')->nullable(); 
             $table->foreign('id_vente')->references('id')->on('ventes');
             $table->date('dateA');
             $table->string('montant');
