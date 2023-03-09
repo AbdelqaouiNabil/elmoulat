@@ -15,6 +15,8 @@ class Contrat extends Model
         'datefin',
         'montant',
         'avance',
+        'montant_reste',
+        'type_contrat',
         'name_entreprise',
         'ice_entreprise',
         'id_ouvrier',
@@ -22,6 +24,7 @@ class Contrat extends Model
         'id_projet'
 
     ];
+    
 
     public function ouvrier(){
         return $this->belongsTo(Ouvrier::class, 'id_ouvrier');
@@ -31,5 +34,17 @@ class Contrat extends Model
     }
     public function fournisseur(){
         return $this->belongsTo(Fournisseur::class, 'id_fournisseur');
+    }
+
+    protected static function boot() {
+        parent::boot();
+    
+        static::updating(function($model){
+            $model->montant_reste = $model->montant - $model->avance;
+        }); 
+        static::saving(function($model){
+            $model->montant_reste = $model->montant - $model->avance;
+
+        });
     }
 }

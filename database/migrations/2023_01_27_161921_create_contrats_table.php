@@ -20,6 +20,8 @@ class CreateContratsTable extends Migration
             $table->date('datefin');
             $table->double('montant');
             $table->double('avance')->nullable();
+            $table->string('montant_reste');
+            $table->string('type_contrat');
             $table->string('name_entreprise')->nullable();
             $table->string('ice_entreprise')->nullable();
             $table->unsignedBigInteger('id_ouvrier')->nullable();

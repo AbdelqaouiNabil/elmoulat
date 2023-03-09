@@ -1558,6 +1558,8 @@
             $('#add-modal-reglement').modal('hide');
             $('#modal-import').modal('hide');
             $('#reglement-modal').modal('hide');
+            $('#modal-addAvance').modal('hide');
+            
 
 
         });
