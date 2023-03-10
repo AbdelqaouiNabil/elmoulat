@@ -14,8 +14,9 @@ class Vente extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'project_id',
-        'client_id',
+        'id_bien',
+        'id_prevent',
+        'id_client',
         'titre',
         'montant',
         'montantReal',
@@ -27,10 +28,13 @@ class Vente extends Model
     ];
 
     public function client(){
-        return $this->belongsTo(Client::class,'client_id');
+        return $this->belongsTo(Client::class,'id_client');
     }
-    public function project(){
-        return $this->belongsTo(Projet::class,'project_id');
+    public function prevente(){
+        return $this->belongsTo(Prevente::class,'id_prevente');
+    }
+    public function bien(){
+        return $this->belongsTo(Bien::class,'id_bien');
     }
     protected static function boot() {
         parent::boot();

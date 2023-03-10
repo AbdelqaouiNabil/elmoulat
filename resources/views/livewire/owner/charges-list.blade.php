@@ -56,7 +56,7 @@
                                             <i style="color:white ;margin:0px; padding:2px"
                                                 class="fa-solid fa-calendar-days"></i></button>
                                     </div>
-                                    
+
 
 
                                     <div class="dropdown action-btn">
@@ -449,18 +449,28 @@
                                             </div>
                                             <div class="form-group mb-25">
                                                 <label>Type</label>
-                                                <select name="type" id="select-size-1" wire:model.defer='type'
+                                                <select   wire:model='type_charge'
                                                     class="form-control  form-control-lg">
-                                                    <option selected>select an option</option>
-                                                    @foreach ($this->chargetype as $type)
-                                                        <option value="{{ $type }}">{{ $type }}
+                                                    <option >select an option</option>
+                                                    @foreach ($chargetype as $type)
+                                                        <option value="{{$type}}">{{ $type }}
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                @error('type')
+                                                @error('type_charge')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
+                                            @if ($type_charge == 'Autre')
+                                                <div class="form-group mb-25">
+                                                    <label>Autre Type</label>
+                                                    <input class="form-control form-control-lg" type="text"
+                                                        wire:model.defer='autre_type'>
+                                                    @error('autre_type')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            @endif
                                             <div class="form-group mb-25">
                                                 <label>Montant Total <input type="checkbox"
                                                         wire:model='calculateMontant'>
@@ -599,21 +609,31 @@
                                         </div>
                                         <div class="form-group mb-25">
                                             <label>Type</label>
-                                            <select name="type" id="select-size-1" wire:model.defer='type'
+                                            <select   wire:model='type_charge'
                                                 class="form-control  form-control-lg">
-                                                <option selected>select an option</option>
-                                                @foreach ($this->chargetype as $type)
-                                                    <option value="{{ $type }}">{{ $type }}
+                                                <option >select an option</option>
+                                                @foreach ($chargetype as $type)
+                                                    <option value="{{$type}}">{{ $type }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error('type')
+                                            @error('type_charge')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        @if ($type_charge == 'Autre')
+                                            <div class="form-group mb-25">
+                                                <label>Autre Type</label>
+                                                <input class="form-control form-control-lg" type="text"
+                                                    wire:model.defer='autre_type'>
+                                                @error('autre_type')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        @endif
                                         <div class="form-group mb-25">
                                             <label>Montant Total </label>
-                                            <input class="form-control form-control-lg" type="text" name="montant"
+                                            <input class="form-control form-control-lg" type="text" 
                                                 wire:model.defer='montant'>
                                             @error('montant')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -622,7 +642,7 @@
 
                                         <div class="form-group mb-25 ">
                                             <label>Projet</label>
-                                            <select name="id_projet" id="select-size-1" wire:model.defer='id_projet'
+                                            <select   wire:model.defer='id_projet'
                                                 class="form-control  form-control-lg">
                                                 <option selected>select an option</option>
                                                 @foreach ($projets as $p)

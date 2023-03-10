@@ -56,7 +56,7 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            @if (count($selectedContrats) > 1 || $bulkDisabled == true || $isReglementExists==true) hidden @endif wire:click="resetInputs"
+                                            @if (count($selectedContrats) > 1 || $bulkDisabled == true || $isReglementExists == true) hidden @endif wire:click="resetInputs"
                                             wire:click.prevent="addReglement" data-toggle="modal"
                                             data-target="#reglement-modal">
                                             <i class="la la-plus"></i>Reglement</button>
@@ -263,16 +263,12 @@
                                                                         class="fa-solid fa-plus"></i></a>
                                                             </li>
                                                             <li>
-                                                                @if (in_array($c->id, $avanceList))
-                                                                    <a class="remove"><i
-                                                                            class="fa-regular fa-pen-to-square"
-                                                                            style="color:gray"></i></a>
-                                                                @else
-                                                                    <a data-target="#edit-modal" href="#"
-                                                                        class="remove" data-toggle="modal"
-                                                                        wire:click='editContrat({{ $c->id }})'><i
-                                                                            class="fa-regular fa-pen-to-square"></i></a>
-                                                                @endif
+
+                                                                <a data-target="#edit-modal" href="#"
+                                                                    class="remove" data-toggle="modal"
+                                                                    wire:click='editContrat({{ $c->id }})'><i
+                                                                        class="fa-regular fa-pen-to-square"></i></a>
+
 
                                                             </li>
 
@@ -555,7 +551,7 @@
                                         <div class="form-group mb-25">
                                             <label>Montant</label>
                                             <input class="form-control form-control-lg" type="text" name="montant"
-                                                wire:model.defer='montant'>
+                                                @if ($isAvanceExists == false) disabled value="{{$montant}}" @else wire:model.defer='montant' @endif >
                                             @error('montant')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -1059,8 +1055,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode_reglement" type="radio" value="cach"
-                                            @if (count($caisses) == null) disabled @endif>
+                                        <input class="radio" wire:model="methode_reglement" type="radio"
+                                            value="cach" @if (count($caisses) == null) disabled @endif>
                                         <label>
                                             <span class="radio-text">Avec Cach</span>
                                         </label>
@@ -1073,13 +1069,15 @@
                                         </label>
                                     </div>
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode_reglement" type="radio" value="virement">
+                                        <input class="radio" wire:model="methode_reglement" type="radio"
+                                            value="virement">
                                         <label>
                                             <span class="radio-text">Avec Virement</span>
                                         </label>
                                     </div>
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode_reglement" type="radio" value="med">
+                                        <input class="radio" wire:model="methode_reglement" type="radio"
+                                            value="med">
                                         <label>
                                             <span class="radio-text">MED</span>
                                         </label>
@@ -1118,8 +1116,7 @@
                                     <div class="form-group mb-25">
                                         <label>Montant de Cheque</label>
                                         <input class="form-control form-control-lg" type="text"
-                                            placeholder="0000.00 DH" 
-                                            wire:model.defer='montant_cheque'>
+                                            placeholder="0000.00 DH" wire:model.defer='montant_cheque'>
                                         @error('montant_cheque')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

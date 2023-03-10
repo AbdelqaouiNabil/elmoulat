@@ -125,7 +125,7 @@
 
                                             <th>
                                                 <span class="userDatatable-title">Projet</span>
-                                                <a href="" wire:click.prevent="sort('project_id')"><i
+                                                <a href="" wire:click.prevent="sort('bien_id')"><i
                                                         class="fa-sharp fa-solid fa-sort"></i></a>
                                             </th>
 
@@ -192,7 +192,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="orderDatatable-title">
-                                                        {{ $vente->project->name }}
+                                                        {{ $vente->bien->name }}
                                                     </div>
                                                 </td>
                                                 <td>
@@ -379,17 +379,17 @@
                                             <div class="form-group mb-25 col-lg-12">
 
                                                 <label>Projet </label>
-                                                <select name="select-size-1" wire:model.defer='id_project'
+                                                <select name="select-size-1" wire:model.defer='id_bien'
                                                     id="select-size-1" class="form-control  form-control-lg">
 
                                                     <option selected>select an option</option>
-                                                    @foreach ($projects as $project)
-                                                        <option value="{{ $project->id }}">{{ $project->name }}
+                                                    @foreach ($biens as $bien)
+                                                        <option value="{{ $bien->id }}">{{ $bien->name }}
                                                         </option>
                                                     @endforeach
 
                                                 </select>
-                                                @error('id_project')
+                                                @error('id_bien')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
 
@@ -587,24 +587,24 @@
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Projet </label>
-                                    <select name="select-size-1" wire:model.defer='id_project' id="select-size-1"
+                                    <select name="select-size-1" wire:model.defer='id_bien' id="select-size-1"
                                         class="form-control  form-control-lg">
 
                                         <option selected>select an option</option>
-                                        @foreach ($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->name }}
+                                        @foreach ($biens as $bien)
+                                            <option value="{{ $bien->id }}">{{ $bien->name }}
                                             </option>
                                         @endforeach
 
                                     </select>
-                                    @error('id_project')
+                                    @error('id_bien')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
                                 </div>
                                 <div class="form-group mb-25">
                                     <label>Client </label>
-                                    <select name="select-size-1" wire:model.defer='id_project' id="select-size-1"
+                                    <select name="select-size-1" wire:model.defer='id_client' id="select-size-1"
                                         class="form-control  form-control-lg">
                                         <option selected>select an option</option>
                                         @foreach ($clients as $client)

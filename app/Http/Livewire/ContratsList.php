@@ -34,6 +34,7 @@ class ContratsList extends Component
     public $bulkDisabled = true;
     public $isReglementExists = false;
     public $selectAll = false;
+    public $isAvanceExists = false;
     public $sortname = "id";
     public $sortdrection = "DESC";
 
@@ -63,8 +64,6 @@ class ContratsList extends Component
         $this->bulkDisabled = count($this->selectedContrats) < 1;
         $projects = Projet::all();
         $caisses = Caisse::all();
-        $avanceArray = Avance::select('id_contrat')->get()->toArray();
-        $avanceList = array_column($avanceArray, 'id_contrat');
         $cheques = Cheque::where('situation', 'disponible')->get();
         $contrats = Contrat::where('titre', 'like', '%' . $this->search . '%')
         ->orWhere('datedebut', 'like', '%' . $this->search . '%')
@@ -73,7 +72,7 @@ class ContratsList extends Component
             $query->where('n_cin', 'like', '%' . $this->search . '%'); })
         ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
 
-        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "projects" => $projects, "caisses" => $caisses, 'cheques' => $cheques, 'avanceList' => $avanceList,]);
+        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "projects" => $projects, "caisses" => $caisses, 'cheques' => $cheques, ]);
     }
     // sort function  for order data by table head
     public function sort($value)
@@ -92,6 +91,7 @@ class ContratsList extends Component
     public function editContrat($id)
     {
         $contrat = Contrat::where('id', $id)->first();
+        $this->isAvanceExists= (count(Avance::where('id_contrat',$id)->get())>0)? false:true;
         $this->id_contrat = $contrat->id;
         $this->titre = $contrat->titre;
         $this->datedebut = $contrat->datedebut;

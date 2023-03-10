@@ -15,8 +15,9 @@ class CreateVentesTable extends Migration
     {
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('project_id');          
-            $table->unsignedBigInteger('client_id');    
+            $table->unsignedBigInteger('id_bien');          
+            $table->unsignedBigInteger('id_prevente')->nullable();    
+            $table->unsignedBigInteger('id_client');    
             $table->string('titre');
             $table->date('dateV');
             $table->string('montant');
@@ -24,10 +25,9 @@ class CreateVentesTable extends Migration
             $table->string('reste');
             $table->string('paye')->default('0');
             $table->string('contrat');
-            $table->foreign('project_id')->references('id')->on('projets');
-            $table->foreign('client_id')->references('id')->on('clients');
-            
-            $table->timestamps();
+            $table->foreign('id_bien')->references('id')->on('biens');
+            $table->foreign('id_prevente')->references('id')->on('preventes');
+            $table->foreign('id_client')->references('id')->on('clients');
         });
     }
 

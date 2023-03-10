@@ -10,10 +10,8 @@ use App\Models\Projet;
 use App\Models\Cheque;
 use App\Models\Fournisseur;
 use App\Models\Reglement;
-use App\Models\Facture;
 use App\Models\Retrait;
 use App\Models\Caisse;
-use Carbon\Carbon;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 
@@ -22,10 +20,9 @@ class ChargesList extends Component
     use WithFileUpLoads;
     use WithPagination;
 
-    public $id_Charge, $name, $date, $ref_med, $ref_virement, $montant, $montant_cheque, $cheque_pdf, $bonpdf, $dateR, $fournisseur_id, $id_projet, $id_caisse, $caisse_sold, $type,
-    $bon, $prixht, $tva, $QT, $prix_TTC, $MTTTC, $situation, $calculateMontant, $startdate, $enddate;
+    public $id_Charge, $name, $date, $ref_med, $ref_virement, $montant, $montant_cheque, $cheque_pdf, $bonpdf, $dateR, $fournisseur_id, $id_projet, $id_caisse, $caisse_sold,
+    $bon, $prixht, $tva, $QT, $prix_TTC, $MTTTC, $situation, $calculateMontant, $startdate, $enddate ,$autre_type, $type_charge;
     public $search;
-
     public $methode = "cheque";
     public $checkIfnotPayed = false;
     public $pages = 5;
@@ -47,7 +44,7 @@ class ChargesList extends Component
         $this->resetPage('new');
     }
 
-    public $chargetype = ["Administration", "Aluminium", "Ascenseur", "Béton", "Branchement", "Brique", "Bureautique", "Carrelage", "Ciment", "Climatisation", "Concassore	", "Divers", "Entretien", "Fer", "Ferronnerie", "Gravette", "Grillage", "Honoraire", "Hourdis", "Marbre", "Matériel cuisine", "Matériel électricité", "Matériel Plomberie", "Menuiserie", "MO carrelage", "MO chef chantier", "MO construction", "MO divers", "MO Electricité", "MO Gardiennage", "MO Ménage et Nettoyage", "MO Peinture", "MO plâtre", "MO Plomberie", "Parquet", "Peinture", "Pointe", "Poutrelle", "Sable", "Sanitaire", "Signalisation et publicité", "Taxe et impôt", "Terrain", "Transport et véhicule",];
+    public $chargetype = ["Autre","Administration", "Aluminium", "Ascenseur", "Béton", "Branchement", "Brique", "Bureautique", "Carrelage", "Ciment", "Climatisation", "Concassore	", "Divers", "Entretien", "Fer", "Ferronnerie", "Gravette", "Grillage", "Honoraire", "Hourdis", "Marbre", "Matériel cuisine", "Matériel électricité", "Matériel Plomberie", "Menuiserie", "MO carrelage", "MO chef chantier", "MO construction", "MO divers", "MO Electricité", "MO Gardiennage", "MO Ménage et Nettoyage", "MO Peinture", "MO plâtre", "MO Plomberie", "Parquet", "Peinture", "Pointe", "Poutrelle", "Sable", "Sanitaire", "Signalisation et publicité", "Taxe et impôt", "Terrain", "Transport et véhicule"];
     public function render()
     {
 
@@ -117,6 +114,7 @@ class ChargesList extends Component
                 'montant_cheque' => 'required|regex:/^\d*(\.\d{2})?$/',
                 'numero_cheque' => 'required|exists:cheques,numero,situation,disponible',
                 'cheque_pdf' => 'required|mimes:pdf',
+                
             ]);
             $cheque = Cheque::where('numero', $this->numero_cheque)->first();
             $cheque->montant = $this->montant_cheque;
@@ -273,7 +271,8 @@ class ChargesList extends Component
         $charge = Charge::where('id', $id)->first();
         $this->id_Charge = $id;
         $this->name = $charge->name;
-        $this->type = $charge->type;
+        $this->type_charge = (in_array($charge->type,$this->chargetype)==true)?$charge->type:'Autre';
+        $this->autre_type=($this->type_charge=='Autre')? $charge->type: null;
         $this->bon = $charge->bon;
         $this->montant = $charge->montant;
         $this->date = $charge->date;
@@ -285,7 +284,8 @@ class ChargesList extends Component
     {
         $this->validate([
             'name' => 'required',
-            'type' => 'required',
+            'type_charge' => 'required',
+            'autre_type'=>'required_if:type_charge,Autre',
             'bon' => 'required',
             'bonpdf' => 'mimes:pdf',
             'date' => 'required|date',
@@ -300,8 +300,9 @@ class ChargesList extends Component
             File::delete(public_path($path));
             $charge->bonpdf = $this->bonpdf->store('Documents/charge/bon', 'public');
         }
+        $this->type_charge=($this->type_charge=="Autre")? $this->autre_type: $this->type_charge;
         $charge->name = $this->name;
-        $charge->type = $this->type;
+        $charge->type = $this->type_charge;
         $charge->bon = $this->bon;
         $charge->montant = $this->montant;
         $charge->date = $this->date;
@@ -364,13 +365,16 @@ class ChargesList extends Component
             $this->montant = (($this->prixht * ($this->tva * 0.01)) + $this->prixht) * $this->QT;
         }
     }
+  
     public function saveCharge()
     {
+        
         if ($this->calculateMontant) {
 
             $this->validate([
                 'name' => 'required',
-                'type' => 'required',
+                'type_charge' => 'required',
+                'autre_type'=>'required_if:type_charge,Autre',
                 'bon' => 'required',
                 'bonpdf' => 'required|mimes:pdf',
                 'date' => 'required|date',
@@ -386,7 +390,8 @@ class ChargesList extends Component
         } else {
             $this->validate([
                 'name' => 'required',
-                'type' => 'required',
+                'type_charge' => 'required',
+                'autre_type'=>'required_if:type_charge,Autre',
                 'bon' => 'required',
                 'bonpdf' => 'required|mimes:pdf',
                 'date' => 'required|date',
@@ -396,11 +401,11 @@ class ChargesList extends Component
 
             ]);
         }
-
+        $this->type_charge=($this->type_charge=="Autre")? $this->autre_type: $this->type_charge;
         $pdf = $this->bonpdf->store('Documents/charge/bon', 'public');
         $charge = Charge::create([
             'name' => $this->name,
-            'type' => $this->type,
+            'type' => $this->type_charge,
             'bon' => $this->bon,
             'bonpdf' => $pdf,
             'date' => $this->date,
@@ -425,7 +430,7 @@ class ChargesList extends Component
     {
 
         $this->name = "";
-        $this->type = "";
+        $this->type_charge = "";
         $this->bon = "";
         $this->bonpdf = "";
         $this->prixht = "";

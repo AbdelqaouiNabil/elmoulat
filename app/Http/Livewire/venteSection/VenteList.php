@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\VenteSection;
 
 use App\Models\Avence;
+use App\Models\Bien;
 use App\Models\Client;
 use App\Models\Depense;
 use App\Models\Projet;
@@ -23,7 +24,7 @@ class VenteList extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $titre, $dateV, $montant, $montantReal, $contrat, $avence, $id_project, $id_client, $id_vente, $name, $cin, $n_cin, $email, $ville_de_resi, $phone, $type, $clientname, $totalavence, $excelFile;
+    public $titre, $dateV, $montant, $montantReal, $contrat, $avence, $id_bien, $id_client, $id_vente, $name, $cin, $n_cin, $email, $ville_de_resi, $phone, $type, $clientname, $totalavence, $excelFile;
     public $checked_id = [];
     public $avences = [];
 
@@ -43,13 +44,13 @@ class VenteList extends Component
     {
         // 
         $this->btndelete = count($this->checked_id) < 1;
-        $projects = Projet::all();
+        $biens = Bien::all();
         $clients = Client::all();
         $ventes = vente::where('titre', 'like', '%' . $this->search . '%')
             ->orWhereHas('client' , function($query){$query->where('n_cin', 'like', '%' . $this->search . '%');})
-            ->orWhereHas('project' , function($query){$query->where('name', 'like', '%' . $this->search . '%');})
+            ->orWhereHas('bien' , function($query){$query->where('situation', 'like', '%' . $this->search . '%');})
             ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        return view('livewire.vente-section.vente-list', ['ventes' => $ventes, 'projects' => $projects, 'clients' => $clients]);
+        return view('livewire.vente-section.vente-list', ['ventes' => $ventes, 'biens' => $biens, 'clients' => $clients]);
     }
 
     // sort function  for order data by table head 
@@ -81,7 +82,7 @@ class VenteList extends Component
             $this->validate([
                 'titre' => 'required',
                 'dateV' => 'required|date',
-                'id_project' => 'required|integer',
+                'id_bien' => 'required|integer',
                 'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
                 'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
                 'contrat' => 'required|mimes:pdf',
@@ -100,7 +101,7 @@ class VenteList extends Component
             $this->validate([
                 'titre' => 'required',
                 'dateV' => 'required|date',
-                'id_project' => 'required|integer',
+                'id_bien' => 'required|integer',
                 'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
                 'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
                 'contrat' => 'required|mimes:pdf',
@@ -127,8 +128,8 @@ class VenteList extends Component
             $vente->contrat = $contrat;
             $vente->montant = $this->montant;
             $vente->montantReal = $this->montantReal;
-            $vente->project_id = $this->id_project;
-            $vente->client_id = $client->id;
+            $vente->project_id = $this->id_bien;
+            $vente->id_client = $client->id;
             $valide = $vente->save();
 
         }
@@ -162,7 +163,7 @@ class VenteList extends Component
         $this->ville_de_resi = "";
         $this->id_client = "";
         $this->id_vente = "";
-        $this->id_project = "";
+        $this->id_bien = "";
         $this->montant = "";
         $this->montantReal = "";
         $this->avence = "";
@@ -179,7 +180,7 @@ class VenteList extends Component
         $this->validateOnly($fields, [
             'titre' => 'required',
             'dateV' => 'required|date',
-            'id_project' => 'required|integer',
+            'id_bien' => 'required|integer',
             'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'contrat' => 'required|mimes:pdf',
@@ -211,7 +212,7 @@ class VenteList extends Component
         } else {
 
             $vente = Vente::where('id', $this->id_vente)->first();
-            $client = Vente::where('client_id', $vente->client_id)->get();
+            $client = Vente::where('client_id', $vente->id_client)->get();
             if (count($client) > 1) {
                 $path = Storage::disk('local')->url($vente->contrat);
                 File::delete(public_path($path));
@@ -226,7 +227,7 @@ class VenteList extends Component
                 }
             } else {
 
-                $client = Client::where('id', $vente->client_id)->first();
+                $client = Client::where('id', $vente->id_client)->first();
                 $path = Storage::disk('local')->url($vente->contrat);
                 File::delete(public_path($path));
                 $path = Storage::disk('local')->url($client->cin);
@@ -262,8 +263,8 @@ class VenteList extends Component
         $this->contrat = $vente->contrat;
         $this->montant = $vente->montant;
         $this->montantReal = $vente->montantReal;
-        $this->id_client = $vente->client_id;
-        $this->id_project = $vente->project_id;
+        $this->id_client = $vente->id_client;
+        $this->id_bien = $vente->project_id;
 
     }
 
@@ -273,7 +274,7 @@ class VenteList extends Component
         $this->validate([
             'titre' => 'required',
             'dateV' => 'required|date',
-            'id_project' => 'required|integer',
+            'id_bien' => 'required|integer',
             'id_client' => 'required|integer',
             'montant' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'montantReal' => 'required|regex:/^\d+(\.\d{1,2})?$/',
@@ -284,8 +285,8 @@ class VenteList extends Component
         $vente->montant = $this->montant;
         $vente->montantReal = $this->montantReal;
         $vente->dateV = $this->dateV;
-        $vente->client_id = $this->id_client;
-        $vente->project_id = $this->id_project;
+        $vente->id_client = $this->id_client;
+        $vente->project_id = $this->id_bien;
         $valide = $vente->update();
         if ($valide) {
             $this->resetInputs();
@@ -383,7 +384,7 @@ class VenteList extends Component
         $vente = Vente::where('id', $this->id_vente)->first();
         $avence = new Avence();
         $avence->dateA = date('Y-m-d');
-        $avence->id_client = $vente->client_id;
+        $avence->id_client = $vente->id_client;
         $avence->id_vente = $vente->id;
         $avence->montant = $this->montant;
         $avence->type = $this->type;
