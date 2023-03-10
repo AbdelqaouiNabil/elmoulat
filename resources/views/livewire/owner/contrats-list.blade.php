@@ -56,7 +56,7 @@
                                     <div class="action-btn">
 
                                         <button type="button" class="btn btn-sm btn-primary btn-add"
-                                            @if (count($selectedContrats) > 1 || $bulkDisabled == true) hidden @endif wire:click="resetInputs"
+                                            @if (count($selectedContrats) > 1 || $bulkDisabled == true || $isReglementExists==true) hidden @endif wire:click="resetInputs"
                                             wire:click.prevent="addReglement" data-toggle="modal"
                                             data-target="#reglement-modal">
                                             <i class="la la-plus"></i>Reglement</button>
@@ -1059,27 +1059,27 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode" type="radio" value="cach"
+                                        <input class="radio" wire:model="methode_reglement" type="radio" value="cach"
                                             @if (count($caisses) == null) disabled @endif>
                                         <label>
                                             <span class="radio-text">Avec Cach</span>
                                         </label>
                                     </div>
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode" type="radio"
+                                        <input class="radio" wire:model="methode_reglement" type="radio"
                                             @if (count($cheques) == null) disabled @endif value="cheque">
                                         <label>
                                             <span class="radio-text">Avec chèque</span>
                                         </label>
                                     </div>
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode" type="radio" value="virement">
+                                        <input class="radio" wire:model="methode_reglement" type="radio" value="virement">
                                         <label>
                                             <span class="radio-text">Avec Virement</span>
                                         </label>
                                     </div>
                                     <div class="form-group mb-25 col-lg-3">
-                                        <input class="radio" wire:model="methode" type="radio" value="med">
+                                        <input class="radio" wire:model="methode_reglement" type="radio" value="med">
                                         <label>
                                             <span class="radio-text">MED</span>
                                         </label>
@@ -1089,7 +1089,7 @@
 
 
 
-                                @if ($methode == 'cheque' && count($cheques) > 0)
+                                @if ($methode_reglement == 'cheque' && count($cheques) > 0)
                                     <div class="form-group mb-25 ">
                                         <label>
                                             Numéro de Cheque
@@ -1124,7 +1124,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                @elseif($methode == 'virement')
+                                @elseif($methode_reglement == 'virement')
                                     <div class="form-group mb-25">
                                         <label>Réf Virement</label>
                                         <input class="form-control form-control-lg" type="text"
@@ -1133,7 +1133,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                @elseif($methode == 'med')
+                                @elseif($methode_reglement == 'med')
                                     <div class="form-group mb-25">
                                         <label>Réf MED</label>
                                         <input class="form-control form-control-lg" type="text"
@@ -1142,7 +1142,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                @elseif($methode == 'cach')
+                                @elseif($methode_reglement == 'cach')
                                     <div class="form-group mb-25">
                                         <label>Caisse </label>
                                         <select name="select-size-1" wire:model.defer='id_caisse' id="select-size-1"

@@ -32,13 +32,15 @@ class ContratsList extends Component
     public $type_caisse = 'Non Justify';
     public $pages = 10;
     public $bulkDisabled = true;
+    public $isReglementExists = false;
     public $selectAll = false;
     public $sortname = "id";
     public $sortdrection = "DESC";
 
 
     public $search;
-    public $methode = 'virement';
+    public $methode =null;
+    public $methode_reglement = 'virement';
 
 
 
@@ -47,32 +49,31 @@ class ContratsList extends Component
         $this->resetPage('new');
     }
 
+    // for make the button add reglement hidden if contrat aready has reglement
+    public function updatedSelectedContrats(){
+        $this->isReglementExists=(count(Reglement::whereIn('id_contrat',$this->selectedContrats)->get())>0)? true :false;
+        
+    }
+
 
     //  public $numberOfPaginatorsRendered = [];
     public function render()
     {
         // $this->numberOfPaginatorsRendered[] = 1;
         $this->bulkDisabled = count($this->selectedContrats) < 1;
-        $contrats = Contrat::latest()->paginate($this->pages, ['*'], 'new');
-        $ouvriers = Ouvrier::all();
         $projects = Projet::all();
         $caisses = Caisse::all();
         $avanceArray = Avance::select('id_contrat')->get()->toArray();
         $avanceList = array_column($avanceArray, 'id_contrat');
-        // dd();
-        // dd($avanceList);
-
         $cheques = Cheque::where('situation', 'disponible')->get();
-        if ($this->search != "") {
-            $contrats = Contrat::where('titre', 'like', '%' . $this->search . '%')
-                ->orWhere('datedebut', 'like', '%' . $this->search . '%')
-                ->orWhere('datefin', 'like', '%' . $this->search . '%')
-                ->orWhereHas('ouvrier', function ($query) {
-                    $query->where('n_cin', 'like', '%' . $this->search . '%'); })
-                ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
-        }
+        $contrats = Contrat::where('titre', 'like', '%' . $this->search . '%')
+        ->orWhere('datedebut', 'like', '%' . $this->search . '%')
+        ->orWhere('datefin', 'like', '%' . $this->search . '%')
+        ->orWhereHas('ouvrier', function ($query) {
+            $query->where('n_cin', 'like', '%' . $this->search . '%'); })
+        ->orderBy($this->sortname, $this->sortdrection)->paginate($this->pages, ['*'], 'new');
 
-        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "ouvriers" => $ouvriers, "projects" => $projects, "caisses" => $caisses, 'cheques' => $cheques, 'avanceList' => $avanceList,]);
+        return view('livewire.owner.contrats-list', ["contrats" => $contrats, "projects" => $projects, "caisses" => $caisses, 'cheques' => $cheques, 'avanceList' => $avanceList,]);
     }
     // sort function  for order data by table head
     public function sort($value)
@@ -349,90 +350,7 @@ class ContratsList extends Component
         }
     }
 
-    // save data of reglement 
-    // public function addReglement($id)
-    // {
-    //     $contrat = Contrat::where('id', $id)->first();
-    //     $this->id_contrat = $id;
-    //     $this->montant = $contrat->montant - $contrat->avance;
-    //     $this->name = $contrat->name;
-    //     $this->methode = 'cheque';
-    //     $this->datedebut = date('Y-m-d');
-
-
-
-    // }
-
-    // public function saveReglement()
-    // {
-    //     $this->validate([
-    //         'datedebut' => 'required|date',
-    //     ]);
-    //     if ($this->methode == 'cheque') {
-    //         // add zero to left of nuemro cheque
-    //         $this->numero_cheque = strval(str_pad(($this->numero_cheque), 7, '0', STR_PAD_LEFT));
-    //         $this->validate([
-    //             'numero_cheque' => 'required|exists:cheques,numero,situation,disponible',
-
-    //         ]);
-    //         $reglement = new Reglement();
-    //         $reglement->dateR = $this->datedebut;
-    //         $reglement->methode = $this->methode;
-    //         $reglement->montant = $this->montant;
-    //         $reglement->id_contrat = $this->id_contrat;
-    //         $reglement->numero_cheque = $this->numero_cheque;
-    //         $valide = $reglement->save();
-    //         if ($valide) {
-    //             $cheque = Cheque::where('numero', $reglement->numero_cheque)->first();
-    //             $cheque->situation = 'livrer';
-    //             $cheque->update();
-    //         } else {
-    //             session()->flash('error', 'cheque update data invalide  ');
-
-    //         }
-
-    //     } else {
-    //         $this->validate([
-    //             'id_caisse' => 'required',
-
-    //         ]);
-    //         $reglement = new Reglement();
-    //         $reglement->dateR = $this->datedebut;
-    //         $reglement->methode = $this->methode;
-    //         $reglement->montant = $this->montant;
-    //         $reglement->id_contrat = $this->id_contrat;
-    //         $valide = $reglement->save();
-
-    //         if ($valide) {
-    //             $retrait = new Retrait();
-    //             $retrait->dateRet = $this->datedebut;
-    //             $retrait->id_caisse = $this->id_caisse;
-    //             $retrait->montant = $reglement->montant;
-    //             $valide = $retrait->save();
-    //             session()->flash('error', 'caisse update data invalide  ');
-
-    //             if ($valide) {
-    //                 $caisse = Caisse::where('id', $this->id_caisse)->first();
-    //                 $caisse->sold_nonjustify -= $retrait->montant;
-    //                 $valide = $caisse->update();
-
-    //             } else {
-    //                 session()->flash('error', 'caisse update data invalide  ');
-
-    //             }
-    //         } else {
-    //             session()->flash('error', 'Retrait insert data invalide  ');
-
-    //         }
-    //     }
-    //     if ($valide) {
-    //         $this->dispatchBrowserEvent('close-model');
-    //         $this->dispatchBrowserEvent('add');
-    //     } else {
-    //         session()->flash('error', 'can\'t save this reglement ');
-    //     }
-    // }
-
+   
     // add avance 
     public  function addAvance($id)
     {
@@ -514,7 +432,7 @@ class ContratsList extends Component
     {
 
 
-        if ($this->methode == "cheque") {
+        if ($this->methode_reglement == "cheque") {
             $this->validate([
                 'date' => 'required|date',
                 'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
@@ -532,7 +450,7 @@ class ContratsList extends Component
             $reglement = new Reglement();
             $reglement->dateR = $this->date;
             $reglement->montant = $this->montant;
-            $reglement->methode = $this->methode;
+            $reglement->methode = $this->methode_reglement;
             $reglement->numero_cheque = $this->numero_cheque;
             $reglement->ref_med = $this->ref_med;
             $reglement->cheque_pdf = $this->cheque_pdf;
@@ -540,7 +458,7 @@ class ContratsList extends Component
             $valide = $reglement->save();
 
 
-        } elseif ($this->methode == "cach") {
+        } elseif ($this->methode_reglement == "cach") {
             $this->validate([
                 'date' => 'required|date',
                 'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
@@ -551,7 +469,7 @@ class ContratsList extends Component
             $reglement = new Reglement();
             $reglement->dateR = $this->date;
             $reglement->montant = $this->montant;
-            $reglement->methode = $this->methode;
+            $reglement->methode = $this->methode_reglement;
             $reglement->id_contrat=$this->id_contrat;
             $valide = $reglement->save();
             $retrait = new Retrait();
@@ -559,12 +477,13 @@ class ContratsList extends Component
             $retrait->dateRet = date('Y-m-d');
             $retrait->id_caisse = $this->id_caisse;
             $retrait->id_reglement = $reglement->id;
+            $retrait->type_of_sold = 'sold_nonJustify';
             $valide = $retrait->save();
             $caisse = Caisse::where('id', $this->id_caisse)->first();
             $caisse->sold_nonjustify -= $this->montant;
             $valide = $caisse->update();
 
-        } elseif ($this->montant == "virement") {
+        } elseif ($this->methode_reglement == "virement") {
             $this->validate([
                 'date' => 'required|date',
                 'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
@@ -573,10 +492,12 @@ class ContratsList extends Component
             $reglement = new Reglement();
             $reglement->dateR = $this->date;
             $reglement->montant = $this->montant;
-            $reglement->methode = $this->methode;
+            $reglement->methode = $this->methode_reglement;
             $reglement->ref_virement = $this->ref_virement;
+            $reglement->id_contrat=$this->id_contrat;
             $valide = $reglement->save();
-        } elseif ($this->methode = "med") {
+
+        } elseif ($this->methode_reglement = "med") {
             $this->validate([
                 'date' => 'required|date',
                 'montant' => 'required|regex:/^\d*(\.\d{2})?$/',
@@ -585,8 +506,9 @@ class ContratsList extends Component
             $reglement = new Reglement();
             $reglement->dateR = $this->date;
             $reglement->montant = $this->montant;
-            $reglement->methode = $this->methode;
+            $reglement->methode = $this->methode_reglement;
             $reglement->ref_med = $this->ref_med;
+            $reglement->id_contrat=$this->id_contrat;
             $valide = $reglement->save();
         }
         if ($valide) {

@@ -36,21 +36,28 @@
                                                 class="form-control form-control-default" id="date-to-2"
                                                 placeholder="End">
                                         </div>
-                                        
+
                                     </div>
                                 </div>
 
-                               
-                                
+
+
                                 <div class="breadcrumb-action justify-content-center flex-wrap">
-                                    <div class="action-btn">
-                                    <button  class="btn btn-icon  btn-outline-info"  wire:click="filterbydate(false)" @if ($filter_date == false) hidden @endif>
-                                        <i class="fa-solid fa-calendar-days"></i>
-                                    </button>
-                                    <button  class="btn btn-icon  btn-outline-info "  wire:click="filterbydate(true)" @if ($filter_date == true) hidden @endif>
-                                        <i class="fa-solid fa-magnifying-glass"></i>
-                                    </button>
+
+                                    <div class="action-btn ">
+                                        <button type="button" class="btn btn-sm btn-primary "
+                                            wire:click="filterbydate(false)"
+                                            @if ($filter_date == false) hidden @endif>
+                                            <i style="color:white ;margin:0px; padding:2px"
+                                                class="fa-solid fa-magnifying-glass"></i></button>
+                                        <button type="button" class="btn btn-sm btn-primary "
+                                            wire:click="filterbydate(true)"
+                                            @if ($filter_date == true) hidden @endif>
+                                            <i style="color:white ;margin:0px; padding:2px"
+                                                class="fa-solid fa-calendar-days"></i></button>
                                     </div>
+                                    
+
 
                                     <div class="dropdown action-btn">
                                         <div class="dropdown dropdown-click">
@@ -693,7 +700,7 @@
         </div>
 
         {{-- reglement modal --}}
-        
+
         <div wire:ignore.self class="modal fade" id="reglement-modal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
