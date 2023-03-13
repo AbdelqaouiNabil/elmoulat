@@ -16,6 +16,12 @@ class Bien extends Model
         'image',
         'etage',
         'numero_bien',
+        'espace',
+        'description'
         
     ];
+
+    public function project(){
+        return $this->belongsTo(Projet::class,'id_project');
+    }
 }

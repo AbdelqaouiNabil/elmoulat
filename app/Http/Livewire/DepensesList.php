@@ -71,7 +71,7 @@ class DepensesList extends Component
         }
 
         if ($this->search != "") {
-            $depenses = Depense::where('Aqui', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
+            $depenses = Depense::where('stiuation', 'like', '%' . $this->search . '%')->paginate($this->pages, ['*'], 'new');
         }
 
         return view('livewire.owner.depenses-list', ['depenses' => $depenses, 'projets' => $projets, 'caisses' => $caisses, 'montantTotal' => $this->montantTotal]);

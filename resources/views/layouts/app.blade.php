@@ -1398,6 +1398,12 @@
                                 <li class="nav-item">
                                     <a href="{{ route('owner.ventes') }}">Ventes</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('owner.biens') }}">Biens</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('owner.locations') }}">Locations</a>
+                                </li>
 
                             </ul>
                         </li>

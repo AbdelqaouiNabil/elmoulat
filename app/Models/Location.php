@@ -18,4 +18,11 @@ class Location extends Model
         'avance',
         
     ];
+
+    public function bien(){
+        return $this->belongsTo(Bien::class,'id_bien');
+    }
+    public function client(){
+        return $this->belongsTo(Client::class,'id_client');
+    }
 }

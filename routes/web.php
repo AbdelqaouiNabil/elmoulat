@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Livewire\BienList;
+use App\Http\Livewire\BientList;
 use App\Http\Livewire\ChargesList;
 use App\Http\Livewire\ChequeList;
 use App\Http\Livewire\ContratsList;
 use App\Http\Livewire\DepensesList;
 use App\Http\Livewire\FactureList;
+use App\Http\Livewire\LocationList;
 use App\Http\Livewire\ProjectSection\OuvriersList;
 use App\Http\Livewire\ReglementsList;
 use App\Http\Livewire\RhSection\BureauList;
@@ -123,7 +126,8 @@ Route::group(['prefix' => 'owner', 'middleware' => ['role:owner', 'auth', 'Preve
     Route::get('/DepotsList', DepotsList::class)->name('owner.depots');
     Route::get('/ReleverBankaire', ReleverBankaire::class)->name('owner.relevers');
     Route::get('/Pdf', [ProjectsList::class, 'pdfExport'] )->name('owner.pdf');
-
+    Route::get('/BienList', BienList::class)->name('owner.biens');
+    Route::get('/LocationList', LocationList::class)->name('owner.locations');
 
 });
 

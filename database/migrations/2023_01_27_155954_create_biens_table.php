@@ -18,11 +18,14 @@ return new class extends Migration
             $table->unsignedBigInteger('id_project');
             $table->foreign('id_project')->references('id')->on('projets');
             $table->string('type');
-            $table->string('situation');
-            $table->string('image')->nullable();
+            $table->string('situation')->default('disponible');
+            $table->string('image','500')->nullable();
             $table->string('etage');
             $table->integer('numero');
             $table->double('prix');
+            $table->double('espace');
+            $table->string('description')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -378,7 +378,7 @@
 
                                             <div class="form-group mb-25 col-lg-12">
 
-                                                <label>Projet </label>
+                                                <label>Bien </label>
                                                 <select name="select-size-1" wire:model.defer='id_bien'
                                                     id="select-size-1" class="form-control  form-control-lg">
 
@@ -586,7 +586,7 @@
 
                                 </div>
                                 <div class="form-group mb-25">
-                                    <label>Projet </label>
+                                    <label>Bien </label>
                                     <select name="select-size-1" wire:model.defer='id_bien' id="select-size-1"
                                         class="form-control  form-control-lg">
 
